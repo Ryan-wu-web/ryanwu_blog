@@ -18,10 +18,13 @@ nav:
   fixed: false
 
 menu:
-  # Home: / || fas fa-home
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
+  首页: / || fas fa-home
+  关于我: /about/ || fas fa-user
+  项目: /projects/ || fas fa-briefcase
+  技术笔记: /categories/tech/ || fas fa-code
+  生活随笔: /categories/life/ || fas fa-coffee
+  归档: /archives/ || fas fa-archive
+  标签: /tags/ || fas fa-tags
 
 # --------------------------------------
 # Code Blocks Settings
@@ -46,8 +49,8 @@ code_blocks:
 # Formal:
 #   icon: link || the description || color
 social:
-  # fab fa-github: https://github.com/xxxxx || Github || '#24292e'
-  # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
+  fab fa-github: https://github.com/Ryan-wu-web || Github || '#24292e'
+  fas fa-envelope: mailto:ryan@example.com || Email || '#4a7dbe'
 
 # --------------------------------------
 # Image Settings
@@ -149,7 +152,7 @@ index_top_img_height:
 
 # The subtitle on homepage
 subtitle:
-  enable: false
+  enable: true
   # Typewriter Effect
   effect: true
   # Customize typed.js
@@ -165,6 +168,10 @@ subtitle:
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
+    - Hello, I'm Ryan
+    - 热爱技术，热爱生活
+    - Coding & Living
+    - Keep Learning, Keep Growing
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -259,12 +266,12 @@ footer:
   nav:
   owner:
     enable: true
-    since: 2025
+    since: 2026
   # Copyright of theme and framework
   copyright:
     enable: true
     version: true
-  custom_text:
+  custom_text: Powered by Hexo & Butterfly
 
 # --------------------------------------
 # Aside Settings
@@ -284,15 +291,15 @@ aside:
     category: true
   card_author:
     enable: true
-    description:
+    description: 热爱技术，热爱生活
     button:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/Ryan-wu-web
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: 欢迎来到 Ryan 的博客，记录技术成长与生活点滴
   card_recent_post:
     enable: true
     # If set 0 will show all
@@ -474,8 +481,8 @@ math:
 search:
   # Choose: algolia_search / local_search / docsearch
   # leave it empty if you don't need search
-  use:
-  placeholder:
+  use: local_search
+  placeholder: 搜索文章...
 
   # Algolia Search
   algolia_search:
@@ -533,7 +540,7 @@ comments:
   # Leave it empty if you don't need comments
   # Choose: Disqus/Disqusjs/Livere/Gitalk/Valine/Waline/Utterances/Facebook Comments/Twikoo/Giscus/Remark42/Artalk
   # Format of two comments system : Disqus,Waline
-  use:
+  use: Twikoo
   # Display the comment name next to the button
   text: true
   # Lazyload: The comment system will be load when comment element enters the browser's viewport.
@@ -756,23 +763,23 @@ site_verification:
 # Theme color for customize
 # Notice: color value must in double quotes like "#000" or may cause error!
 
-# theme_color:
-#   enable: true
-#   main: "#49B1F5"
-#   paginator: "#00c4b6"
-#   button_hover: "#FF7242"
-#   text_selection: "#00c4b6"
-#   link_color: "#99a9bf"
-#   meta_color: "#858585"
-#   hr_color: "#A4D8FA"
-#   code_foreground: "#F47466"
-#   code_background: "rgba(27, 31, 35, .05)"
-#   toc_color: "#00c4b6"
-#   blockquote_padding_color: "#49b1f5"
-#   blockquote_background_color: "#49b1f5"
-#   scrollbar_color: "#49b1f5"
-#   meta_theme_color_light: "ffffff"
-#   meta_theme_color_dark: "#0d0d0d"
+theme_color:
+  enable: true
+  main: "#3b82f6"
+  paginator: "#3b82f6"
+  button_hover: "#60a5fa"
+  text_selection: "#3b82f6"
+  link_color: "#3b82f6"
+  meta_color: "#8b949e"
+  hr_color: "#30363d"
+  code_foreground: "#f0f6fc"
+  code_background: "rgba(27, 31, 35, .05)"
+  toc_color: "#3b82f6"
+  blockquote_padding_color: "#3b82f6"
+  blockquote_background_color: "rgba(59, 130, 246, 0.1)"
+  scrollbar_color: "#3b82f6"
+  meta_theme_color_light: "#ffffff"
+  meta_theme_color_dark: "#0d1117"
 
 # The user interface setting of category and tag page
 # Choose: index - same as Homepage UI / default - same as archives UI
