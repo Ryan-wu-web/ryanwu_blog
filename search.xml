@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>我的第一篇技术笔记</title>
+      <link href="/2026/06/05/my-first-tech-note/"/>
+      <url>/2026/06/05/my-first-tech-note/</url>
+      
+        <content type="html"><![CDATA[<p>这是一篇技术笔记的示例文章。</p><h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span></span><br><span class="line"></span><br><span class="line">hello_world()</span><br></pre></td></tr></table></figure><h3 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h3><p>后续我会在这里分享更多技术文章，包括但不限于：</p><ul><li>Python 编程技巧</li><li>前端开发经验</li><li>机器学习项目实践</li><li>算法题解</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+            <tag> tutorial </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2026/06/05/hello-world/"/>
       <url>/2026/06/05/hello-world/</url>
@@ -20,7 +47,7 @@
       
         <tags>
             
-            <tag> 随笔 </tag>
+            <tag> notes </tag>
             
         </tags>
       
@@ -45,34 +72,7 @@
       
         <tags>
             
-            <tag> 日常 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>我的第一篇技术笔记</title>
-      <link href="/2026/06/05/my-first-tech-note/"/>
-      <url>/2026/06/05/my-first-tech-note/</url>
-      
-        <content type="html"><![CDATA[<p>这是一篇技术笔记的示例文章。</p><h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span></span><br><span class="line"></span><br><span class="line">hello_world()</span><br></pre></td></tr></table></figure><h3 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h3><p>后续我会在这里分享更多技术文章，包括但不限于：</p><ul><li>Python 编程技巧</li><li>前端开发经验</li><li>机器学习项目实践</li><li>算法题解</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> tech </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Python </tag>
-            
-            <tag> 入门 </tag>
+            <tag> daily </tag>
             
         </tags>
       
