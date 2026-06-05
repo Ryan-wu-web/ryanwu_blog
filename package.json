@@ -22,7 +22,10 @@
     "url": "https://github.com/Ryan-wu-web/ryanwu_blog/issues"
   },
   "homepage": "https://github.com/Ryan-wu-web/ryanwu_blog#readme",
-  "description": "",
+  "description": "Ryan's personal blog powered by Hexo",
+  "hexo": {
+    "version": "8.1.2"
+  },
   "dependencies": {
     "hexo": "^8.1.2",
     "hexo-cli": "^4.3.2",
