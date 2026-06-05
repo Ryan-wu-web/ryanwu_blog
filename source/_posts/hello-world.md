@@ -2,7 +2,7 @@
 title: Hello World
 subtitle: 欢迎来到 Ryan 的博客
 date: 2026-06-05 12:00:00
-tags: [随笔]
+tags: [notes]
 categories: life
 ---
 
