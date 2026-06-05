@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>Hello World</title>
-      <link href="/2026/06/05/hello-world/"/>
-      <url>/2026/06/05/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> life </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> notes </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>开始记录生活</title>
       <link href="/2026/06/05/my-first-life-post/"/>
       <url>/2026/06/05/my-first-life-post/</url>
@@ -46,6 +21,31 @@
         <tags>
             
             <tag> daily </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2026/06/05/hello-world/"/>
+      <url>/2026/06/05/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> life </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> notes </tag>
             
         </tags>
       
