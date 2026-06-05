@@ -46,7 +46,7 @@
   function initTypewriter() {
     if (initialized) return;
 
-    const titleEl = document.querySelector('#page-site-info');
+    const titleEl = document.querySelector('#site-title');
     if (!titleEl) {
       // Retry after delay if element not ready (PJAX still loading)
       setTimeout(initTypewriter, 500);
@@ -55,9 +55,8 @@
 
     initialized = true;
 
-    // Clear original text and set up container
+    // Clear original text and set up container inside h1#site-title
     titleEl.innerHTML = '';
-    titleEl.style.minHeight = '1.6em';
 
     const textSpan = document.createElement('span');
     textSpan.className = 'typed-page-title';
