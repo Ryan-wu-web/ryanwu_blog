@@ -44,7 +44,7 @@
   // Wait for DOM ready
   function initTypewriter() {
     // Find the page title element - try multiple selectors
-    const titleEl = document.querySelector('.page-title, #site-title, .site-page-title, h1.page-title, .article-title, #page-header-title');
+    const titleEl = document.querySelector('#page-site-info, .page-title, #site-title, .site-page-title, h1.page-title, .article-title, #page-header-title');
     if (!titleEl) {
       // Retry after a short delay if element not found
       setTimeout(initTypewriter, 300);
