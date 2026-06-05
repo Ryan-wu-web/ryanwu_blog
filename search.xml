@@ -29,6 +29,31 @@
     
     
     <entry>
+      <title>开始记录生活</title>
+      <link href="/2026/06/05/my-first-life-post/"/>
+      <url>/2026/06/05/my-first-life-post/</url>
+      
+        <content type="html"><![CDATA[<p>今天开始在这个博客记录生活！</p><h3 id="为什么记录生活？"><a href="#为什么记录生活？" class="headerlink" title="为什么记录生活？"></a>为什么记录生活？</h3><p>生活不只是代码和算法，还有：</p><ul><li>🏃 运动健身</li><li>✈️ 旅行探索</li><li>📷 摄影记录</li><li>📚 阅读思考</li></ul><p>希望这里能成为我回忆的宝库。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> life </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> daily </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>我的第一篇技术笔记</title>
       <link href="/2026/06/05/my-first-tech-note/"/>
       <url>/2026/06/05/my-first-tech-note/</url>
@@ -48,31 +73,6 @@
             <tag> python </tag>
             
             <tag> tutorial </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>开始记录生活</title>
-      <link href="/2026/06/05/my-first-life-post/"/>
-      <url>/2026/06/05/my-first-life-post/</url>
-      
-        <content type="html"><![CDATA[<p>今天开始在这个博客记录生活！</p><h3 id="为什么记录生活？"><a href="#为什么记录生活？" class="headerlink" title="为什么记录生活？"></a>为什么记录生活？</h3><p>生活不只是代码和算法，还有：</p><ul><li>🏃 运动健身</li><li>✈️ 旅行探索</li><li>📷 摄影记录</li><li>📚 阅读思考</li></ul><p>希望这里能成为我回忆的宝库。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> life </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> daily </tag>
             
         </tags>
       

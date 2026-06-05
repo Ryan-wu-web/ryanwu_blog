@@ -1,5 +1,6 @@
 /**
  * Page-level typewriter effect - replaces page title with cycling slogans
+ * Robust version with retry for PJAX pages
  */
 (function() {
   'use strict';
@@ -39,14 +40,22 @@
   const config = pageTypewriters[path];
   if (!config) return;
 
+  // Track if we've already initialized on this element
+  let initialized = false;
+
   function initTypewriter() {
+    if (initialized) return;
+
     const titleEl = document.querySelector('#page-site-info');
     if (!titleEl) {
-      setTimeout(initTypewriter, 300);
+      // Retry after delay if element not ready (PJAX still loading)
+      setTimeout(initTypewriter, 500);
       return;
     }
 
-    // Clear original title text and prepare container
+    initialized = true;
+
+    // Clear original text and set up container
     titleEl.innerHTML = '';
     titleEl.style.minHeight = '1.6em';
 
@@ -106,9 +115,26 @@
     setTimeout(type, 800);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTypewriter);
-  } else {
+  // Try immediately
+  initTypewriter();
+
+  // Also retry on window load (after all resources including PJAX content)
+  window.addEventListener('load', initTypewriter);
+
+  // Retry on PJAX complete if supported
+  document.addEventListener('pjax:complete', function() {
+    initialized = false;
     initTypewriter();
-  }
+  });
+
+  // Fallback: keep retrying for up to 5 seconds
+  let retries = 0;
+  const fallbackInterval = setInterval(function() {
+    if (initialized || retries > 10) {
+      clearInterval(fallbackInterval);
+      return;
+    }
+    initTypewriter();
+    retries++;
+  }, 500);
 })();
