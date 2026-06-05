@@ -21,8 +21,8 @@ menu:
   首页: / || fas fa-home
   关于我: /about/ || fas fa-user
   项目: /projects/ || fas fa-briefcase
-  技术笔记: /categories/tech/ || fas fa-code
-  生活随笔: /categories/life/ || fas fa-coffee
+  技术笔记: /categories/技术/ || fas fa-code
+  生活随笔: /categories/生活/ || fas fa-coffee
   归档: /archives/ || fas fa-archive
   标签: /tags/ || fas fa-tags
 
@@ -784,8 +784,8 @@ theme_color:
 # The user interface setting of category and tag page
 # Choose: index - same as Homepage UI / default - same as archives UI
 # leave it empty or index
-category_ui:
-tag_ui:
+category_ui: index
+tag_ui: index
 
 # Rounded corners for UI elements
 rounded_corners_ui: true
