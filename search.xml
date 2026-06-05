@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2026/06/05/hello-world/"/>
+      <url>/2026/06/05/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 生活 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 随笔 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>开始记录生活</title>
+      <link href="/2026/06/05/my-first-life-post/"/>
+      <url>/2026/06/05/my-first-life-post/</url>
+      
+        <content type="html"><![CDATA[<p>今天开始在这个博客记录生活！</p><h3 id="为什么记录生活？"><a href="#为什么记录生活？" class="headerlink" title="为什么记录生活？"></a>为什么记录生活？</h3><p>生活不只是代码和算法，还有：</p><ul><li>🏃 运动健身</li><li>✈️ 旅行探索</li><li>📷 摄影记录</li><li>📚 阅读思考</li></ul><p>希望这里能成为我回忆的宝库。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 生活 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 日常 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>我的第一篇技术笔记</title>
+      <link href="/2026/06/05/my-first-tech-note/"/>
+      <url>/2026/06/05/my-first-tech-note/</url>
+      
+        <content type="html"><![CDATA[<p>这是一篇技术笔记的示例文章。</p><h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span></span><br><span class="line"></span><br><span class="line">hello_world()</span><br></pre></td></tr></table></figure><h3 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h3><p>后续我会在这里分享更多技术文章，包括但不限于：</p><ul><li>Python 编程技巧</li><li>前端开发经验</li><li>机器学习项目实践</li><li>算法题解</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> 入门 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
+</search>
