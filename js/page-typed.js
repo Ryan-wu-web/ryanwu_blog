@@ -1,11 +1,9 @@
 /**
- * Page-level typewriter effect for category/tag/archive pages
- * Injected via Butterfly inject configuration
+ * Page-level typewriter effect - replaces page title with cycling slogans
  */
 (function() {
   'use strict';
 
-  // Page-specific typewriter configurations
   const pageTypewriters = {
     '/categories/tech/': {
       strings: [
@@ -41,33 +39,35 @@
   const config = pageTypewriters[path];
   if (!config) return;
 
-  // Wait for DOM ready
   function initTypewriter() {
-    // Find the page title element - try multiple selectors
-    const titleEl = document.querySelector('#page-site-info, .page-title, #site-title, .site-page-title, h1.page-title, .article-title, #page-header-title');
+    const titleEl = document.querySelector('#page-site-info');
     if (!titleEl) {
-      // Retry after a short delay if element not found
       setTimeout(initTypewriter, 300);
       return;
     }
 
-    // Create typewriter container
-    const container = document.createElement('div');
-    container.className = 'page-typed-subtitle';
-    container.style.cssText = 'font-size: 1.1rem; margin-top: 12px; opacity: 0.95; min-height: 1.6em; font-weight: 400; letter-spacing: 1px;';
+    // Clear original title text and prepare container
+    titleEl.innerHTML = '';
+    titleEl.style.minHeight = '1.6em';
 
     const textSpan = document.createElement('span');
-    textSpan.className = 'typed-text';
+    textSpan.className = 'typed-page-title';
 
     const cursor = document.createElement('span');
     cursor.className = 'typed-cursor';
     cursor.textContent = '|';
+    cursor.style.cssText = 'animation: typedBlink 1s infinite; font-weight: 100;';
 
-    container.appendChild(textSpan);
-    container.appendChild(cursor);
+    titleEl.appendChild(textSpan);
+    titleEl.appendChild(cursor);
 
-    // Insert after title
-    titleEl.parentNode.insertBefore(container, titleEl.nextSibling);
+    // Add cursor blink animation
+    if (!document.getElementById('typed-cursor-style')) {
+      const style = document.createElement('style');
+      style.id = 'typed-cursor-style';
+      style.textContent = '@keyframes typedBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }';
+      document.head.appendChild(style);
+    }
 
     // Typewriter logic
     let stringIndex = 0;
@@ -92,7 +92,7 @@
       }
 
       if (!isDeleting && charIndex === currentString.length) {
-        typeSpeed = 2500; // Pause before deleting
+        typeSpeed = 2500;
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
@@ -103,25 +103,9 @@
       setTimeout(type, typeSpeed);
     }
 
-    // Start typing after a brief delay
     setTimeout(type, 800);
   }
 
-  // Add cursor blink animation
-  const style = document.createElement('style');
-  style.textContent = `
-    .typed-cursor {
-      animation: typedBlink 1s infinite;
-      font-weight: 100;
-    }
-    @keyframes typedBlink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Initialize when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initTypewriter);
   } else {
