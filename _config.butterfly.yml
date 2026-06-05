@@ -628,8 +628,8 @@ facebook_comments:
 # Twikoo
 # https://github.com/imaegoo/twikoo
 twikoo:
-  envId:
-  region:
+  envId: https://twikoo-vercel-xi.vercel.app
+  region: ap-shanghai
   # Use Twikoo visitor count as the page view count
   visitor: false
   option:
