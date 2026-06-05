@@ -2,7 +2,7 @@
 title: 开始记录生活
 date: 2026-06-05 12:00:00
 tags: [日常]
-categories: 生活
+categories: life
 ---
 
 今天开始在这个博客记录生活！
