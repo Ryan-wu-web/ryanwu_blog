@@ -1,7 +1,7 @@
 ---
 title: 我的第一篇技术笔记
 date: 2026-06-05 12:00:00
-tags: [python, tutorial]
+tags: [python, tutorial, ai, ml]
 categories: tech
 ---
 

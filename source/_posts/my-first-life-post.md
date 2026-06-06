@@ -1,7 +1,7 @@
 ---
 title: 开始记录生活
 date: 2026-06-05 12:00:00
-tags: [daily]
+tags: [daily, travel, reading]
 categories: life
 ---
 
