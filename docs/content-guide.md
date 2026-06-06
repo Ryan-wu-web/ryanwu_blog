@@ -203,12 +203,35 @@ top_img: /projects-bg.jpg
 ...
 ```
 
+### 4.3 修改或删除已有项目
+
+**方式一：用工具（推荐）**
+
+```powershell
+python tools/edit-project.py
+```
+
+按提示选择要修改或删除的项目即可。
+
+**方式二：手动编辑**
+
+直接打开 `source/projects/index.md`，找到对应项目段落：
+
+```markdown
+### 项目名称
+
+**时间：** xxx
+**角色：** xxx
+...
+```
+
+- **修改**：直接编辑文字内容
+- **删除**：删除从 `### 项目名称` 到下一个 `###` 之间的全部内容
+
 **更新后发布：**
 
-```bash
-git add source/projects/
-git commit -m "update: projects page"
-git push origin main
+```powershell
+python tools/publish.py
 ```
 
 ---
@@ -271,8 +294,35 @@ source/
 
 ### 6.2 引用方式
 
+**在文章中引用图片：**
+
 ```markdown
-![描述](/images/posts/2026-06-06-python爬虫/img1.png)
+![图片描述](/images/posts/你的图片.jpg)
+```
+
+**完整操作流程：**
+
+```powershell
+# 1. 把图片复制到博客目录
+copy "C:\Users\你的电脑\Desktop\照片.jpg" "C:\Users\Lenovo\Desktop\ryanwu_blog\source\images\posts\"
+
+# 2. 在文章 md 文件中引用
+# ![照片](/images/posts/照片.jpg)
+
+# 3. 发布到线上
+python tools/publish.py
+```
+
+**设置文章封面图（在 front-matter 中）：**
+
+```markdown
+---
+title: 文章标题
+date: 2026-06-06 12:00:00
+tags: [python]
+categories: tech
+cover: /images/posts/文章封面.jpg
+---
 ```
 
 ---
