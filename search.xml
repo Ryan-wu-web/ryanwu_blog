@@ -4,11 +4,40 @@
   
     
     <entry>
-      <title>Hello World</title>
-      <link href="/2026/06/05/hello-world/"/>
-      <url>/2026/06/05/hello-world/</url>
+      <title>如何用Python写爬虫</title>
+      <link href="/2026/06/06/2026-06-06-ru-he-yong-python-xie-pa-chong/"/>
+      <url>/2026/06/06/2026-06-06-ru-he-yong-python-xie-pa-chong/</url>
       
-        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>爬虫是数据采集的重要工具。本文将带你用Python快速上手爬虫开发。</p><h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests beautifulsoup4</span><br></pre></td></tr></table></figure><h3 id="发送HTTP请求"><a href="#发送HTTP请求" class="headerlink" title="发送HTTP请求"></a>发送HTTP请求</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://example.com&quot;</span></span><br><span class="line">response = requests.get(url)</span><br><span class="line"><span class="built_in">print</span>(response.status_code)</span><br><span class="line"><span class="built_in">print</span>(response.text[:<span class="number">500</span>])</span><br></pre></td></tr></table></figure><h3 id="解析HTML"><a href="#解析HTML" class="headerlink" title="解析HTML"></a>解析HTML</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line">soup = BeautifulSoup(response.text, <span class="string">&#x27;html.parser&#x27;</span>)</span><br><span class="line">titles = soup.find_all(<span class="string">&#x27;h1&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> title <span class="keyword">in</span> titles:</span><br><span class="line">    <span class="built_in">print</span>(title.get_text())</span><br></pre></td></tr></table></figure><h3 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;title&#x27;</span>: <span class="string">&#x27;示例标题&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;url&#x27;</span>: url</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data.json&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(data, f, ensure_ascii=<span class="literal">False</span>, indent=<span class="number">2</span>)</span><br></pre></td></tr></table></figure><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了Python爬虫的基础流程：发送请求 -&gt; 解析页面 -&gt; 提取数据 -&gt; 保存数据。后续可以学习Scrapy框架和反爬策略。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> python </tag>
+            
+            <tag> tutorial </tag>
+            
+            <tag> spider </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>开始记录生活</title>
+      <link href="/2026/06/05/my-first-life-post/"/>
+      <url>/2026/06/05/my-first-life-post/</url>
+      
+        <content type="html"><![CDATA[<p>今天开始在这个博客记录生活！</p><h3 id="为什么记录生活？"><a href="#为什么记录生活？" class="headerlink" title="为什么记录生活？"></a>为什么记录生活？</h3><p>生活不只是代码和算法，还有：</p><ul><li>🏃 运动健身</li><li>✈️ 旅行探索</li><li>📷 摄影记录</li><li>📚 阅读思考</li></ul><p>希望这里能成为我回忆的宝库。</p>]]></content>
       
       
       <categories>
@@ -20,7 +49,7 @@
       
         <tags>
             
-            <tag> notes </tag>
+            <tag> daily </tag>
             
         </tags>
       
@@ -56,11 +85,11 @@
     
     
     <entry>
-      <title>开始记录生活</title>
-      <link href="/2026/06/05/my-first-life-post/"/>
-      <url>/2026/06/05/my-first-life-post/</url>
+      <title>Hello World</title>
+      <link href="/2026/06/05/hello-world/"/>
+      <url>/2026/06/05/hello-world/</url>
       
-        <content type="html"><![CDATA[<p>今天开始在这个博客记录生活！</p><h3 id="为什么记录生活？"><a href="#为什么记录生活？" class="headerlink" title="为什么记录生活？"></a>为什么记录生活？</h3><p>生活不只是代码和算法，还有：</p><ul><li>🏃 运动健身</li><li>✈️ 旅行探索</li><li>📷 摄影记录</li><li>📚 阅读思考</li></ul><p>希望这里能成为我回忆的宝库。</p>]]></content>
+        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
       
       
       <categories>
@@ -72,7 +101,7 @@
       
         <tags>
             
-            <tag> daily </tag>
+            <tag> notes </tag>
             
         </tags>
       
