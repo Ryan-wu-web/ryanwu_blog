@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>如何在文章中插入图片</title>
+      <link href="/2026/06/06/2026-06-06-ru-he-zai-wen-zhang-zhong-cha-ru-tu-pian/"/>
+      <url>/2026/06/06/2026-06-06-ru-he-zai-wen-zhang-zhong-cha-ru-tu-pian/</url>
+      
+        <content type="html"><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在博客文章中插入图片非常简单，只需要两步：上传图片 + 引用图片。</p><h2 id="第一步：上传图片"><a href="#第一步：上传图片" class="headerlink" title="第一步：上传图片"></a>第一步：上传图片</h2><p>把图片文件放到这个目录：</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source/images/posts/</span><br></pre></td></tr></table></figure><p>例如：</p><ul><li><code>source/images/posts/my-photo.jpg</code></li><li><code>source/images/posts/screenshot.png</code></li><li><code>source/images/posts/diagram.svg</code></li></ul><h2 id="第二步：在文章中引用"><a href="#第二步：在文章中引用" class="headerlink" title="第二步：在文章中引用"></a>第二步：在文章中引用</h2><p>使用 Markdown 图片语法：</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">![<span class="string">图片说明</span>](<span class="link">/images/posts/my-photo.jpg</span>)</span><br></pre></td></tr></table></figure><h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>下面是一张示例图片：</p><p><img src="/images/posts/example-cover.jpg" alt="示例封面图"></p><h2 id="完整流程总结"><a href="#完整流程总结" class="headerlink" title="完整流程总结"></a>完整流程总结</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 复制图片到博客目录</span></span><br><span class="line"><span class="built_in">copy</span> <span class="string">&quot;C:\Users\你的电脑\Desktop\照片.jpg&quot;</span> <span class="string">&quot;C:\Users\Lenovo\Desktop\ryanwu_blog\source\images\posts\&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 在文章中引用</span></span><br><span class="line"><span class="comment"># ![照片](/images/posts/照片.jpg)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3. 发布</span></span><br><span class="line">python tools/publish.py</span><br></pre></td></tr></table></figure><h2 id="小贴士"><a href="#小贴士" class="headerlink" title="小贴士"></a>小贴士</h2><ul><li>图片格式支持：jpg, png, gif, svg</li><li>建议图片宽度不超过 1200px，避免加载过慢</li><li>文章封面图可以在 front-matter 中设置：<code>cover: /images/posts/xxx.jpg</code></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> tutorial </tag>
+            
+            <tag> hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何用Python写爬虫</title>
       <link href="/2026/06/06/2026-06-06-ru-he-yong-python-xie-pa-chong/"/>
       <url>/2026/06/06/2026-06-06-ru-he-yong-python-xie-pa-chong/</url>
@@ -25,6 +52,31 @@
             <tag> tutorial </tag>
             
             <tag> spider </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2026/06/05/hello-world/"/>
+      <url>/2026/06/05/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> life </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> notes </tag>
             
         </tags>
       
@@ -77,31 +129,6 @@
             <tag> python </tag>
             
             <tag> tutorial </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Hello World</title>
-      <link href="/2026/06/05/hello-world/"/>
-      <url>/2026/06/05/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>欢迎来到我的个人博客！</p><p>这里是我记录技术学习和生活点滴的地方。</p><h3 id="博客规划"><a href="#博客规划" class="headerlink" title="博客规划"></a>博客规划</h3><ul><li><strong>技术笔记</strong>：分享编程、算法、AI 等方面的学习心得</li><li><strong>项目展示</strong>：展示我参与或独立完成的项目</li><li><strong>生活随笔</strong>：记录旅行、运动等生活趣事</li></ul><p>希望这个博客能帮助到有需要的人，也欢迎交流讨论！</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> life </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> notes </tag>
             
         </tags>
       
