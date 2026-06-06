@@ -1,7 +1,7 @@
 ---
 title: 如何用Python写爬虫
 date: 2026-06-06 12:00:00
-tags: [python, tutorial, spider]
+tags: [python, tutorial, spider, backend, crawling]
 categories: tech
 description: 一篇面向初学者的Python爬虫入门教程，包含requests和BeautifulSoup的基础用法
 ---
