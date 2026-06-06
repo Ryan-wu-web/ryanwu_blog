@@ -4,6 +4,167 @@
   
     
     <entry>
+      <title>工程师的日常工具链</title>
+      <link href="/2026/06/06/2026-06-06-gong-cheng-shi-de-ri-chang/"/>
+      <url>/2026/06/06/2026-06-06-gong-cheng-shi-de-ri-chang/</url>
+      
+        <content type="html"><![CDATA[<h2 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h2><p>Git 是团队协作的基础，合理使用分支策略：</p><ul><li>main：生产环境代码</li><li>develop：开发分支</li><li>feature&#x2F;*：功能分支</li></ul><h2 id="容器化"><a href="#容器化" class="headerlink" title="容器化"></a>容器化</h2><p>Docker 让开发环境统一，避免”在我电脑上能跑”的问题。</p><h2 id="命令行效率"><a href="#命令行效率" class="headerlink" title="命令行效率"></a>命令行效率</h2><ul><li>使用 zsh + oh-my-zsh 增强终端体验</li><li>alias 简化常用命令</li><li>tmux 会话管理保持工作环境</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+            <tag> docker </tag>
+            
+            <tag> linux </tag>
+            
+            <tag> tools </tag>
+            
+            <tag> devops </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>AI 大模型应用实践</title>
+      <link href="/2026/06/06/2026-06-06-ai-da-mo-xing-ying-yong-shi-jian/"/>
+      <url>/2026/06/06/2026-06-06-ai-da-mo-xing-ying-yong-shi-jian/</url>
+      
+        <content type="html"><![CDATA[<h2 id="模型选择"><a href="#模型选择" class="headerlink" title="模型选择"></a>模型选择</h2><ul><li>OpenAI GPT-4o：通用能力强，适合对话场景</li><li>智谱 AI GLM-4V：中文理解优秀，支持视觉</li><li>腾讯混元：国内场景适配好</li></ul><h2 id="Prompt-工程"><a href="#Prompt-工程" class="headerlink" title="Prompt 工程"></a>Prompt 工程</h2><ul><li>使用角色设定提升回答质量</li><li>通过 Few-shot 示例引导输出格式</li><li>温度参数调节创造性 vs 准确性</li></ul><h2 id="流式输出"><a href="#流式输出" class="headerlink" title="流式输出"></a>流式输出</h2><p>使用 SSE (Server-Sent Events) 实现打字机效果，提升用户体验。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ai </tag>
+            
+            <tag> openai </tag>
+            
+            <tag> gpt </tag>
+            
+            <tag> prompt-engineering </tag>
+            
+            <tag> vision </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Android 开发入门记录</title>
+      <link href="/2026/06/06/2026-06-06-android-kai-fa-ru-men/"/>
+      <url>/2026/06/06/2026-06-06-android-kai-fa-ru-men/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Kotlin-vs-Java"><a href="#Kotlin-vs-Java" class="headerlink" title="Kotlin vs Java"></a>Kotlin vs Java</h2><p>Kotlin 的语法更加简洁，空安全机制减少了大量 NPE 问题。</p><h2 id="UI-开发"><a href="#UI-开发" class="headerlink" title="UI 开发"></a>UI 开发</h2><ul><li>RecyclerView 实现列表展示</li><li>ViewPager2 + TabLayout 实现页面切换</li><li>ConstraintLayout 构建复杂布局</li></ul><h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul><li>使用 OpenGL ES 实现高性能图像渲染</li><li>图片加载使用 Glide 进行缓存管理</li><li>避免内存泄漏，合理使用生命周期</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> android </tag>
+            
+            <tag> kotlin </tag>
+            
+            <tag> mobile </tag>
+            
+            <tag> opengl </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>SpringBoot 后端开发笔记</title>
+      <link href="/2026/06/06/2026-06-06-springboot-hou-duan-kai-fa-bi-ji/"/>
+      <url>/2026/06/06/2026-06-06-springboot-hou-duan-kai-fa-bi-ji/</url>
+      
+        <content type="html"><![CDATA[<h2 id="分层架构设计"><a href="#分层架构设计" class="headerlink" title="分层架构设计"></a>分层架构设计</h2><p>Controller -&gt; Service -&gt; Mapper -&gt; Database 的分层结构清晰明了。</p><h2 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h2><ul><li><code>@RestController</code> 快速构建 RESTful API</li><li><code>@MapperScan</code> 自动扫描 MyBatis 接口</li><li><code>@Cacheable</code> 配合 Redis 实现缓存</li></ul><h2 id="数据库优化"><a href="#数据库优化" class="headerlink" title="数据库优化"></a>数据库优化</h2><ul><li>合理使用索引提升查询效率</li><li>使用连接池管理数据库连接</li><li>分页查询避免大数据量一次性加载</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> backend </tag>
+            
+            <tag> springboot </tag>
+            
+            <tag> java </tag>
+            
+            <tag> mysql </tag>
+            
+            <tag> redis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Vue3 项目开发心得</title>
+      <link href="/2026/06/06/2026-06-06-vue3-xiang-mu-kai-fa-xin-de/"/>
+      <url>/2026/06/06/2026-06-06-vue3-xiang-mu-kai-fa-xin-de/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Composition-API-的优势"><a href="#Composition-API-的优势" class="headerlink" title="Composition API 的优势"></a>Composition API 的优势</h2><p>Vue3 的 Composition API 让代码逻辑更加清晰，尤其在大中型项目中，比 Options API 更易于维护。</p><h2 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h2><p>Pinia 相比 Vuex 更加轻量，TypeScript 支持也更好。</p><h2 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h2><ul><li>合理使用 <code>v-memo</code> 和 <code>shallowRef</code></li><li>组件懒加载减少首屏时间</li><li>使用 <code>defineAsyncComponent</code> 实现异步组件</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> frontend </tag>
+            
+            <tag> vue </tag>
+            
+            <tag> javascript </tag>
+            
+            <tag> typescript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何在文章中插入图片</title>
       <link href="/2026/06/06/2026-06-06-ru-he-zai-wen-zhang-zhong-cha-ru-tu-pian/"/>
       <url>/2026/06/06/2026-06-06-ru-he-zai-wen-zhang-zhong-cha-ru-tu-pian/</url>
@@ -23,6 +184,10 @@
             <tag> tutorial </tag>
             
             <tag> hexo </tag>
+            
+            <tag> frontend </tag>
+            
+            <tag> blog </tag>
             
         </tags>
       
@@ -47,11 +212,46 @@
       
         <tags>
             
+            <tag> python </tag>
+            
             <tag> tutorial </tag>
+            
+            <tag> spider </tag>
+            
+            <tag> backend </tag>
+            
+            <tag> crawling </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>我的第一篇技术笔记</title>
+      <link href="/2026/06/05/my-first-tech-note/"/>
+      <url>/2026/06/05/my-first-tech-note/</url>
+      
+        <content type="html"><![CDATA[<p>这是一篇技术笔记的示例文章。</p><h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span></span><br><span class="line"></span><br><span class="line">hello_world()</span><br></pre></td></tr></table></figure><h3 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h3><p>后续我会在这里分享更多技术文章，包括但不限于：</p><ul><li>Python 编程技巧</li><li>前端开发经验</li><li>机器学习项目实践</li><li>算法题解</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ai </tag>
             
             <tag> python </tag>
             
-            <tag> spider </tag>
+            <tag> tutorial </tag>
+            
+            <tag> ml </tag>
             
         </tags>
       
@@ -78,6 +278,10 @@
             
             <tag> daily </tag>
             
+            <tag> travel </tag>
+            
+            <tag> reading </tag>
+            
         </tags>
       
     </entry>
@@ -101,34 +305,9 @@
       
         <tags>
             
+            <tag> daily </tag>
+            
             <tag> notes </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>我的第一篇技术笔记</title>
-      <link href="/2026/06/05/my-first-tech-note/"/>
-      <url>/2026/06/05/my-first-tech-note/</url>
-      
-        <content type="html"><![CDATA[<p>这是一篇技术笔记的示例文章。</p><h3 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Hello, World!&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;success&quot;</span></span><br><span class="line"></span><br><span class="line">hello_world()</span><br></pre></td></tr></table></figure><h3 id="后续计划"><a href="#后续计划" class="headerlink" title="后续计划"></a>后续计划</h3><p>后续我会在这里分享更多技术文章，包括但不限于：</p><ul><li>Python 编程技巧</li><li>前端开发经验</li><li>机器学习项目实践</li><li>算法题解</li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> tech </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> tutorial </tag>
-            
-            <tag> python </tag>
             
         </tags>
       
