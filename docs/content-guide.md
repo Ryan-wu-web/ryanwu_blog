@@ -1,32 +1,62 @@
-# Ryan's Blog - 内容维护规范
+# Ryan's Blog - 博客内容维护规范
 
-> 本文档是博客的长期内容维护指南，确保所有内容格式统一、发布流程标准化。
-
----
-
-## 一、博客内容结构总览
-
-```
-source/
-├── _posts/                    # 文章目录（技术笔记 + 生活随笔）
-│   ├── 2026-06-06-文章标题.md
-│   └── ...
-├── about/
-│   └── index.md               # 关于我页面
-├── projects/
-│   └── index.md               # 项目展示页面
-├── categories/
-│   └── index.md               # 分类汇总页（自动生成，勿动）
-├── tags/
-│   └── index.md               # 标签汇总页（自动生成，勿动）
-└── images/                    # 文章配图存放（可选）
-```
+> 本文档是 Ryan 个人博客的完整维护指南，涵盖内容发布、页面更新、图片管理、工具使用等全部操作。
+>
+> **最后更新：** 2026-06-06
 
 ---
 
-## 二、文章发布规范（技术笔记 & 生活随笔）
+## 目录
 
-### 2.1 文件命名规范
+1. [项目结构](#一项目结构)
+2. [文章发布规范](#二文章发布规范)
+3. [图片上传指南](#三图片上传指南)
+4. [项目页面管理](#四项目页面管理)
+5. [关于我页面更新](#五关于我页面更新)
+6. [工具使用指南](#六工具使用指南)
+7. [发布流程](#七发布流程)
+8. [Markdown 速查](#八markdown-速查)
+
+---
+
+## 一、项目结构
+
+```
+ryanwu_blog/
+├── docs/
+│   └── content-guide.md          # 本规范文档
+├── source/
+│   ├── _posts/                   # 文章目录（技术笔记 + 生活随笔）
+│   │   ├── 2026-06-06-文章标题.md
+│   │   └── ...
+│   ├── about/
+│   │   └── index.md              # 关于我页面
+│   ├── projects/
+│   │   └── index.md              # 项目展示页面
+│   ├── categories/
+│   │   └── index.md              # 分类汇总页（自动生成，勿动）
+│   ├── tags/
+│   │   └── index.md              # 标签汇总页（自动生成，勿动）
+│   ├── images/
+│   │   ├── posts/                # 文章配图
+│   │   └── projects/             # 项目封面图
+│   └── js/
+│       └── page-typed.js         # 页面打字机效果（勿动）
+├── tools/                        # 内容创建工具
+│   ├── new-post.py               # 创建新文章
+│   ├── new-project.py            # 添加新项目
+│   ├── edit-project.py           # 修改/删除项目
+│   └── publish.py                # 一键发布
+├── _config.yml                   # Hexo 主配置（勿动）
+├── _config.butterfly.yml         # 主题配置（勿动）
+└── package.json                  # 依赖（勿动）
+```
+
+---
+
+## 二、文章发布规范
+
+### 2.1 文件命名
 
 ```
 YYYY-MM-DD-文章标题.md
@@ -34,92 +64,221 @@ YYYY-MM-DD-文章标题.md
 
 示例：
 - `2026-06-06-python爬虫入门.md`
-- `2026-06-10-端午节杭州旅行.md`
+- `2026-06-10-杭州西湖游记.md`
 
 ### 2.2 Front-matter 模板
 
-**技术笔记模板：**
+**技术笔记：**
 
 ```markdown
 ---
 title: 文章标题
 date: 2026-06-06 14:30:00
-tags: [python, 爬虫, 教程]      # 英文标签，小写
-categories: tech                # 固定为 tech
-description: 这是一篇关于...的文章   # 可选：文章摘要，SEO用
-cover: /images/文章封面.jpg      # 可选：文章封面图
+tags: [python, 爬虫, tutorial]
+categories: tech
+description: 文章摘要，用于SEO和列表展示
+cover: /images/posts/封面图.jpg
 ---
 
-正文内容...
+## 引言
+
+简述背景...
+
+## 正文
+
+主要内容...
+
+## 总结
+
+总结要点...
 ```
 
-**生活随笔模板：**
+**生活随笔：**
 
 ```markdown
 ---
 title: 文章标题
 date: 2026-06-06 14:30:00
-tags: [旅行, 杭州]              # 英文标签，小写
-categories: life                # 固定为 life
-description:  optional
-cover: /images/文章封面.jpg      # 可选
+tags: [travel, daily]
+categories: life
+description: 文章摘要
+cover: /images/posts/封面图.jpg
 ---
 
-正文内容...
+正文...
 ```
 
-### 2.3 标签（tags）命名规范
+### 2.3 Front-matter 字段说明
 
-| 类别 | 推荐标签 | 说明 |
-|------|---------|------|
-| 技术类 | python, javascript, vue, react, ml, dl, algorithm, linux, git, docker, database, frontend, backend | 技术栈 |
-| 项目类 | project, internship, competition, bootcamp, open-source | 项目经历 |
-| 生活类 | travel, sports, photography, reading, daily, food, movie | 生活记录 |
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `title` | 是 | 文章标题 |
+| `date` | 是 | 发布日期时间 |
+| `categories` | 是 | `tech`（技术笔记）或 `life`（生活随笔） |
+| `tags` | 是 | 英文标签，多个用逗号分隔 |
+| `description` | 否 | 文章摘要，SEO用 |
+| `cover` | 否 | 封面图路径 |
 
-> ⚠️ **标签统一使用英文小写**，避免 GitHub Pages 中文路径编码问题。
+### 2.4 标签命名规范
 
-### 2.4 发布流程
+| 类别 | 推荐标签 |
+|------|---------|
+| 技术 | python, javascript, vue, react, ml, algorithm, linux, git, docker, database |
+| 项目 | project, internship, competition, bootcamp |
+| 生活 | travel, sports, photography, reading, daily, food, movie |
 
-**方法一：手动创建（推荐）**
+> **规则：标签统一使用英文小写**，避免 GitHub Pages 中文路径编码问题。
 
-1. 在 `source/_posts/` 下新建 `.md` 文件
-2. 按照模板填写 Front-matter
-3. 写 Markdown 正文
-4. 保存
+### 2.5 创建文章的三种方式
 
-**方法二：命令行创建**
+**方式一：使用工具（推荐）**
 
-```bash
+```powershell
 cd C:\Users\Lenovo\Desktop\ryanwu_blog
+python tools/new-post.py
+```
+
+按提示回答问题即可自动生成规范文件。
+
+**方式二：复制模板**
+
+1. 复制 `scaffolds/post.md`（技术笔记）或 `scaffolds/life.md`（生活随笔）
+2. 粘贴到 `source/_posts/`
+3. 重命名为 `YYYY-MM-DD-标题.md`
+4. 修改内容
+
+**方式三：命令行创建**
+
+```powershell
 npx hexo new "文章标题"
 ```
 
-这会生成 `source/_posts/文章标题.md`，然后你编辑内容即可。
+---
 
-**发布到线上：**
+## 三、图片上传指南
 
-```bash
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-git add source/_posts/
-git commit -m "post: add 文章标题"
-git push origin main
+### 3.1 存放位置
+
+文章配图统一放在：
+
+```
+source/images/posts/
 ```
 
-等待 1-2 分钟，网站自动更新。
+### 3.2 上传步骤
+
+**第一步：复制图片到博客目录**
+
+```powershell
+copy "C:\Users\你的电脑\Desktop\照片.jpg" "C:\Users\Lenovo\Desktop\ryanwu_blog\source\images\posts\"
+```
+
+**第二步：在文章中引用**
+
+```markdown
+![图片描述](/images/posts/照片.jpg)
+```
+
+**第三步：发布**
+
+```powershell
+python tools/publish.py
+```
+
+### 3.3 设置文章封面图
+
+在文章 Front-matter 中添加：
+
+```markdown
+---
+title: 文章标题
+date: 2026-06-06 12:00:00
+tags: [python]
+categories: tech
+cover: /images/posts/文章封面.jpg
+---
+```
+
+### 3.4 图片规范
+
+- **格式**：jpg, png, gif, svg
+- **建议宽度**：不超过 1200px（避免加载过慢）
+- **命名**：使用英文或数字，避免中文和特殊字符
 
 ---
 
-## 三、关于我页面更新规范
+## 四、项目页面管理
 
-### 3.1 文件位置
+项目页面文件：`source/projects/index.md`
 
-`source/about/index.md`
+### 4.1 添加新项目
 
-### 3.2 更新方式
+**使用工具（推荐）：**
 
-直接编辑该文件，修改 Markdown 内容即可。不需要改 Front-matter。
+```powershell
+python tools/new-project.py
+```
 
-### 3.3 推荐内容结构
+按提示输入项目信息即可自动追加到页面。
+
+**手动添加格式：**
+
+```markdown
+### 项目名称
+
+**时间：** 2025/09 - 2025/11  
+**角色：** 全栈工程师  
+**技术栈：** Next.js, TailwindCSS, OpenAI
+
+一句话项目简介...
+
+**核心亮点：**
+- 亮点一
+- 亮点二
+- 亮点三
+```
+
+### 4.2 修改已有项目
+
+**使用工具：**
+
+```powershell
+python tools/edit-project.py
+```
+
+选择 "修改项目"，按提示操作。
+
+**手动修改：**
+
+1. 打开 `source/projects/index.md`
+2. 找到对应项目段落（从 `### 项目名称` 开始）
+3. 直接编辑文字内容
+
+### 4.3 删除项目
+
+**使用工具：**
+
+```powershell
+python tools/edit-project.py
+```
+
+选择 "删除项目"，输入项目编号即可。
+
+**手动删除：**
+
+1. 打开 `source/projects/index.md`
+2. 找到要删除的项目段落（从 `### 项目名称` 到下一个 `###` 之间）
+3. 删除整个段落
+
+---
+
+## 五、关于我页面更新
+
+文件位置：`source/about/index.md`
+
+**更新方式：** 直接用编辑器打开文件，修改 Markdown 内容即可。
+
+**推荐结构：**
 
 ```markdown
 ---
@@ -129,114 +288,160 @@ aside: true
 top_img: /about-bg.jpg
 ---
 
-## 👋 你好，我是 Ryan
+## 你好，我是 Ryan
 
-一段个人简介...
+个人简介...
 
-### 🎓 教育背景
+### 教育背景
 
-- 学校 | 专业 | 时间
+| 学校 | 专业 | 学历 | 时间 |
+|------|------|------|------|
+| 南京邮电大学 | 通信工程 | 本科 | 2024/09 - 2028/06 |
 
-### 💼 工作经历
+### 技能栈
 
-- 公司 | 岗位 | 时间 | 简介
+**前端开发**
+- 框架：React, Vue 3
+- ...
 
-### 🏆 比赛与荣誉
-
-- 比赛名称 | 奖项 | 时间
-
-### 🛠️ 技能栈
-
-- **语言**：Python, JavaScript...
-- **框架**：Vue, React...
-- **工具**：Git, Docker...
-
-### 📫 联系方式
-
+**联系方式**
 - GitHub: [Ryan-wu-web](https://github.com/Ryan-wu-web)
-- Email: your-email@example.com
+- Email: 3047967569@qq.com
 ```
 
-**更新后发布：**
+---
 
-```bash
-git add source/about/
-git commit -m "update: about page"
+## 六、工具使用指南
+
+### 6.1 工具清单
+
+| 工具 | 功能 | 命令 |
+|------|------|------|
+| `new-post.py` | 交互式创建文章 | `python tools/new-post.py` |
+| `new-project.py` | 交互式添加项目 | `python tools/new-project.py` |
+| `edit-project.py` | 修改/删除项目 | `python tools/edit-project.py` |
+| `publish.py` | 一键发布到线上 | `python tools/publish.py` |
+
+### 6.2 使用前提
+
+所有工具需要在 **PowerShell** 中运行，先进入博客目录：
+
+```powershell
+cd C:\Users\Lenovo\Desktop\ryanwu_blog
+```
+
+### 6.3 new-post.py 使用示例
+
+```
+==================================================
+创建新文章
+==================================================
+
+文章类型:
+  1. 技术笔记
+  2. 生活随笔
+请选择 (输入数字): 1
+
+文章标题: Python爬虫入门实战
+
+发布日期 [2026-06-06]:
+
+标签设置
+常用技术标签: python, javascript, vue...
+标签: python, 爬虫, tutorial
+
+文章描述/摘要（可选）:
+
+==================================================
+文章已创建: source/_posts/2026-06-06-python-pa-ru-men-shi-zhan.md
+==================================================
+
+接下来:
+  1. 用编辑器打开文件继续写作
+  2. 写完后执行: python tools/publish.py
+```
+
+### 6.4 publish.py 使用示例
+
+```
+==================================================
+一键发布到线上
+==================================================
+
+检测到的改动:
+ M source/_posts/...
+
+请选择提交类型:
+  1. post: 发布新文章
+  2. update: 更新页面
+  3. style: 样式/图片调整
+  4. fix: 修复内容
+  5. 自定义
+
+选择 [5]: 1
+
+提交信息 [post: add new article]:
+
+确认发布? (y/n) [y]: y
+
+==================================================
+发布成功！
+==================================================
+
+等待 1-2 分钟后，访问 https://ryanwu.cn 查看更新
+```
+
+---
+
+## 七、发布流程
+
+### 7.1 发布文章
+
+```powershell
+cd C:\Users\Lenovo\Desktop\ryanwu_blog
+
+# 方式一：使用工具
+python tools/new-post.py      # 创建文章
+# ... 用编辑器写作 ...
+python tools/publish.py        # 发布
+
+# 方式二：手动命令
+python tools/new-post.py
+git add source/_posts/
+git commit -m "post: add 文章标题"
 git push origin main
 ```
 
----
-
-## 四、项目页面更新规范
-
-### 4.1 文件位置
-
-`source/projects/index.md`
-
-### 4.2 项目卡片格式（推荐）
-
-```markdown
----
-title: 项目
-aside: false
-top_img: /projects-bg.jpg
----
-
-## 💼 我的项目
-
-### 项目名称 1
-
-![项目封面](/images/project1-cover.jpg)
-
-**简介：** 一句话描述项目做什么
-
-**技术栈：** Python · Flask · MySQL
-
-**时间：** 2026.03 - 2026.06
-
-**链接：** [GitHub](https://github.com/xxx) · [在线演示](https://xxx.com)
-
----
-
-### 项目名称 2
-
-...
-```
-
-### 4.3 修改或删除已有项目
-
-**方式一：用工具（推荐）**
+### 7.2 更新页面（关于我/项目）
 
 ```powershell
-python tools/edit-project.py
-```
+cd C:\Users\Lenovo\Desktop\ryanwu_blog
 
-按提示选择要修改或删除的项目即可。
-
-**方式二：手动编辑**
-
-直接打开 `source/projects/index.md`，找到对应项目段落：
-
-```markdown
-### 项目名称
-
-**时间：** xxx
-**角色：** xxx
-...
-```
-
-- **修改**：直接编辑文字内容
-- **删除**：删除从 `### 项目名称` 到下一个 `###` 之间的全部内容
-
-**更新后发布：**
-
-```powershell
+# 修改文件后
 python tools/publish.py
+
+# 或手动
+# git add source/about/
+# git commit -m "update: about page"
+# git push origin main
 ```
+
+### 7.3 本地预览
+
+写文章时想看效果：
+
+```powershell
+cd C:\Users\Lenovo\Desktop\ryanwu_blog
+npx hexo server
+```
+
+浏览器访问 `http://localhost:4000`
+
+按 `Ctrl+C` 停止预览。
 
 ---
 
-## 五、常用 Markdown 语法速查
+## 八、Markdown 速查
 
 ```markdown
 # 一级标题
@@ -262,87 +467,20 @@ print("hello")
 
 [链接文字](https://example.com)
 
-![图片描述](/images/xxx.jpg)
+![图片描述](/images/posts/xxx.jpg)
 
 > 引用文字
 
 | 表头 | 表头 |
 |------|------|
 | 内容 | 内容 |
+
+---  # 分割线
 ```
 
 ---
 
-## 六、图片管理规范
-
-### 6.1 存放位置
-
-文章配图建议放在 `source/images/` 目录下：
-
-```
-source/
-├── images/
-│   ├── posts/           # 文章配图
-│   │   ├── 2026-06-06-python爬虫/
-│   │   │   ├── img1.png
-│   │   │   └── img2.png
-│   │   └── ...
-│   └── projects/        # 项目封面图
-│       ├── project1-cover.jpg
-│       └── ...
-```
-
-### 6.2 引用方式
-
-**在文章中引用图片：**
-
-```markdown
-![图片描述](/images/posts/你的图片.jpg)
-```
-
-**完整操作流程：**
-
-```powershell
-# 1. 把图片复制到博客目录
-copy "C:\Users\你的电脑\Desktop\照片.jpg" "C:\Users\Lenovo\Desktop\ryanwu_blog\source\images\posts\"
-
-# 2. 在文章 md 文件中引用
-# ![照片](/images/posts/照片.jpg)
-
-# 3. 发布到线上
-python tools/publish.py
-```
-
-**设置文章封面图（在 front-matter 中）：**
-
-```markdown
----
-title: 文章标题
-date: 2026-06-06 12:00:00
-tags: [python]
-categories: tech
-cover: /images/posts/文章封面.jpg
----
-```
-
----
-
-## 七、本地预览（可选）
-
-写文章时想先看看效果：
-
-```bash
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-npx hexo server
-```
-
-浏览器访问 `http://localhost:4000`
-
-按 `Ctrl+C` 停止预览。
-
----
-
-## 八、Git 提交信息规范
+## 附录：Git 提交信息规范
 
 | 类型 | 用途 | 示例 |
 |------|------|------|
@@ -350,3 +488,8 @@ npx hexo server
 | `update:` | 更新页面内容 | `update: about page` |
 | `fix:` | 修复内容错误 | `fix: 修正项目链接` |
 | `style:` | 样式/图片调整 | `style: 更换项目封面图` |
+| `tools:` | 工具更新 | `tools: add edit-project tool` |
+
+---
+
+> **提示：** 本规范文档会随博客迭代持续更新，如有疑问随时查阅或询问。
