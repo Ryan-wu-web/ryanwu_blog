@@ -85,3 +85,18 @@ top_img: /projects-bg.jpg
 - 设计MySQL数据模型存储商品价格历史，使用ECharts可视化展示价格趋势与降价提醒
 - 基于Flask搭建轻量级RESTful API服务，支持商品搜索、跨平台比价、历史趋势查询
 - 集成通用物体识别API实现拍照识物功能，结合OCR提取商品信息，降低用户搜索门槛
+
+### Smart Price AI拍照识物购物助手
+
+**时间：** 2026/05 - 2026/06  
+**角色：** 全栈工程师  
+**技术栈：** Flutter FastAPI Python 火山引擎Doubao VLM SSE SQLite dHash
+
+面向C端消费者的AI拍照识物购物助手，基于Flutter与FastAPI构建，集成大模型视觉能力实现商品识别、智能导购与跨平台比价。
+
+**核心亮点：**
+- 基于Flutter构建跨端App，实现拍照识物、多目标气泡标签标注、AI导购聊天等核心功能，使用CustomPainter完成扫描线与连接线动画
+- 基于FastAPI搭建后端服务，设计AI任务编排Pipeline，集成火山引擎Doubao VLM实现图像识别与LLM对话生成
+- 实现SSE流式AI对话，后端StreamingResponse配合前端逐字渲染，支持决策卡片动态生成
+- 基于dHash感知哈希实现图片识别缓存，二次识别响应<0.1秒，较首次调用提升99%
+- 设计JSON Schema约束与容错回退机制，确保大模型稳定输出结构化数据

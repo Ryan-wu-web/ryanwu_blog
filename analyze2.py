@@ -1,0 +1,5 @@
+html = open('public/categories/tech/index.html', 'r', encoding='utf-8').read()
+idx = html.find('id="page-site-info"')
+print('Found at:', idx)
+print('Context:')
+print(html[max(0,idx-200):idx+300])
