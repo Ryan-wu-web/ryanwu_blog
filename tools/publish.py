@@ -16,18 +16,42 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def run_cmd(cmd, description):
     print("\n[%s]..." % description)
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=BASE_DIR)
-    if result.returncode != 0:
-        print("失败: %s" % result.stderr)
+    try:
+        result = subprocess.run(
+            cmd, 
+            shell=True, 
+            capture_output=True, 
+            text=True, 
+            cwd=BASE_DIR,
+            encoding='utf-8',
+            errors='replace'
+        )
+        if result.returncode != 0:
+            err = result.stderr if result.stderr else "未知错误"
+            print("失败: %s" % err)
+            return False
+        print("完成")
+        if result.stdout and result.stdout.strip():
+            print(result.stdout.strip())
+        return True
+    except Exception as e:
+        print("异常: %s" % str(e))
         return False
-    print("完成")
-    if result.stdout.strip():
-        print(result.stdout.strip())
-    return True
 
 def get_git_status():
-    result = subprocess.run("git status --short", shell=True, capture_output=True, text=True, cwd=BASE_DIR)
-    return result.stdout.strip()
+    try:
+        result = subprocess.run(
+            "git status --short", 
+            shell=True, 
+            capture_output=True, 
+            text=True, 
+            cwd=BASE_DIR,
+            encoding='utf-8',
+            errors='replace'
+        )
+        return result.stdout.strip() if result.stdout else ""
+    except:
+        return ""
 
 def publish():
     print("=" * 50)
