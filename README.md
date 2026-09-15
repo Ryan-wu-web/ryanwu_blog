@@ -15,7 +15,7 @@
   <a href="https://ryanwu.cn"><img src="https://img.shields.io/badge/Website-ryanwu.cn-2563eb?style=flat-square&logo=googlechrome&logoColor=white" alt="Website"></a>
   <a href="https://github.com/Ryan-wu-web/ryanwu_blog/actions/workflows/pages.yml"><img src="https://github.com/Ryan-wu-web/ryanwu_blog/actions/workflows/pages.yml/badge.svg" alt="Pages"></a>
   <img src="https://img.shields.io/badge/Hexo-8.1.2-0e83cd?style=flat-square&logo=hexo&logoColor=white" alt="Hexo 8.1.2">
-  <img src="https://img.shields.io/badge/Butterfly-5.5.4-f472b6?style=flat-square" alt="Butterfly 5.5.4">
+  <img src="https://img.shields.io/badge/Butterfly-5.7.0-a8835b?style=flat-square" alt="Butterfly 5.7.0">
   <img src="https://img.shields.io/badge/Node.js-20-339933?style=flat-square&logo=nodedotjs&logoColor=white" alt="Node.js 20">
   <a href="https://github.com/Ryan-wu-web/ryanwu_blog/commits/main"><img src="https://img.shields.io/github/last-commit/Ryan-wu-web/ryanwu_blog?style=flat-square&color=8b5cf6" alt="Last commit"></a>
 </p>
@@ -109,10 +109,10 @@ cd ryanwu_blog
 npm ci
 
 # 3. 启动本地预览
-npm run server
+npm run preview
 ```
 
-打开 `http://localhost:4000` 查看博客。
+脚本会先清理旧缓存，再在 `http://localhost:4000` 启动博客。
 
 ```bash
 # 清理生成文件
@@ -128,10 +128,14 @@ npm run build
 
 | 命令 | 用途 |
 | --- | --- |
-| `python tools/new-post.py` | 交互式创建新文章 |
+| `npm run post:new` | 创建文章与独立媒体目录 |
+| `npm run content:check` | 检查 Front Matter 和媒体引用 |
+| `npm run preview` | 清理缓存并启动本地预览 |
+| `npm run prepublish:check` | 执行内容检查与生产构建，不改动 Git |
+| `python tools/publish.py --dry-run` | 展示发布前状态，不暂存、提交或推送 |
+| `python tools/publish.py` | 仅在 `main` 分支检查、构建并引导发布 |
 | `python tools/new-project.py` | 添加项目展示内容 |
 | `python tools/edit-project.py` | 修改或删除已有项目 |
-| `python tools/publish.py` | 检查改动并引导提交、发布 |
 
 完整的文章 Front Matter、图片目录、标签规则和发布流程见 [`docs/content-guide.md`](./docs/content-guide.md)。
 

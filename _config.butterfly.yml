@@ -191,9 +191,9 @@ index_layout: 3
 # 3: auto_excerpt (default)
 # false: do not show the article introduction
 index_post_content:
-  method: 3
+  method: 2
   # If you set method to 2 or 3, the length need to config
-  length: 500
+  length: 220
 
 # --------------------------------------
 # Post Settings
@@ -300,7 +300,7 @@ aside:
       text: Follow Me
       link: https://github.com/Ryan-wu-web
   card_announcement:
-    enable: true
+    enable: false
     content: 欢迎来到 Ryan 的博客，记录技术成长与生活点滴
   card_recent_post:
     enable: true
@@ -326,7 +326,7 @@ aside:
   card_tags:
     enable: true
     # If set 0 will show all
-    limit: 40
+    limit: 20
     color: false
     custom_colors:
     # Order of tags, random/name/length
@@ -335,7 +335,7 @@ aside:
     order: 1
     sort_order:
   card_archives:
-    enable: true
+    enable: false
     # Type: monthly / yearly
     type: monthly
     # Eg: YYYY年MM月
@@ -427,7 +427,7 @@ anchor:
   # Click the headline to scroll and update the anchor
   click_to_scroll: false
 
-photofigcaption: false
+photofigcaption: true
 
 copy:
   enable: true
@@ -767,19 +767,19 @@ site_verification:
 
 theme_color:
   enable: true
-  main: "#3b82f6"
-  paginator: "#3b82f6"
-  button_hover: "#60a5fa"
-  text_selection: "#3b82f6"
-  link_color: "#3b82f6"
+  main: "#a8835b"
+  paginator: "#a8835b"
+  button_hover: "#c29a6d"
+  text_selection: "#a8835b"
+  link_color: "#a8835b"
   meta_color: "#8b949e"
   hr_color: "#30363d"
   code_foreground: "#f0f6fc"
   code_background: "rgba(27, 31, 35, .05)"
-  toc_color: "#3b82f6"
-  blockquote_padding_color: "#3b82f6"
-  blockquote_background_color: "rgba(59, 130, 246, 0.1)"
-  scrollbar_color: "#3b82f6"
+  toc_color: "#a8835b"
+  blockquote_padding_color: "#a8835b"
+  blockquote_background_color: "rgba(168, 131, 91, 0.12)"
+  scrollbar_color: "#a8835b"
   meta_theme_color_light: "#ffffff"
   meta_theme_color_dark: "#0d1117"
 
@@ -814,7 +814,7 @@ preloader:
 enter_transitions: true
 
 # Default display mode - light (default) / dark
-display_mode: light
+display_mode: dark
 
 # Configuration for beautifying the content of the article
 beautify:
@@ -918,7 +918,7 @@ clickShowText:
 # https://github.com/francoischalifour/medium-zoom
 # https://fancyapps.com/fancybox/
 # Leave it empty if you don't need lightbox
-lightbox:
+lightbox: fancybox
 
 # --------------------------------------
 # Tag Plugins settings
@@ -1007,11 +1007,11 @@ aplayerInject:
 # https://github.com/polonel/SnackBar
 # position: top-left / top-center / top-right / bottom-left / bottom-center / bottom-right
 snackbar:
-  enable: false
+  enable: true
   position: bottom-left
   # The background color of Toast Notification in light mode and dark mode
-  bg_light: '#49b1f5'
-  bg_dark: '#1f1f1f'
+  bg_light: '#846b4f'
+  bg_dark: '#26221d'
 
 # Instant.page
 # https://instant.page/
@@ -1020,9 +1020,9 @@ instantpage: false
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: false
+  enable: true
   # Use browser's native lazyload instead of vanilla-lazyload
-  native: false
+  native: true
   # Specify the field to use lazyload (site or post)
   field: site
   placeholder:

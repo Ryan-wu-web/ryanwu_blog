@@ -4,6 +4,7 @@ date: {{ date }}
 tags: []
 categories: tech
 description:
+cover: /images/posts/文章-slug/cover.jpg
 ---
 
 ## 引言
@@ -12,16 +13,8 @@ description:
 
 ## 正文
 
-主要内容...
-
-### 小标题 1
-
-内容...
-
-### 小标题 2
-
-内容...
+开始写作……
 
 ## 总结
 
-总结要点...
+总结核心观点与后续行动。
