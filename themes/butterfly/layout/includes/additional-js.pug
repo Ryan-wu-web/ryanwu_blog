@@ -41,10 +41,6 @@ div
   != partial("includes/third-party/effect", {}, { cache: true })
   != partial("includes/third-party/chat/index", {}, { cache: true })
 
-  if theme.aplayerInject && theme.aplayerInject.enable
-    if theme.pjax.enable || theme.aplayerInject.per_page || page.aplayer
-      include ./third-party/aplayer.pug
-
   if theme.pjax.enable
     != partial("includes/third-party/pjax", {}, { cache: true })
 

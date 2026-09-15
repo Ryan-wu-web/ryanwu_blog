@@ -1,495 +1,225 @@
-# Ryan's Blog - 博客内容维护规范
+# Ryan's Blog 内容维护指南
 
-> 本文档是 Ryan 个人博客的完整维护指南，涵盖内容发布、页面更新、图片管理、工具使用等全部操作。
->
-> **最后更新：** 2026-06-06
+> 适用于当前的 Hexo 8.1.2 + Butterfly 5.7.0。最后更新：2026-09-14。
 
----
+## 1. 推荐写作链路
 
-## 目录
-
-1. [项目结构](#一项目结构)
-2. [文章发布规范](#二文章发布规范)
-3. [图片上传指南](#三图片上传指南)
-4. [项目页面管理](#四项目页面管理)
-5. [关于我页面更新](#五关于我页面更新)
-6. [工具使用指南](#六工具使用指南)
-7. [发布流程](#七发布流程)
-8. [Markdown 速查](#八markdown-速查)
-
----
-
-## 一、项目结构
-
-```
-ryanwu_blog/
-├── docs/
-│   └── content-guide.md          # 本规范文档
-├── source/
-│   ├── _posts/                   # 文章目录（技术笔记 + 生活随笔）
-│   │   ├── 2026-06-06-文章标题.md
-│   │   └── ...
-│   ├── about/
-│   │   └── index.md              # 关于我页面
-│   ├── projects/
-│   │   └── index.md              # 项目展示页面
-│   ├── categories/
-│   │   └── index.md              # 分类汇总页（自动生成，勿动）
-│   ├── tags/
-│   │   └── index.md              # 标签汇总页（自动生成，勿动）
-│   ├── images/
-│   │   ├── posts/                # 文章配图
-│   │   └── projects/             # 项目封面图
-│   └── js/
-│       └── page-typed.js         # 页面打字机效果（勿动）
-├── tools/                        # 内容创建工具
-│   ├── new-post.py               # 创建新文章
-│   ├── new-project.py            # 添加新项目
-│   ├── edit-project.py           # 修改/删除项目
-│   └── publish.py                # 一键发布
-├── _config.yml                   # Hexo 主配置（勿动）
-├── _config.butterfly.yml         # 主题配置（勿动）
-└── package.json                  # 依赖（勿动）
+```text
+创建文章 → 放入文章媒体 → 内容检查 → 本地预览 → 发布前检查 → 合并到 main → 发布
 ```
 
----
+常用命令：
 
-## 二、文章发布规范
-
-### 2.1 文件命名
-
+```powershell
+npm run post:new
+npm run content:check
+npm run preview
+npm run prepublish:check
 ```
-YYYY-MM-DD-文章标题.md
+
+`npm run preview` 会持续运行本地服务器，访问 `http://localhost:4000`，结束时按 `Ctrl+C`。
+
+## 2. 创建文章
+
+运行：
+
+```powershell
+npm run post:new
 ```
 
-示例：
-- `2026-06-06-python爬虫入门.md`
-- `2026-06-10-杭州西湖游记.md`
+工具会要求填写：
 
-### 2.2 Front-matter 模板
+- `title`：文章标题；
+- `date`：`YYYY-MM-DD`；
+- `tags`：至少一个，小写字母、数字、中文或连字符；
+- `categories`：只能是 `tech` 或 `life`；
+- `description`：用于列表摘要和搜索描述，不能为空；
+- `cover`：文章封面，默认指向该文章的媒体目录。
 
-**技术笔记：**
+它会同时创建：
 
-```markdown
+```text
+source/_posts/YYYY-MM-DD-文章-slug.md
+source/images/posts/文章-slug/
+```
+
+已有文章不会被覆盖。
+
+也可使用参数创建，适合重复操作：
+
+```powershell
+python tools/new-post.py `
+  --title "AI 产品复盘" `
+  --category tech `
+  --date 2026-09-14 `
+  --tags "ai,product-management" `
+  --description "一次 AI 产品从想法到验证的完整复盘" `
+  --slug "ai-product-retrospective"
+```
+
+## 3. Front Matter 规范
+
+新文章必须包含以下字段：
+
+```yaml
 ---
-title: 文章标题
-date: 2026-06-06 14:30:00
-tags: [python, 爬虫, tutorial]
+title: "AI 产品复盘"
+date: 2026-09-14 12:00:00
+tags: [ai, product-management]
 categories: tech
-description: 文章摘要，用于SEO和列表展示
-cover: /images/posts/封面图.jpg
+description: "一句完整、具体的文章摘要"
+cover: "/images/posts/ai-product-retrospective/cover.jpg"
 ---
-
-## 引言
-
-简述背景...
-
-## 正文
-
-主要内容...
-
-## 总结
-
-总结要点...
 ```
 
-**生活随笔：**
+| 字段 | 规则 |
+| --- | --- |
+| `title` | 非空，表达文章主题 |
+| `date` | `YYYY-MM-DD` 或 `YYYY-MM-DD HH:MM:SS` |
+| `tags` | 至少一个；统一小写，可用数字、中文和连字符 |
+| `categories` | 只能是 `tech` 或 `life` |
+| `description` | 新文章必填，不直接复制标题 |
+| `cover` | 新文章必填；本地路径必须真实存在，也可使用完整的远程 URL |
+
+历史文章暂未补齐 `description` 或 `cover` 时，普通检查只给出警告；Git 新增文章在发布前会自动启用严格检查。不要为了消除警告给旧文章机械复用同一张大图。
+
+## 4. 图片、视频和音频
+
+每篇文章使用独立目录：
+
+```text
+source/images/posts/<post-slug>/
+├── cover.jpg
+├── architecture.webp
+├── demo.mp4
+└── narration.mp3
+```
+
+正文引用：
 
 ```markdown
----
-title: 文章标题
-date: 2026-06-06 14:30:00
-tags: [travel, daily]
-categories: life
-description: 文章摘要
-cover: /images/posts/封面图.jpg
----
+![架构图中的数据流向](/images/posts/<post-slug>/architecture.webp)
 
-正文...
+<video controls preload="metadata" src="/images/posts/<post-slug>/demo.mp4"></video>
+
+<audio controls preload="metadata" src="/images/posts/<post-slug>/narration.mp3"></audio>
 ```
 
-### 2.3 Front-matter 字段说明
+规则：
 
-| 字段 | 必填 | 说明 |
-|------|------|------|
-| `title` | 是 | 文章标题 |
-| `date` | 是 | 发布日期时间 |
-| `categories` | 是 | `tech`（技术笔记）或 `life`（生活随笔） |
-| `tags` | 是 | 英文标签，多个用逗号分隔 |
-| `description` | 否 | 文章摘要，SEO用 |
-| `cover` | 否 | 封面图路径 |
+1. 图片必须写有意义的 alt 文本，不使用 `![图片]` 这类无信息描述；
+2. 文件名使用小写字母、数字和连字符；
+3. 图片优先使用 WebP/JPEG，控制尺寸和体积；
+4. 大视频优先放稳定的视频平台或对象存储，避免 Git 仓库快速膨胀；
+5. 本地媒体路径必须位于 `source/` 内，内容检查器会验证文件是否存在。
 
-### 2.4 标签命名规范
+## 5. 检查与预览
 
-| 类别 | 推荐标签 |
-|------|---------|
-| 技术 | python, javascript, vue, react, ml, algorithm, linux, git, docker, database |
-| 项目 | project, internship, competition, bootcamp |
-| 生活 | travel, sports, photography, reading, daily, food, movie |
-
-> **规则：标签统一使用英文小写**，避免 GitHub Pages 中文路径编码问题。
-
-### 2.5 创建文章的三种方式
-
-**方式一：使用工具（推荐）**
+检查全部文章：
 
 ```powershell
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-python tools/new-post.py
+npm run content:check
 ```
 
-按提示回答问题即可自动生成规范文件。
-
-**方式二：复制模板**
-
-1. 复制 `scaffolds/post.md`（技术笔记）或 `scaffolds/life.md`（生活随笔）
-2. 粘贴到 `source/_posts/`
-3. 重命名为 `YYYY-MM-DD-标题.md`
-4. 修改内容
-
-**方式三：命令行创建**
+严格检查某一篇文章：
 
 ```powershell
-npx hexo new "文章标题"
+python tools/check-content.py --strict source/_posts/2026-09-14-ai-product-retrospective.md
 ```
 
----
+检查器会验证：
 
-## 三、图片上传指南
+- Front Matter 是否完整；
+- 日期、分类和标签是否合法；
+- 封面、Markdown 图片及 HTML 音视频文件是否存在；
+- 图片是否有 alt 文本；
+- 媒体引用是否越过 `source/` 目录。
 
-### 3.1 存放位置
-
-文章配图统一放在：
-
-```
-source/images/posts/
-```
-
-### 3.2 上传步骤
-
-**第一步：复制图片到博客目录**
+预览：
 
 ```powershell
-copy "C:\Users\你的电脑\Desktop\照片.jpg" "C:\Users\Lenovo\Desktop\ryanwu_blog\source\images\posts\"
+npm run preview
 ```
 
-**第二步：在文章中引用**
+重点查看首页卡片、文章封面、文章正文、目录、归档、搜索和移动端布局。
 
-```markdown
-![图片描述](/images/posts/照片.jpg)
+## 6. 安全发布
+
+先执行无副作用的发布前检查：
+
+```powershell
+npm run prepublish:check
 ```
 
-**第三步：发布**
+该命令只会：
+
+1. 对 Git 新增文章启用严格内容检查；
+2. 执行 `hexo clean`；
+3. 执行生产构建；
+4. 显示当前分支和改动。
+
+它不会暂存、提交或推送。
+
+还可以运行：
+
+```powershell
+python tools/publish.py --dry-run
+```
+
+正式发布命令：
 
 ```powershell
 python tools/publish.py
 ```
 
-### 3.3 设置文章封面图
+安全边界：
 
-在文章 Front-matter 中添加：
+- 非 `main` 分支会被阻止发布；
+- 默认确认选项为 `N`；
+- 不使用 `shell=True`；
+- 已跟踪文件照常暂存；新文件只从博客内容、配置、工具与主题目录加入，避免误收本地临时文件；
+- 只有明确确认后才会执行 commit 和 `git push origin main`。
 
-```markdown
----
-title: 文章标题
-date: 2026-06-06 12:00:00
-tags: [python]
-categories: tech
-cover: /images/posts/文章封面.jpg
----
-```
+推荐做法仍然是：在功能分支完成检查和审查，合并到 `main` 后再发布。
 
-### 3.4 图片规范
+## 7. 页面与项目维护
 
-- **格式**：jpg, png, gif, svg
-- **建议宽度**：不超过 1200px（避免加载过慢）
-- **命名**：使用英文或数字，避免中文和特殊字符
-
----
-
-## 四、项目页面管理
-
-项目页面文件：`source/projects/index.md`
-
-### 4.1 添加新项目
-
-**使用工具（推荐）：**
+- 关于页面：直接编辑 `source/about/index.md`；
+- 项目页面：直接编辑 `source/projects/index.md`，或使用：
 
 ```powershell
 python tools/new-project.py
-```
-
-按提示输入项目信息即可自动追加到页面。
-
-**手动添加格式：**
-
-```markdown
-### 项目名称
-
-**时间：** 2025/09 - 2025/11  
-**角色：** 全栈工程师  
-**技术栈：** Next.js, TailwindCSS, OpenAI
-
-一句话项目简介...
-
-**核心亮点：**
-- 亮点一
-- 亮点二
-- 亮点三
-```
-
-### 4.2 修改已有项目
-
-**使用工具：**
-
-```powershell
 python tools/edit-project.py
 ```
 
-选择 "修改项目"，按提示操作。
+主题优先通过 `_config.butterfly.yml` 配置，不直接修改 `themes/butterfly/` 的官方源码，避免后续升级冲突。
 
-**手动修改：**
+## 8. Markdown 速查
 
-1. 打开 `source/projects/index.md`
-2. 找到对应项目段落（从 `### 项目名称` 开始）
-3. 直接编辑文字内容
-
-### 4.3 删除项目
-
-**使用工具：**
-
-```powershell
-python tools/edit-project.py
-```
-
-选择 "删除项目"，输入项目编号即可。
-
-**手动删除：**
-
-1. 打开 `source/projects/index.md`
-2. 找到要删除的项目段落（从 `### 项目名称` 到下一个 `###` 之间）
-3. 删除整个段落
-
----
-
-## 五、关于我页面更新
-
-文件位置：`source/about/index.md`
-
-**更新方式：** 直接用编辑器打开文件，修改 Markdown 内容即可。
-
-**推荐结构：**
-
-```markdown
----
-title: 关于我
-date: 2026-06-05 12:00:00
-aside: true
-top_img: /about-bg.jpg
----
-
-## 你好，我是 Ryan
-
-个人简介...
-
-### 教育背景
-
-| 学校 | 专业 | 学历 | 时间 |
-|------|------|------|------|
-| 南京邮电大学 | 通信工程 | 本科 | 2024/09 - 2028/06 |
-
-### 技能栈
-
-**前端开发**
-- 框架：React, Vue 3
-- ...
-
-**联系方式**
-- GitHub: [Ryan-wu-web](https://github.com/Ryan-wu-web)
-- Email: 3047967569@qq.com
-```
-
----
-
-## 六、工具使用指南
-
-### 6.1 工具清单
-
-| 工具 | 功能 | 命令 |
-|------|------|------|
-| `new-post.py` | 交互式创建文章 | `python tools/new-post.py` |
-| `new-project.py` | 交互式添加项目 | `python tools/new-project.py` |
-| `edit-project.py` | 修改/删除项目 | `python tools/edit-project.py` |
-| `publish.py` | 一键发布到线上 | `python tools/publish.py` |
-
-### 6.2 使用前提
-
-所有工具需要在 **PowerShell** 中运行，先进入博客目录：
-
-```powershell
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-```
-
-### 6.3 new-post.py 使用示例
-
-```
-==================================================
-创建新文章
-==================================================
-
-文章类型:
-  1. 技术笔记
-  2. 生活随笔
-请选择 (输入数字): 1
-
-文章标题: Python爬虫入门实战
-
-发布日期 [2026-06-06]:
-
-标签设置
-常用技术标签: python, javascript, vue...
-标签: python, 爬虫, tutorial
-
-文章描述/摘要（可选）:
-
-==================================================
-文章已创建: source/_posts/2026-06-06-python-pa-ru-men-shi-zhan.md
-==================================================
-
-接下来:
-  1. 用编辑器打开文件继续写作
-  2. 写完后执行: python tools/publish.py
-```
-
-### 6.4 publish.py 使用示例
-
-```
-==================================================
-一键发布到线上
-==================================================
-
-检测到的改动:
- M source/_posts/...
-
-请选择提交类型:
-  1. post: 发布新文章
-  2. update: 更新页面
-  3. style: 样式/图片调整
-  4. fix: 修复内容
-  5. 自定义
-
-选择 [5]: 1
-
-提交信息 [post: add new article]:
-
-确认发布? (y/n) [y]: y
-
-==================================================
-发布成功！
-==================================================
-
-等待 1-2 分钟后，访问 https://ryanwu.cn 查看更新
-```
-
----
-
-## 七、发布流程
-
-### 7.1 发布文章
-
-```powershell
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-
-# 方式一：使用工具
-python tools/new-post.py      # 创建文章
-# ... 用编辑器写作 ...
-python tools/publish.py        # 发布
-
-# 方式二：手动命令
-python tools/new-post.py
-git add source/_posts/
-git commit -m "post: add 文章标题"
-git push origin main
-```
-
-### 7.2 更新页面（关于我/项目）
-
-```powershell
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-
-# 修改文件后
-python tools/publish.py
-
-# 或手动
-# git add source/about/
-# git commit -m "update: about page"
-# git push origin main
-```
-
-### 7.3 本地预览
-
-写文章时想看效果：
-
-```powershell
-cd C:\Users\Lenovo\Desktop\ryanwu_blog
-npx hexo server
-```
-
-浏览器访问 `http://localhost:4000`
-
-按 `Ctrl+C` 停止预览。
-
----
-
-## 八、Markdown 速查
-
-```markdown
-# 一级标题
+````markdown
 ## 二级标题
-### 三级标题
 
-**加粗**
-*斜体*
-~~删除线~~
+**加粗**、*斜体*、`行内代码`
 
 - 无序列表
-- 无序列表
-
 1. 有序列表
-2. 有序列表
-
-`行内代码`
 
 ```python
-# 代码块
 print("hello")
 ```
 
 [链接文字](https://example.com)
-
-![图片描述](/images/posts/xxx.jpg)
+![准确描述](/images/posts/<post-slug>/image.webp)
 
 > 引用文字
+````
 
-| 表头 | 表头 |
-|------|------|
-| 内容 | 内容 |
-
----  # 分割线
-```
-
----
-
-## 附录：Git 提交信息规范
+## 9. 提交信息建议
 
 | 类型 | 用途 | 示例 |
-|------|------|------|
-| `post:` | 发布新文章 | `post: add python爬虫入门` |
-| `update:` | 更新页面内容 | `update: about page` |
-| `fix:` | 修复内容错误 | `fix: 修正项目链接` |
-| `style:` | 样式/图片调整 | `style: 更换项目封面图` |
-| `tools:` | 工具更新 | `tools: add edit-project tool` |
-
----
-
-> **提示：** 本规范文档会随博客迭代持续更新，如有疑问随时查阅或询问。
+| --- | --- | --- |
+| `post:` | 新文章 | `post: add AI 产品复盘` |
+| `update:` | 页面或文章更新 | `update: about page` |
+| `fix:` | 内容或功能修复 | `fix: correct broken media path` |
+| `style:` | 视觉调整 | `style: refine dark copper palette` |
+| `tools:` | 写作工具更新 | `tools: validate post media` |

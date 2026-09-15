@@ -6,6 +6,10 @@
     "doc": "docs"
   },
   "scripts": {
+    "post:new": "python tools/new-post.py",
+    "content:check": "python tools/check-content.py",
+    "preview": "hexo clean && hexo server",
+    "prepublish:check": "python tools/publish.py --check-only",
     "build": "hexo generate",
     "clean": "hexo clean",
     "server": "hexo server",
@@ -39,6 +43,6 @@
     "hexo-renderer-marked": "^7.0.1",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "hexo-theme-butterfly": "^5.5.4"
+    "hexo-theme-butterfly": "5.7.0"
   }
 }
