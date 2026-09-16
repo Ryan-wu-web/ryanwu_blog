@@ -1,45 +1,66 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
-  <title id="title">Ryan's Blog</title>
-  <desc id="desc">A personal blog about code, building, writing and life.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">Ryanwu Blog</title>
+  <desc id="desc">Ryanwu's personal blog about AI, technology and life, presented in a restrained dark copper visual style.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0d1117"/>
-      <stop offset="0.48" stop-color="#102a43"/>
-      <stop offset="1" stop-color="#4c1d95"/>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090908"/>
+      <stop offset="0.52" stop-color="#161310"/>
+      <stop offset="1" stop-color="#2b2119"/>
     </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0" stop-color="#38bdf8" stop-opacity=".34"/>
-      <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+    <linearGradient id="copper" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8a6747"/>
+      <stop offset="0.5" stop-color="#c69a68"/>
+      <stop offset="1" stop-color="#76563b"/>
+    </linearGradient>
+    <radialGradient id="warmGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#c69a68" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#c69a68" stop-opacity="0"/>
     </radialGradient>
-    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse">
-      <path d="M36 0H0V36" fill="none" stroke="#ffffff" stroke-opacity=".045"/>
+    <pattern id="grain" width="5" height="5" patternUnits="userSpaceOnUse">
+      <path d="M0 1h5M1 0v5" stroke="#fff" stroke-opacity=".018" stroke-width=".5"/>
     </pattern>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000" flood-opacity=".32"/>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#d8b48b" stroke-opacity=".045"/>
+    </pattern>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="28" flood-color="#000" flood-opacity=".5"/>
     </filter>
   </defs>
-  <rect width="1200" height="360" rx="28" fill="url(#bg)"/>
-  <rect width="1200" height="360" rx="28" fill="url(#grid)"/>
-  <circle cx="180" cy="40" r="240" fill="url(#glow)"/>
-  <circle cx="1080" cy="330" r="300" fill="url(#glow)" opacity=".62"/>
-  <g opacity=".8">
-    <circle cx="1040" cy="84" r="5" fill="#38bdf8"/>
-    <circle cx="1080" cy="116" r="3" fill="#a78bfa"/>
-    <circle cx="1000" cy="132" r="3" fill="#f472b6"/>
-    <path d="M940 86h44M962 64v44" stroke="#ffffff" stroke-opacity=".38" stroke-width="2" stroke-linecap="round"/>
+
+  <rect width="1200" height="420" rx="30" fill="url(#background)"/>
+  <rect width="1200" height="420" rx="30" fill="url(#grid)"/>
+  <rect width="1200" height="420" rx="30" fill="url(#grain)"/>
+  <circle cx="1040" cy="170" r="290" fill="url(#warmGlow)"/>
+  <circle cx="1030" cy="206" r="168" fill="none" stroke="#c69a68" stroke-opacity=".17"/>
+  <circle cx="1030" cy="206" r="118" fill="none" stroke="#c69a68" stroke-opacity=".12"/>
+  <circle cx="1030" cy="206" r="68" fill="none" stroke="#c69a68" stroke-opacity=".22"/>
+  <path d="M862 206h336M1030 38v336" stroke="#c69a68" stroke-opacity=".08"/>
+
+  <g filter="url(#softShadow)">
+    <rect x="68" y="64" width="58" height="58" rx="16" fill="#1d1814" stroke="#c69a68" stroke-opacity=".46"/>
+    <path d="M85 104V82h13.5c8 0 13.5 4.1 13.5 11 0 4.8-2.6 8.1-7 9.7l9 13.3h-10l-7.5-12H94v12h-9zm9-8h4c3.4 0 5.5-1.2 5.5-3.7S101.4 89 98 89h-4z" fill="url(#copper)"/>
   </g>
-  <g filter="url(#shadow)">
-    <rect x="66" y="64" width="76" height="76" rx="22" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".22"/>
-    <path d="M87 103l12 12 25-30" fill="none" stroke="#7dd3fc" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="68" y="194" fill="#f0e9e0" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="70" font-weight="720" letter-spacing="-2.5">RYANWU</text>
+  <text x="70" y="244" fill="#c69a68" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="600" letter-spacing="7">AI / TECHNOLOGY / LIFE</text>
+  <rect x="70" y="274" width="470" height="1" fill="url(#copper)" opacity=".7"/>
+  <text x="70" y="312" fill="#a99e91" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" letter-spacing=".4">Thinking clearly. Building carefully. Recording honestly.</text>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" font-weight="650" letter-spacing="1.4">
+    <rect x="69" y="342" width="112" height="34" rx="17" fill="#c69a68" fill-opacity=".08" stroke="#c69a68" stroke-opacity=".25"/>
+    <text x="91" y="364" fill="#cdb291">THINK</text>
+    <rect x="193" y="342" width="112" height="34" rx="17" fill="#c69a68" fill-opacity=".08" stroke="#c69a68" stroke-opacity=".25"/>
+    <text x="218" y="364" fill="#cdb291">BUILD</text>
+    <rect x="317" y="342" width="128" height="34" rx="17" fill="#c69a68" fill-opacity=".08" stroke="#c69a68" stroke-opacity=".25"/>
+    <text x="338" y="364" fill="#cdb291">RECORD</text>
   </g>
-  <text x="66" y="202" fill="#ffffff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="64" font-weight="750" letter-spacing="-2">Ryan's Blog</text>
-  <text x="69" y="245" fill="#cbd5e1" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" letter-spacing="4">CODE · BUILD · WRITE · LIVE</text>
-  <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="600">
-    <rect x="68" y="283" width="104" height="36" rx="18" fill="#ffffff" fill-opacity=".09" stroke="#ffffff" stroke-opacity=".16"/>
-    <text x="91" y="307" fill="#e2e8f0">Hexo 8</text>
-    <rect x="184" y="283" width="126" height="36" rx="18" fill="#ffffff" fill-opacity=".09" stroke="#ffffff" stroke-opacity=".16"/>
-    <text x="206" y="307" fill="#e2e8f0">Butterfly 5</text>
-    <rect x="322" y="283" width="154" height="36" rx="18" fill="#ffffff" fill-opacity=".09" stroke="#ffffff" stroke-opacity=".16"/>
-    <text x="344" y="307" fill="#e2e8f0">GitHub Pages</text>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" fill="#b7aa9d">
+    <text x="900" y="92" font-size="12" letter-spacing="2.4">PERSONAL ARCHIVE</text>
+    <text x="900" y="334" font-size="12" letter-spacing="2.4">RYANWU.CN</text>
+    <circle cx="1030" cy="206" r="7" fill="#c69a68"/>
+    <circle cx="1030" cy="206" r="18" fill="none" stroke="#c69a68" stroke-opacity=".35"/>
   </g>
+
+  <rect x=".5" y=".5" width="1199" height="419" rx="29.5" fill="none" stroke="#c69a68" stroke-opacity=".18"/>
 </svg>
