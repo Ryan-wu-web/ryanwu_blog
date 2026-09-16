@@ -1,6 +1,6 @@
 # Ryan's Blog 内容维护指南
 
-> 适用于当前的 Hexo 8.1.2 + Butterfly 5.7.0。最后更新：2026-09-14。
+> 适用于当前的 Hexo 8.1.2 + Butterfly 5.7.0。最后更新：2026-09-16。
 
 ## 1. 推荐写作链路
 
@@ -18,6 +18,45 @@ npm run prepublish:check
 ```
 
 `npm run preview` 会持续运行本地服务器，访问 `http://localhost:4000`，结束时按 `Ctrl+C`。
+
+### 1.1 写作定位与声音
+
+开始写作前，以项目根目录的两份文件为长期标准：
+
+- [`BRAND.md`](../BRAND.md)：定义“Ryanwu 的 AI / 技术 / 生活博客”定位、内容边界和读者价值；
+- [`VOICE.md`](../VOICE.md)：定义真诚、克制、具体、有判断的默认写作声音。
+
+AI 协作时，`blog` Skill 负责判断文章类型、结构和内容标准，`blog-write` Skill 主要用于 AI、技术、项目、销售或管理等需要完整论证的文章。普通生活日志采用轻量整理，不强制套用 SEO、统计、图表或 FAQ。
+
+内容能力与仓库工具分工如下：
+
+```text
+原始素材
+  → blog 判断写作模式
+  → blog-write 或轻量整理生成草稿
+  → post:new 创建 Hexo 文件和媒体目录
+  → content:check / preview / prepublish:check
+  → 人工确认后发布
+```
+
+博客现有检查命令是最终交付门禁；外部写作 Skill 中当前环境不存在的脚本或代理，不作为发布成功的依据。
+
+### 1.2 三种写作模板
+
+| 写作模式 | 适合内容 | 模板 |
+| --- | --- | --- |
+| 深度文章 | AI、技术分析、行业观察 | [`templates/deep-article.md`](./templates/deep-article.md) |
+| 工作与项目复盘 | 技术项目、AI 产品、销售、管理、职业复盘 | [`templates/work-retrospective.md`](./templates/work-retrospective.md) |
+| 生活日志 | 日常、旅行、阅读、求职、情绪和阶段记录 | [`templates/life-journal.md`](./templates/life-journal.md) |
+
+模板是写作骨架，不是必须填满的表格。先运行 `npm run post:new`，再用所选模板替换新文章中的默认正文。
+
+当前仍使用两个 Hexo 分类：
+
+- `tech`：AI、开发、产品、工程和技术项目；
+- `life`：生活、职业、销售、管理和个人随笔。
+
+使用 `ai`、`product`、`sales`、`management`、`career`、`journal` 等标签表达细分主题。AI 内容积累到足够规模后，再评估是否增加独立分类。
 
 ## 2. 创建文章
 
