@@ -35,7 +35,7 @@ source/images/posts/
 
 下面是一张示例图片：
 
-![示例封面图](/images/posts/example-cover.jpg)
+![示例封面图](/images/posts/example-cover.webp)
 
 ## 完整流程总结
 

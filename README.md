@@ -33,7 +33,7 @@
 ## <img src="./.github/assets/readme/icons/world-www.svg" width="26" alt=""> 博客一览
 
 <a href="https://ryanwu.cn">
-  <img src="./source/index-bg.jpg" width="100%" alt="Ryan's Blog 首页视觉：大阪道顿堀夜景">
+  <img src="./source/index-bg.webp" width="100%" alt="Ryan's Blog 首页视觉：大阪道顿堀夜景">
 </a>
 
 <p align="center"><sub>点击图片进入 <a href="https://ryanwu.cn">ryanwu.cn</a></sub></p>
