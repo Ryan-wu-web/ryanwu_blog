@@ -2,7 +2,7 @@
 title: 关于我
 date: 2026-06-05 12:00:00
 aside: true
-top_img: /about-bg.webp
+top_img: /about-bg.jpg
 ---
 
 ## 👋 你好，我是 Ryan

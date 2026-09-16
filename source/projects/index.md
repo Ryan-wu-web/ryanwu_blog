@@ -1,7 +1,7 @@
 ---
 title: 项目
 aside: false
-top_img: /projects-bg.webp
+top_img: /projects-bg.jpg
 ---
 
 ## 💼 我的项目
