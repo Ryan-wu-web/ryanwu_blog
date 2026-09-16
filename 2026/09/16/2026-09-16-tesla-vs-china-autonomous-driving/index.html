@@ -1,0 +1,797 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>特斯拉纯视觉与国产智驾：传感器不同，终点可能相同 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/tesla-vs-china-autonomous-driving/cover.webp">
+<meta property="article:published_time" content="2026-09-16T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-16T16:00:41.172Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="autonomous-driving">
+<meta property="article:tag" content="computer-vision">
+<meta property="article:tag" content="lidar">
+<meta property="article:tag" content="tesla">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/tesla-vs-china-autonomous-driving/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "特斯拉纯视觉与国产智驾：传感器不同，终点可能相同",
+  "url": "https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/",
+  "image": "https://ryanwu.cn/images/posts/tesla-vs-china-autonomous-driving/cover.webp",
+  "datePublished": "2026-09-16T04:00:00.000Z",
+  "dateModified": "2026-09-16T16:00:41.172Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '特斯拉纯视觉与国产智驾：传感器不同，终点可能相同',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/tesla-vs-china-autonomous-driving/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-16T04:00:00.000Z" title="发表于 2026-09-16 12:00:00">2026-09-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-16T16:00:41.172Z" title="更新于 2026-09-17 00:00:41">2026-09-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>最近我一直很好奇一件事：特斯拉经常强调“纯视觉”，而国内不少车型会把激光雷达、毫米波雷达和高精度定位写进宣传页。它们究竟是在解决同一个问题，还是各自负责不同的事情？</p>
+<p>我原先也把它简单理解成“特斯拉靠摄像头，国产车靠雷达和 GPS”。查完资料以后，我发现这个说法不够准确。<strong>GPS 不是用来识别前车和行人的；国内智驾也不是只有一条技术路线。</strong> 真正的区别，是系统如何组合感知硬件、数据、模型和安全冗余。</p>
+<blockquote>
+<p>本文讨论的是量产乘用车的驾驶辅助与自动驾驶技术路线，不构成购车建议。不同车型、年份、地区和软件版本的硬件能力并不完全相同；截至 2026 年 9 月，消费者日常接触到的大多数产品仍要求驾驶员持续承担责任。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>如果把智驾系统比作一个正在开车的人，可以先做一个不严谨但好理解的类比：</p>
+<ul>
+<li>摄像头像眼睛，擅长识别颜色、文字、车道线、红绿灯和物体语义；</li>
+<li>激光雷达像一把高速扫描的三维尺子，直接测量空间几何和距离；</li>
+<li>毫米波雷达更像对速度敏感的测距器，擅长判断目标距离和相对速度；</li>
+<li>GNSS&#x2F;GPS 告诉车辆“我大概在地图的哪里”；</li>
+<li>IMU、轮速计等则帮助车辆判断“我刚才怎么动了”。</li>
+</ul>
+<p>特斯拉当前量产智驾的核心，是以摄像头和视觉神经网络作为环境感知的主要输入，再依靠大规模车队数据、训练基础设施和车端计算完成预测与规划。国内市场则同时存在多传感器融合、视觉优先以及向端到端模型演进的多条路线。</p>
+<p>所以，这并不是“视觉与 GPS”的竞争，也不能简单理解为“谁装的传感器多谁就更先进”。<strong>传感器决定系统能获得什么信息，模型和工程能力决定这些信息能不能被稳定地使用。</strong></p>
+<p><img src="/images/posts/tesla-vs-china-autonomous-driving/sensor-role-map.svg" alt="摄像头、激光雷达、毫米波雷达、GNSS 与 IMU 在智驾系统中的职责" loading='lazy'></p>
+<h2 id="“纯视觉”不等于完全不用-GPS"><a href="#“纯视觉”不等于完全不用-GPS" class="headerlink" title="“纯视觉”不等于完全不用 GPS"></a>“纯视觉”不等于完全不用 GPS</h2><p>这是我在查资料时最先修正的一个认识。</p>
+<p>“纯视觉”通常是在描述车辆如何感知道路环境：系统主要通过摄像头理解车辆、行人、车道线、交通灯、道路边界和可行驶空间，而不是依赖激光雷达提供三维点云。它并不表示车辆会放弃导航地图、GPS&#x2F;GNSS 或车身运动信号。</p>
+<p>Tesla 的车主手册明确写到，导航系统通过 GPS 信号确定车辆位置，地图也用于规划路线；同时，FSD（Supervised）的说明强调它是需要驾驶员监督的功能，车辆会结合摄像头等输入完成驾驶任务。换句话说：</p>
+<ul>
+<li><strong>GPS&#x2F;GNSS 回答“车在哪里、目的地往哪走”</strong>；</li>
+<li><strong>摄像头和其他环境传感器回答“周围有什么、现在能不能走”</strong>。</li>
+</ul>
+<p>普通 GPS 的定位误差、遮挡和漂移都决定了它不能代替环境感知。即使高精度定位能够把车辆放到更精细的地图坐标上，它也不会直接告诉系统前方突然出现了一个行人。</p>
+<h2 id="五类传感器到底分别解决什么问题"><a href="#五类传感器到底分别解决什么问题" class="headerlink" title="五类传感器到底分别解决什么问题"></a>五类传感器到底分别解决什么问题</h2><table>
+<thead>
+<tr>
+<th>传感器</th>
+<th>擅长的信息</th>
+<th>主要局限</th>
+<th>在系统里的典型作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>摄像头</td>
+<td>颜色、纹理、车道线、信号灯、文字和物体语义</td>
+<td>受逆光、黑暗、污渍和恶劣天气影响；距离需要估计</td>
+<td>目标识别、道路理解、可行驶空间判断</td>
+</tr>
+<tr>
+<td>激光雷达</td>
+<td>三维几何、距离、轮廓和空间结构</td>
+<td>成本、布置、清洁和点云处理复杂；雨雪也会带来干扰</td>
+<td>几何测量、障碍物检测、感知冗余</td>
+</tr>
+<tr>
+<td>毫米波雷达</td>
+<td>距离、方位和相对速度</td>
+<td>对物体类别、边界和细节的表达不如视觉</td>
+<td>前车测速、碰撞预警、一定条件下的环境补充</td>
+</tr>
+<tr>
+<td>GNSS&#x2F;GPS</td>
+<td>车辆的全局位置和时间信息</td>
+<td>隧道、楼宇遮挡和多路径反射会造成误差</td>
+<td>导航、全局定位、与地图匹配</td>
+</tr>
+<tr>
+<td>IMU&#x2F;轮速计</td>
+<td>加速度、角速度和车辆短时运动</td>
+<td>会随时间积累误差</td>
+<td>组合定位、短时姿态与运动估计</td>
+</tr>
+</tbody></table>
+<p>这些传感器不是简单的上下级关系。摄像头可以看到红灯是红色，却需要模型推断距离；激光雷达能精确描述一个三维物体，却未必单独知道它是塑料袋还是石块；毫米波雷达善于看速度，但无法独自完成复杂道路语义理解。</p>
+<p>Waymo 在介绍其第五代自动驾驶系统时，就把摄像头、激光雷达和雷达描述为相互补充的传感器组合。多传感器方案的价值，不只是“看得更多”，也是在某一类传感器退化时保留另一种物理测量方式。</p>
+<h2 id="特斯拉为什么长期坚持视觉优先"><a href="#特斯拉为什么长期坚持视觉优先" class="headerlink" title="特斯拉为什么长期坚持视觉优先"></a>特斯拉为什么长期坚持视觉优先</h2><p>从产品和商业角度看，特斯拉的选择并不难理解。</p>
+<p>人类主要依靠双眼理解道路，说明视觉信息本身包含了驾驶所需的大量语义。摄像头便宜、体积小，已经广泛安装在量产车辆上。如果同一套相对统一的硬件可以随着模型和数据更新持续进化，软件能力就更容易覆盖庞大的车队。</p>
+<p>Tesla 官方 AI 页面把能力拆成视觉与规划、推理硬件以及训练基础设施。它真正押注的并不是“摄像头比所有传感器都强”，而是下面这条链路：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">量产车队采集真实场景</span><br><span class="line">        ↓</span><br><span class="line">发现失败案例与长尾问题</span><br><span class="line">        ↓</span><br><span class="line">数据筛选、自动标注与训练</span><br><span class="line">        ↓</span><br><span class="line">模型更新并回到车端</span><br><span class="line">        ↓</span><br><span class="line">继续积累新的困难场景</span><br></pre></td></tr></table></figure>
+
+<p>这条路线的优势很明确：</p>
+<ol>
+<li><strong>硬件成本和量产复杂度较低。</strong> 不需要为每辆车增加昂贵且布置复杂的传感器组合；</li>
+<li><strong>车队数据规模更容易形成闭环。</strong> 大量同构车辆可以持续提供真实道路样本；</li>
+<li><strong>能力提升更多来自软件。</strong> 同一硬件平台可以通过模型迭代获得新能力。</li>
+</ol>
+<p>它的代价也同样明显。视觉并不会天然给出可靠的绝对距离，模型要从连续图像、车辆运动和历史信息中学习三维结构。在强逆光、黑夜、暴雨、镜头污损、异形障碍物和罕见施工场景里，系统必须用数据与模型能力覆盖非常长的尾部。</p>
+<p>因此，“少装一种传感器”并不等于问题消失了。<strong>它只是把一部分硬件冗余，转换成了更高的数据、模型、算力和验证要求。</strong></p>
+<h2 id="国内智驾并不是一条统一路线"><a href="#国内智驾并不是一条统一路线" class="headerlink" title="国内智驾并不是一条统一路线"></a>国内智驾并不是一条统一路线</h2><p>把国内方案概括成“激光雷达加 GPS”同样会丢掉很多信息。</p>
+<h3 id="以华为为代表的多传感器融合"><a href="#以华为为代表的多传感器融合" class="headerlink" title="以华为为代表的多传感器融合"></a>以华为为代表的多传感器融合</h3><p>华为乾崑 ADS 的公开资料长期强调多传感器融合、端到端架构和安全冗余。不同合作车型的具体配置并不一致，但常见组合包括摄像头、激光雷达、毫米波雷达、超声波雷达以及组合定位。</p>
+<p>这条路线的思路是：视觉负责语义，激光雷达提供三维几何，毫米波雷达补充距离和速度，再通过统一模型进行融合。它并不是用雷达替代摄像头，而是让多种信息相互校验。</p>
+<p>优势是系统可以获得更直接的空间测量和更多物理冗余；代价则是硬件成本、传感器标定、时间同步、数据融合和售后维护都更复杂。如果不同传感器给出矛盾结果，系统还必须判断应该相信谁。</p>
+<h3 id="国内厂商也在向视觉优先演进"><a href="#国内厂商也在向视觉优先演进" class="headerlink" title="国内厂商也在向视觉优先演进"></a>国内厂商也在向视觉优先演进</h3><p>另一边，小鹏等厂商近年来持续强调“无高精地图”、端到端和 VLA（Vision-Language-Action，视觉—语言—动作）模型。小鹏在 2025 AI Day 同时展示了 VLA 2.0 与 Robotaxi 方向；2026 年 3 月又公布第二代 VLA 2.0 架构和量产部署计划，试图把视觉输入、语言语义和动作生成放进更统一的模型链路。</p>
+<p>这说明国内技术路线正在快速交叉：</p>
+<ul>
+<li>多传感器车型也在使用端到端模型；</li>
+<li>配备激光雷达，不代表系统仍然依赖传统规则堆叠；</li>
+<li>视觉优先，也不代表车辆完全不使用导航和车身状态信号；</li>
+<li>同一家厂商，甚至可能为不同价位、车型和使用场景提供不同硬件配置。</li>
+</ul>
+<p><img src="/images/posts/tesla-vs-china-autonomous-driving/sensor-stack-comparison.svg" alt="Tesla 视觉优先路线与国内典型多传感器融合路线对比" loading='lazy'></p>
+<h2 id="两条路线各自的优势与代价"><a href="#两条路线各自的优势与代价" class="headerlink" title="两条路线各自的优势与代价"></a>两条路线各自的优势与代价</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>视觉优先路线</th>
+<th>多传感器融合路线</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>环境感知核心</td>
+<td>摄像头与视觉模型</td>
+<td>摄像头、激光雷达、毫米波雷达等融合</td>
+</tr>
+<tr>
+<td>直接三维测量</td>
+<td>更多依赖模型从时序视觉中估计</td>
+<td>激光雷达可直接提供几何距离</td>
+</tr>
+<tr>
+<td>硬件成本</td>
+<td>通常更低，更利于大规模统一部署</td>
+<td>通常更高，车型配置差异也更大</td>
+</tr>
+<tr>
+<td>系统复杂度</td>
+<td>硬件较简洁，但模型和数据压力更大</td>
+<td>硬件、标定、同步和融合链路更复杂</td>
+</tr>
+<tr>
+<td>冗余方式</td>
+<td>更多依赖多摄像头、时序信息与模型能力</td>
+<td>可以利用不同物理原理交叉校验</td>
+</tr>
+<tr>
+<td>规模化关键</td>
+<td>车队数据闭环、训练算力、车端推理</td>
+<td>融合算法、供应链、成本控制与工程验证</td>
+</tr>
+</tbody></table>
+<p>我不认为这张表能够直接推出“哪条路线一定胜出”。因为最终用户感受到的不是传感器清单，而是系统能否在真实道路上做出稳定、可预测、可接管的行为。</p>
+<p>一套配置豪华但融合不好的系统，可能出现不同传感器互相打架；一套纯视觉系统如果缺少足够长尾数据，也可能在罕见场景里失去判断。硬件只决定上限的一部分，产品体验还取决于数据质量、模型架构、算力、控制系统、人机交互以及安全验证。</p>
+<h2 id="我对未来智驾的四个判断"><a href="#我对未来智驾的四个判断" class="headerlink" title="我对未来智驾的四个判断"></a>我对未来智驾的四个判断</h2><h3 id="1-软件架构会趋同，硬件配置仍会分层"><a href="#1-软件架构会趋同，硬件配置仍会分层" class="headerlink" title="1. 软件架构会趋同，硬件配置仍会分层"></a>1. 软件架构会趋同，硬件配置仍会分层</h3><p>Tesla、华为和小鹏公开的技术方向虽然命名不同，但都在向更大规模的神经网络、端到端决策、世界模型或生成式方法靠近。过去需要人工编写的大量“如果……那么……”规则，会逐渐被从真实数据中学习到的统一表示替代。</p>
+<p>但硬件未必因此完全统一。高端车型、Robotaxi 和限定区域的 L4 运营车辆，更愿意为传感器冗余付费；大众量产车则会持续追求成本、功耗和规模之间的平衡。</p>
+<h3 id="2-未来的竞争重点会从“装了什么”转向“失败时怎么办”"><a href="#2-未来的竞争重点会从“装了什么”转向“失败时怎么办”" class="headerlink" title="2. 未来的竞争重点会从“装了什么”转向“失败时怎么办”"></a>2. 未来的竞争重点会从“装了什么”转向“失败时怎么办”</h3><p>宣传页很容易比较激光雷达数量、摄像头像素和芯片算力，真正困难的是：</p>
+<ul>
+<li>镜头被雨水遮住时，系统能否识别自己已经看不清；</li>
+<li>道路施工与地图冲突时，系统相信实时环境还是历史信息；</li>
+<li>模型不确定时，车辆如何降级、提醒和安全退出；</li>
+<li>软件更新以后，旧能力是否发生回退。</li>
+</ul>
+<p>一个成熟的系统不仅要在正常场景里“会开”，还要知道自己什么时候不会。</p>
+<h3 id="3-数据闭环会比单次演示更重要"><a href="#3-数据闭环会比单次演示更重要" class="headerlink" title="3. 数据闭环会比单次演示更重要"></a>3. 数据闭环会比单次演示更重要</h3><p>端到端模型并不会自动解决长尾问题。它仍然需要持续发现失败样本、重建场景、训练、仿真、回归测试和小范围验证。真正的壁垒可能不是某一个网络结构，而是企业能否把偶发问题稳定地变成数据，再把数据变成可验证的软件改进。</p>
+<h3 id="4-L2-L2-与真正的无人驾驶仍有责任边界"><a href="#4-L2-L2-与真正的无人驾驶仍有责任边界" class="headerlink" title="4. L2&#x2F;L2+ 与真正的无人驾驶仍有责任边界"></a>4. L2&#x2F;L2+ 与真正的无人驾驶仍有责任边界</h3><p>NHTSA 对自动化等级的解释很清楚：在 Level 2 中，即使系统同时控制转向、加速和制动，驾驶员仍然需要持续监督。Tesla 也把当前面向消费者的产品称为 FSD（Supervised）。中国的智能网联汽车准入和上路通行试点，则把责任主体、安全监测、数据记录和应急处置纳入了要求。</p>
+<p>从“辅助驾驶很好用”走到“驾驶员可以合法、持续地不看路”，中间还有法规、责任划分、系统安全论证和运营设计域等问题。技术进步很快，但命名不能替代责任边界。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>我最初好奇的是：为什么特斯拉敢不用激光雷达，而国内车型却经常把雷达数量写在最醒目的位置？</p>
+<p>现在我的理解是，两条路线在解决同一个目标，却选择了不同的风险分配方式：</p>
+<ul>
+<li>视觉优先路线把更多难题交给数据、模型和算力；</li>
+<li>多传感器路线用额外硬件获得直接测量和冗余，同时承担融合与成本复杂度。</li>
+</ul>
+<p>未来它们可能不会一直泾渭分明。模型架构会相互借鉴，硬件会按车型和场景分层，真正拉开差距的，是系统能否持续处理长尾场景，并在能力边界之外安全地退让。</p>
+<p>所以，我之后再看一辆车的智驾能力，不会只问“有没有激光雷达”，也不会只听“是不是端到端”。我更想知道的是：<strong>它依靠什么信息做判断，遇到不确定性时怎么处理，出了问题以后能不能通过数据闭环真正改进。</strong></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>以下均为官方或原始资料，访问日期为 2026 年 9 月 16 日：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://www.tesla.com/AI">Tesla AI：Autopilot、视觉与规划、推理硬件和训练基础设施</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.tesla.com/support/fsd">Tesla：Full Self-Driving（Supervised）说明</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.tesla.com/ownersmanual/modely/en_us/GUID-2CB60804-9CEA-4E82-BF87-7B7CF3881703.html">Tesla Model Y Owner’s Manual：Full Self-Driving（Supervised）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.tesla.com/ownersmanual/modely/en_us/GUID-01F1A582-99D1-4933-B5FB-B2F0203FFE6F.html">Tesla Model Y Owner’s Manual：Maps and Navigation</a></li>
+<li><a target="_blank" rel="noopener" href="https://auto.huawei.com/cn/news/2025/huawei-qiankun-intelligent-technology-launch">华为：乾崑智能技术发布，ADS 4 采用全新 WEWA 架构</a></li>
+<li><a target="_blank" rel="noopener" href="https://auto.huawei.com/cn/news/2026/2026-04-23-jishu">华为：乾崑智驾 ADS 5 与自动驾驶网络</a></li>
+<li><a target="_blank" rel="noopener" href="https://ir.xiaopeng.com/news-releases/news-release-details/xpeng-reports-third-quarter-2025-unaudited-financial-results">XPENG 2025 AI Day：VLA 2.0 与 Robotaxi 方向</a></li>
+<li><a target="_blank" rel="noopener" href="https://ir.xiaopeng.com/news-releases/news-release-details/xpeng-reports-fourth-quarter-and-fiscal-year-2025-unaudited">XPENG：第二代 VLA 2.0 架构与量产部署计划</a></li>
+<li><a target="_blank" rel="noopener" href="https://waymo.com/blog/2020/03/introducing-5th-generation-waymo-driver">Waymo：第五代 Waymo Driver 的摄像头、激光雷达与雷达组合</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nhtsa.gov/vehicle-safety/automated-vehicles-safety">NHTSA：驾驶自动化等级与驾驶员责任</a></li>
+<li><a target="_blank" rel="noopener" href="https://ythxxfb.miit.gov.cn/ythzxfwpt/hlwmh/tzgg/xzxk/clsczr/art/2023/art_ae314a1df30e4ba1a49bd4ffa10186f6.html">工业和信息化部等四部门：开展智能网联汽车准入和上路通行试点</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/">https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/autonomous-driving/">autonomous-driving</a><a class="post-meta__tags" href="/tags/tesla/">tesla</a><a class="post-meta__tags" href="/tags/lidar/">lidar</a><a class="post-meta__tags" href="/tags/computer-vision/">computer-vision</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/06/08/2026-06-08-%E8%AE%BA%E5%8F%8C%E9%9D%9E28%E5%B1%8A%E6%89%BE%E5%85%A8%E6%A0%88-%E5%89%8D%E7%AB%AF%E5%AE%9E%E4%B9%A0/" title="论双非28届找全栈/前端实习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">论双非28届找全栈/前端实习</div></div><div class="info-2"><div class="info-item-1">今天投了一整天的简历，智联、BOSS直聘来回切换，手指都快麻木了。数了数，差不多接近一百份。以前总觉得找工作是"双向奔赴"，今天才发现，对于双非学历、还没什么正式实习经验的我来说，这更像是一场单向的"海投长征"——你发出一百个信号，能收到三声回响，就已经算是幸运。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/06/06/2026-06-06-ai-da-mo-xing-ying-yong-shi-jian/" title="AI 大模型应用实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-06</div><div class="info-item-2">AI 大模型应用实践</div></div><div class="info-2"><div class="info-item-1">分享在实际项目中接入 AI 大模型的经验</div></div></div></a><a class="pagination-related" href="/2026/06/05/my-first-tech-note/" title="我的第一篇技术笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-05</div><div class="info-item-2">我的第一篇技术笔记</div></div><div class="info-2"><div class="info-item-1">这是一篇技术笔记的示例文章。 代码示例12345def hello_world():    print(&quot;Hello, World!&quot;)    return &quot;success&quot;hello_world()  后续计划后续我会在这里分享更多技术文章，包括但不限于：  Python 编程技巧 前端开发经验 机器学习项目实践 算法题解  </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%80%9C%E7%BA%AF%E8%A7%86%E8%A7%89%E2%80%9D%E4%B8%8D%E7%AD%89%E4%BA%8E%E5%AE%8C%E5%85%A8%E4%B8%8D%E7%94%A8-GPS"><span class="toc-number">2.</span> <span class="toc-text">“纯视觉”不等于完全不用 GPS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E7%B1%BB%E4%BC%A0%E6%84%9F%E5%99%A8%E5%88%B0%E5%BA%95%E5%88%86%E5%88%AB%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">五类传感器到底分别解决什么问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%96%AF%E6%8B%89%E4%B8%BA%E4%BB%80%E4%B9%88%E9%95%BF%E6%9C%9F%E5%9D%9A%E6%8C%81%E8%A7%86%E8%A7%89%E4%BC%98%E5%85%88"><span class="toc-number">4.</span> <span class="toc-text">特斯拉为什么长期坚持视觉优先</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BD%E5%86%85%E6%99%BA%E9%A9%BE%E5%B9%B6%E4%B8%8D%E6%98%AF%E4%B8%80%E6%9D%A1%E7%BB%9F%E4%B8%80%E8%B7%AF%E7%BA%BF"><span class="toc-number">5.</span> <span class="toc-text">国内智驾并不是一条统一路线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A5%E5%8D%8E%E4%B8%BA%E4%B8%BA%E4%BB%A3%E8%A1%A8%E7%9A%84%E5%A4%9A%E4%BC%A0%E6%84%9F%E5%99%A8%E8%9E%8D%E5%90%88"><span class="toc-number">5.1.</span> <span class="toc-text">以华为为代表的多传感器融合</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BD%E5%86%85%E5%8E%82%E5%95%86%E4%B9%9F%E5%9C%A8%E5%90%91%E8%A7%86%E8%A7%89%E4%BC%98%E5%85%88%E6%BC%94%E8%BF%9B"><span class="toc-number">5.2.</span> <span class="toc-text">国内厂商也在向视觉优先演进</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E6%9D%A1%E8%B7%AF%E7%BA%BF%E5%90%84%E8%87%AA%E7%9A%84%E4%BC%98%E5%8A%BF%E4%B8%8E%E4%BB%A3%E4%BB%B7"><span class="toc-number">6.</span> <span class="toc-text">两条路线各自的优势与代价</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E5%AF%B9%E6%9C%AA%E6%9D%A5%E6%99%BA%E9%A9%BE%E7%9A%84%E5%9B%9B%E4%B8%AA%E5%88%A4%E6%96%AD"><span class="toc-number">7.</span> <span class="toc-text">我对未来智驾的四个判断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E4%BC%9A%E8%B6%8B%E5%90%8C%EF%BC%8C%E7%A1%AC%E4%BB%B6%E9%85%8D%E7%BD%AE%E4%BB%8D%E4%BC%9A%E5%88%86%E5%B1%82"><span class="toc-number">7.1.</span> <span class="toc-text">1. 软件架构会趋同，硬件配置仍会分层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%9C%AA%E6%9D%A5%E7%9A%84%E7%AB%9E%E4%BA%89%E9%87%8D%E7%82%B9%E4%BC%9A%E4%BB%8E%E2%80%9C%E8%A3%85%E4%BA%86%E4%BB%80%E4%B9%88%E2%80%9D%E8%BD%AC%E5%90%91%E2%80%9C%E5%A4%B1%E8%B4%A5%E6%97%B6%E6%80%8E%E4%B9%88%E5%8A%9E%E2%80%9D"><span class="toc-number">7.2.</span> <span class="toc-text">2. 未来的竞争重点会从“装了什么”转向“失败时怎么办”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%95%B0%E6%8D%AE%E9%97%AD%E7%8E%AF%E4%BC%9A%E6%AF%94%E5%8D%95%E6%AC%A1%E6%BC%94%E7%A4%BA%E6%9B%B4%E9%87%8D%E8%A6%81"><span class="toc-number">7.3.</span> <span class="toc-text">3. 数据闭环会比单次演示更重要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-L2-L2-%E4%B8%8E%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%97%A0%E4%BA%BA%E9%A9%BE%E9%A9%B6%E4%BB%8D%E6%9C%89%E8%B4%A3%E4%BB%BB%E8%BE%B9%E7%95%8C"><span class="toc-number">7.4.</span> <span class="toc-text">4. L2&#x2F;L2+ 与真正的无人驾驶仍有责任边界</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</a><time datetime="2026-09-16T04:00:00.000Z" title="发表于 2026-09-16 12:00:00">2026-09-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/08/2026-06-08-%E8%AE%BA%E5%8F%8C%E9%9D%9E28%E5%B1%8A%E6%89%BE%E5%85%A8%E6%A0%88-%E5%89%8D%E7%AB%AF%E5%AE%9E%E4%B9%A0/" title="论双非28届找全栈/前端实习">论双非28届找全栈/前端实习</a><time datetime="2026-06-08T04:00:00.000Z" title="发表于 2026-06-08 12:00:00">2026-06-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/06/2026-06-06-gong-cheng-shi-de-ri-chang/" title="工程师的日常工具链">工程师的日常工具链</a><time datetime="2026-06-06T09:00:00.000Z" title="发表于 2026-06-06 17:00:00">2026-06-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/06/2026-06-06-ai-da-mo-xing-ying-yong-shi-jian/" title="AI 大模型应用实践">AI 大模型应用实践</a><time datetime="2026-06-06T08:30:00.000Z" title="发表于 2026-06-06 16:30:00">2026-06-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/06/2026-06-06-android-kai-fa-ru-men/" title="Android 开发入门记录">Android 开发入门记录</a><time datetime="2026-06-06T08:00:00.000Z" title="发表于 2026-06-06 16:00:00">2026-06-06</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
