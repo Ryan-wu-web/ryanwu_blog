@@ -1,0 +1,959 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="从传感器、运动估计、SLAM、有图定位到全局规划、局部控制与恢复行为，把移动机器人自主导航整条链路串一遍，并附上自己用 Gazebo + ROS 2 跑出来的实测数字。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="从传感器、运动估计、SLAM、有图定位到全局规划、局部控制与恢复行为，把移动机器人自主导航整条链路串一遍，并附上自己用 Gazebo + ROS 2 跑出来的实测数字。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/robot-slam-localization-navigation/cover.webp">
+<meta property="article:published_time" content="2026-09-21T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-21T11:19:19.478Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="navigation">
+<meta property="article:tag" content="robotics">
+<meta property="article:tag" content="ros2">
+<meta property="article:tag" content="slam">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/robot-slam-localization-navigation/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航",
+  "url": "https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/",
+  "image": "https://ryanwu.cn/images/posts/robot-slam-localization-navigation/cover.webp",
+  "datePublished": "2026-09-21T04:00:00.000Z",
+  "dateModified": "2026-09-21T11:19:19.478Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/robot-slam-localization-navigation/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-21T11:19:19.478Z" title="更新于 2026-09-21 19:19:19">2026-09-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>本文是一次移动机器人调研的整理。标着「<strong>实测</strong>」的数字，来自我在 Gazebo + ROS 2 上跑通的四个演示，截图也都是自己截的；其余内容来自公开资料整理。两者的边界我会尽量标清楚。</p>
+</blockquote>
+<h2 id="机器人自主移动，其实只在回答三个问题"><a href="#机器人自主移动，其实只在回答三个问题" class="headerlink" title="机器人自主移动，其实只在回答三个问题"></a>机器人自主移动，其实只在回答三个问题</h2><p><strong>这是什么地方、我在哪、怎么走过去。</strong></p>
+<p>前两个是建图和定位，第三个是导航。它们不是三个能各自独立的模块，而是一条首尾相接的链路：传感器给出原始观测，运动估计把这些观测折算成”我动了多少”，SLAM 在建图的同时把自己定在地图里，地图存盘之后再加载回来做定位，最后导航器收下目标点，规划出一条路线，再把它拆成一条条速度指令发给底盘。</p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;Gazebo 仿真世界&quot;] --&gt; B[&quot;传感器&lt;br/&gt;激光雷达 / IMU / 轮速计&quot;]
+    B --&gt; C[&quot;运动估计&lt;br/&gt;odom + TF&quot;]
+    C --&gt; D[&quot;SLAM 建图&lt;br/&gt;SLAM Toolbox&quot;]
+    D --&gt; E[&quot;地图存盘&lt;br/&gt;.pgm + .yaml&quot;]
+    E --&gt; F[&quot;加载地图 + AMCL 定位&quot;]
+    F --&gt; G[&quot;接收目标点&quot;]
+    G --&gt; H[&quot;全局规划&quot;]
+    H --&gt; I[&quot;局部控制与避障&quot;]
+    I --&gt; J[&quot;到达目标&quot;]
+    I -.-&gt;|&quot;堵住 / 卡住 / 定位出错&quot;| K[&quot;恢复行为&quot;]
+    K -.-&gt; H</code></pre>
+
+<p>整条链路上真正容易出问题的，几乎都是两个原因：<strong>该对的没对齐，该信的没信对</strong>。时间戳没对齐，观测就会去修正一段并不存在的运动；回环没检测到，地图首尾就合不上；初始位姿给错，粒子就会收敛到一个同样自洽但是错误的位置。下面按这条链路走一遍。</p>
+<hr>
+<h2 id="一、传感器与运动估计"><a href="#一、传感器与运动估计" class="headerlink" title="一、传感器与运动估计"></a>一、传感器与运动估计</h2><h3 id="机器人靠什么感知环境"><a href="#机器人靠什么感知环境" class="headerlink" title="机器人靠什么感知环境"></a>机器人靠什么感知环境</h3><table>
+<thead>
+<tr>
+<th>传感器</th>
+<th>原理</th>
+<th>优点</th>
+<th>局限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IMU</td>
+<td>测三轴加速度和角速度，积分得到速度、位移和姿态变化</td>
+<td>高频、短时准，不受光照和纹理影响</td>
+<td>零偏和噪声会积分漂移，时间一长位置误差就很大</td>
+</tr>
+<tr>
+<td>轮速计</td>
+<td>靠车轮转数推算走了多远、转了多少角度</td>
+<td>直接、便宜，短时里程比较稳</td>
+<td>打滑、空转、地面不平或轮胎半径变化时就不准</td>
+</tr>
+<tr>
+<td>激光雷达</td>
+<td>发射激光测距，得到周围环境的三维点云</td>
+<td>精度高、能直接测距，适合建图和定位</td>
+<td>受雨雾烟尘影响；对透明、反光、吸光物体和长走廊等退化场景不友好</td>
+</tr>
+<tr>
+<td>相机</td>
+<td>拍图像，提取纹理、颜色和特征</td>
+<td>信息丰富，能识别纹理、语义和回环</td>
+<td>受光照、动态物体和纹理缺失影响；单目还有尺度不确定的问题</td>
+</tr>
+</tbody></table>
+<p><strong>实测</strong>：这次用的 TurtleBot3 Burger 只装了 IMU + 轮速计 + 2D 激光雷达，<strong>没有相机</strong>。所以建图和定位完全依赖激光，后面不少问题的根源都在这里——比如长走廊和空旷区域缺少特征，就是这个传感器组合的天然短板。</p>
+<p><img src="/images/posts/robot-slam-localization-navigation/laser-scan-points.webp" alt="激光点云：一圈扫描得到的环境轮廓与机器人当前位置" loading='lazy'></p>
+<h3 id="机器人怎么判断自己移动了多远"><a href="#机器人怎么判断自己移动了多远" class="headerlink" title="机器人怎么判断自己移动了多远"></a>机器人怎么判断自己移动了多远</h3><p>主要靠 <strong>IMU 和轮速计融合</strong>。轮速计给出轮子转了多少，推算出大致的前进距离和转向；IMU 给出角速度和加速度，积分得到短时的姿态变化和位移。两者互补，覆盖了彼此的盲区。</p>
+<p>但这一套<strong>偏预测、少观测</strong>——只有推算、没有外部修正。所以还需要激光点云、相机这类<strong>观测</strong>参与进来，用”看到的世界”反复修正”算出来的运动”。</p>
+<h3 id="为什么走得越久，位置偏得越多"><a href="#为什么走得越久，位置偏得越多" class="headerlink" title="为什么走得越久，位置偏得越多"></a>为什么走得越久，位置偏得越多</h3><ul>
+<li><strong>IMU 零偏和噪声积分漂移</strong>：速度误差随时间<strong>线性</strong>增长，位置误差随时间<strong>平方</strong>增长，这是长距离漂移的主因。</li>
+<li><strong>轮速计打滑或空转</strong>：轮子转数和实际位移对不上，误差直接累加。</li>
+<li><strong>时间戳不同步或外参标定不准</strong>：融合时把错误的运动当成真实运动，漂移会更快。</li>
+</ul>
+<blockquote>
+<p><strong>时间戳对齐是这里最容易被忽略的一环。</strong> IMU 频率极高、激光点云频率较低，融合时必须明确”结果对应哪个时间戳”。一旦观测和预测的时间戳对不齐，估计就会出问题。</p>
+</blockquote>
+<hr>
+<h2 id="二、建图：SLAM-怎么一边定位一边建图"><a href="#二、建图：SLAM-怎么一边定位一边建图" class="headerlink" title="二、建图：SLAM 怎么一边定位一边建图"></a>二、建图：SLAM 怎么一边定位一边建图</h2><h3 id="位姿图优化：先估计，再互相校准"><a href="#位姿图优化：先估计，再互相校准" class="headerlink" title="位姿图优化：先估计，再互相校准"></a>位姿图优化：先估计，再互相校准</h3><p>SLAM 的核心动作可以拆成五步：</p>
+<ol>
+<li>每个<strong>节点</strong>是一时刻的传感器信息，包含<strong>位姿预测</strong>（位置、姿态）和<strong>激光点云观测</strong>；</li>
+<li>对点云做<strong>特征提取</strong>，得到角点、线、面等环境特征——这些特征比位姿预测更准，可以当作可靠的观测信息；</li>
+<li>不同节点的环境特征会有重叠，通过<strong>特征匹配</strong>得到节点之间的<strong>相对位姿约束</strong>（包含方向、大小等多个维度）；</li>
+<li>多个节点 + 多条约束边组成一幅图，用<strong>图优化</strong>按所有边的共同约束，统一校正每个节点的位姿；</li>
+<li>再用<strong>优化后的位姿拼接点云</strong>，得到更准的环境特征。</li>
+</ol>
+<p>位姿越准地图越准，地图越准位姿也能越准，如此迭代。<strong>用点云的特征提取与匹配约束位姿，用优化后的位姿反过来拼出地图，两者互相成就。</strong></p>
+<h3 id="前端、后端、回环：三件事，三个范围"><a href="#前端、后端、回环：三件事，三个范围" class="headerlink" title="前端、后端、回环：三件事，三个范围"></a>前端、后端、回环：三件事，三个范围</h3><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>范围</th>
+<th>做什么</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>前端匹配</strong></td>
+<td>局部</td>
+<td>相邻节点之间做点云特征提取与匹配，通过<strong>局部图优化</strong>初步估计位姿；再按角度、位移的变化幅度提取<strong>关键帧</strong></td>
+<td>实时，但误差会持续累积</td>
+</tr>
+<tr>
+<td><strong>后端优化</strong></td>
+<td>全局</td>
+<td>以关键帧为节点做<strong>图优化</strong>，在全局角度统一调整所有关键帧位姿；跨时间范围长、计算量更大，需要对关键帧做过滤、滑窗</td>
+<td>全局一致，计算量大</td>
+</tr>
+<tr>
+<td><strong>回环检测</strong></td>
+<td>当前 vs 历史</td>
+<td>先对历史关键帧做特征描述，新关键帧用描述子过滤掉大部分历史帧，再与候选帧做特征匹配，建立当前帧与历史帧之间的边；并用点云重叠等环境特征提高置信度</td>
+<td>补上长距离约束，使地图闭合</td>
+</tr>
+</tbody></table>
+<p>三者的关系是：<strong>前端负责”局部、实时、但会漂”的位姿估计；后端在全局上统一约束；回环检测补上当前帧与历史帧之间的长距离约束。</strong></p>
+<h3 id="为什么绕一圈回到原点，地图就能被修正"><a href="#为什么绕一圈回到原点，地图就能被修正" class="headerlink" title="为什么绕一圈回到原点，地图就能被修正"></a>为什么绕一圈回到原点，地图就能被修正</h3><p>关键在于<strong>后端优化和回环检测用的约束不是同一批</strong>。</p>
+<p>后端优化用的是<strong>现有的关键帧和边</strong>，而边一般只在相邻关键帧之间产生——第一帧和最新帧之间几乎没有联系，哪怕两者的位姿、环境特征都很接近。它<strong>没有利用点云重叠来提高置信度</strong>，所以一旦缺了回环约束，地图反而会出现重叠等问题。</p>
+<p>回环检测补的正是这条缺失的联系：它在当前帧和历史帧之间建立边，把整条轨迹的<strong>首尾拉在一起</strong>，累计漂移被分摊修正，地图实现闭合。</p>
+<h3 id="地图为什么会重叠、倾斜、断裂、变形"><a href="#地图为什么会重叠、倾斜、断裂、变形" class="headerlink" title="地图为什么会重叠、倾斜、断裂、变形"></a>地图为什么会重叠、倾斜、断裂、变形</h3><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>原因</th>
+<th>对策</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>重叠</strong></td>
+<td>回环没检测到、回环边没加上，同一区域建了两层</td>
+<td>加强回环检测，确认后加回环边，触发全局优化</td>
+</tr>
+<tr>
+<td><strong>倾斜</strong></td>
+<td>IMU 俯仰&#x2F;横滚漂移导致重力方向不准，或激光-IMU 外参标定不准</td>
+<td>标定 IMU 零偏和外参，做好时间戳同步，加入重力约束</td>
+</tr>
+<tr>
+<td><strong>断裂</strong></td>
+<td>跟踪丢失、重定位失败、传感器中断，前后关键帧图不连通</td>
+<td>重定位、退化检测、多传感器融合，保证图连通</td>
+</tr>
+<tr>
+<td><strong>变形</strong></td>
+<td>错误回环把不相干节点连起来，或全局约束不足</td>
+<td>回环多候选验证、鲁棒核函数、合理设置信息矩阵、加绝对约束</td>
+</tr>
+</tbody></table>
+<p>一句话记法：<strong>重叠靠回环，倾斜靠标定，断裂靠重定位和连通，变形靠正确回环和鲁棒全局优化。</strong></p>
+<p><strong>实测</strong>：按 0.15 m&#x2F;s 慢速走完全程并闭环，建图覆盖 <strong>72.9%</strong>（112×103 格），墙线连续、无变形、无重影。<strong>慢速 + 闭环</strong>是避开上面四类问题的两个有效手段——速度慢，相邻帧的特征重叠就多，前端匹配不容易错；闭环则把最后那点累计漂移一次性摊掉。</p>
+<p><img src="/images/posts/robot-slam-localization-navigation/slam-grid-map.webp" alt="建好并保存的栅格地图，深色是墙体与柱子" loading='lazy'></p>
+<hr>
+<h2 id="三、地图建好之后：建图和有图定位差在哪"><a href="#三、地图建好之后：建图和有图定位差在哪" class="headerlink" title="三、地图建好之后：建图和有图定位差在哪"></a>三、地图建好之后：建图和有图定位差在哪</h2><h3 id="未知量从两个减到一个"><a href="#未知量从两个减到一个" class="headerlink" title="未知量从两个减到一个"></a>未知量从两个减到一个</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>SLAM（建图）</th>
+<th>定位</th>
+<th>导航</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入</td>
+<td>激光 + 里程计</td>
+<td>激光 + <strong>已有地图</strong></td>
+<td>目标点 + 位姿 + 地图</td>
+</tr>
+<tr>
+<td>输出</td>
+<td>地图<strong>和</strong>位姿（同时）</td>
+<td>位姿</td>
+<td>速度指令</td>
+</tr>
+<tr>
+<td>未知量</td>
+<td>地图 + 位姿（2 个）</td>
+<td>只有位姿（1 个）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ROS 2 组件</td>
+<td>SLAM Toolbox</td>
+<td>AMCL</td>
+<td>Nav2</td>
+</tr>
+</tbody></table>
+<p><strong>建图</strong>时机器人既不知道自己在哪，也不知道环境长什么样，得<strong>同时估计位姿和建地图</strong>。<strong>有图定位</strong>时地图已经建好了，机器人只需要在这个已知地图里找到自己的位姿——未知量从两个减到一个，实现更简单。</p>
+<p>据此还能得到一条<strong>降级兜底链</strong>：<strong>局部定位 → 全局定位 → 重新建图</strong>。局部定位最快，不行就退回全局定位，再不行只能重来。</p>
+<h3 id="地图里到底存了什么"><a href="#地图里到底存了什么" class="headerlink" title="地图里到底存了什么"></a>地图里到底存了什么</h3><p>存的是<strong>栅格地图</strong>：每个格子是<strong>自由、障碍或未知</strong>三种状态之一，另外还有<strong>分辨率</strong>和<strong>原点</strong>信息。</p>
+<p><strong>实测</strong>：这次的地图 112×104 格、0.05 m&#x2F;格（约 5.6 m × 5.2 m），原点 <code>(-0.929, -2.131)</code>；格值分布是<strong>空闲 54.6% &#x2F; 障碍 5.9% &#x2F; 未知 39.5%</strong>。</p>
+<p>那个「未知 39.5%」值得单独说一句：<strong>它不是错误，而是”激光没扫到过的地方”，和”确认没有障碍”是两回事。</strong> 后面导航里很多”明明看着能过却过不去”的问题，都跟这个区别有关。</p>
+<p>还有一点容易混：<strong>栅格地图 ≠ 代价地图</strong>。落盘保存的只有栅格地图；代价地图不保存，它是导航时在栅格地图上实时叠加出来的，只存在于运行时。</p>
+<h3 id="AMCL-具体是怎么找到我的"><a href="#AMCL-具体是怎么找到我的" class="headerlink" title="AMCL 具体是怎么找到我的"></a>AMCL 具体是怎么找到我的</h3><ol>
+<li>初始随机撒一堆粒子，每个粒子有确定的位姿信息，认为是自己可能的位姿；</li>
+<li>通过激光点云观测，可以得到环境特征相对自己的位置；</li>
+<li>将环境特征相对位置叠加到每个粒子上，可以得到环境特征的<strong>确切位置</strong>；</li>
+<li>和已知地图进行比较，置信度高的区域保留、置信度低的过滤；</li>
+<li>下次迭代缩小区域，在置信度高的区域撒粒子；</li>
+<li>机器人移动，粒子的位置估计也跟着移动，进一步变换位置、缩小区域匹配；</li>
+<li>当置信度大于某阈值，认为定位成功。</li>
+</ol>
+<p>全局模式粒子撒满地图，局部模式粒子集中在初始位置附近。</p>
+<p><strong>实测</strong>：给对初始位姿后，AMCL 稳态定位误差 <strong>0.138 m</strong>。</p>
+<h3 id="为什么通常要人工给一个大致初始位置"><a href="#为什么通常要人工给一个大致初始位置" class="headerlink" title="为什么通常要人工给一个大致初始位置"></a>为什么通常要人工给一个大致初始位置</h3><p><strong>初始位置本质上是一个坐标 + 一个协方差，协方差可以理解成搜索半径。</strong></p>
+<ul>
+<li>给错初始坐标，但初始位置范围<strong>覆盖</strong>真实位置：仍是局部 AMCL，能收敛；</li>
+<li>给对初始坐标：更容易收敛；</li>
+<li>给错初始坐标，且初始范围<strong>不覆盖</strong>真实位置：粒子可能收敛到错误位置，或干脆收敛不了。</li>
+</ul>
+<p><strong>实测</strong>：这个坑我踩到了第三种。起点落在规划器的范围之外，规划器直接报 <code>Start Coordinates was outside bounds</code> 拒绝任务。<strong>排查方法</strong>：在 RViz 里同时打开 <code>/amcl_pose</code> 和激光点云，看激光点是否贴合地图中的墙线——不贴合，就是定位错了。</p>
+<p>如果机器人运行中被搬到别的地方，能不能重新找到自己？能，靠已有地图和 AMCL。给定大致初始位置就走局部定位，否则走全局定位。问题在于：<strong>如果 AMCL 还停在局部模式，粒子集中在旧位置附近，就可能找不到。</strong> 所以被搬动后要<strong>触发全局重定位</strong>，或者人工给一个新的大致位置。</p>
+<h3 id="桌椅、货架变了，旧地图还能用吗"><a href="#桌椅、货架变了，旧地图还能用吗" class="headerlink" title="桌椅、货架变了，旧地图还能用吗"></a>桌椅、货架变了，旧地图还能用吗</h3><ul>
+<li><strong>小变化</strong>：大部分环境没变，激光能和旧地图对上，粒子权重仍然较高，可以定位；</li>
+<li><strong>大变化</strong>：太多特征对不上，粒子权重普遍很低，可能无法定位，需要重建地图；</li>
+<li><strong>移动障碍物</strong>：可以利用相邻帧点云比对，变化明显的点认为是<strong>动态障碍</strong>，过滤掉，不让它影响定位。</li>
+</ul>
+<p>所以小物体增加、临时障碍通常不影响旧地图使用。</p>
+<hr>
+<h2 id="四、导航：从目标点到速度指令"><a href="#四、导航：从目标点到速度指令" class="headerlink" title="四、导航：从目标点到速度指令"></a>四、导航：从目标点到速度指令</h2><h3 id="栅格地图和代价地图"><a href="#栅格地图和代价地图" class="headerlink" title="栅格地图和代价地图"></a>栅格地图和代价地图</h3><ul>
+<li><strong>栅格地图</strong>：把环境切成小格子，每格标成自由、障碍或未知——“格子化的环境地图”。</li>
+<li><strong>代价地图</strong>：在栅格地图基础上，给每个格子填一个代价值，表示走这里的<strong>风险大小</strong>；障碍物本身致命，周围一圈高代价，越远越低。</li>
+</ul>
+<p>激光每个周期扫一遍：新打中的格子标成障碍，局部代价地图实时更新；障碍走了则靠<strong>射线清除</strong>——激光从传感器到障碍物之间穿过的格子说明是空的，会被清成自由空间。</p>
+<h3 id="全局规划：A-为什么看起来总是”先贴上去再绕开”"><a href="#全局规划：A-为什么看起来总是”先贴上去再绕开”" class="headerlink" title="全局规划：A* 为什么看起来总是”先贴上去再绕开”"></a>全局规划：A* 为什么看起来总是”先贴上去再绕开”</h3><p>全局规划就是在代价地图上，从起点到终点找一条<strong>总代价最小</strong>的路线。</p>
+<p><strong>A* 算法</strong>把栅格当成图，障碍格不连通；用 <code>f = g + h</code> 给每个格子打分，<code>g</code> 是已走代价，<code>h</code> 是到终点的估计代价；每次选 <code>f</code> 最小的格子扩展。由于 <code>h</code> 只看直线距离、不考虑障碍，A* 会一路朝目标方向扩展，直到被挡住才绕开障碍——表现出来就是<strong>先靠近障碍物、再绕着障碍物走</strong>。</p>
+<p><img src="/images/posts/robot-slam-localization-navigation/rviz-amcl-global-plan.webp" alt="导航进行中：全局路径、AMCL 粒子与代价地图的膨胀梯度" loading='lazy'></p>
+<p><em>图中细线是全局规划出的路径，绿色箭头群是 AMCL 粒子，红色箭头是当前位姿，左下绿色箭头是目标点，背景由紫到白是代价地图。</em></p>
+<h3 id="为什么机器人不是一个点，却能用质点来表示"><a href="#为什么机器人不是一个点，却能用质点来表示" class="headerlink" title="为什么机器人不是一个点，却能用质点来表示"></a>为什么机器人不是一个点，却能用质点来表示</h3><p><strong>因为代价地图里做了膨胀。</strong></p>
+<p>机器人不是质点，有体积。障碍向外膨胀一圈，半径至少等于机器人半径加安全裕度，防止机器人中心贴墙时身体撞上。</p>
+<p><strong>实测</strong>：这次机器人半径 0.3 m、安全裕度 0.1 m，膨胀半径就是 0.4 m，所有障碍向外扩 0.4 m——这时就可以用<strong>质点</strong>表示机器人，安全通过。</p>
+<p><img src="/images/posts/robot-slam-localization-navigation/rviz-costmap-dwa.webp" alt="代价地图全景：柱子障碍外面的膨胀层，颜色由紫到红再到白" loading='lazy'></p>
+<p><em>深色圆斑是柱子障碍，周围一圈由紫→红→白逐渐变浅的就是膨胀层——离障碍越近代价越高。图中几块白斑是激光还没扫到的未知区域。</em></p>
+<p>膨胀层也解释了那个经典困惑：<strong>为什么地图上看着能过，机器人却认为不能过。</strong> 因为膨胀的安全裕度把本来能过的窄缝填补掉了。当然也可能是定位漂移、代价地图更新不及时，或者动态障碍临时挡住。</p>
+<h3 id="局部控制：DWA-怎么选出这一拍的速度"><a href="#局部控制：DWA-怎么选出这一拍的速度" class="headerlink" title="局部控制：DWA 怎么选出这一拍的速度"></a>局部控制：DWA 怎么选出这一拍的速度</h3><ol>
+<li>在当前速度和加速度限制内，按分辨率采样多组 <code>(v, ω)</code>——速度和角速度在范围内瞬时变化；</li>
+<li>保持每组 <code>(v, ω)</code> 在时间间隔 <code>t</code> 内不变，这段位移就是一小段直线（或圆弧），把整体时间 <code>T</code> 内的 <code>T / t</code> 段连起来，就是这一组的<strong>预测轨迹</strong>；</li>
+<li>对每条轨迹打分：朝向目标、障碍距离、速度、是否贴合全局路径——理想轨迹是方向朝着目标、离障碍远、速度快、贴合全局路径；</li>
+<li>选总分最高的那组 <code>(v, ω)</code> 直接发给底盘执行，每个控制周期 <code>t</code> 重算一次，<strong>滚动执行</strong>。</li>
+</ol>
+<p>这套做法有两个我不太容易从公式里看出来的特点：</p>
+<ol>
+<li><strong>动态规避障碍物</strong>：观测范围由时间 <code>T</code> 的预测轨迹确定，等于把视野拉长了，能提前感知障碍物；每个周期 <code>t</code> 都会变换位姿、重算观测范围，行动变化迅速；打分时”离障碍远”这一项又进一步保证规避。</li>
+<li><strong>贴近目标时自然减速</strong>：接近目标时速度项占比很小、方向项占比大，速度快反而导致方向偏差大，于是自然会降速；也可以设置贴近目标一定范围内速度上限。当机器人速度很低、方向误差很小、距离很小时，就认为<strong>到达目标</strong>。</li>
+</ol>
+<h3 id="为什么有时左右摇摆、原地旋转、卡在墙角"><a href="#为什么有时左右摇摆、原地旋转、卡在墙角" class="headerlink" title="为什么有时左右摇摆、原地旋转、卡在墙角"></a>为什么有时左右摇摆、原地旋转、卡在墙角</h3><ul>
+<li><strong>左右摇摆</strong>：左右两边障碍交替出现，或评分权重不合理，导致两条轨迹分数差不多，系统来回选。→ 调大避障权重；加迟滞（除非明显更优，否则不切换方向）；降低控制频率或增大速度平滑。</li>
+<li><strong>原地旋转</strong>：前方被堵，所有前进轨迹都会撞，只能原地转；或定位丢失触发重定位旋转；或恢复行为被触发。→ 临时堵就转完重新规划；定位丢了就触发全局重定位；恢复行为就等它执行完。</li>
+<li><strong>卡在墙角</strong>：膨胀层把窄缝堵死，或陷入局部极小值，或定位漂移导致控制方向错误。→ 适当减小膨胀半径（但不能小于机器人半径）；加恢复行为；改善定位精度；让全局规划器重新规划绕开墙角。</li>
+</ul>
+<hr>
+<h2 id="五、出问题之后：恢复行为和行为树"><a href="#五、出问题之后：恢复行为和行为树" class="headerlink" title="五、出问题之后：恢复行为和行为树"></a>五、出问题之后：恢复行为和行为树</h2><p>正常情况就是 A* 规划 + DWA 跟踪；<strong>只有出问题时才进入恢复流程</strong>。</p>
+<pre><code class="highlight mermaid">flowchart TD
+    R[&quot;根节点&quot;] --&gt; M[&quot;主流程（顺序执行）&quot;]
+    M --&gt; M1[&quot;规划：A* 生成全局路径&quot;]
+    M1 --&gt; M2[&quot;行驶：DWA 局部控制跟踪&quot;]
+    M2 --&gt; M3[&quot;检查：是否到达 / 是否卡住 / 定位是否正常&quot;]
+    R --&gt; P[&quot;规划失败恢复&lt;br/&gt;清除全局代价地图 → 重试规划&quot;]
+    R --&gt; C[&quot;控制失败恢复&lt;br/&gt;清除局部代价地图 → 重试控制&quot;]
+    R --&gt; S[&quot;系统级恢复&lt;br/&gt;清除代价地图 → 原地旋转 → 等待 → 后退&quot;]
+    R --&gt; F[&quot;最终失败&lt;br/&gt;安全停止 → 报告失败 → 人工&quot;]</code></pre>
+
+<p><strong>行为树</strong>把这些步骤按优先级组织成一棵树：根节点往下，先走主流程；主流程哪一步失败，就转到对应的恢复分支；全部失败才安全停止。好处是**”正常怎么走”和”出错怎么办”分开写**，主流程保持简单，异常处理挂在旁边的分支上。</p>
+<p>各情况的触发条件和原因：</p>
+<ul>
+<li><strong>规划失败</strong>：清除全局代价地图，重试全局规划——可能是传感器噪声或临时障碍导致的；</li>
+<li><strong>控制失败</strong>：清除局部代价地图，重试局部控制——可能是局部地图里有幽灵障碍；</li>
+<li><strong>定位出错</strong>：重新做全局&#x2F;局部 AMCL 定位，旋转扫描环境，重新匹配地图定位；</li>
+<li><strong>恢复不了</strong>：按顺序轮流执行清除代价地图、原地旋转、等待、后退；</li>
+<li><strong>全部失效</strong>：安全停止，报告失败，等待人工干预。</li>
+</ul>
+<p><strong>实测</strong>：把障碍直接压在目标点上后，触发了完整的恢复链路——清除代价地图 → 原地旋转 → 等待 → 后退，循环重试，<strong>169 秒后返回 <code>TaskResult.FAILED</code>，全程没有硬撞上去。</strong></p>
+<p><img src="/images/posts/robot-slam-localization-navigation/nav-test-result.webp" alt="终端输出：一次成功导航的状态、行程与到点误差" loading='lazy'></p>
+<p><em>另一次成功导航的实测输出：<code>SUCCEEDED</code>、Nav2 错误码 0、实际行程 15.47 m（直线 14.91 m，相当于绕行 104%）、到点误差 0.123 m（判定容差 0.15 m）。</em></p>
+<hr>
+<h2 id="六、把-ROS-2-的组件串起来"><a href="#六、把-ROS-2-的组件串起来" class="headerlink" title="六、把 ROS 2 的组件串起来"></a>六、把 ROS 2 的组件串起来</h2><p>前面讲了那么多环节，落到 ROS 2 上其实就是三个组件，靠<strong>两条接口</strong>接起来：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    S[&quot;Gazebo 仿真世界&lt;br/&gt;物理世界 + 传感器数据&quot;]
+    subgraph SLAM[&quot;① 建图&quot;]
+        B[&quot;SLAM Toolbox&lt;br/&gt;前端匹配 → 后端优化 → 回环检测&quot;]
+        C[&quot;map_saver_cli&lt;br/&gt;地图存盘&quot;]
+    end
+    subgraph LOC[&quot;② 定位&quot;]
+        D[&quot;AMCL&lt;br/&gt;已有地图中粒子滤波定位&quot;]
+    end
+    subgraph NAV[&quot;③ 导航&quot;]
+        E[&quot;Nav2&lt;br/&gt;全局规划 + 局部控制 + 恢复行为&quot;]
+    end
+    F[&quot;底盘运动&quot;]
+    G[&quot;Foxglove / RViz2&lt;br/&gt;只看，不参与计算&quot;]
+    S --&gt;|激光 / IMU / 轮速计| B
+    B --&gt;|栅格地图| C
+    C ==&gt;|&quot;接口① 地图文件&quot;| D
+    D ==&gt;|&quot;接口② map→odom 变换&quot;| E
+    E --&gt;|速度指令| F
+    E -.-&gt; G</code></pre>
+
+<p><strong>串联的钥匙就是那两条接口</strong>：SLAM Toolbox 建完图存成<strong>地图文件</strong>，AMCL 加载它、持续输出 <strong><code>map→odom</code> 变换</strong>，Nav2 靠这个变换知道”我在哪”，再去做规划和控制。节点之间都通过 <strong>DDS</strong> 通信；真机上把 Gazebo 换成真实底盘和传感器即可。</p>
+<hr>
+<h2 id="七、常见问题速查"><a href="#七、常见问题速查" class="headerlink" title="七、常见问题速查"></a>七、常见问题速查</h2><table>
+<thead>
+<tr>
+<th>现象</th>
+<th>可能原因</th>
+<th>排查思路</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>地图重叠或变形</strong>（同一区域两层、墙变弯）</td>
+<td>回环没检测到或回环边错误；IMU 漂移、外参标定不准、时间戳不同步</td>
+<td>检查回环检测是否生效；检查 IMU 零偏和外参；检查时间同步</td>
+</tr>
+<tr>
+<td><strong>无法正确定位</strong>（粒子发散、地图对不上）</td>
+<td>初始位置错误；地图变化太大；激光特征少（长走廊、空旷区）；动态障碍多</td>
+<td>给大致初始位置或触发全局重定位；检查激光与地图匹配；清除动态障碍</td>
+</tr>
+<tr>
+<td><strong>目标点可达却规划不出路线</strong></td>
+<td>膨胀层太大把窄缝堵死；代价地图有幽灵障碍；未知区域被当障碍</td>
+<td>检查膨胀半径；清除代价地图；检查起终点是否可通行</td>
+</tr>
+<tr>
+<td><strong>障碍物前左右摇摆</strong></td>
+<td>左右障碍交替出现；评分权重不合理；控制频率低；定位抖动</td>
+<td>调大避障权重；加迟滞；平滑速度；提高定位稳定性</td>
+</tr>
+<tr>
+<td><strong>障碍移开后仍不走</strong></td>
+<td>代价地图没清除幽灵障碍；射线清除太慢或太保守；更新频率低</td>
+<td>手动或自动清除代价地图；检查射线清除逻辑；提高局部代价地图更新频率</td>
+</tr>
+<tr>
+<td><strong>被搬动后找不到自己</strong></td>
+<td>AMCL 还停留在局部模式，粒子集中在旧位置附近</td>
+<td>触发全局重定位，粒子撒满地图；或人工给一个新的大致初始位置</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>这次调研里，<strong>能称得上我自己实测的是这几组数字</strong>：建图覆盖 72.9%、AMCL 稳态定位误差 0.138 m、临时放障碍后重规划绕行成功、目标被堵死时 169 秒后安全失败，以及上图那一次到点误差 0.123 m。其余关于前端&#x2F;后端&#x2F;回环、A*、DWA、行为树的部分，都是公开资料整理加上自己的理解，不是我的实验结论。</p>
+<p>如果要我用一句话概括整条链路，大概是：<strong>机器人自主导航里绝大多数”玄学”，最后都能落到两个可检查的点上——时间戳有没有对齐，观测有没有被真正用上。</strong></p>
+<p>时间戳对齐，决定了每一条观测是不是作用在了它真正对应的那段运动上；观测有没有被用上，决定了这套系统是在”推算”还是在”估计”。漂移、回环合不上、定位收敛到错误位置、地图重叠，往回追都能追到这两条。</p>
+<p>不过这些数字都出自仿真：没有打滑、没有传感器噪声、没有光照和动态行人。尤其是 0.138 m 这个定位误差，换到真实底盘上大概率不是这个数——这也是我看这份结果时最不敢直接外推的一项。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/">https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/robotics/">robotics</a><a class="post-meta__tags" href="/tags/ros2/">ros2</a><a class="post-meta__tags" href="/tags/slam/">slam</a><a class="post-meta__tags" href="/tags/navigation/">navigation</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/robot-slam-localization-navigation/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img class="cover" src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Jev 调研：便宜和快是真的，校准还没被证明</div></div><div class="info-2"><div class="info-item-1">拆解 TypeSafe 的 Jev（System One 模型类）官方材料、第三方复现与对抗性评测：便宜、低延迟、零格式错误已被独立验证，而支撑其全部叙事的校准置信度至今没有论文或可靠性曲线。</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">46</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%87%AA%E4%B8%BB%E7%A7%BB%E5%8A%A8%EF%BC%8C%E5%85%B6%E5%AE%9E%E5%8F%AA%E5%9C%A8%E5%9B%9E%E7%AD%94%E4%B8%89%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">机器人自主移动，其实只在回答三个问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BC%A0%E6%84%9F%E5%99%A8%E4%B8%8E%E8%BF%90%E5%8A%A8%E4%BC%B0%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">一、传感器与运动估计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E4%BA%BA%E9%9D%A0%E4%BB%80%E4%B9%88%E6%84%9F%E7%9F%A5%E7%8E%AF%E5%A2%83"><span class="toc-number">2.1.</span> <span class="toc-text">机器人靠什么感知环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E8%87%AA%E5%B7%B1%E7%A7%BB%E5%8A%A8%E4%BA%86%E5%A4%9A%E8%BF%9C"><span class="toc-number">2.2.</span> <span class="toc-text">机器人怎么判断自己移动了多远</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%B5%B0%E5%BE%97%E8%B6%8A%E4%B9%85%EF%BC%8C%E4%BD%8D%E7%BD%AE%E5%81%8F%E5%BE%97%E8%B6%8A%E5%A4%9A"><span class="toc-number">2.3.</span> <span class="toc-text">为什么走得越久，位置偏得越多</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%BB%BA%E5%9B%BE%EF%BC%9ASLAM-%E6%80%8E%E4%B9%88%E4%B8%80%E8%BE%B9%E5%AE%9A%E4%BD%8D%E4%B8%80%E8%BE%B9%E5%BB%BA%E5%9B%BE"><span class="toc-number">3.</span> <span class="toc-text">二、建图：SLAM 怎么一边定位一边建图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E5%A7%BF%E5%9B%BE%E4%BC%98%E5%8C%96%EF%BC%9A%E5%85%88%E4%BC%B0%E8%AE%A1%EF%BC%8C%E5%86%8D%E4%BA%92%E7%9B%B8%E6%A0%A1%E5%87%86"><span class="toc-number">3.1.</span> <span class="toc-text">位姿图优化：先估计，再互相校准</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF%E3%80%81%E5%90%8E%E7%AB%AF%E3%80%81%E5%9B%9E%E7%8E%AF%EF%BC%9A%E4%B8%89%E4%BB%B6%E4%BA%8B%EF%BC%8C%E4%B8%89%E4%B8%AA%E8%8C%83%E5%9B%B4"><span class="toc-number">3.2.</span> <span class="toc-text">前端、后端、回环：三件事，三个范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BB%95%E4%B8%80%E5%9C%88%E5%9B%9E%E5%88%B0%E5%8E%9F%E7%82%B9%EF%BC%8C%E5%9C%B0%E5%9B%BE%E5%B0%B1%E8%83%BD%E8%A2%AB%E4%BF%AE%E6%AD%A3"><span class="toc-number">3.3.</span> <span class="toc-text">为什么绕一圈回到原点，地图就能被修正</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9B%BE%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E9%87%8D%E5%8F%A0%E3%80%81%E5%80%BE%E6%96%9C%E3%80%81%E6%96%AD%E8%A3%82%E3%80%81%E5%8F%98%E5%BD%A2"><span class="toc-number">3.4.</span> <span class="toc-text">地图为什么会重叠、倾斜、断裂、变形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%9C%B0%E5%9B%BE%E5%BB%BA%E5%A5%BD%E4%B9%8B%E5%90%8E%EF%BC%9A%E5%BB%BA%E5%9B%BE%E5%92%8C%E6%9C%89%E5%9B%BE%E5%AE%9A%E4%BD%8D%E5%B7%AE%E5%9C%A8%E5%93%AA"><span class="toc-number">4.</span> <span class="toc-text">三、地图建好之后：建图和有图定位差在哪</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E7%9F%A5%E9%87%8F%E4%BB%8E%E4%B8%A4%E4%B8%AA%E5%87%8F%E5%88%B0%E4%B8%80%E4%B8%AA"><span class="toc-number">4.1.</span> <span class="toc-text">未知量从两个减到一个</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9B%BE%E9%87%8C%E5%88%B0%E5%BA%95%E5%AD%98%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">4.2.</span> <span class="toc-text">地图里到底存了什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AMCL-%E5%85%B7%E4%BD%93%E6%98%AF%E6%80%8E%E4%B9%88%E6%89%BE%E5%88%B0%E6%88%91%E7%9A%84"><span class="toc-number">4.3.</span> <span class="toc-text">AMCL 具体是怎么找到我的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%9A%E5%B8%B8%E8%A6%81%E4%BA%BA%E5%B7%A5%E7%BB%99%E4%B8%80%E4%B8%AA%E5%A4%A7%E8%87%B4%E5%88%9D%E5%A7%8B%E4%BD%8D%E7%BD%AE"><span class="toc-number">4.4.</span> <span class="toc-text">为什么通常要人工给一个大致初始位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%8C%E6%A4%85%E3%80%81%E8%B4%A7%E6%9E%B6%E5%8F%98%E4%BA%86%EF%BC%8C%E6%97%A7%E5%9C%B0%E5%9B%BE%E8%BF%98%E8%83%BD%E7%94%A8%E5%90%97"><span class="toc-number">4.5.</span> <span class="toc-text">桌椅、货架变了，旧地图还能用吗</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%AF%BC%E8%88%AA%EF%BC%9A%E4%BB%8E%E7%9B%AE%E6%A0%87%E7%82%B9%E5%88%B0%E9%80%9F%E5%BA%A6%E6%8C%87%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">四、导航：从目标点到速度指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%85%E6%A0%BC%E5%9C%B0%E5%9B%BE%E5%92%8C%E4%BB%A3%E4%BB%B7%E5%9C%B0%E5%9B%BE"><span class="toc-number">5.1.</span> <span class="toc-text">栅格地图和代价地图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E8%A7%84%E5%88%92%EF%BC%9AA-%E4%B8%BA%E4%BB%80%E4%B9%88%E7%9C%8B%E8%B5%B7%E6%9D%A5%E6%80%BB%E6%98%AF%E2%80%9D%E5%85%88%E8%B4%B4%E4%B8%8A%E5%8E%BB%E5%86%8D%E7%BB%95%E5%BC%80%E2%80%9D"><span class="toc-number">5.2.</span> <span class="toc-text">全局规划：A* 为什么看起来总是”先贴上去再绕开”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%BA%E5%99%A8%E4%BA%BA%E4%B8%8D%E6%98%AF%E4%B8%80%E4%B8%AA%E7%82%B9%EF%BC%8C%E5%8D%B4%E8%83%BD%E7%94%A8%E8%B4%A8%E7%82%B9%E6%9D%A5%E8%A1%A8%E7%A4%BA"><span class="toc-number">5.3.</span> <span class="toc-text">为什么机器人不是一个点，却能用质点来表示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E6%8E%A7%E5%88%B6%EF%BC%9ADWA-%E6%80%8E%E4%B9%88%E9%80%89%E5%87%BA%E8%BF%99%E4%B8%80%E6%8B%8D%E7%9A%84%E9%80%9F%E5%BA%A6"><span class="toc-number">5.4.</span> <span class="toc-text">局部控制：DWA 怎么选出这一拍的速度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%89%E6%97%B6%E5%B7%A6%E5%8F%B3%E6%91%87%E6%91%86%E3%80%81%E5%8E%9F%E5%9C%B0%E6%97%8B%E8%BD%AC%E3%80%81%E5%8D%A1%E5%9C%A8%E5%A2%99%E8%A7%92"><span class="toc-number">5.5.</span> <span class="toc-text">为什么有时左右摇摆、原地旋转、卡在墙角</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%87%BA%E9%97%AE%E9%A2%98%E4%B9%8B%E5%90%8E%EF%BC%9A%E6%81%A2%E5%A4%8D%E8%A1%8C%E4%B8%BA%E5%92%8C%E8%A1%8C%E4%B8%BA%E6%A0%91"><span class="toc-number">6.</span> <span class="toc-text">五、出问题之后：恢复行为和行为树</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%8A%8A-ROS-2-%E7%9A%84%E7%BB%84%E4%BB%B6%E4%B8%B2%E8%B5%B7%E6%9D%A5"><span class="toc-number">7.</span> <span class="toc-text">六、把 ROS 2 的组件串起来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E9%80%9F%E6%9F%A5"><span class="toc-number">8.</span> <span class="toc-text">七、常见问题速查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">9.</span> <span class="toc-text">最后留下的结论</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Jev 调研：便宜和快是真的，校准还没被证明"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明">Jev 调研：便宜和快是真的，校准还没被证明</a><time datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"><img src="/images/posts/robot-slam-localization-navigation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</a><time datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/19/2026-09-19-sheng-huo-ben-jiu-mei-you-da-an/" title="生活本就没有答案，也不需要答案"><img src="/images/posts/sheng-huo-ben-jiu-mei-you-da-an/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="生活本就没有答案，也不需要答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/19/2026-09-19-sheng-huo-ben-jiu-mei-you-da-an/" title="生活本就没有答案，也不需要答案">生活本就没有答案，也不需要答案</a><time datetime="2026-09-19T04:00:00.000Z" title="发表于 2026-09-19 12:00:00">2026-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</a><time datetime="2026-09-16T04:00:00.000Z" title="发表于 2026-09-16 12:00:00">2026-09-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/06/08/2026-06-08-%E8%AE%BA%E5%8F%8C%E9%9D%9E28%E5%B1%8A%E6%89%BE%E5%85%A8%E6%A0%88-%E5%89%8D%E7%AB%AF%E5%AE%9E%E4%B9%A0/" title="论双非28届找全栈/前端实习">论双非28届找全栈/前端实习</a><time datetime="2026-06-08T04:00:00.000Z" title="发表于 2026-06-08 12:00:00">2026-06-08</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
