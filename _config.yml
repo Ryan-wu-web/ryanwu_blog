@@ -40,6 +40,10 @@ relative_link: false
 future: true
 highlight:
   enable: false
+  # Mermaid code blocks must reach the theme unwrapped, so Butterfly can
+  # render them into SVG at runtime (see mermaid.code_write in _config.butterfly.yml).
+  exclude_languages:
+    - mermaid
 prismjs:
   enable: false
 
