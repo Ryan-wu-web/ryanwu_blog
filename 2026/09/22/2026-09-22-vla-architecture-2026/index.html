@@ -1,0 +1,946 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>一个 Backbone，三种输出：2026 年 VLA 架构正在分岔 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/22/2026-09-22-vla-architecture-2026/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/vla-architecture-2026/cover.webp">
+<meta property="article:published_time" content="2026-09-22T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-22T07:46:14.953Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="llm">
+<meta property="article:tag" content="robotics">
+<meta property="article:tag" content="vla">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/vla-architecture-2026/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "一个 Backbone，三种输出：2026 年 VLA 架构正在分岔",
+  "url": "https://ryanwu.cn/2026/09/22/2026-09-22-vla-architecture-2026/",
+  "image": "https://ryanwu.cn/images/posts/vla-architecture-2026/cover.webp",
+  "datePublished": "2026-09-22T04:00:00.000Z",
+  "dateModified": "2026-09-22T07:46:14.953Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/22/2026-09-22-vla-architecture-2026/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一个 Backbone，三种输出：2026 年 VLA 架构正在分岔',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">48</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/vla-architecture-2026/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-22T07:46:14.953Z" title="更新于 2026-09-22 15:46:14">2026-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这是一份文献梳理。文中 13 篇工作我都核对了一手来源（论文、会议页、项目页、代码仓库）；属于我自己的判断部分，我会写成判断，不混进论文结论里。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>2026 年 VLA 领域最有意思的变化，已经不是”机器人要不要用大模型”，而是另一个更窄、也更工程的问题：</p>
+<blockquote>
+<p><strong>一个多模态 Backbone 在形成足够强的世界表征之后，输出阶段还需要经过昂贵的生成过程吗？</strong></p>
+</blockquote>
+<p>这个问题在 2026 年被三篇不同方向的工作从三个角度分别问了一遍——决策、推理、动作：</p>
+<ul>
+<li><strong>决策</strong>：闭集选择任务，为什么要生成 <code>&quot;open&quot;</code> + <code>&quot; door&quot;</code> 两个 token，而不是直接从隐状态读出类别？（GAD）</li>
+<li><strong>推理</strong>：模型需要 reasoning，是否等于必须把 reasoning 逐 token 说出来？（LaRA-VLA、Fast-ThinkAct）</li>
+<li><strong>动作</strong>：Action Head 已经能用 flow matching 一次出整段动作了，为什么还要迭代 10 步？（IMLE-VLA）</li>
+</ul>
+<p>三条线指向同一个直觉：<strong>表征已经形成了，就不该再把它翻译回离散符号，再重新解码一遍。</strong></p>
+<p>但 2026 年同时出现了两个明确的反方向，而且都不是弱论证：</p>
+<ul>
+<li><strong>G0.5</strong> 主张把 reasoning 和 action 重新统一回<strong>一个自回归流、一套权重、一个目标</strong>；</li>
+<li><strong>DEM</strong> 干脆质疑：低层 policy 每个控制周期都跑一个几十亿参数的 VLM，这件事本身是不是错的。</li>
+</ul>
+<p>所以现在的局面不是”共享 Backbone 赢了”，而是<strong>统一与解耦正在正面对抗，而且双方都有 2026 年的实验证据</strong>。下面按问题推进，而不是按日期。</p>
+<hr>
+<h2 id="问题是怎么变的"><a href="#问题是怎么变的" class="headerlink" title="问题是怎么变的"></a>问题是怎么变的</h2><p>把 2023 到 2026 拉成一条线，能看清重心是怎么挪的：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;2023&lt;br/&gt;Everything as Tokens&quot;] --&gt; B[&quot;2024&lt;br/&gt;VLA Scaling&quot;]
+    B --&gt; C[&quot;2025&lt;br/&gt;VLM + Action Expert&quot;]
+    C --&gt; D[&quot;2026&lt;br/&gt;Representation → 多种专用推理路径&quot;]</code></pre>
+
+<p>2023–2024 的思路是”什么都变成 token，然后自回归解码”。2025 年 π0 一类工作开始把动作交给一个独立的 action expert，用 diffusion &#x2F; flow matching 生成——这已经是一次”输出机制分家”。</p>
+<p>到 2026 年，分家从”动作”扩展到”决策”和”推理”，于是变成三条并行的输出路径：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    O[&quot;Camera / Depth / Force / Joint / Language / History&quot;] --&gt; BB[&quot;Shared Multimodal Backbone&quot;]
+    BB --&gt; S[&quot;Shared World State&quot;]
+    S --&gt; G[&quot;Generative Head&lt;br/&gt;System-2&quot;]
+    S --&gt; DE[&quot;Decision Head&lt;br/&gt;Jev-like&quot;]
+    S --&gt; AC[&quot;Action Head&lt;br/&gt;VLA&quot;]
+    G --&gt; P[&quot;Plan / Reason&quot;]
+    DE --&gt; Q[&quot;概率分布&quot;]
+    AC --&gt; R[&quot;Action Chunk&quot;]</code></pre>
+
+<p>这三条路线的频率需求差了两个数量级——这也是它们必须分开的直接原因。下一节开始逐条看 2026 年的证据。</p>
+<hr>
+<h2 id="路线一：Decision-不该当成文本生成"><a href="#路线一：Decision-不该当成文本生成" class="headerlink" title="路线一：Decision 不该当成文本生成"></a>路线一：Decision 不该当成文本生成</h2><p>最容易看清的一条线。任务本身就是一个闭集选择——“这段视频里的人在做什么”，候选是 <code>cut onion / wash dish / open door</code> 之类。</p>
+<p>传统做法是让 MLLM 生成文字：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hidden representation</span><br><span class="line">    ↓</span><br><span class="line">生成 &quot;open&quot;</span><br><span class="line">    ↓</span><br><span class="line">生成 &quot; door&quot;</span><br></pre></td></tr></table></figure>
+
+<p>但既然答案是闭集，为什么不直接从隐状态读出来？</p>
+<p><strong>GAD</strong>（ICLR 2026）正是问这个问题的。它给 MLLM 加一个可学习的 <code>[CLS]</code> token 做判别式分类头，<strong>训练时</strong>并联一个辅助生成头提供互补上下文做正则，<strong>推理时只跑判别分支</strong>：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    subgraph T[&quot;训练时&quot;]
+        A1[&quot;Shared MLLM Backbone&quot;] --&gt; B1[&quot;Classification Loss&quot;]
+        A1 --&gt; C1[&quot;Generative Auxiliary Loss&quot;]
+    end
+    subgraph I[&quot;推理时&quot;]
+        A2[&quot;Shared MLLM Backbone&quot;] --&gt; B2[&quot;Discriminative Head&quot;]
+        B2 --&gt; C2[&quot;One-step Decision&quot;]
+    end</code></pre>
+
+<p>论文在最大的 COIN benchmark 上报告了约 <strong>3×</strong> 的推理加速，同时还有约 <strong>2.5%</strong> 的准确率增益。也就是说，判别式路线不只是更快——在闭集任务上它本身也更好。论文把原因归到两点：避开了自回归解码，也避开了标签的子词重叠问题（生成式分类器容易被”open”和”opener”这类共享子词的标签干扰）。</p>
+<p><strong>CARE-X</strong>（MLHC 2026，微软研究院印度）虽然不是机器人论文，但架构证据可能更硬。它在医学影像上做了同一件事：SigLIP2 视觉编码器 + Phi-4-mini-instruct 3.8B 骨架，在共享的语言 backbone 上<strong>并联两个二分类头和一个 bounding-box grounding 头</strong>，与语言建模目标联合训练，另外用任务特定的临床奖励做 RL 对齐。需要说明一下：分类头输出的是<strong>可阈值化的概率分数</strong>（论文按 0.5 &#x2F; 0.6 的阈值报告），不是某些二手材料里写的”直接输出 P(Yes)&#x2F;P(No)”。</p>
+<p>它的价值在于证明了一件对机器人同样成立的事：<strong>生成式头和结构化判别头可以共用同一个现代 VLM backbone，而且结构化监督会反过来强化共享表征</strong>——不是各训各的。</p>
+<p>我在之前那篇写 Jev 的文章里讨论过”别生成文本、直接给概率分布”这件事。放到 2026 年的文献里看，GAD 和 CARE-X 说明它不是一个孤立的工程技巧，而是<strong>闭集决策任务上正在被学术验证的输出机制选择</strong>。</p>
+<hr>
+<h2 id="路线二：Reasoning-不一定非要语言化"><a href="#路线二：Reasoning-不一定非要语言化" class="headerlink" title="路线二：Reasoning 不一定非要语言化"></a>路线二：Reasoning 不一定非要语言化</h2><p>第二条线走得更远一点：不是讨论输出格式，而是质疑”推理”这个动作本身必须发生在一个个 token 上。</p>
+<p>显式 CoT 的问题是双重的：token 很长、自回归慢；而且<strong>文本推理的粒度和连续控制对不上</strong>——“move toward the cup” 是任务级的，机器人控制却是 t0、t1、t2 连续高频的。</p>
+<p><strong>LaRA-VLA</strong>（ICML 2026）用三阶段课程解决：先用显式文本和视觉 CoT 监督，再逐步用可学习的 latent 替换掉离散的 CoT token，最后用 flow-matching 的 DiT 动作专家把 latent 推理转成连续动作。结果是<strong>推理时不再生成显式 CoT</strong>，论文报告相对显式 CoT 方案延迟最高降低约 <strong>90%</strong>。</p>
+<p><strong>Fast-ThinkAct</strong>（CVPR 2026，NVIDIA）思路一致但多留了一手：把长文本 CoT 蒸馏成 <strong>6 个连续 latent token</strong>（外加 5 个并行 spatial token 预测 waypoint），然后训练一个 verbalizer 把这些 latent 解码回自然语言。这个设计叫 <strong>Verbalizable Latent Planning</strong>——latent 平时是 latent，但需要解释时可以映射回可读的表示。延迟最高减少 <strong>89.3%</strong>。</p>
+<p><strong>Continuous Reasoning for VLA</strong> 关心的是另一个更细的问题：<strong>这个 latent 到底该长什么样，才能被多个下游模块读取？</strong> 它的答案是”shared Gaussian latent interface”，并且用一个自验证目标来训练——EMA teacher 必须能消费 student 的 reasoning 才能预测出目标动作。换句话说，<strong>latent 不是私有隐状态，而是要在不同模型实例之间可共享、可验证</strong>。论文报告在 TX-G2 上比 π0 类基线平均子任务成功率 <strong>+40.4%</strong>，HSR 上 +26.3%。（这篇目前还是预印本，没有会议。）</p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;Observation&quot;] --&gt; B[&quot;显式 CoT&lt;br/&gt;长、慢、粒度不匹配&quot;]
+    A --&gt; C[&quot;Latent Reasoning&lt;br/&gt;短、快、连续&quot;]
+    B -.-&gt;|2026 年正在被替换| C
+    C --&gt; D[&quot;Action&quot;]</code></pre>
+
+<p>这三篇合起来说明一句话：<strong>“模型需要 reasoning”不等于”模型必须把 reasoning 逐 token 说出来”。</strong> 前者是能力问题，后者是实现选择——而 2026 年的证据倾向于认为，对高频控制来说这是一个不太好的实现选择。</p>
+<hr>
+<h2 id="路线三：Action-不该过度依赖迭代生成"><a href="#路线三：Action-不该过度依赖迭代生成" class="headerlink" title="路线三：Action 不该过度依赖迭代生成"></a>路线三：Action 不该过度依赖迭代生成</h2><p>动作这条线的演化最清楚，可以排成一串：</p>
+<pre><code class="highlight mermaid">flowchart LR
+    A[&quot;AR Action Token&quot;] --&gt; B[&quot;Flow Action Expert&quot;] --&gt; C[&quot;Few-step Flow&quot;] --&gt; D[&quot;Single-step Action Head&quot;]</code></pre>
+
+<p>2023–2024 是自回归动作 token；2025 年 π0 一类工作改成 flow matching 的 action expert；2026 年则开始问：<strong>都已经不用逐 token 生成了，为什么还要迭代 10 步？</strong></p>
+<p><strong>MindVLA-U1</strong> 是”共享表征、多出口”最直接的一份证据。它用<strong>单一 unified VLM 主干</strong>，在一次前向里同时产出 AR 语言 token（可选）和 flow-matching 的连续动作轨迹，两者读的是同一份共享表征。另外两个设计也值得记：一是<strong>流式架构</strong>——不是攒一批帧再整体编码，而是逐帧进 backbone 加学习式 memory 通道，避免重复的时序计算；二是用 Mixture-of-Transformers 的稠密&#x2F;稀疏结构承载 fast&#x2F;slow 两条路径。论文报告在 WOD-E2E 上 8.20 RFS，略高于人类驾驶的 8.13。（预印本，无会议。）</p>
+<p><strong>VLAFlow</strong> 换了个角度，把”共享 Backbone 到底该接受什么训练信号”当成核心问题。它先固定一套 π0-style 架构——共享 VLM backbone 经 <strong>KV-cache sharing</strong> 接 flow-matching action expert——然后只改监督信号，跑四种范式对比。它明确用到了 KV-cache 共享，这一点和”状态只 prefill 一次、多个输出头复用”是同一个工程诉求。（理想汽车 + 北邮 + 港中深。）</p>
+<p><strong>IMLE-VLA</strong>（IROS 2026）是这条线上最新的一个点。它用 conditional IMLE 把 π0.5 的迭代式 flow matching 换成<strong>单步条件生成器</strong>——既保留多模态动作覆盖、避免朴素回归头的模式塌缩，又彻底去掉多步采样。结果是推理频率从 <strong>15 Hz 提到 55 Hz</strong>（约 3.67×），动作吞吐最高提升约 <strong>11×</strong>，同时 LIBERO 40 个任务平均成功率 98.0%。</p>
+<p><strong>EffVLA</strong> 则回答”Action Head 到底需要多复杂”。它固定 SigLIP2 + Qwen2.5 和训练流程，系统性扫描 action head 的架构、规模、初始化、损失和推理步数，并把每个配置和实测的端上延迟配对。最重要的发现之一是：<strong>把语言 backbone 的最后几层 transformer 直接复制过来作为 action head 的初始化，是它测到的最大杠杆，而且不增加推理延迟</strong>。LIBERO-Plus 上相对随机初始化约 +7.1 分（79.8% vs 72.7%）。</p>
+<p>这里有个措辞要小心：论文说的是这个结论”在 L1 家族内、所有测试的模块规模上一致成立”，不能外推成”任何 head 都一样”。但方向很清楚：</p>
+<blockquote>
+<p><strong>Action Head 的关键也许不是”更复杂”，而是”和 Backbone 在同一个表征空间里”。</strong></p>
+</blockquote>
+<p>随机初始化的 head 需要先自己搞明白”backbone 的表示到底是什么意思”，而 backbone-aligned 的 head 一上来就在同一空间工作。</p>
+<p>顺带说一个容易被忽略的方向：<strong>StarVLA-α</strong>（ECCV 2026）反着来——不是加模块，而是系统性地删。它用一个极简基线（Qwen3-VL-4B 主干 + 一个小的残差 MLP 并行回归连续动作块），去掉机器人预训练和 benchmark 专用工程，验证”2025 年以后 VLA 体系里哪些复杂度是真的必要”。它的 camera-ready 版本直接改名成了 <em>Less is More</em>，这个标题本身就说明了结论。它同时提供了一个 Lego-like 的代码库，方便替换 backbone、action head、训练目标和本体——如果要做架构对照实验，这类基础设施比单篇论文更有用。</p>
+<hr>
+<h2 id="路线四：统一和解耦正在正面对抗"><a href="#路线四：统一和解耦正在正面对抗" class="headerlink" title="路线四：统一和解耦正在正面对抗"></a>路线四：统一和解耦正在正面对抗</h2><p>前面三条线都在讨论”输出怎么做”，第四条线问的是更底层的问题：<strong>到底该共享多少。</strong></p>
+<p><strong>统一派</strong>里最强的一篇是 <strong>G0.5</strong>（Galaxea Team）——注意全名是 “Galaxea G0.5”，它的前代 G0 是双系统架构，G0.5 反而是把双系统拆掉的单流模型。它的论证很直接：π0 类架构让 VLM 只是 context encoder，真正的动作决策被 action expert 拿走了。所以 G0.5 反过来——<strong>reasoning 和 action 共用同一个自回归流、同一套权重、同一个目标</strong>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vision → Single Transformer Decoder</span><br><span class="line">           ↓</span><br><span class="line">    reasoning token → grounding token → action token → reasoning token → action token → ...</span><br></pre></td></tr></table></figure>
+
+<p><strong>VLAct</strong> 从表征侧支持统一派，但角度不同。它关心的是”backbone 到底有没有学到适合物理动作的表征”，做法是在固定机器人数据预算下做<strong>以表征为中心的继续预训练</strong>：冻结视觉编码器和 LLM 下半层以保住 VLM 先验，让多个连续动作头共享同一隐表征来共同监督，同时用部分统一的跨本体动作布局统一动作语义。</p>
+<p>值得注意的一个细节：VLAct 论文自己警告说，<strong>单头预训练出来的表征并不是在 head-agnostic 意义上更 action-aware，反而会把特征几何塌缩到那个头的方向</strong>。这其实是对”共享”这件事的一个很强约束——共享要求的是表征对多个头都可用，而不是对某一个头最优。</p>
+<p><strong>解耦派</strong>目前最有力的证据是 <strong>DEM</strong>（耶鲁 + 北大 + Digients）。它直接质疑主流 VLA 的前提：为什么低层机器人 policy 的每一个控制周期，都必须跑一个几十亿参数的 VLM？它的答案是拆开——微调过的 DINOv3 视觉编码器 + 冻结的 NeoBERT 语言编码器 + 一个单次前向就出整段动作的 MeanFlow 头，三者只在 action head 的 cross-attention 里汇合。</p>
+<p>数据上它并不吃亏：RoboCasa 18 个任务上 55.6%，与 GR00T N1.7 的 56.9% 和 π0.5 的 54.6% 在同一水平；吞吐是对方的 <strong>8–17×</strong>，单次推理能耗低 <strong>6–15×</strong>（实测约 2.07 J&#x2F;次）。</p>
+<p>所以现在的局面是：<strong>统一派有架构论证和表征证据，解耦派有吞吐和能耗的硬数字，而且两边在成功率上并没有拉开差距。</strong> 这个问题我认为远没有结束——它取决于你更看重泛化，还是更看重单位算力能跑多少次控制循环。</p>
+<hr>
+<h2 id="三种架构范式"><a href="#三种架构范式" class="headerlink" title="三种架构范式"></a>三种架构范式</h2><p>把 13 篇工作压成三种范式，差异就清楚了：</p>
+<table>
+<thead>
+<tr>
+<th>范式</th>
+<th>代表</th>
+<th>结构</th>
+<th>优点</th>
+<th>问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>One Autoregressive Stream</strong></td>
+<td>G0.5</td>
+<td>单个 Transformer，reasoning token 与 action token 交替</td>
+<td>reasoning&#x2F;action 原生统一；预训练 VLM 权重直接参与动作；prompt 能直接影响动作生成</td>
+<td>自回归延迟；动作 token 化；高频控制能力受限；reasoning 与 action 互相阻塞</td>
+</tr>
+<tr>
+<td><strong>Shared Backbone + Specialized Heads</strong></td>
+<td>MindVLA-U1、CARE-X、VLAFlow、EffVLA、VLAct</td>
+<td>共享 backbone，分多个输出头</td>
+<td>每个任务用最合适的输出机制；决策可单步；动作可连续；LM 保留开放世界能力</td>
+<td>多任务干扰；head 与 backbone 对齐困难；”共享表征”是否真的统一；调度更复杂</td>
+</tr>
+<tr>
+<td><strong>Decoupled Fast Runtime</strong></td>
+<td>DEM</td>
+<td>专用视觉&#x2F;语言编码器 + 轻量动作头</td>
+<td>高速；低能耗；模块易单独优化</td>
+<td>是否损失开放世界的语义迁移；长尾和新任务怎么办；是否需要另配一个慢速 agent</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="13-篇论文对照表"><a href="#13-篇论文对照表" class="headerlink" title="13 篇论文对照表"></a>13 篇论文对照表</h2><table>
+<thead>
+<tr>
+<th>工作</th>
+<th>时间</th>
+<th>Backbone 思路</th>
+<th>Reasoning</th>
+<th>Decision</th>
+<th>Action</th>
+<th>关键点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LaRA-VLA</td>
+<td>2026-02</td>
+<td>Unified VLA</td>
+<td>Latent</td>
+<td>—</td>
+<td>Action</td>
+<td>推理时不再生成显式 CoT，延迟降约 90%（ICML 2026）</td>
+</tr>
+<tr>
+<td>GAD</td>
+<td>2026-03</td>
+<td>MLLM Shared</td>
+<td>生成式辅助</td>
+<td>判别式头</td>
+<td>—</td>
+<td>闭集动作理解不应靠文本生成；COIN 上约 3× 加速（ICLR 2026）</td>
+</tr>
+<tr>
+<td>StarVLA-α</td>
+<td>2026-04</td>
+<td>Modular VLA</td>
+<td>—</td>
+<td>—</td>
+<td>VLA</td>
+<td>极简基线：Qwen3-VL-4B + 残差 MLP，去掉多余复杂度（ECCV 2026，camera-ready 改名 Less is More）</td>
+</tr>
+<tr>
+<td>MindVLA-U1</td>
+<td>2026-05</td>
+<td>Shared VLM</td>
+<td>AR Language</td>
+<td>—</td>
+<td>Flow Trajectory</td>
+<td>一次前向同时出语言 token 与动作轨迹；流式架构（预印本）</td>
+</tr>
+<tr>
+<td>Continuous Reasoning</td>
+<td>2026-05</td>
+<td>VLA</td>
+<td>Gaussian latent</td>
+<td>—</td>
+<td>Chunk</td>
+<td>共享且可验证的 latent interface（预印本）</td>
+</tr>
+<tr>
+<td>Fast-ThinkAct</td>
+<td>CVPR 2026</td>
+<td>VLA</td>
+<td>Latent Planning</td>
+<td>—</td>
+<td>Action</td>
+<td>6 个 latent token 替代长 CoT，可 verbalize；延迟减 89.3%</td>
+</tr>
+<tr>
+<td>VLAFlow</td>
+<td>2026-07</td>
+<td>Shared VLM</td>
+<td>Language co-train</td>
+<td>—</td>
+<td>Flow Expert</td>
+<td>固定 π0-style，只改训练信号做控制变量；显式 KV-cache 共享</td>
+</tr>
+<tr>
+<td>G0.5</td>
+<td>2026-08</td>
+<td>One Transformer</td>
+<td>AR</td>
+<td>隐式</td>
+<td>AR action tokens</td>
+<td>单流、单权重、单目标（Galaxea）</td>
+</tr>
+<tr>
+<td>CARE-X</td>
+<td>MLHC 2026</td>
+<td>Shared VLM</td>
+<td>AR generation</td>
+<td>分类头 + grounding 头</td>
+<td>—</td>
+<td>生成头与结构化头共用 backbone，且结构化监督反哺表征</td>
+</tr>
+<tr>
+<td>VLAct</td>
+<td>2026-08</td>
+<td>Action-aware VLM</td>
+<td>semantic</td>
+<td>—</td>
+<td>多头共享表征</td>
+<td>以表征为中心的继续预训练</td>
+</tr>
+<tr>
+<td>IMLE-VLA</td>
+<td>2026-09</td>
+<td>VLM + Head</td>
+<td>—</td>
+<td>—</td>
+<td>Single-step</td>
+<td>砍掉迭代采样；15 Hz → 55 Hz（IROS 2026）</td>
+</tr>
+<tr>
+<td>EffVLA</td>
+<td>2026-09</td>
+<td>Shared VLA</td>
+<td>—</td>
+<td>—</td>
+<td>Aligned Action Head</td>
+<td>复制 backbone 末层做 head 初始化 &#x3D; 最大杠杆且零延迟代价</td>
+</tr>
+<tr>
+<td>DEM</td>
+<td>2026-09</td>
+<td>Decoupled</td>
+<td>—</td>
+<td>—</td>
+<td>MeanFlow</td>
+<td>反方：不必大一统；吞吐 8–17×、能耗 1&#x2F;6–1&#x2F;15</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="目前还缺什么"><a href="#目前还缺什么" class="headerlink" title="目前还缺什么"></a>目前还缺什么</h2><p>把 2026 年这些工作摊开看，我注意到一个<strong>还没被填上的位置</strong>。</p>
+<p>到今天为止，我没有找到一个有代表性的机器人工作，同时完整做到了这四件事：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    BB[&quot;Shared Multimodal Backbone&quot;] --&gt; G[&quot;Generative LM Head&quot;]
+    BB --&gt; D[&quot;Dynamic Question / Option Decision Head&lt;br/&gt;带校准概率&quot;]
+    BB --&gt; A[&quot;Continuous Action Head&quot;]</code></pre>
+
+<p>而且要同时支持：共享 prefix &#x2F; KV、并行决策问题、动态决策 schema、fast&#x2F;slow 运行时、动作打断、置信度升级。</p>
+<p>每一项单看都不新：共享 backbone 有 VLAFlow 和 MindVLA-U1；生成头与结构化头共存有 CARE-X；连续动作头有 IMLE-VLA 和 EffVLA。<strong>缺的是把它们装进同一个运行时，并且让”决策”这一路真正支持动态选项而不是固定类别。</strong></p>
+<p>固定类别和动态选项的差别，比看起来大：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">固定分类器：</span><br><span class="line">  [approach, align, contact, rotate, retreat]  ← 训练时就定死了</span><br><span class="line"></span><br><span class="line">动态选项：</span><br><span class="line">  Question: 当前处于哪个阶段？</span><br><span class="line">  Options:  （运行时给出的文本选项）</span><br><span class="line">  → [0.03, 0.78, 0.11, 0.05, 0.03]</span><br></pre></td></tr></table></figure>
+
+<p>前者是一个分类器，后者才更接近”用共享状态回答任意结构化问题”。这个差别也决定了它能不能和语言侧共享同一个 backbone——固定类别不需要语言理解，动态选项需要。</p>
+<hr>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>把 2026 年这条线串起来看，我的判断是：</p>
+<p><strong>第一，研究重心确实挪了。</strong> 从”VLA 能不能工作”挪到了”表征形成之后，用什么机制把它读出来”。三条路线——决策走判别式、推理走 latent、动作走单步——方向一致，而且各自都有 2026 年的实验证据，不是孤例。</p>
+<p><strong>第二，但”共享”这件事还没有定论。</strong> 统一派和解耦派在成功率上并没有拉开差距，解耦派在吞吐和能耗上有明显优势。我倾向于认为答案不是二选一：<strong>慢速的语义 backbone 低频更新、快速的头高频读取缓存状态</strong>，可能比”要么全共享、要么全拆开”更接近实际——但这只是我的判断，目前还没有一篇论文把这条中间路线完整做出来并给出对照实验。</p>
+<p><strong>第三，注意”共享”的前提条件。</strong> VLAct 那条警告值得记住：单头预训练会把特征几何塌缩到那个头的方向。所以”共享表征”不是把 backbone 打开给多个头用就行，而是要保证表征对多个头都可用。EffVLA 的发现也可以从这个角度理解——复制末层做初始化之所以有效，本质上是让 head 一开始就待在同一表征空间里。</p>
+<p><strong>局限</strong>：这篇梳理只覆盖了 2026 年能核验到的一批工作，而且其中 MindVLA-U1、Continuous Reasoning 等仍是预印本；不同论文的延迟和吞吐数字来自不同硬件平台，<strong>跨论文的倍数不能直接比较</strong>。我引用的数字都来自论文自己的报告，没有独立复现。</p>
+<hr>
+<h2 id="附：本文涉及的工作"><a href="#附：本文涉及的工作" class="headerlink" title="附：本文涉及的工作"></a>附：本文涉及的工作</h2><p><strong>决策：判别式 vs 生成式</strong></p>
+<ul>
+<li>GAD: On Discriminative vs. Generative classifiers: Rethinking MLLMs for Action Understanding — ICLR 2026 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2603.02546">https://arxiv.org/abs/2603.02546</a> ｜ <a target="_blank" rel="noopener" href="https://github.com/pangzhan27/GAD">https://github.com/pangzhan27/GAD</a></li>
+<li>CARE-X: Towards Clinically Useful Radiology VLMs with Auxiliary Supervision, Reward-Aligned Learning, and Tool-Augmented Measurement — MLHC 2026, PMLR 340:1537–1580 — <a target="_blank" rel="noopener" href="https://proceedings.mlr.press/v340/porya26a.html">https://proceedings.mlr.press/v340/porya26a.html</a></li>
+</ul>
+<p><strong>推理：从显式 CoT 到 latent</strong></p>
+<ul>
+<li>LaRA-VLA: Latent Reasoning VLA — ICML 2026 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.01166">https://arxiv.org/abs/2602.01166</a></li>
+<li>Fast-ThinkAct: Efficient Vision-Language-Action Reasoning via Verbalizable Latent Planning — CVPR 2026, pp. 5070–5081 — <a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2026/html/Huang_Fast-ThinkAct_Efficient_Vision-Language-Action_Reasoning_via_Verbalizable_Latent_Planning_CVPR_2026_paper.html">https://openaccess.thecvf.com/content/CVPR2026/html/Huang_Fast-ThinkAct_Efficient_Vision-Language-Action_Reasoning_via_Verbalizable_Latent_Planning_CVPR_2026_paper.html</a></li>
+<li>Continuous Reasoning for Vision-Language-Action — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2606.00229">https://arxiv.org/abs/2606.00229</a></li>
+</ul>
+<p><strong>共享 Backbone 与表征</strong></p>
+<ul>
+<li>MindVLA-U1: VLA Beats VA with Unified Streaming Architecture for Autonomous Driving — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2605.12624">https://arxiv.org/abs/2605.12624</a></li>
+<li>VLAFlow: A Unified Training Framework for VLA Models via Co-training and Future Latent Alignment — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2607.01586">https://arxiv.org/abs/2607.01586</a> ｜ <a target="_blank" rel="noopener" href="https://github.com/MindVLA-Team/VLAFlow">https://github.com/MindVLA-Team/VLAFlow</a></li>
+<li>VLAct: Beyond Data Scaling: Representation-Centric Continued Pre-training for VLA Models — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2608.27550">https://arxiv.org/abs/2608.27550</a> ｜ <a target="_blank" rel="noopener" href="https://starvla.github.io/VLAct/">https://starvla.github.io/VLAct/</a></li>
+<li>StarVLA-α: Reducing Complexity in Vision-Language-Action Systems — ECCV 2026 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2604.11757">https://arxiv.org/abs/2604.11757</a></li>
+<li>StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2604.05014">https://arxiv.org/abs/2604.05014</a> ｜ <a target="_blank" rel="noopener" href="https://github.com/starVLA/starVLA">https://github.com/starVLA/starVLA</a></li>
+</ul>
+<p><strong>动作头效率</strong></p>
+<ul>
+<li>IMLE-VLA: Fast Single-Step Action Generation for Vision-Language-Action Policies — IROS 2026 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2609.10915">https://arxiv.org/abs/2609.10915</a></li>
+<li>EffVLA: What Makes an Efficient VLA? Navigating Action-Head Design, Scaling, and Latency — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2609.13984">https://arxiv.org/abs/2609.13984</a></li>
+</ul>
+<p><strong>反方向与新范式</strong></p>
+<ul>
+<li>G0.5: One Autoregressive Stream for Robot Reasoning and Action — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2608.11739">https://arxiv.org/abs/2608.11739</a></li>
+<li>DEM: Decoupling Vision, Language, and Action for Efficient Multi-Task Robot Policies — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2609.18374">https://arxiv.org/abs/2609.18374</a></li>
+</ul>
+<blockquote>
+<p>本文涉及的 13 篇工作均已核对一手来源（arXiv 摘要页与全文、会议官方页面、项目页、代码仓库）。其中 MindVLA-U1、Continuous Reasoning、EffVLA、IMLE-VLA 等在本文写作时或为预印本、或未声称会议，已在文中标注。所有延迟、吞吐、成功率数字均来自论文自报，未做独立复现；不同论文的测量平台不同，跨论文比较数值需谨慎。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/22/2026-09-22-vla-architecture-2026/">https://ryanwu.cn/2026/09/22/2026-09-22-vla-architecture-2026/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/llm/">llm</a><a class="post-meta__tags" href="/tags/robotics/">robotics</a><a class="post-meta__tags" href="/tags/vla/">vla</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/vla-architecture-2026/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token/s"><img class="cover" src="/images/posts/embodied-inference-infra/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">机器人推理的指标不是 Token/s</div></div><div class="info-2"><div class="info-item-1">LLM 推理基础设施优化的是 Token 吞吐，机器人要的是 Observation → Action 的闭环延迟。梳理两者在缓存对象、调度目标、延迟语义上的根本差异，以及目前最接近「机器人 vLLM」的几条技术路线。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token&#x2F;s"><img class="cover" src="/images/posts/embodied-inference-infra/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">机器人推理的指标不是 Token&#x2F;s</div></div><div class="info-2"><div class="info-item-1">LLM 推理基础设施优化的是 Token 吞吐，机器人要的是 Observation → Action 的闭环延迟。梳理两者在缓存对象、调度目标、延迟语义上的根本差异，以及目前最接近「机器人 vLLM」的几条技术路线。</div></div></div></a><a class="pagination-related" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img class="cover" src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">Jev 调研：便宜和快是真的，校准还没被证明</div></div><div class="info-2"><div class="info-item-1">拆解 TypeSafe 的 Jev（System One 模型类）官方材料、第三方复现与对抗性评测：便宜、低延迟、零格式错误已被独立验证，而支撑其全部叙事的校准置信度至今没有论文或可靠性曲线。</div></div></div></a><a class="pagination-related" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img class="cover" src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-16</div><div class="info-item-2">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</div></div><div class="info-2"><div class="info-item-1">从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。</div></div></div></a><a class="pagination-related" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"><img class="cover" src="/images/posts/robot-slam-localization-navigation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</div></div><div class="info-2"><div class="info-item-1">从传感器、运动估计、SLAM、有图定位到全局规划、局部控制与恢复行为，把移动机器人自主导航整条链路串一遍，并附上自己用 Gazebo + ROS 2 跑出来的实测数字。</div></div></div></a><a class="pagination-related" href="/2026/06/05/my-first-tech-note/" title="我的第一篇技术笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-05</div><div class="info-item-2">我的第一篇技术笔记</div></div><div class="info-2"><div class="info-item-1">这是一篇技术笔记的示例文章。 代码示例12345def hello_world():    print(&quot;Hello, World!&quot;)    return &quot;success&quot;hello_world()  后续计划后续我会在这里分享更多技术文章，包括但不限于：  Python 编程技巧 前端开发经验 机器学习项目实践 算法题解  </div></div></div></a><a class="pagination-related" href="/2026/06/06/2026-06-06-ai-da-mo-xing-ying-yong-shi-jian/" title="AI 大模型应用实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-06</div><div class="info-item-2">AI 大模型应用实践</div></div><div class="info-2"><div class="info-item-1">分享在实际项目中接入 AI 大模型的经验</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">48</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%98%AF%E6%80%8E%E4%B9%88%E5%8F%98%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">问题是怎么变的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%BA%BF%E4%B8%80%EF%BC%9ADecision-%E4%B8%8D%E8%AF%A5%E5%BD%93%E6%88%90%E6%96%87%E6%9C%AC%E7%94%9F%E6%88%90"><span class="toc-number">3.</span> <span class="toc-text">路线一：Decision 不该当成文本生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%BA%BF%E4%BA%8C%EF%BC%9AReasoning-%E4%B8%8D%E4%B8%80%E5%AE%9A%E9%9D%9E%E8%A6%81%E8%AF%AD%E8%A8%80%E5%8C%96"><span class="toc-number">4.</span> <span class="toc-text">路线二：Reasoning 不一定非要语言化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%BA%BF%E4%B8%89%EF%BC%9AAction-%E4%B8%8D%E8%AF%A5%E8%BF%87%E5%BA%A6%E4%BE%9D%E8%B5%96%E8%BF%AD%E4%BB%A3%E7%94%9F%E6%88%90"><span class="toc-number">5.</span> <span class="toc-text">路线三：Action 不该过度依赖迭代生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%BA%BF%E5%9B%9B%EF%BC%9A%E7%BB%9F%E4%B8%80%E5%92%8C%E8%A7%A3%E8%80%A6%E6%AD%A3%E5%9C%A8%E6%AD%A3%E9%9D%A2%E5%AF%B9%E6%8A%97"><span class="toc-number">6.</span> <span class="toc-text">路线四：统一和解耦正在正面对抗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E6%9E%B6%E6%9E%84%E8%8C%83%E5%BC%8F"><span class="toc-number">7.</span> <span class="toc-text">三种架构范式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-%E7%AF%87%E8%AE%BA%E6%96%87%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="toc-number">8.</span> <span class="toc-text">13 篇论文对照表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E8%BF%98%E7%BC%BA%E4%BB%80%E4%B9%88"><span class="toc-number">9.</span> <span class="toc-text">目前还缺什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">10.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E6%9C%AC%E6%96%87%E6%B6%89%E5%8F%8A%E7%9A%84%E5%B7%A5%E4%BD%9C"><span class="toc-number">11.</span> <span class="toc-text">附：本文涉及的工作</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token/s"><img src="/images/posts/embodied-inference-infra/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器人推理的指标不是 Token/s"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token/s">机器人推理的指标不是 Token/s</a><time datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img src="/images/posts/vla-architecture-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</a><time datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Jev 调研：便宜和快是真的，校准还没被证明"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明">Jev 调研：便宜和快是真的，校准还没被证明</a><time datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"><img src="/images/posts/robot-slam-localization-navigation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</a><time datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/19/2026-09-19-sheng-huo-ben-jiu-mei-you-da-an/" title="生活本就没有答案，也不需要答案"><img src="/images/posts/sheng-huo-ben-jiu-mei-you-da-an/cover.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="生活本就没有答案，也不需要答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/19/2026-09-19-sheng-huo-ben-jiu-mei-you-da-an/" title="生活本就没有答案，也不需要答案">生活本就没有答案，也不需要答案</a><time datetime="2026-09-19T04:00:00.000Z" title="发表于 2026-09-19 12:00:00">2026-09-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
