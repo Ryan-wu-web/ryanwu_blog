@@ -1,0 +1,896 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>直接读出答案：从 GPT 双头到 Jev 的一条线索 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="闭集判断为什么要先生成一串文本？这个问题在 Jev 出现之前已经问了八年：从 GPT 的双头模型、DETR 和 Perceiver IO 的 query 读出、Hydragen 的共享 prefix，到 FIRST 的首 token 排序，三条线索最终在 Jev 汇合。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="直接读出答案：从 GPT 双头到 Jev 的一条线索">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="闭集判断为什么要先生成一串文本？这个问题在 Jev 出现之前已经问了八年：从 GPT 的双头模型、DETR 和 Perceiver IO 的 query 读出、Hydragen 的共享 prefix，到 FIRST 的首 token 排序，三条线索最终在 Jev 汇合。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/direct-decision-lineage/cover.webp">
+<meta property="article:published_time" content="2026-09-22T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-22T09:27:24.672Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="llm">
+<meta property="article:tag" content="robotics">
+<meta property="article:tag" content="vla">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/direct-decision-lineage/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "直接读出答案：从 GPT 双头到 Jev 的一条线索",
+  "url": "https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/",
+  "image": "https://ryanwu.cn/images/posts/direct-decision-lineage/cover.webp",
+  "datePublished": "2026-09-22T04:00:00.000Z",
+  "dateModified": "2026-09-22T09:27:24.672Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '直接读出答案：从 GPT 双头到 Jev 的一条线索',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">48</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/direct-decision-lineage/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">直接读出答案：从 GPT 双头到 Jev 的一条线索</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-briefcase"></i><span> 项目</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">直接读出答案：从 GPT 双头到 Jev 的一条线索</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-22T09:27:24.672Z" title="更新于 2026-09-22 17:27:24">2026-09-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理一条技术线索的来路。文中引用的论文与官方材料我都核对了一手来源；Jev 部分的证据分级按原作者的分类保留，哪些是官方说的、哪些是黑盒测出来的、哪些是推断，我在文中分开写。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>Jev 在 2026 年 9 月发布时，很多人把它当成一个新物种。但<strong>它核心的那个问题，已经被问了八年</strong>：</p>
+<blockquote>
+<p>对于本质上只是一个闭集选择的判断，为什么要先生成一串文本，再把这串文本解析回一个类别？</p>
+</blockquote>
+<p>把时间拉开看，这条线索由三股力量在不同的地方各自长出来，最后才汇到同一个地方：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;2018 · GPT&lt;br/&gt;生成式 backbone + 判别式头&quot;] --&gt; D[&quot;2026 · Jev&lt;br/&gt;共享状态 + 多问题 + 并行概率读出&quot;]
+    B[&quot;2020–21 · DETR / Perceiver IO / UniT&lt;br/&gt;query 从共享表示里读出结构&quot;] --&gt; D
+    C[&quot;2024 · Hydragen / DeFT / FIRST&lt;br/&gt;共享 prefix 与首 token 读出&quot;] --&gt; D</code></pre>
+
+<p>这三条线分别是：</p>
+<ol>
+<li><strong>生成能力和判别能力不必属于两个模型</strong>——GPT 时代就已经成立；</li>
+<li><strong>输出不必由自回归 token 构成</strong>——可以由 query 定义语义，从共享表示里直接读；</li>
+<li><strong>同一个状态被重复 prefill 是纯浪费</strong>——共享 prefix 的计算图在工程上早就可行。</li>
+</ol>
+<p>Jev 的位置，是这三条线的交点，加上一个别人没做过的事：<strong>把”多个问题并行读同一份状态”做成了产品形态</strong>。</p>
+<hr>
+<h2 id="一、2018：GPT-的双头模型——生成和判别一开始就不矛盾"><a href="#一、2018：GPT-的双头模型——生成和判别一开始就不矛盾" class="headerlink" title="一、2018：GPT 的双头模型——生成和判别一开始就不矛盾"></a>一、2018：GPT 的双头模型——生成和判别一开始就不矛盾</h2><p>GPT 的第一篇论文（Radford et al., 2018，<em>Improving Language Understanding by Generative Pre-Training</em>）讲的是预训练范式，但里面藏着一个后来被反复使用的结构：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    B[&quot;共享 Transformer Backbone&lt;br/&gt;（next-token prediction 预训练）&quot;] --&gt; L[&quot;LM Head&lt;br/&gt;文本生成&quot;]
+    B --&gt; M[&quot;Multiple-Choice Head&lt;br/&gt;选项分类&quot;]</code></pre>
+
+<p>也就是说，<strong>一个通过 next-token prediction 学到的生成式 backbone，可以直接被拿去做分类、问答、文本蕴含这些判别任务</strong>。这在当时不是重点，但它建立了一个先例：</p>
+<blockquote>
+<p>生成能力和直接分类能力，不必属于两个完全独立的模型。</p>
+</blockquote>
+<p>工程上这个结构后来有很直观的实现，就是 Hugging Face 的 <code>OpenAIGPTDoubleHeadsModel</code> 和 <code>GPT2DoubleHeadsModel</code>——同一个 backbone 上挂 LM Head 和 Multiple-Choice Head。</p>
+<p><strong>但它还不是 Jev，差在两处：</strong></p>
+<ul>
+<li>判别头是<strong>固定的</strong>：K 个类别在训练时就定死，换一套选项就要重训；</li>
+<li>判别头读的是<strong>固定的位置</strong>（通常是最后一层某个 token 的 hidden state），问题本身不是一个可以变化的输入。</li>
+</ul>
+<p>要跨过这两步，需要从别的领域借一个思路。</p>
+<hr>
+<h2 id="二、2020–2021：让-query-从共享表示里”读出”结构"><a href="#二、2020–2021：让-query-从共享表示里”读出”结构" class="headerlink" title="二、2020–2021：让 query 从共享表示里”读出”结构"></a>二、2020–2021：让 query 从共享表示里”读出”结构</h2><h3 id="DETR：一组-query-并行读同一份视觉状态"><a href="#DETR：一组-query-并行读同一份视觉状态" class="headerlink" title="DETR：一组 query 并行读同一份视觉状态"></a>DETR：一组 query 并行读同一份视觉状态</h3><p>DETR（Carion et al., 2020）最有价值的不是检测精度，而是它换掉了输出的生成方式。传统检测器要产生一个目标集合，往往依赖后处理（NMS、anchor 匹配）；DETR 用一组 learned queries 直接<strong>并行</strong>读取共享编码器输出的视觉状态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Image Features → Shared Encoder → Object Queries → Cross Attention → 并行输出多个目标</span><br></pre></td></tr></table></figure>
+
+<p>它不是 <code>object1 → object2 → object3 → ...</code> 这样一个个生成，而是让一组 query 同时去读同一份表示。把这个结构搬到机器人上，几乎是逐字对应：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Robot State → Shared Backbone → Decision Queries → phase / safety / success / replan</span><br></pre></td></tr></table></figure>
+
+<h3 id="Perceiver-IO：输出语义由-query-定义"><a href="#Perceiver-IO：输出语义由-query-定义" class="headerlink" title="Perceiver IO：输出语义由 query 定义"></a>Perceiver IO：输出语义由 query 定义</h3><p>Perceiver IO（Jaegle et al., 2021）把这个想法推得更一般：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">任意输入 → Latent Representation → Output Queries → 不同结构化输出</span><br></pre></td></tr></table></figure>
+
+<p>它给出的观点是我觉得这一节里最重要的：</p>
+<blockquote>
+<p><strong>输出不一定要通过自回归语言 token 形成；可以由 query 定义输出的语义，再从共享 latent 里直接读取结果。</strong></p>
+</blockquote>
+<p>对照关系很清楚：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Perceiver IO:  output query      → latent        → structured output</span><br><span class="line">Jev-like:      question/options  → shared state  → probability distribution</span><br></pre></td></tr></table></figure>
+
+<h3 id="UniT：一个模型支撑多个任务"><a href="#UniT：一个模型支撑多个任务" class="headerlink" title="UniT：一个模型支撑多个任务"></a>UniT：一个模型支撑多个任务</h3><p>UniT（Hu &amp; Singh, ICCV 2021）用共享模型处理视觉、语言、多模态任务，再通过 task-specific heads 输出不同结果。它的意义在于证明<strong>一个统一模型可以同时支撑多个任务，不必每个任务复制一套 backbone</strong>。</p>
+<p>这三篇放在一起，指向同一个转变：<strong>“输出”这件事，从”生成一串符号”变成了”用 query 从表示里读”</strong>。GPT 那一步解决了”能不能共用 backbone”，这一步解决了”输出怎么定义”。</p>
+<hr>
+<h2 id="三、2024：同一个状态被重复-prefill，是纯浪费"><a href="#三、2024：同一个状态被重复-prefill，是纯浪费" class="headerlink" title="三、2024：同一个状态被重复 prefill，是纯浪费"></a>三、2024：同一个状态被重复 prefill，是纯浪费</h2><p>如果多个问题都基于同一份环境状态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">State + Q1</span><br><span class="line">State + Q2</span><br><span class="line">State + Q3</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>最浪费的地方不是计算本身，而是<strong>同一个 State 被反复做 Prefill</strong>。而这些问题本来是可以共享的：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    S[&quot;Shared State&quot;] --&gt; P[&quot;Prefill Once&quot;] --&gt; K[&quot;Shared KV&quot;]
+    K --&gt; Q1[&quot;Q1&quot;]
+    K --&gt; Q2[&quot;Q2&quot;]
+    K --&gt; Q3[&quot;Q3&quot;]</code></pre>
+
+<h3 id="Hydragen：把-prefix-attention-和-suffix-attention-拆开"><a href="#Hydragen：把-prefix-attention-和-suffix-attention-拆开" class="headerlink" title="Hydragen：把 prefix attention 和 suffix attention 拆开"></a>Hydragen：把 prefix attention 和 suffix attention 拆开</h3><p>Hydragen（Juravsky et al., 2024）研究的就是”共享长 Prefix + 大量不同 Suffix”这个场景。做法是把 attention 拆成两部分分别算，再做分母重标定合并——因为同一个 batch 里 prefix 的 K&#x2F;V 完全相同，可以把跨序列的 query 合并成一次矩阵乘，把大量 matrix-vector 变成 matrix-matrix。</p>
+<p>论文报告的是：<strong>在 CodeLlama-13b 上，端到端吞吐相比 competitive baselines 最高提升 32 倍</strong>。</p>
+<p>这个数字要连条件一起引用，否则会误导：它是 <strong>up to</strong>（上限值，不是稳定值），对比对象是<strong>已经优化过的基线</strong>，而且<strong>加速比随 batch size 和共享 prefix 长度增长</strong>——换句话说，状态越长、并行的问题越多，收益才越大。同一篇论文里另一个更能说明问题的数字是：prefix 从 1K 拉到 16K 时，Hydragen 的吞吐下降不到 15%，而基线下降超过 90%。</p>
+<h3 id="DeFT：树状推理的-KV-Cache-IO"><a href="#DeFT：树状推理的-KV-Cache-IO" class="headerlink" title="DeFT：树状推理的 KV Cache IO"></a>DeFT：树状推理的 KV Cache IO</h3><p>DeFT（Yao et al., 2024，ICLR 2025）针对的是同一种计算图的另一种形态：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> Shared Prefix</span><br><span class="line">/      |               branch1 branch2 branch3</span><br></pre></td></tr></table></figure>
+
+<p>它用 KV-Guided Grouping 让共享 prefix 的 KV 只加载一次，再用 Flattened Tree KV Splitting 把树形 KV 均分以平衡负载，论文报告减少了 73–99% 的 KV cache IO。（提醒一句：这篇的 v1 和 v4 标题与加速数字都改过，引用时最好标版本。）</p>
+<h3 id="这两篇的正确理解"><a href="#这两篇的正确理解" class="headerlink" title="这两篇的正确理解"></a>这两篇的正确理解</h3><p>它们<strong>不是 Jev 的实现证据</strong>。正确的定位是：</p>
+<blockquote>
+<p>它们证明了”一个共享 Prefix + 多个独立 Branch”这种计算图，在现代 LLM serving 上是完全可行的工程结构。</p>
+</blockquote>
+<p>这对机器人的意义很直接。机器人的 State 可能很长——任务、历史、场景、机器人状态、知识——但同一个时刻往往需要同时判断好几件事：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">safe?  success?  phase?  need_replan?  next_skill?</span><br></pre></td></tr></table></figure>
+
+<p><strong>共享 State 的 Prefill 与 KV，让每个问题只增加自己的 suffix</strong>，这几乎是一个必然的运行时设计，而不是什么精巧的技巧。</p>
+<hr>
+<h2 id="四、2024：如果只需要排序，就别生成排序序列"><a href="#四、2024：如果只需要排序，就别生成排序序列" class="headerlink" title="四、2024：如果只需要排序，就别生成排序序列"></a>四、2024：如果只需要排序，就别生成排序序列</h2><p>FIRST（Reddy et al., 2024）是一篇很容易被忽略、但哲学上和 Jev 最像的工作。</p>
+<p>传统的 LLM reranker 是这么做的：让它输出排好序的候选列表，它就生成一串标识符——</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[3, 1, 4, 2, ...]</span><br></pre></td></tr></table></figure>
+
+<p>FIRST 换了个做法：<strong>用第一个生成标识符的 output logits 直接解码出候选的排序</strong>，同时在训练里加一个 learning-to-rank loss 来侧重高相关段落。论文报告推理加速约 50%。</p>
+<p>为什么值得单独说：它问的问题和 Jev 一模一样。</p>
+<blockquote>
+<p><strong>如果最终需要的是排序或决策，就尽量直接读取 logits，而不是先生成一个字符串来表示这个排序。</strong></p>
+</blockquote>
+<p>区别只在于 FIRST 处理的是排序，Jev 处理的是带置信度的分类决策；底层是同一个判断——<strong>字符串是给人看的，模型内部不需要经过它。</strong></p>
+<hr>
+<h2 id="五、2026：三条线在-Jev-汇合"><a href="#五、2026：三条线在-Jev-汇合" class="headerlink" title="五、2026：三条线在 Jev 汇合"></a>五、2026：三条线在 Jev 汇合</h2><p>TypeSafe 在 2026 年 9 月 15 日发布 Jev 时，把上面三件事同时推到了一个产品形态上。这里要特别小心区分证据层级——<strong>哪些是官方说的、哪些是外面测出来的、哪些是推断</strong>，混在一起写就不诚实了。</p>
+<h3 id="官方明确公开的"><a href="#官方明确公开的" class="headerlink" title="官方明确公开的"></a>官方明确公开的</h3><p>翻官方博客和文档，下面这些是 TypeSafe 自己写下来的：</p>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>官方表述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入</td>
+<td>unstructured data, <strong>with an emphasis on structured program state</strong>（两个词官方都用了）</td>
+</tr>
+<tr>
+<td>输出</td>
+<td><strong>typed probabilistic decisions</strong>；”type-safe structured values”，且”所有答案都带校准概率与置信度”</td>
+</tr>
+<tr>
+<td>采样</td>
+<td><strong>Parallel</strong> —— 官方原话是 “outputs all probabilities <strong>in parallel</strong> instead of autoregressively generating by token”</td>
+</tr>
+<tr>
+<td>训练</td>
+<td><strong>RLCD</strong>（Reinforcement Learning for Calibrated Decisions）</td>
+</tr>
+<tr>
+<td>速度</td>
+<td>端到端响应时间 <strong>70 ms – 500 ms</strong></td>
+</tr>
+<tr>
+<td>演示形态</td>
+<td>Doom demo 用的是 “<strong>structured state as a data structure with text, not on images (yet…)</strong>“；文档站另写明当前只接受文本输入，不支持图像、音频、视频</td>
+</tr>
+</tbody></table>
+<h3 id="黑盒测出来的"><a href="#黑盒测出来的" class="headerlink" title="黑盒测出来的"></a>黑盒测出来的</h3><p>2026 年 9 月 17 日，Archer Hume 发了一篇 <em>Jev’s Architecture Unmasked</em>，对 jev-1.13.0 做了约一万次 API 调用的黑盒探测。这篇文章的价值不只是结论，而是<strong>它自己就把证据分了三级</strong>——官方已发布 &#x2F; 实验观测到 &#x2F; 由此推断，并且反复标注哪些结论”不是测量”。</p>
+<p>其中属于<strong>观测</strong>的部分，有几条相当具体：</p>
+<ul>
+<li><strong>Token 记账严格可加</strong>（268 &#x2F; 276 &#x2F; 318），这和一个共享前缀加若干独立后缀的结构吻合；</li>
+<li><strong>把一个标记从 state 移到兄弟问题里，它的概率从 0.90–0.92 掉到 0.00</strong> —— 说明问题之间确实是隔离的；</li>
+<li><strong>延迟随 state 长度和问题数增长，但在约 100 个问题以内几乎不变</strong>；</li>
+<li><strong>选项之间会互相影响</strong>：加一个无关的第五选项，会让原有选项的 log-odds 从 +0.38 降到 +0.11（10 个随机分块全部下降，均值 −0.28）。这一条直接排除了”每个选项独立打分再 softmax”这种最简结构；</li>
+<li>单问题上限约 32,768 token、整个请求约 65,536，选项上限 <strong>255</strong>；</li>
+<li>MMLU 上的 10-bin <strong>ECE &#x3D; 0.0313</strong>。</li>
+</ul>
+<p>他给这组证据的总结是一句话，也正是第二节里 Perceiver IO 那个结构的机器人版本：</p>
+<blockquote>
+<p><strong>Share the state, isolate the questions.</strong>（共享状态，隔离问题）</p>
+</blockquote>
+<h3 id="作者推断的（别当官方事实）"><a href="#作者推断的（别当官方事实）" class="headerlink" title="作者推断的（别当官方事实）"></a>作者推断的（别当官方事实）</h3><p>同一篇文章里还有另一批内容，作者明确标为推断，引用时最容易出错：</p>
+<ul>
+<li><strong>它仍然是 causal decoder</strong> —— 这是<strong>作者的假设</strong>。原文说实验”无法区分 causal decoder 和 bidirectional encoder”，他只是认为 causal 更合理；</li>
+<li><strong>prefix KV + question branches</strong> —— 归在观测支持里，但作者自己也说”记账本身并不能确定计算图”，Hydragen &#x2F; DeFT 只是 prior art，<strong>不是 TypeSafe 用了它们的证据</strong>；</li>
+<li><strong>sparse MoE</strong> —— 作者原话是”<strong>最不确定的部分</strong>“、”<strong>这是推断，不是测量</strong>“；</li>
+<li><strong>读出方式是 fixed-slot head 还是 pointer-style scorer</strong> —— 他说<strong>两者都符合现有证据</strong>，”两个结果都不具决定性”；</li>
+<li><strong>确切的 attention mask</strong> —— 明确说<strong>无法从外部获得</strong>。</li>
+</ul>
+<p>这个分级本身值得学。一篇黑盒反推文章能把”我测到了什么”和”我猜是什么”分得这么清楚，比结论本身更有参考价值。</p>
+<hr>
+<h2 id="六、另一条线：机器人动作也在做同一件事"><a href="#六、另一条线：机器人动作也在做同一件事" class="headerlink" title="六、另一条线：机器人动作也在做同一件事"></a>六、另一条线：机器人动作也在做同一件事</h2><p>机器人这边有一条独立演化的线，问的是同一个问题的机械版：<strong>连续控制为什么要用语言式的逐 token 解码？</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RT-2 / OpenVLA    →   ACT（一次预测一段）  →   FAST（压缩动作 token）</span><br><span class="line">                  →   π0（flow matching 动作专家）  →   OpenVLA-OFT（并行连续解码）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>RT-2</strong>（2023）把动作当成一种语言，直接用 VLM 自回归生成；</li>
+<li><strong>ACT</strong>（RSS 2023）提出 action chunking：一次预测未来一段动作 <code>π(a_t:t+k | s_t)</code>，而不是一步一个；</li>
+<li><strong>π0</strong> 是转折点——保留预训练 VLM，但给动作单独接一个连续动作专家，用 flow matching 出整段动作。基础是 3B 的 PaliGemma（加上约 300M 的动作专家，总计 3.3B），官方称最高可支持 50 Hz 的控制；</li>
+<li><strong>FAST</strong> 走的是折中路线：不取消自回归，而是先用 DCT 把动作序列压到频域再 token 化，减少要生成的 token 数；</li>
+<li><strong>OpenVLA-OFT</strong> 干脆换成并行连续动作解码，报告动作生成吞吐提升约 26×。</li>
+</ul>
+<p>这条线的细节我在<a href="/2026/09/22/2026-09-22-vla-architecture-2026/">上一篇《一个 Backbone，三种输出》</a>里写过，这里不重复。放在这篇的语境里，它说明的是：</p>
+<blockquote>
+<p><strong>“保留 backbone 的语义能力，但换掉慢的输出机制”——这个动作在语言侧和动作侧是同时发生的。</strong></p>
+</blockquote>
+<p>顺带说一个很能说明问题的证据：Physical Intelligence 的 <em>Knowledge Insulating VLA</em> 报告说，<strong>naively 给 VLM 接上连续 diffusion &#x2F; flow 动作专家，会同时损害训练速度和知识迁移</strong>——也就是说，共享 backbone 不是”多挂一个头”那么简单，接法本身会决定 backbone 的知识还在不在。这与 EffVLA 的发现（把 backbone 末层复制到 head 做初始化是最大杠杆）指向同一件事：<strong>共享的关键是让 head 和 backbone 待在同一个表征空间里。</strong></p>
+<hr>
+<h2 id="七、三条线的交点"><a href="#七、三条线的交点" class="headerlink" title="七、三条线的交点"></a>七、三条线的交点</h2><p>把三个领域分别解决的问题和各自留下的缺口排在一起，Jev 的位置就清楚了：</p>
+<table>
+<thead>
+<tr>
+<th>线索</th>
+<th>起点</th>
+<th>代表工作</th>
+<th>解决了什么</th>
+<th>留下了什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>共享 Backbone</td>
+<td>2018</td>
+<td>GPT 双头模型</td>
+<td>生成与判别可以共用一套权重</td>
+<td>分类头是固定的，换选项要重训</td>
+</tr>
+<tr>
+<td>Query 读出</td>
+<td>2020–21</td>
+<td>DETR &#x2F; Perceiver IO &#x2F; UniT</td>
+<td>输出语义由 query 定义，不必是 token 序列</td>
+<td>没有”多个问题并行读同一状态”的运行时</td>
+</tr>
+<tr>
+<td>共享 Prefix</td>
+<td>2024</td>
+<td>Hydragen &#x2F; DeFT</td>
+<td>共享前缀 + 多分支在 serving 上可行</td>
+<td>缺一个把它和数据形态绑定的产品</td>
+</tr>
+<tr>
+<td>首 token 读出</td>
+<td>2024</td>
+<td>FIRST</td>
+<td>排序可以直接读 logits</td>
+<td>只处理排序，没有校准概率</td>
+</tr>
+<tr>
+<td><strong>汇聚</strong></td>
+<td>2026</td>
+<td><strong>Jev</strong></td>
+<td>以上几条 + <strong>多问题并行 + 校准概率</strong></td>
+<td>内部实现仍不透明，校准证据有限</td>
+</tr>
+</tbody></table>
+<p>注意最后一行左边那四项，没有一项是 Jev 发明的。<strong>Jev 真正新的地方只有一处：把”多个问题并行读同一份状态、输出校准概率”做成了一个完整的产品形态。</strong> 剩下的部分是这八年里别人在别的领域分别铺好的路。</p>
+<hr>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p><strong>第一，这条线索的内核不是”少生成几个 token”，而是”表示已经形成之后，不该再把它翻译回符号”。</strong> Token 是给人看的。一个已经算出了答案的模型，为了把答案说出来而生成几十个 token，再由调用方解析回去——这中间的每一步都是纯粹的损耗。GPT 的双头模型、DETR 的 query、FIRST 的首 token 读出，各自从不同角度碰到了这面墙。</p>
+<p><strong>第二，三个领域摸到同一面墙，但谁都没跨过去。</strong> 语言那边解决了权重共享，视觉那边解决了输出定义，系统工程那边解决了计算图——每一块都是必要的，但都不是充分的。真正缺的那块，是<strong>让多个问题同时读同一份状态</strong>这件事，在语言侧和机器人侧都没有对应的产品。</p>
+<p><strong>第三，Jev 的位置要说准。</strong> 它没有发明上面的任何一项；它做的是把这几条线接在一起，并加上一个明确的产品承诺——输出是带校准置信度的概率分布。但这个承诺目前仍然是<strong>官方声明加黑盒观测</strong>，不是可复现的可靠性曲线。这和我在<a href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/">《Jev 调研》</a>里写过的结论一致：<strong>买它的经济学优势，别买它的叙事。</strong></p>
+<p><strong>这篇的几个局限</strong>：</p>
+<ul>
+<li>Jev 那一节的黑盒观测<strong>全部来自单篇第三方分析</strong>（Archer Hume，2026-09-17），且是单账号、非受控负载条件下做的，延迟数字取自响应头而非硬件基准；</li>
+<li>我对那些观测的转述已经尽量收紧，但<strong>观测能支持的是行为特征，不是计算图</strong>——作者自己也这么说；</li>
+<li>Hydragen 的 32× 是 <code>up to</code> 且附条件的数字，脱离条件引用会失真；</li>
+<li><strong>“三条线索汇合”这个框架是我的重构</strong>，不是任何一篇论文的说法。三篇论文之间没有引用关系，是我把它们放在一起看的。</li>
+</ul>
+<hr>
+<h2 id="附：参考资料"><a href="#附：参考资料" class="headerlink" title="附：参考资料"></a>附：参考资料</h2><p><strong>共享 Backbone 与判别头</strong></p>
+<ul>
+<li>Radford et al., <em>Improving Language Understanding by Generative Pre-Training</em>, 2018 — <a target="_blank" rel="noopener" href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf</a></li>
+<li>Hugging Face <code>OpenAIGPTDoubleHeadsModel</code> — <a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/model_doc/openai-gpt">https://huggingface.co/docs/transformers/model_doc/openai-gpt</a></li>
+<li>Hugging Face <code>GPT2DoubleHeadsModel</code> — <a target="_blank" rel="noopener" href="https://huggingface.co/docs/transformers/model_doc/gpt2">https://huggingface.co/docs/transformers/model_doc/gpt2</a></li>
+</ul>
+<p><strong>Query-based 结构化读出</strong></p>
+<ul>
+<li>Carion et al., <em>DETR: End-to-End Object Detection with Transformers</em>, 2020 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2005.12872">https://arxiv.org/abs/2005.12872</a></li>
+<li>Jaegle et al., <em>Perceiver IO: A General Architecture for Structured Inputs &amp; Outputs</em>, 2021 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.14795">https://arxiv.org/abs/2107.14795</a></li>
+<li>Hu &amp; Singh, <em>UniT: Multimodal Multitask Learning With a Unified Transformer</em>, ICCV 2021 — <a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/ICCV2021/html/Hu_UniT_Multimodal_Multitask_Learning_With_a_Unified_Transformer_ICCV_2021_paper.html">https://openaccess.thecvf.com/content/ICCV2021/html/Hu_UniT_Multimodal_Multitask_Learning_With_a_Unified_Transformer_ICCV_2021_paper.html</a></li>
+</ul>
+<p><strong>共享 Prefix &#x2F; 树状推理</strong></p>
+<ul>
+<li>Juravsky et al., <em>Hydragen: High-Throughput LLM Inference with Shared Prefixes</em>, 2024 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.05099">https://arxiv.org/abs/2402.05099</a></li>
+<li>Yao et al., <em>DeFT: Decoding with Flash Tree-Attention for Efficient Tree-structured LLM Inference</em>, ICLR 2025 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.00242">https://arxiv.org/abs/2404.00242</a></li>
+</ul>
+<p><strong>首 token 读出</strong></p>
+<ul>
+<li>Reddy et al., <em>FIRST: Faster Improved Listwise Reranking with Single Token Decoding</em>, 2024 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.15657">https://arxiv.org/abs/2406.15657</a></li>
+</ul>
+<p><strong>Jev</strong></p>
+<ul>
+<li>TypeSafe AI, <em>Introducing System One Models &amp; Jev</em>, 2026-09-15 — <a target="_blank" rel="noopener" href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">https://typesafe.ai/blog/introducing-system-one-models-and-jev</a></li>
+<li>TypeSafe 文档（System One 概念）— <a target="_blank" rel="noopener" href="https://docs.typesafe.ai/concepts/system-one">https://docs.typesafe.ai/concepts/system-one</a></li>
+<li>Archer Hume, <em>Jev’s Architecture Unmasked</em>, 2026-09-17 — <a target="_blank" rel="noopener" href="https://archerhume.com/posts/jevs-architecture-unmasked/">https://archerhume.com/posts/jevs-architecture-unmasked/</a></li>
+</ul>
+<p><strong>机器人动作线</strong></p>
+<ul>
+<li>Brohan et al., <em>RT-2</em>, 2023 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.15818">https://arxiv.org/abs/2307.15818</a></li>
+<li>Zhao et al., <em>Learning Fine-Grained Bimanual Manipulation with Low-Cost Hardware</em> (ACT), RSS 2023 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2304.13705">https://arxiv.org/abs/2304.13705</a></li>
+<li>Kim et al., <em>OpenVLA</em>, 2024 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09246">https://arxiv.org/abs/2406.09246</a></li>
+<li>Black et al., <em>π0: A Vision-Language-Action Flow Model for General Robot Control</em>, RSS 2025 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2410.24164">https://arxiv.org/abs/2410.24164</a></li>
+<li>Pertsch et al., <em>FAST: Efficient Action Tokenization for VLA Models</em>, 2025 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2501.09747">https://arxiv.org/abs/2501.09747</a></li>
+<li>Kim, Finn, Liang, <em>Fine-Tuning VLA Models: Optimizing Speed and Success</em> (OpenVLA-OFT), RSS 2025 — <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2502.19645">https://arxiv.org/abs/2502.19645</a></li>
+<li>Driess et al., <em>Knowledge Insulating Vision-Language-Action Models</em>, Physical Intelligence — <a target="_blank" rel="noopener" href="https://www.physicalintelligence.company/download/pi05_KI.pdf">https://www.physicalintelligence.company/download/pi05_KI.pdf</a> ｜ <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.23705">https://arxiv.org/abs/2505.23705</a></li>
+</ul>
+<blockquote>
+<p>本文涉及的论文与官方材料均核对了一手来源（arXiv 摘要页、会议官方页、官方博客与文档站、官方 PDF）。Jev 一节按原分析文章自己的三级证据体系分写：<strong>官方明确公开的</strong>、<strong>黑盒实验观测到的</strong>、<strong>作者推断的</strong>，请勿把第三类当作官方事实。其中 Hydragen 的 32× 为 <code>up to</code> 且附条件，引用时请保留限定。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/">https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/robotics/">robotics</a><a class="post-meta__tags" href="/tags/llm/">llm</a><a class="post-meta__tags" href="/tags/vla/">vla</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/direct-decision-lineage/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token/s"><img class="cover" src="/images/posts/embodied-inference-infra/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">机器人推理的指标不是 Token/s</div></div><div class="info-2"><div class="info-item-1">LLM 推理基础设施优化的是 Token 吞吐，机器人要的是 Observation → Action 的闭环延迟。梳理两者在缓存对象、调度目标、延迟语义上的根本差异，以及目前最接近「机器人 vLLM」的几条技术路线。</div></div></div></a><a class="pagination-related" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img class="cover" src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Jev 调研：便宜和快是真的，校准还没被证明</div></div><div class="info-2"><div class="info-item-1">拆解 TypeSafe 的 Jev（System One 模型类）官方材料、第三方复现与对抗性评测：便宜、低延迟、零格式错误已被独立验证，而支撑其全部叙事的校准置信度至今没有论文或可靠性曲线。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img class="cover" src="/images/posts/vla-architecture-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</div></div><div class="info-2"><div class="info-item-1">梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token&#x2F;s"><img class="cover" src="/images/posts/embodied-inference-infra/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">机器人推理的指标不是 Token&#x2F;s</div></div><div class="info-2"><div class="info-item-1">LLM 推理基础设施优化的是 Token 吞吐，机器人要的是 Observation → Action 的闭环延迟。梳理两者在缓存对象、调度目标、延迟语义上的根本差异，以及目前最接近「机器人 vLLM」的几条技术路线。</div></div></div></a><a class="pagination-related" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img class="cover" src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">Jev 调研：便宜和快是真的，校准还没被证明</div></div><div class="info-2"><div class="info-item-1">拆解 TypeSafe 的 Jev（System One 模型类）官方材料、第三方复现与对抗性评测：便宜、低延迟、零格式错误已被独立验证，而支撑其全部叙事的校准置信度至今没有论文或可靠性曲线。</div></div></div></a><a class="pagination-related" href="/2026/06/06/2026-06-06-ai-da-mo-xing-ying-yong-shi-jian/" title="AI 大模型应用实践"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-06</div><div class="info-item-2">AI 大模型应用实践</div></div><div class="info-2"><div class="info-item-1">分享在实际项目中接入 AI 大模型的经验</div></div></div></a><a class="pagination-related" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"><img class="cover" src="/images/posts/robot-slam-localization-navigation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</div></div><div class="info-2"><div class="info-item-1">从传感器、运动估计、SLAM、有图定位到全局规划、局部控制与恢复行为，把移动机器人自主导航整条链路串一遍，并附上自己用 Gazebo + ROS 2 跑出来的实测数字。</div></div></div></a><a class="pagination-related" href="/2026/06/05/my-first-tech-note/" title="我的第一篇技术笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-05</div><div class="info-item-2">我的第一篇技术笔记</div></div><div class="info-2"><div class="info-item-1">这是一篇技术笔记的示例文章。 代码示例12345def hello_world():    print(&quot;Hello, World!&quot;)    return &quot;success&quot;hello_world()  后续计划后续我会在这里分享更多技术文章，包括但不限于：  Python 编程技巧 前端开发经验 机器学习项目实践 算法题解  </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">48</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%812018%EF%BC%9AGPT-%E7%9A%84%E5%8F%8C%E5%A4%B4%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E7%94%9F%E6%88%90%E5%92%8C%E5%88%A4%E5%88%AB%E4%B8%80%E5%BC%80%E5%A7%8B%E5%B0%B1%E4%B8%8D%E7%9F%9B%E7%9B%BE"><span class="toc-number">2.</span> <span class="toc-text">一、2018：GPT 的双头模型——生成和判别一开始就不矛盾</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%812020%E2%80%932021%EF%BC%9A%E8%AE%A9-query-%E4%BB%8E%E5%85%B1%E4%BA%AB%E8%A1%A8%E7%A4%BA%E9%87%8C%E2%80%9D%E8%AF%BB%E5%87%BA%E2%80%9D%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">二、2020–2021：让 query 从共享表示里”读出”结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DETR%EF%BC%9A%E4%B8%80%E7%BB%84-query-%E5%B9%B6%E8%A1%8C%E8%AF%BB%E5%90%8C%E4%B8%80%E4%BB%BD%E8%A7%86%E8%A7%89%E7%8A%B6%E6%80%81"><span class="toc-number">3.1.</span> <span class="toc-text">DETR：一组 query 并行读同一份视觉状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Perceiver-IO%EF%BC%9A%E8%BE%93%E5%87%BA%E8%AF%AD%E4%B9%89%E7%94%B1-query-%E5%AE%9A%E4%B9%89"><span class="toc-number">3.2.</span> <span class="toc-text">Perceiver IO：输出语义由 query 定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UniT%EF%BC%9A%E4%B8%80%E4%B8%AA%E6%A8%A1%E5%9E%8B%E6%94%AF%E6%92%91%E5%A4%9A%E4%B8%AA%E4%BB%BB%E5%8A%A1"><span class="toc-number">3.3.</span> <span class="toc-text">UniT：一个模型支撑多个任务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%812024%EF%BC%9A%E5%90%8C%E4%B8%80%E4%B8%AA%E7%8A%B6%E6%80%81%E8%A2%AB%E9%87%8D%E5%A4%8D-prefill%EF%BC%8C%E6%98%AF%E7%BA%AF%E6%B5%AA%E8%B4%B9"><span class="toc-number">4.</span> <span class="toc-text">三、2024：同一个状态被重复 prefill，是纯浪费</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hydragen%EF%BC%9A%E6%8A%8A-prefix-attention-%E5%92%8C-suffix-attention-%E6%8B%86%E5%BC%80"><span class="toc-number">4.1.</span> <span class="toc-text">Hydragen：把 prefix attention 和 suffix attention 拆开</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DeFT%EF%BC%9A%E6%A0%91%E7%8A%B6%E6%8E%A8%E7%90%86%E7%9A%84-KV-Cache-IO"><span class="toc-number">4.2.</span> <span class="toc-text">DeFT：树状推理的 KV Cache IO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%99%E4%B8%A4%E7%AF%87%E7%9A%84%E6%AD%A3%E7%A1%AE%E7%90%86%E8%A7%A3"><span class="toc-number">4.3.</span> <span class="toc-text">这两篇的正确理解</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%812024%EF%BC%9A%E5%A6%82%E6%9E%9C%E5%8F%AA%E9%9C%80%E8%A6%81%E6%8E%92%E5%BA%8F%EF%BC%8C%E5%B0%B1%E5%88%AB%E7%94%9F%E6%88%90%E6%8E%92%E5%BA%8F%E5%BA%8F%E5%88%97"><span class="toc-number">5.</span> <span class="toc-text">四、2024：如果只需要排序，就别生成排序序列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%812026%EF%BC%9A%E4%B8%89%E6%9D%A1%E7%BA%BF%E5%9C%A8-Jev-%E6%B1%87%E5%90%88"><span class="toc-number">6.</span> <span class="toc-text">五、2026：三条线在 Jev 汇合</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E6%98%8E%E7%A1%AE%E5%85%AC%E5%BC%80%E7%9A%84"><span class="toc-number">6.1.</span> <span class="toc-text">官方明确公开的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%91%E7%9B%92%E6%B5%8B%E5%87%BA%E6%9D%A5%E7%9A%84"><span class="toc-number">6.2.</span> <span class="toc-text">黑盒测出来的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E8%80%85%E6%8E%A8%E6%96%AD%E7%9A%84%EF%BC%88%E5%88%AB%E5%BD%93%E5%AE%98%E6%96%B9%E4%BA%8B%E5%AE%9E%EF%BC%89"><span class="toc-number">6.3.</span> <span class="toc-text">作者推断的（别当官方事实）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%8F%A6%E4%B8%80%E6%9D%A1%E7%BA%BF%EF%BC%9A%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%8A%A8%E4%BD%9C%E4%B9%9F%E5%9C%A8%E5%81%9A%E5%90%8C%E4%B8%80%E4%BB%B6%E4%BA%8B"><span class="toc-number">7.</span> <span class="toc-text">六、另一条线：机器人动作也在做同一件事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%B8%89%E6%9D%A1%E7%BA%BF%E7%9A%84%E4%BA%A4%E7%82%B9"><span class="toc-number">8.</span> <span class="toc-text">七、三条线的交点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">9.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">10.</span> <span class="toc-text">附：参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/22/2026-09-22-direct-decision-lineage/" title="直接读出答案：从 GPT 双头到 Jev 的一条线索"><img src="/images/posts/direct-decision-lineage/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="直接读出答案：从 GPT 双头到 Jev 的一条线索"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/22/2026-09-22-direct-decision-lineage/" title="直接读出答案：从 GPT 双头到 Jev 的一条线索">直接读出答案：从 GPT 双头到 Jev 的一条线索</a><time datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token/s"><img src="/images/posts/embodied-inference-infra/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器人推理的指标不是 Token/s"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token/s">机器人推理的指标不是 Token/s</a><time datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img src="/images/posts/vla-architecture-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</a><time datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"><img src="/images/posts/robot-slam-localization-navigation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</a><time datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Jev 调研：便宜和快是真的，校准还没被证明"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明">Jev 调研：便宜和快是真的，校准还没被证明</a><time datetime="2026-09-21T04:00:00.000Z" title="发表于 2026-09-21 12:00:00">2026-09-21</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
