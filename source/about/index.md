@@ -153,26 +153,42 @@ top_img: /about-bg.jpg
 
 ---
 
-## 🛠️ 我能做什么
+## 🛠️ 我用过什么
 
-**前端开发**
+下面这些不是罗列关键词——每一项背后都有实际做过的东西。
+
+需要说明一点：**其中相当一部分是我和 AI 一起协作完成的。**我负责判断要解决什么问题、该选什么方案、怎么验证结果；具体的代码，很多是 AI 写出来的。我越来越觉得，这本身就是一项需要练的能力——能把问题讲清楚、能判断方案对不对、能在结果不对的时候定位到是哪一步错了。
+
+### AI 与多模态
+
+这是我这两年投入最多的一块。
+
+**基础理论。**实习时领导让我去看吴恩达的机器学习课程，我从那里系统补上了机器学习的基础，之后顺着学了深度学习和强化学习。现在判断一个问题该不该用 AI 解、模型的能力边界在哪，底气基本来自这一段。
+
+**微调与迁移学习。**做过 **LoRA** 和 **Adapter 微调**，理解"冻结主干、只训练少量低秩参数"这套做法在什么场景下划算、什么时候还不如直接调 Prompt。
+
+**视觉。**YOLO 做目标检测、PP-OCRv6 做数字与文本识别、Qwen3-VL 做多模态理解与复核——在巡检机器人上按任务特点分工组合，而不是所有画面都丢给一个模型。
+
+**具身与机器人。**正在接触 **VLA**（视觉—语言—动作）和 **VLN**（视觉语言导航），方向是让机器人从"识别 + 规则 + 控制"走向更强的自主能力。
+
+**大模型工程。**用过 OpenAI GPT-4o / Whisper、智谱 GLM-4V、腾讯混元、火山引擎 Doubao VLM；做过 SSE 流式输出、Prompt 工程、结构化输出约束、RAG 检索，以及 Agent 工作流编排。
+
+### 前端开发
+
 - 框架：React (Next.js), Vue 3/2, 微信小程序
 - 语言：TypeScript, JavaScript (ES6+), HTML5, CSS3
 - UI / 动画：TailwindCSS, Radix UI, Lottie, Live2D, ECharts
 
-**移动端开发**
+### 移动端开发
+
 - 原生：Kotlin / Java, OpenGL ES
 - 跨端：Flutter, Capacitor, 微信小程序 (Vant Weapp)
 
-**后端与数据**
+### 后端与数据
+
 - 框架：SpringBoot, SpringMVC, MyBatis-Plus, FastAPI, Flask, Node.js
 - 数据：MySQL, Redis, SQLite
 - 爬虫：Python requests / BeautifulSoup
-
-**AI 与多模态**
-- 视觉：YOLO 目标检测、PP-OCRv6、Qwen3-VL
-- 大模型：OpenAI GPT-4o / Whisper、智谱 GLM-4V、腾讯混元、火山引擎 Doubao VLM
-- 工程：SSE 流式输出、Prompt 工程、结构化输出约束、RAG 与 Agent 工作流
 
 ---
 
@@ -199,7 +215,7 @@ top_img: /about-bg.jpg
   </div>
 </div>
 
-<div class="about-note is-flipped">
+<div class="about-note is-large">
   <div class="about-note-img">
     <img src="/images/about/gym-training.webp" alt="健身房里的训练记录">
   </div>
@@ -220,7 +236,7 @@ top_img: /about-bg.jpg
   </div>
 </div>
 
-<div class="about-note is-flipped">
+<div class="about-note is-medium">
   <div class="about-note-img">
     <img src="/images/about/xuanwu-lake-night.webp" alt="玄武湖夜景，湖面上是远处城市的灯光">
   </div>
@@ -241,7 +257,7 @@ top_img: /about-bg.jpg
   </div>
 </div>
 
-<div class="about-note is-flipped">
+<div class="about-note is-medium">
   <div class="about-note-img">
     <img src="/images/about/street-view.webp" alt="夜晚路灯下被照亮的树叶">
   </div>
@@ -251,13 +267,14 @@ top_img: /about-bg.jpg
   </div>
 </div>
 
-<div class="about-note">
+<div class="about-note is-large">
   <div class="about-note-img">
-    <img src="/images/about/cat-huihui.webp" alt="布偶猫灰灰从白色圆筒里探出头">
+    <img src="/images/about/cat-huihui.webp" alt="布偶猫灰灰从套着塑料袋的垃圾桶里探出头">
   </div>
   <div class="about-note-text">
     <p>我家还有一只猫，叫<strong>灰灰</strong>，布偶，今年一岁半。</p>
     <p>性格超级好：乖，不怎么咬人，也不拆家，就是安安静静地陪着我们。写代码写烦了抬头看一眼，挺治愈的。</p>
+    <p>这张是它钻垃圾桶的时候拍的——那天垃圾桶里套了塑料袋，我们把它放进去，它自己就把头探出来了。</p>
   </div>
 </div>
 
