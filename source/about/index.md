@@ -168,15 +168,23 @@ top_img: /about-bg.jpg
 - 框架：React (Next.js), Vue 3/2, 微信小程序
 - 语言：TypeScript, JavaScript (ES6+), HTML5, CSS3
 - UI / 动画：TailwindCSS, Radix UI, Lottie, Live2D, ECharts
+- 组件与状态：组件化拆分、状态管理、前端路由
+- 布局与适配：Flex / Grid、响应式布局、移动端适配
+- 工程化：Vite / Webpack、npm / pnpm、ESLint、Git
+- 网络与接口：RESTful API、Axios / fetch、SSE 流式接收
 
 **移动端开发**
-- 原生：Kotlin / Java, OpenGL ES
-- 跨端：Flutter, Capacitor, 微信小程序 (Vant Weapp)
+- 原生 Android：Kotlin / Java、Activity 与 Fragment 生命周期、Gradle
+- 渲染与性能：OpenGL ES、大图内存与 GC 优化、列表复用
+- 网络层：Retrofit + OkHttp 封装、接口签名与鉴权
+- 跨端：Flutter、Capacitor、微信小程序 (Vant Weapp)
 
 **后端与数据**
-- 框架：SpringBoot, SpringMVC, MyBatis-Plus, FastAPI, Flask, Node.js
-- 数据：MySQL, Redis, SQLite
-- 爬虫：Python requests / BeautifulSoup
+- 语言与框架：Java (SpringBoot / SpringMVC / MyBatis-Plus)、Python (FastAPI / Flask)、Node.js
+- 架构：MVC / MVVM、分层设计（Controller / Service / DAO）、RESTful 接口设计
+- 数据：MySQL、Redis、SQLite；表结构设计与 SQL 索引优化
+- 鉴权与实时：JWT 统一认证、SSE 流式响应
+- 其他：Python requests / BeautifulSoup 爬虫、多平台数据采集与清洗
 
 ---
 
@@ -280,7 +288,9 @@ top_img: /about-bg.jpg
 
 ## 📫 找我
 
-- **GitHub**：[Ryan-wu-web](https://github.com/Ryan-wu-web)
-- **个人网站**：[ryanwu.cn](https://ryanwu.cn)
-- **Email**：3047967569@qq.com
-- **坐标**：南京邮电大学仙林校区
+<div class="about-contact">
+  <p><strong>GitHub</strong>：<a href="https://github.com/Ryan-wu-web">Ryan-wu-web</a></p>
+  <p><strong>个人网站</strong>：<a href="https://ryanwu.cn">ryanwu.cn</a></p>
+  <p><strong>Email</strong>：3047967569@qq.com</p>
+  <p><strong>坐标</strong>：南京邮电大学仙林校区</p>
+</div>
