@@ -844,3 +844,28 @@ body {
     width: 100%;
   }
 }
+
+/* Per-unit size tiers — some photos carry more of the story than others,
+   so let their size vary instead of forcing one uniform template. */
+.about-note.is-large > .about-note-img {
+  flex: 0 0 44%;
+  width: 44%;
+}
+.about-note.is-large > .about-note-img img {
+  max-height: 300px;
+}
+.about-note.is-medium > .about-note-img {
+  flex: 0 0 38%;
+  width: 38%;
+}
+.about-note.is-medium > .about-note-img img {
+  max-height: 260px;
+}
+
+@media (max-width: 768px) {
+  .about-note.is-large > .about-note-img,
+  .about-note.is-medium > .about-note-img {
+    flex: none;
+    width: 100%;
+  }
+}
