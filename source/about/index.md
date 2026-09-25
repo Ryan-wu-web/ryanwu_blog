@@ -34,7 +34,14 @@ top_img: /about-bg.jpg
 
 方案不是"把所有图片丢给一个大模型"，而是**按任务分工**：检测模型负责定位和稳定类别，OCR 负责数字字段，多模态模型处理语义复杂的画面和复核，最后统一成结构化字段输出。
 
-![中车数字科技办公楼外景](/images/about/crrc-building.webp)
+<div class="about-note">
+  <div class="about-note-img">
+    <img src="/images/about/crrc-building.webp" alt="中车数字科技办公楼外景">
+  </div>
+  <div class="about-note-text">
+    <p>2026 年 7 月，我进入中国中车数字科技做 AI Agent 开发实习。这也是我第一次完整参与「从现场需求到系统落地」的过程——不再是做完一个 Demo 就结束，而是要真的有人用、真的要能一直跑住。</p>
+  </div>
+</div>
 
 我做的不只是模型本身——还包括**设计模型输出的字段契约**，让结果能被上位机消费、能给机械臂链路提供定位和位姿信息。这一步才是算法能不能真正进系统的分水岭：**下游系统没办法靠一段自然语言去猜下一步该做什么。**
 
@@ -122,7 +129,14 @@ top_img: /about-bg.jpg
 - **字节跳动高校合伙人** — 2026/09 – 2027/06：负责南京邮电大学方向的招聘宣发、字节校园活动的落地与宣传，以及和学校相关部门的沟通对接
 - **技术型俱乐部校负责人**：组织技术分享活动，并完成商业赞助的洽谈与合作落地
 
-![江苏大学生创新大赛省赛现场](/images/about/innovation-contest.webp)
+<div class="about-note is-flipped">
+  <div class="about-note-img">
+    <img src="/images/about/innovation-contest.webp" alt="江苏大学生创新大赛省赛现场合影">
+  </div>
+  <div class="about-note-text">
+    <p><strong>江苏大学生创新大赛</strong>（前身是大家更熟悉的「互联网+」）——2026 年我和队友组队参赛，拿了<strong>省二等奖</strong>。照片是省赛现场拍的。</p>
+  </div>
+</div>
 
 **发明专利**
 
@@ -165,8 +179,16 @@ top_img: /about-bg.jpg
     <img src="/images/about/highschool-ballgame.webp" alt="高中篮球联赛夺冠后的班级队伍合影">
   </div>
   <div class="about-note-text">
-    <p><strong>篮球</strong>是我打得最久的一件事。以前在院队打<strong>小前锋</strong>，主要负责得分和内线的对抗。大一打得最多，大二开始变少，现在大三基本一个月一次。</p>
-    <p>印象最深的其实不是大学的比赛，是<strong>高中那场联赛</strong>——我带着我们班一路打到全校男子组第一，最后发下来一个特别大的奖杯。这张照片就是那时候拍的。</p>
+    <p><strong>篮球</strong>是我打得最久的一件事。打得最痛快的一次不是大学的比赛，是<strong>高中那场联赛</strong>——我带着我们班一路打到全校男子组第一，最后发下来一个特别大的奖杯。这张照片就是那时候拍的。</p>
+  </div>
+</div>
+
+<div class="about-note is-flipped">
+  <div class="about-note-img">
+    <img src="/images/about/basketball-team.webp" alt="大学体育馆里的院队合影">
+  </div>
+  <div class="about-note-text">
+    <p>到了大学我进了<strong>院队</strong>，打<strong>小前锋</strong>，主要负责得分和内线的对抗。大一打得最多，大二开始变少，现在大三基本一个月一次。</p>
   </div>
 </div>
 
