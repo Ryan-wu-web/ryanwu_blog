@@ -56,7 +56,6 @@
 | --- | --- | --- |
 | 技术文章 | AI、开发、产品、工程与技术项目 | [浏览 `tech`](https://ryanwu.cn/categories/tech/) |
 | 生活记录 | 生活、职业、销售、管理与个人随笔 | [浏览 `life`](https://ryanwu.cn/categories/life/) |
-| 项目档案 | 做过的项目、实践过程和技术亮点 | [查看项目](https://ryanwu.cn/projects/) |
 | 归档与搜索 | 按时间回看，或快速定位已有内容 | [文章归档](https://ryanwu.cn/archives/) · [站内搜索](https://ryanwu.cn/search/) |
 | 关于 Ryanwu | 经历、技能与联系方式 | [关于我](https://ryanwu.cn/about/) |
 
@@ -154,7 +153,6 @@ ryanwu_blog/
 │  ├─ _posts/               # Markdown 文章
 │  ├─ images/posts/         # 每篇文章的独立媒体目录
 │  ├─ about/                # 关于页面
-│  ├─ projects/             # 项目页面
 │  └─ css/                  # 升级安全的视觉扩展
 ├─ tools/                   # 创建、检查与发布工具
 ├─ BRAND.md                 # 博客定位与内容边界
