@@ -787,8 +787,8 @@ body {
 /* The theme wraps <img> in an <a> (lightbox) and appends a .img-alt caption,
    so the image lives inside .about-note-img rather than being a direct child. */
 .about-note > .about-note-img {
-  flex: 0 0 38%;
-  width: 38%;
+  flex: 0 0 34%;
+  width: 34%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -805,7 +805,7 @@ body {
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 280px;
+  max-height: 220px;
   margin: 0 auto;
   border-radius: var(--ryan-radius);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
