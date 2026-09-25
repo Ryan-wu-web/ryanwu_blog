@@ -26,14 +26,14 @@ npm run prepublish:check
 - [`BRAND.md`](../BRAND.md)：定义“Ryanwu 的 AI / 技术 / 生活博客”定位、内容边界和读者价值；
 - [`VOICE.md`](../VOICE.md)：定义真诚、克制、具体、有判断的默认写作声音。
 
-AI 协作时，`blog` Skill 负责判断文章类型、结构和内容标准，`blog-write` Skill 主要用于 AI、技术、项目、销售或管理等需要完整论证的文章。普通生活日志采用轻量整理，不强制套用 SEO、统计、图表或 FAQ。
+AI 协作时，先判定文章类型：AI、技术分析、行业观察这类需要完整论证的走深度文章流程——**动笔前先把外部引用逐条核实到一手来源**，再搭结构、写正文、配图表与封面；普通生活日志采用轻量整理，不强制套用 SEO、统计、图表或 FAQ。
 
 内容能力与仓库工具分工如下：
 
 ```text
 原始素材
-  → blog 判断写作模式
-  → blog-write 或轻量整理生成草稿
+  → 判断写作模式、核实外部引用
+  → 深度写作或轻量整理生成草稿
   → post:new 创建 Hexo 文件和媒体目录
   → content:check / preview / prepublish:check
   → 人工确认后发布

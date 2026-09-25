@@ -17,8 +17,6 @@
   <p>
     <a href="https://ryanwu.cn"><strong>进入博客</strong></a>
     ·
-    <a href="./docs/撰写博客文章流程.md">写作流程</a>
-    ·
     <a href="./docs/content-guide.md">维护指南</a>
     ·
     <a href="https://github.com/Ryan-wu-web/ryanwu_blog/issues">问题反馈</a>
@@ -78,10 +76,10 @@ flowchart LR
 
 - **选题模式**：给出一个主题、问题或大致观点；
 - **素材模式**：提供语音转写、截图、链接、笔记、经历片段或 Markdown 初稿；
-- **技术深度文章**：由 `blog` 判断写作模式，按需进入 `blog-write` 的研究与论证流程；
+- **技术深度文章**：先核实外部引用（只读一手来源），再搭结构、写正文、配图表与封面；
 - **生活日志**：使用更轻的整理方式，不强制添加 SEO、数据、图表或积极结尾。
 
-快速版本见 [`docs/撰写博客文章流程.md`](./docs/撰写博客文章流程.md)，完整字段、媒体和发布规范见 [`docs/content-guide.md`](./docs/content-guide.md)。
+完整字段、媒体和发布规范见 [`docs/content-guide.md`](./docs/content-guide.md)。
 
 ## <img src="./.github/assets/readme/icons/palette.svg" width="25" alt=""> 设计与体验
 
@@ -151,7 +149,6 @@ ryanwu_blog/
 │  └─ workflows/            # GitHub Pages 自动部署
 ├─ docs/
 │  ├─ templates/            # 深度文章、工作复盘和生活日志模板
-│  ├─ 撰写博客文章流程.md    # 简明协作写作流程
 │  └─ content-guide.md      # 完整内容维护指南
 ├─ source/
 │  ├─ _posts/               # Markdown 文章
