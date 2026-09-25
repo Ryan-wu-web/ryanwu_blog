@@ -869,3 +869,18 @@ body {
     width: 100%;
   }
 }
+
+/* Contact block — four short lines read better as two columns than as a long list. */
+.about-contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 28px;
+}
+.about-contact p {
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .about-contact {
+    grid-template-columns: 1fr;
+  }
+}
