@@ -221,15 +221,9 @@ python tools/publish.py
 
 推荐做法仍然是：在功能分支完成检查和审查，合并到 `main` 后再发布。
 
-## 7. 页面与项目维护
+## 7. 页面维护
 
-- 关于页面：直接编辑 `source/about/index.md`；
-- 项目页面：直接编辑 `source/projects/index.md`，或使用：
-
-```powershell
-python tools/new-project.py
-python tools/edit-project.py
-```
+- 关于页面：直接编辑 `source/about/index.md`。
 
 主题优先通过 `_config.butterfly.yml` 配置，不直接修改 `themes/butterfly/` 的官方源码，避免后续升级冲突。
 

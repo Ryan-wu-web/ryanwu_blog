@@ -20,7 +20,6 @@ nav:
 menu:
   首页: / || fas fa-home
   关于我: /about/ || fas fa-user
-  项目: /projects/ || fas fa-briefcase
   技术笔记: /categories/tech/ || fas fa-code
   生活随笔: /categories/life/ || fas fa-coffee
   归档: /archives/ || fas fa-archive
