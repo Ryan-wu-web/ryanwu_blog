@@ -1,0 +1,825 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>换一台机器人就不灵了：VLA 跨本体泛化卡在哪 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="拆解 VLA 跨本体泛化的核心障碍——动作空间异构，以及从离散 token 到物理对齐的四代解法。重点梳理一份系统消融的实证：物理对齐比数据规模更重要，异构数据朴素混合反而带来负迁移（LIBERO 上 77.3% 逐级降到 72.1%）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="换一台机器人就不灵了：VLA 跨本体泛化卡在哪">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/29/2026-09-29-vla-cross-embodiment/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="拆解 VLA 跨本体泛化的核心障碍——动作空间异构，以及从离散 token 到物理对齐的四代解法。重点梳理一份系统消融的实证：物理对齐比数据规模更重要，异构数据朴素混合反而带来负迁移（LIBERO 上 77.3% 逐级降到 72.1%）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/vla-cross-embodiment/cover.webp">
+<meta property="article:published_time" content="2026-09-29T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T01:27:06.700Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="cross-embodiment">
+<meta property="article:tag" content="robotics">
+<meta property="article:tag" content="vla">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/vla-cross-embodiment/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "换一台机器人就不灵了：VLA 跨本体泛化卡在哪",
+  "url": "https://ryanwu.cn/2026/09/29/2026-09-29-vla-cross-embodiment/",
+  "image": "https://ryanwu.cn/images/posts/vla-cross-embodiment/cover.webp",
+  "datePublished": "2026-09-29T04:00:00.000Z",
+  "dateModified": "2026-09-29T01:27:06.700Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/29/2026-09-29-vla-cross-embodiment/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '换一台机器人就不灵了：VLA 跨本体泛化卡在哪',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">54</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/vla-cross-embodiment/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">换一台机器人就不灵了：VLA 跨本体泛化卡在哪</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">换一台机器人就不灵了：VLA 跨本体泛化卡在哪</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-29T04:00:00.000Z" title="发表于 2026-09-29 12:00:00">2026-09-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T01:27:06.700Z" title="更新于 2026-09-29 09:27:06">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这是一份文献梳理。文中引用的论文、编号和数字我都逐条核对过一手来源（arXiv 页面与全文、官方博客、GitHub 仓库）；属于我自己的推断会写成判断，不混进论文结论里。**本体（embodiment）**在本文指具体机型的组合——自由度、控制频率、末端执行器、传感器布局——不是泛指「机器人」这个词。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p><strong>跨本体泛化的根本障碍是动作空间异构，而不是模型不够大或数据不够多。</strong> 同一条「把杯子拿起来」的指令，在 7 自由度 Franka 上是 7 维关节角，在双臂 ALOHA 上是 14 维，在灵巧手上还要加上手部自由度；控制频率从个位数 Hz 到 50Hz 不等，坐标系有世界系、末端系、关节系三种写法。</p>
+<p>解法到现在经历了四代：<strong>离散动作 token → 连续 flow&#x2F;diffusion 动作头 → 本体条件化 → 统一物理对齐动作空间</strong>。每往前走一步，「能训」的问题解决得更彻底，但「训得好」的问题始终没有被自动解决。</p>
+<p>最硬的一份实证来自《Rethinking Visual-Language-Action Model Scaling》（arXiv:2602.09722）：作者把「物理对齐、数据配比、正则化」三项放在同一套消融里比，结论是<strong>统一的末端执行器相对（EEF-relative）表征最关键；异构数据朴素混合会带来负迁移；而正则化手段基本无效</strong>。</p>
+<p>负迁移这个发现值得单独记住。人们直觉上相信「数据越多越好」，但这份工作测出来的曲线是反的：在 OXE 上预训练后冻结 VLM，LIBERO 平均成功率 77.3%；再依次加入真实 EEF 数据、仿真 EEF 数据之后，掉到 73.8%、72.1%。<strong>加数据反而变差。</strong></p>
+<p>但这不是「异构混合必然有害」的结论——OXE&#x2F;RT-X 那篇测到的是正迁移，π0.5 的异构任务共训也是它泛化能力的来源。两者不矛盾，只是<strong>迁移的方向不对称</strong>（这是我的推断，不是文献结论，后面展开）。</p>
+<h2 id="问题是怎么出现的"><a href="#问题是怎么出现的" class="headerlink" title="问题是怎么出现的"></a>问题是怎么出现的</h2><p>把一个在 A 机器人上学到的策略搬到 B 机器人上，中间隔着四层不一致。</p>
+<p><strong>动作维度与控制模式</strong>。7-DoF 单臂、双臂、灵巧手、全身人形，动作向量的长度和语义都不同。更麻烦的是控制模式：关节空间（joint space）直接给每个关节角，任务空间（task space）给末端位姿——两者之间靠逆运动学换算，而这个换算依赖标定质量。</p>
+<p><strong>控制频率</strong>。OpenVLA 这类自回归策略输出的是逐步 token，量级在个位数 Hz；π0 用 flow matching 输出动作块（action chunk），论文里写到「up to 50 Hz」，用于叠衣服这类灵巧任务。频率差一个数量级，动作的时间粒度就不是一回事。</p>
+<p><strong>观测与标定</strong>。相机位姿、手眼标定、本体感知（proprioception）的维度在各机型之间都不一致。同一条演示数据，在不同机型上的物理含义并不相同。</p>
+<p><strong>数据分布</strong>。不同实验室的采集方式不同——遥操作、示教器、便携设备——语义与风格差异大，即使动作空间对齐了，分布也未必对齐。</p>
+<p>这四层里，前三层是物理层面的，最后一层是数据层面的。早期工作大多在解决第四层（堆数据），而 2026 年的共识转向了前三层：<strong>先把动作的物理语义对齐，再谈规模。</strong></p>
+<h2 id="四代解法"><a href="#四代解法" class="headerlink" title="四代解法"></a>四代解法</h2><pre><code class="highlight mermaid">timeline
+    title 跨本体泛化解法的演进
+    2022 : 动作离散成 token
+         : RT-1 单本体 130k 演示
+    2023 : 大规模多本体联合训练
+         : OXE 22 本体 100 万+ 轨迹
+    2024 : 连续动作头成为新范式
+         : π0 flow matching 输出 50Hz 动作块
+         : OpenVLA 7B 每维 256 bin 离散 token
+    2025 : 本体条件化与经验学习
+         : X-VLA 可学习软提示
+         : π*0.6 用自身经验做离线 RL
+    2026 : 物理对齐被单独拆出来实证
+         : EEF 相对表征 + 负迁移量化</code></pre>
+
+<p><strong>第一代：把动作也变成语言。</strong> RT-1 开启的做法是把连续动作按维度归一化后离散成词表 token，动作预测退化成「下一个 token 预测」，与语言模型完全同构。OpenVLA 把这套做到了 7B 规模——每维 256 个 bin、归一化到 [-1,1]、用 1%&#x2F;99% 分位数做边界抗离群值——用 970k 条 OXE 演示训练，在 29 项任务上以 7 倍更少的参数超过 55B 的 RT-2-X 16.5 个百分点。FAST 则换了个压缩思路：对动作<strong>序列</strong>做离散余弦变换再造 BPE，把动作块压成高频 token，训练效率提升约 5 倍、推理最快 15 倍。</p>
+<p>这条路线的优点是统一——词表天然吞掉异构。代价是量化损失与逐 token 自回归的速度上限。</p>
+<p><strong>第二代：把连续控制交还给动作专家。</strong> π0 的做法是 VLM 主干（PaliGemma 初始化）负责语义与感知，另设一个轻量动作专家用 flow matching 生成连续动作块，论文明确写到这让模型「能在最高 50 Hz 的频率下控制机器人」。RDT-1B 用 1B 扩散 Transformer 做双臂，GR00T N1 用 DiT 扩散动作头——同一时期的不同实现。</p>
+<p>好处是高频、高带宽、高精度。新问题也随之出现：动作头通常带本体专属参数，跨本体时怎么共享或切换。</p>
+<p><strong>第三代：把异构性写成显式条件。</strong> CrossFormer 给每个本体配专属 tokenizer 加 embedding mask，单策略吞 20 种本体；GR00T N1 用标准化动作空间配合按本体配置的动作头；X-VLA 用一组可学习的软提示（soft prompt）代表不同本体，参数开销极小；Gemini Robotics 1.5 更激进，直接让多个本体共享一个运动空间（Motion Transfer）。</p>
+<p>这一代解决的是「一个模型能不能容纳多种本体」——能训了。但<strong>能训不等于训得好</strong>，配比不当照样负迁移。</p>
+<p><strong>第四代：把物理对齐拆出来单独研究。</strong> 这是 2602.09722 的贡献。它构造了统一动作空间 A_uni &#x3D; 末端位姿 ⊕ 关节 ⊕ 夹爪 ⊕ 灵巧手 ⊕ 辅助维度，配本体专属嵌入与维度掩码，然后逐个测试坐标系表征的影响。结论是 EEF 相对表征最稳，世界坐标系表征在 LIBERO 上预训练反而带来负迁移。</p>
+<p>绕过这四代之外，还有一条独立路线值得一提：<strong>潜在动作空间</strong>。UniVLA 从无动作标签的视频里自监督学习「任务中心潜在动作」，策略在潜空间预测后再解码到具体本体。它把对齐对象从「原始动作」换成「任务意图」，是打通互联网视频数据的候选路径。</p>
+<h2 id="三家代表模型的处理方式"><a href="#三家代表模型的处理方式" class="headerlink" title="三家代表模型的处理方式"></a>三家代表模型的处理方式</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>OpenVLA</th>
+<th>π0</th>
+<th>GR00T N1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>动作表示</td>
+<td>离散 token：7-DoF 每维 256 bin，分位数边界归一化</td>
+<td>连续：VLM 主干 + flow matching 动作专家</td>
+<td>连续：Eagle-2 VLM + DiT 扩散动作头</td>
+</tr>
+<tr>
+<td>输出特性</td>
+<td>逐步 token，自回归</td>
+<td>动作块，论文称最高 50 Hz</td>
+<td>高频动作块，双系统快慢解耦</td>
+</tr>
+<tr>
+<td>多本体混训</td>
+<td>直接混 970k 条 OXE 演示，词表天然统一</td>
+<td>共享动作空间 + per-robot 归一化统计</td>
+<td>标准化动作空间 + 数据金字塔（网络视频→仿真→真机）</td>
+</tr>
+<tr>
+<td>新本体迁移</td>
+<td>LoRA 微调，消费级 GPU 可跑</td>
+<td>post-train 小规模高质量数据微调</td>
+<td>官方提供跨本体微调流程</td>
+</tr>
+<tr>
+<td>跨本体思路</td>
+<td>「动作也是语言」，用词表吞掉异构</td>
+<td>「物理对齐」，归一化 + 连续头保留高频控制</td>
+<td>「架构解耦」，慢思考共享、快控制分本体</td>
+</tr>
+</tbody></table>
+<p>一句话概括：<strong>OpenVLA 把异构性藏在离散词表里，π0 交给归一化统计与动作专家，GR00T 写成显式的条件与数据分层。</strong></p>
+<h2 id="反直觉的实证：加数据反而更差"><a href="#反直觉的实证：加数据反而更差" class="headerlink" title="反直觉的实证：加数据反而更差"></a>反直觉的实证：加数据反而更差</h2><p>2602.09722 最有价值的部分不是结论，而是它把三条常见直觉都做成了可复现的消融。</p>
+<h3 id="发现一：换一个坐标系，结果就从正迁移变成负迁移"><a href="#发现一：换一个坐标系，结果就从正迁移变成负迁移" class="headerlink" title="发现一：换一个坐标系，结果就从正迁移变成负迁移"></a>发现一：换一个坐标系，结果就从正迁移变成负迁移</h3><p>同一模型、同一数据，只改动作坐标系：</p>
+<ul>
+<li><strong>世界坐标系表征</strong>在 LIBERO 上预训练是负迁移：世界相对 -0.9%、世界增量 -0.5%；</li>
+<li><strong>EEF 相对表征</strong>是正迁移：EEF 相对 +2.6%、EEF 增量 +2.4%。</li>
+</ul>
+<p>论文给的解释是，世界坐标能利用「相机外参固定 + 工作空间有界」这类单环境规律，因此容易过拟合到单一本体的特性上；EEF 坐标则要求模型学「相对于手的运动」，这个语义跨本体是共享的。在 RoboCasa 基准上，EEF 相对表征把 50-shot 成功率从 45.1% 提到 50.0%。</p>
+<h3 id="发现二：数据不是越多越好"><a href="#发现二：数据不是越多越好" class="headerlink" title="发现二：数据不是越多越好"></a>发现二：数据不是越多越好</h3><p>作者设计了一个累进配方，逐级加入数据源，每一级相对于上一级的增量是负的：</p>
+<table>
+<thead>
+<tr>
+<th>配方</th>
+<th>内容</th>
+<th>LIBERO（冻结 VLM）</th>
+<th>RoboCasa 50-shot</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>从零训</td>
+<td>—</td>
+<td>66.9%</td>
+<td>45.1%</td>
+</tr>
+<tr>
+<td>D1</td>
+<td>仅 OXE</td>
+<td><strong>77.3%</strong>（比从零训 +10.4pp）</td>
+<td><strong>54.7%</strong>（+9.6pp）</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>D1 + 真实 EEF 数据</td>
+<td>73.8%（-3.5pp）</td>
+<td>48.8%（-5.9pp）</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>D2 + 仿真 EEF 数据</td>
+<td>72.1%（-1.7pp）</td>
+<td>49.6%（+0.8pp）</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>D3 + 关节空间数据（分组损失）</td>
+<td>75.1%（+3.0pp，仍未超过 D1）</td>
+<td>50.0%（+0.4pp）</td>
+</tr>
+</tbody></table>
+<p>RoboCasa 上的差距在长时程任务上更明显：D1 在「门 &#x2F; 抽屉」类任务上 72.3%，D2 掉到 60.5%，<strong>差 11.8 个百分点</strong>。</p>
+<p>论文的归因是：朴素混合（naive pooling）时，数据量大、梯度噪声小的域会主导参数更新，低频但重要的本体被稀释；同时不同域的 EEF 语义、夹爪开合编码、观测风格并不一致。</p>
+<p>值得留意的是，这份配方的最终有效帧数是 182.49M，来自 658.52M 原始帧的平衡采样——其中<strong>关节空间数据被压到 5.94M 的最低配比</strong>，与「EEF 表征优先」的结论自洽。</p>
+<h3 id="发现三：正则化不是解药"><a href="#发现三：正则化不是解药" class="headerlink" title="发现三：正则化不是解药"></a>发现三：正则化不是解药</h3><p>几个直觉上应该有用的手段，实测都不稳定：视觉 dropout 关掉反而更好（85.6% vs 84.5%）；重度本体感知遮蔽有害；多阶段微调不如直接端到端微调（85.8%）。</p>
+<p>这篇工作还顺带提出了一套真机评测协议：<strong>分组双盲采样</strong>（Grouped Blind Ensemble），把「执行操作的人」和「判断结果的人」分开，降低实验者偏差。</p>
+<h2 id="同一件事的两种答案"><a href="#同一件事的两种答案" class="headerlink" title="同一件事的两种答案"></a>同一件事的两种答案</h2><p>把 2602.09722 的负迁移和 OXE&#x2F;RT-X 的正迁移放在一起看，会得到一个表面上矛盾的结论。我的推断是：<strong>迁移方向是不对称的</strong>。</p>
+<p>「用大数据帮助小数据、用多本体帮助单本体」容易产生正迁移——这正是 RT-X 时代观测到的现象。但「往一个已经充分混合的配方里继续塞未对齐的新域」容易产生负迁移，因为主干已经在旧配比上收敛，新域带来的梯度冲突超过了信息增益。此外，RT-X 时代的模型规模小、基线弱，负迁移的空间本就有限；2602.09722 用的是更强的 VLM 主干，对配比更敏感。</p>
+<p>这个解释是<strong>我的推断</strong>，我没有找到直接裁决它的文献。但它和另外两条证据是一致的：2602.09722 自己也显示混合并非只有害——D4 的分组损失能找回 3.0 个百分点；而 π0.5 的异构任务共训是它开放世界泛化能力的核心来源。<strong>异构本身是资源还是负担，取决于对齐方式与配比。</strong></p>
+<h2 id="产业界在押什么"><a href="#产业界在押什么" class="headerlink" title="产业界在押什么"></a>产业界在押什么</h2><p>学术界的路线分歧，在产业侧表现为不同的商业选择。有三个观察。</p>
+<p><strong>开源与闭源的分界，大致对应「卖模型」还是「卖整机」。</strong> Physical Intelligence 把 π0、π0-FAST、π0.5 的权重全部通过 openpi 开放，官方支持单张 RTX 4090 做 LoRA 微调——它的定位是基础模型供应商，开放是获客手段。Figure 走反方向：Helix 完全闭源，官方把它描述为输出人形上半身高频连续控制的机载双系统模型，系统 2 用 7B VLM 做慢速推理。它卖的是整机。</p>
+<p><strong>平台方押注生态。</strong> NVIDIA 的 GR00T N1 开源权重与代码，配套的是「网络视频 → 仿真 → 真机遥操作」的数据金字塔——它的收益不在模型本身，而在训练与仿真工具链的消耗。Google 的 Gemini Robotics 1.5 走另一条路：闭源，但把「跨本体共享运动空间」做成了产品能力，配合 ER 1.5 把具身推理 API 化。</p>
+<p><strong>中国团队集中在开源侧。</strong> 智元的 AgiBot World 用 100 台以上同构机器人采到 100 万+ 真机轨迹并开源，银河通用的 GraspVLA 用十亿帧合成抓取数据直接 sim-to-real，清华的 RDT 线（RDT-1B → X-VLA → RDT2）全线开源。这三家的共同点是都用数据或代码的开放度换生态位置。</p>
+<p>还有一个时序上的变化值得留意：π*0.6 引入的 RECAP（用自主经验做离线 RL）把竞争焦点从「预训练数据有多少」推向「部署后能学到多少」。如果这个方向成立，跨本体泛化的主战场会从预训练阶段的配方优化，迁移到部署阶段的本体适配——对数据壁垒的要求会低一些，对算法设计的要求会高一些。</p>
+<h2 id="评测缺口"><a href="#评测缺口" class="headerlink" title="评测缺口"></a>评测缺口</h2><p>跨本体研究最实际的问题是：<strong>没有一个公认的方法能测出「同一个策略在 K 个本体上的性能落差」。</strong></p>
+<p>仿真侧的事实标准是 LIBERO 和 RoboCasa——2602.09722 的全部消融都在这两个基准上做。但它们<strong>本体固定</strong>，测的是「模型学得好不好」，不是「换本体掉多少」。真机侧走得更远一些：RoboArena 用「跨实验室分布式双盲成对比较」代替统一环境，是目前最接近公平跨本体评测的尝试，但参与门槛高、难以复现。</p>
+<p>数据侧的对照物是 RoboMIND（4 种本体、107k 轨迹、479 任务）这类多本体规范基准。而「迁移落差矩阵」本身——同一策略在多个本体上的性能落差表格——目前没有标准化实现。这既是评测的空白，也是个人研究者门槛最低的切入点。</p>
+<h2 id="取舍与局限"><a href="#取舍与局限" class="headerlink" title="取舍与局限"></a>取舍与局限</h2><p><strong>EEF 相对表征是不是终答案？</strong> 在 7-DoF 单臂与双臂场景下它是当前最稳的默认值，但它有两个前提：本体要有可靠的逆运动学，以及标定质量足够好。灵巧手和全身人形的高自由度控制很难只靠末端位姿表达，最终仍要回到关节空间；低成本机械臂标定较差时，EEF 估计的噪声会显著上升。论文没有明确给出这条结论的外推边界。</p>
+<p><strong>三条动作表示路线缺少同预算对比。</strong> FAST 论证了离散可以很高效，π 系主线仍用 flow，UniVLA 主张潜空间才是跨本体正解。三方没有做过「同数据、同算力、同协议」的对照实验，所以现在的选择很大程度上是各家工程约束的产物，而不是被实验裁决过的优劣。</p>
+<p><strong>没有跨本体的联合 scaling law。</strong> 语言模型有 Chinchilla，机器人只有碎片证据：操作模仿学习的数据缩放只覆盖单任务维度，UMI 数据缩放只探到「零样本简单任务」为止，配比侧只有消融没有定律。<strong>本体数 × 数据量 × 模型规模</strong>的三维关系至今空缺。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>跨本体泛化过去两年最大的进展，不是某个模型变强了，而是<strong>问题被拆清楚了</strong>：动作空间的物理对齐是第一位的，数据规模是第二位的，正则化基本不解决问题。2602.09722 用一组干净的消融把这三者的优先级排了序，这比它给出的任何一个具体数字都更有用。</p>
+<p>如果要我做一件具体的事，我会选去补那个「迁移落差矩阵」——在仿真里构造 K 个本体（改自由度、控制频率、夹爪类型），测同一族开源模型的落差并公开结果。它需要的算力不大，但补的是一个全领域都在绕开的洞。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><strong>核心实证</strong></p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.09722">Rethinking Visual-Language-Action Model Scaling: Alignment, Mixture, and Regularization</a>（arXiv:2602.09722，2026）｜项目页：<a target="_blank" rel="noopener" href="https://research.beingbeyond.com/rethink_vla">research.beingbeyond.com&#x2F;rethink_vla</a></li>
+</ol>
+<p><strong>开放挑战与综述</strong></p>
+<ol start="2">
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2511.05936">10 Open Challenges Steering the Future of Vision-Language-Action Models</a>（arXiv:2511.05936，2025）</li>
+</ol>
+<p><strong>数据集与联合训练</strong></p>
+<ol start="3">
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.08864">Open X-Embodiment: Robotic Learning Datasets and RT-X Models</a>（arXiv:2310.08864，2023）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.12945">DROID: A Large-Scale In-The-Wild Robot Manipulation Dataset</a>（arXiv:2403.12945，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.13877">RoboMIND: Benchmark on Multi-embodiment Intelligence Normative Data</a>（arXiv:2412.13877，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.06669">AgiBot World Colosseo &#x2F; GO-1</a>（arXiv:2503.06669，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.10329">Universal Manipulation Interface (UMI)</a>（arXiv:2402.10329，2024）</li>
+</ol>
+<p><strong>代表模型</strong></p>
+<ol start="8">
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2212.06817">RT-1: Robotics Transformer for Real-World Control at Scale</a>（arXiv:2212.06817，2022）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.15818">RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control</a>（arXiv:2307.15818，2023）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09246">OpenVLA: An Open-Source Vision-Language-Action Model</a>（arXiv:2406.09246，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2410.24164">π0: A Vision-Language-Action Flow Model for General Robot Control</a>（arXiv:2410.24164，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2501.09747">FAST: Efficient Action Tokenization for Vision-Language-Action Models</a>（arXiv:2501.09747，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.16054">π0.5: a Vision-Language-Action Model with Open-World Generalization</a>（arXiv:2504.16054，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.14734">GR00T N1: An Open Foundation Model for Generalist Humanoid Robots</a>（arXiv:2503.14734，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2410.07864">RDT-1B: a Diffusion Foundation Model for Bimanual Manipulation</a>（arXiv:2410.07864，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.03310">RDT2: Exploring the Scaling Limit of UMI Data Towards Zero-Shot Cross-Embodiment Generalization</a>（arXiv:2602.03310，2026）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2510.10274">X-VLA: Soft-Prompted Transformer as Scalable Cross-Embodiment Vision-Language-Action Model</a>（arXiv:2510.10274，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.06111">UniVLA: Learning to Act Anywhere with Task-centric Latent Actions</a>（arXiv:2505.06111，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.03233">GraspVLA: a Grasping Foundation Model Pre-trained on Billion-scale Synthetic Action Data</a>（arXiv:2505.03233，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2408.11812">Scaling Cross-Embodied Learning: One Policy for Manipulation, Navigation, Locomotion and Aviation</a>（arXiv:2408.11812，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.01844">SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotic Manipulation</a>（arXiv:2506.01844，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2507.15493">GR-3 Technical Report</a>（arXiv:2507.15493，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://developer.nvidia.com/">GR00T N1.5 &#x2F; Isaac GR00T 开发者博客</a>（NVIDIA，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Physical-Intelligence/openpi">openpi 开源库</a>（Physical Intelligence，2025）</li>
+<li><a target="_blank" rel="noopener" href="https://www.figure.ai/news/helix">Helix: A Vision-Language-Action Model for Generalist Humanoid Control</a>（Figure，2025）</li>
+</ol>
+<p><strong>数据缩放与筛选</strong></p>
+<ol start="26">
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2410.18647">Data Scaling Laws in Imitation Learning for Robotic Manipulation</a>（arXiv:2410.18647，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2502.08623">Robot Data Curation with Mutual Information Estimators</a>（arXiv:2502.08623，2025）</li>
+</ol>
+<p><strong>评测基准</strong></p>
+<ol start="28">
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2306.03310">LIBERO: Benchmarking Knowledge Transfer for Lifelong Robot Learning</a>（arXiv:2306.03310，2023）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.03227">CALVIN: A Benchmark for Language-Conditioned Policy Learning</a>（arXiv:2112.03227，2021）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.02523">RoboCasa: Large-Scale Simulation of Everyday Tasks for Generalist Robots</a>（arXiv:2406.02523，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.05941">Evaluating Real-World Robot Manipulation Policies in Simulation</a>（arXiv:2405.05941，2024）</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.18123">RoboArena: Distributed Real-World Evaluation of Generalist Robot Policies</a>（arXiv:2506.18123，2025）</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/29/2026-09-29-vla-cross-embodiment/">https://ryanwu.cn/2026/09/29/2026-09-29-vla-cross-embodiment/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/robotics/">robotics</a><a class="post-meta__tags" href="/tags/vla/">vla</a><a class="post-meta__tags" href="/tags/cross-embodiment/">cross-embodiment</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/vla-cross-embodiment/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年"><img class="cover" src="/images/posts/world-action-models/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">先想象，再动手：世界动作模型这一年</div></div><div class="info-2"><div class="info-item-1">半年内两篇独立综述把世界动作模型（WAM）立成正式方向。梳理它的定义边界、三种工程实现与产业合流，以及正反两面证据：最强证据来自把世界模型当训练器而非直接当策略，而联合评估协议至今缺失。</div></div></div></a><a class="pagination-related" href="/2026/09/28/2026-09-28-gpt-image-architecture-whiteboard/" title="GPT Image 的架构，写在一张白板上"><img class="cover" src="/images/posts/gpt-image-architecture-whiteboard/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">GPT Image 的架构，写在一张白板上</div></div><div class="info-2"><div class="info-item-1">OpenAI 从未公开 GPT Image 的网络结构与参数量，但发布博文里的一张架构白板、系统卡原文和 API 行为拼出了它的形状：自回归先验负责想清楚画什么，强大的解码器负责画得像；而改图整图重生成、像素级不可保，正是这条架构路线的直接代价。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img class="cover" src="/images/posts/vla-architecture-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</div></div><div class="info-2"><div class="info-item-1">梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-embodied-inference-infra/" title="机器人推理的指标不是 Token&#x2F;s"><img class="cover" src="/images/posts/embodied-inference-infra/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">机器人推理的指标不是 Token&#x2F;s</div></div><div class="info-2"><div class="info-item-1">LLM 推理基础设施优化的是 Token 吞吐，机器人要的是 Observation → Action 的闭环延迟。梳理两者在缓存对象、调度目标、延迟语义上的根本差异，以及目前最接近「机器人 vLLM」的几条技术路线。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-direct-decision-lineage/" title="直接读出答案：从 GPT 双头到 Jev 的一条线索"><img class="cover" src="/images/posts/direct-decision-lineage/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">直接读出答案：从 GPT 双头到 Jev 的一条线索</div></div><div class="info-2"><div class="info-item-1">闭集判断为什么要先生成一串文本？这个问题在 Jev 出现之前已经问了八年：从 GPT 的双头模型、DETR 和 Perceiver IO 的 query 读出、Hydragen 的共享 prefix，到 FIRST 的首 token 排序，三条线索最终在 Jev 汇合。</div></div></div></a><a class="pagination-related" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年"><img class="cover" src="/images/posts/world-action-models/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-29</div><div class="info-item-2">先想象，再动手：世界动作模型这一年</div></div><div class="info-2"><div class="info-item-1">半年内两篇独立综述把世界动作模型（WAM）立成正式方向。梳理它的定义边界、三种工程实现与产业合流，以及正反两面证据：最强证据来自把世界模型当训练器而非直接当策略，而联合评估协议至今缺失。</div></div></div></a><a class="pagination-related" href="/2026/09/28/2026-09-28-gpt-image-architecture-whiteboard/" title="GPT Image 的架构，写在一张白板上"><img class="cover" src="/images/posts/gpt-image-architecture-whiteboard/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-28</div><div class="info-item-2">GPT Image 的架构，写在一张白板上</div></div><div class="info-2"><div class="info-item-1">OpenAI 从未公开 GPT Image 的网络结构与参数量，但发布博文里的一张架构白板、系统卡原文和 API 行为拼出了它的形状：自回归先验负责想清楚画什么，强大的解码器负责画得像；而改图整图重生成、像素级不可保，正是这条架构路线的直接代价。</div></div></div></a><a class="pagination-related" href="/2026/09/23/2026-09-23-mechanical-defect-image-editing/" title="生成模型画不对一颗松动的螺栓"><img class="cover" src="/images/posts/mechanical-defect-image-editing/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-23</div><div class="info-item-2">生成模型画不对一颗松动的螺栓</div></div><div class="info-2"><div class="info-item-1">做工业巡检缺陷图时发现，通用图生图模型改小色块和小组件很不可靠。从失败模式出发，说明为什么机械缺陷必须交给确定性几何编辑，AI 只负责补洞和纹理。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">54</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%98%AF%E6%80%8E%E4%B9%88%E5%87%BA%E7%8E%B0%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">问题是怎么出现的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E4%BB%A3%E8%A7%A3%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">四代解法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E5%AE%B6%E4%BB%A3%E8%A1%A8%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">三家代表模型的处理方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E7%9B%B4%E8%A7%89%E7%9A%84%E5%AE%9E%E8%AF%81%EF%BC%9A%E5%8A%A0%E6%95%B0%E6%8D%AE%E5%8F%8D%E8%80%8C%E6%9B%B4%E5%B7%AE"><span class="toc-number">5.</span> <span class="toc-text">反直觉的实证：加数据反而更差</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E7%8E%B0%E4%B8%80%EF%BC%9A%E6%8D%A2%E4%B8%80%E4%B8%AA%E5%9D%90%E6%A0%87%E7%B3%BB%EF%BC%8C%E7%BB%93%E6%9E%9C%E5%B0%B1%E4%BB%8E%E6%AD%A3%E8%BF%81%E7%A7%BB%E5%8F%98%E6%88%90%E8%B4%9F%E8%BF%81%E7%A7%BB"><span class="toc-number">5.1.</span> <span class="toc-text">发现一：换一个坐标系，结果就从正迁移变成负迁移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E7%8E%B0%E4%BA%8C%EF%BC%9A%E6%95%B0%E6%8D%AE%E4%B8%8D%E6%98%AF%E8%B6%8A%E5%A4%9A%E8%B6%8A%E5%A5%BD"><span class="toc-number">5.2.</span> <span class="toc-text">发现二：数据不是越多越好</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E7%8E%B0%E4%B8%89%EF%BC%9A%E6%AD%A3%E5%88%99%E5%8C%96%E4%B8%8D%E6%98%AF%E8%A7%A3%E8%8D%AF"><span class="toc-number">5.3.</span> <span class="toc-text">发现三：正则化不是解药</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E4%B8%80%E4%BB%B6%E4%BA%8B%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%AD%94%E6%A1%88"><span class="toc-number">6.</span> <span class="toc-text">同一件事的两种答案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A7%E4%B8%9A%E7%95%8C%E5%9C%A8%E6%8A%BC%E4%BB%80%E4%B9%88"><span class="toc-number">7.</span> <span class="toc-text">产业界在押什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%84%E6%B5%8B%E7%BC%BA%E5%8F%A3"><span class="toc-number">8.</span> <span class="toc-text">评测缺口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%96%E8%88%8D%E4%B8%8E%E5%B1%80%E9%99%90"><span class="toc-number">9.</span> <span class="toc-text">取舍与局限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">10.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">11.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/29/2026-09-29-vla-cross-embodiment/" title="换一台机器人就不灵了：VLA 跨本体泛化卡在哪"><img src="/images/posts/vla-cross-embodiment/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="换一台机器人就不灵了：VLA 跨本体泛化卡在哪"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/29/2026-09-29-vla-cross-embodiment/" title="换一台机器人就不灵了：VLA 跨本体泛化卡在哪">换一台机器人就不灵了：VLA 跨本体泛化卡在哪</a><time datetime="2026-09-29T04:00:00.000Z" title="发表于 2026-09-29 12:00:00">2026-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年"><img src="/images/posts/world-action-models/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="先想象，再动手：世界动作模型这一年"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年">先想象，再动手：世界动作模型这一年</a><time datetime="2026-09-29T04:00:00.000Z" title="发表于 2026-09-29 12:00:00">2026-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/28/2026-09-28-gpt-image-architecture-whiteboard/" title="GPT Image 的架构，写在一张白板上"><img src="/images/posts/gpt-image-architecture-whiteboard/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GPT Image 的架构，写在一张白板上"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/28/2026-09-28-gpt-image-architecture-whiteboard/" title="GPT Image 的架构，写在一张白板上">GPT Image 的架构，写在一张白板上</a><time datetime="2026-09-28T04:00:00.000Z" title="发表于 2026-09-28 12:00:00">2026-09-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/23/2026-09-23-mechanical-defect-image-editing/" title="生成模型画不对一颗松动的螺栓"><img src="/images/posts/mechanical-defect-image-editing/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="生成模型画不对一颗松动的螺栓"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/23/2026-09-23-mechanical-defect-image-editing/" title="生成模型画不对一颗松动的螺栓">生成模型画不对一颗松动的螺栓</a><time datetime="2026-09-23T04:00:00.000Z" title="发表于 2026-09-23 12:00:00">2026-09-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/22/2026-09-22-direct-decision-lineage/" title="直接读出答案：从 GPT 双头到 Jev 的一条线索"><img src="/images/posts/direct-decision-lineage/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="直接读出答案：从 GPT 双头到 Jev 的一条线索"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/22/2026-09-22-direct-decision-lineage/" title="直接读出答案：从 GPT 双头到 Jev 的一条线索">直接读出答案：从 GPT 双头到 Jev 的一条线索</a><time datetime="2026-09-22T04:00:00.000Z" title="发表于 2026-09-22 12:00:00">2026-09-22</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
