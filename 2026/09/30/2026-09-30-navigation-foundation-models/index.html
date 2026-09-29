@@ -1,0 +1,754 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>31M 参数的导航模型，凭什么叫基础模型 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="导航领域还没有稳定定义的基础模型。GNM 与 ViNT 用 70 到 80 小时数据和归一化路点做到了跨机器人零样本部署，而大模型路线的跨本体证据反而更弱。动作空间消融最能说明问题：归一化路点的成功率是未归一化的两倍以上。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="31M 参数的导航模型，凭什么叫基础模型">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="导航领域还没有稳定定义的基础模型。GNM 与 ViNT 用 70 到 80 小时数据和归一化路点做到了跨机器人零样本部署，而大模型路线的跨本体证据反而更弱。动作空间消融最能说明问题：归一化路点的成功率是未归一化的两倍以上。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/navigation-foundation-models/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T08:56:30.380Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="cross-embodiment">
+<meta property="article:tag" content="foundation-model">
+<meta property="article:tag" content="navigation">
+<meta property="article:tag" content="robotics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/navigation-foundation-models/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "31M 参数的导航模型，凭什么叫基础模型",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/",
+  "image": "https://ryanwu.cn/images/posts/navigation-foundation-models/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-29T08:56:30.380Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '31M 参数的导航模型，凭什么叫基础模型',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">80</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/navigation-foundation-models/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">31M 参数的导航模型，凭什么叫基础模型</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">31M 参数的导航模型，凭什么叫基础模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T08:56:30.380Z" title="更新于 2026-09-29 16:56:30">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理导航基础模型（navigation foundation model）的现状。论文数字以 arXiv 原文与官方项目页为准；”未验证”的部分不写成结论。关于操作（manipulation）方向的跨本体泛化，我在另一篇里写过，这篇讨论的是导航，以及两者合流的证据强度。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>导航领域还没有像大语言模型那样稳定的”基础模型”定义。目前最稳固的技术主线是：<strong>把多机器人真实轨迹转成统一的视觉目标到达任务，再用归一化路点（normalized waypoints）作为跨具身的动作接口。</strong></p>
+<p>这条主线上的三个代表模型，参数量都不大：</p>
+<ul>
+<li><strong>GNM</strong> 用 70 小时数据、6 类平台训练，零样本部署到四种机器人上，成功率 0.93–0.99；</li>
+<li><strong>ViNT</strong> 是 31M 参数的 Transformer，80 小时数据、8 类平台，通过替换目标编码器适配 GPS、路由命令和驾驶任务；</li>
+<li><strong>NoMaD</strong> 是 19M 参数的扩散策略，把”有目标导航”和”无目标探索”统一成一个模型。</li>
+</ul>
+<p>最能说明问题的是一组动作空间消融：<strong>归一化路点 1.0&#x2F;0.95（简单&#x2F;中等条件），速度动作 0.73&#x2F;0.54，未归一化路点 0.42&#x2F;0.26。</strong> 同一模型、同一数据，只换动作接口，成功率差了两倍以上。</p>
+<p>所以我的判断是：<strong>“基础模型”的判定标准不该只看参数量</strong>，而要看数据是否跨平台、输出接口是否可迁移、是否有未见机器人上的部署、能否用少量数据适配新任务，以及有没有统一基准。按这五条，19M 到 31M 的小模型反而比一些大模型更像基础模型。</p>
+<h2 id="三个模型与三个抽象"><a href="#三个模型与三个抽象" class="headerlink" title="三个模型与三个抽象"></a>三个模型与三个抽象</h2><p>GNM 的做法可以用三个抽象概括，它后来被 ViNT 和 NoMaD 继承：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;统一视觉接口&lt;br/&gt;低分辨率前向 RGB&quot;] --&gt; D[&quot;跨本体策略&quot;]
+    B[&quot;归一化动作接口&lt;br/&gt;相对路点加朝向&quot;] --&gt; D
+    C[&quot;时间上下文&lt;br/&gt;历史帧作为具身线索&quot;] --&gt; D
+    D --&gt; E[&quot;零样本部署&lt;br/&gt;不同机器人平台&quot;]
+    D --&gt; F[&quot;少量数据适配&lt;br/&gt;GPS、路由、驾驶&quot;]</code></pre>
+
+<p><strong>统一视觉接口</strong>：只用前向 RGB 图像（训练输入 85×64），不依赖激光雷达、深度或里程计。不同机器人的相机高度、视场和安装角差异很大，低分辨率加时间上下文是一种”主动降级”——把差异吸收进历史帧，让模型自己推断当前的运动能力和视角。</p>
+<p><strong>归一化动作接口</strong>：不同机器人的速度和动力学不同，所以不预测绝对速度或绝对位移，而是预测相对路点 <code>p(x,y)</code> 和朝向 <code>ψ</code>，再用与机器人最高速度相关的缩放因子 <code>α</code> 归一化。执行时由机器人专属的低层控制器（PD 控制器一类）跟踪这些路点。</p>
+<p><strong>时间上下文</strong>：用过去 5 帧帮助模型推断”我是在什么平台上、相机在哪、我能怎么动”。消融显示这项设计在困难条件下把成功率从 0.36 提到 0.70——<strong>历史帧在这里不是用来记路的，是用来识别自己的。</strong></p>
+<p>ViNT 把模型换成 31M 参数的 Transformer（两个 EfficientNet-B0 编码器加 4 层 4 头的解码器），输入当前与过去 5 帧加目标图像，输出到目标的距离和未来 5 个路点。它真正的贡献是<strong>把”目标”做成了可替换的接口</strong>：图像目标、GPS 路点、二维位置、卫星图像、路由命令都能映射到同一个目标 token 空间。官方项目页给出过一个 1.5 公里的导航示例，以及一条适配证据：用不到 1 小时的数据微调，零样本成功率 40% 提升到 80%，并且优于用 5 倍数据训练的专用模型。</p>
+<p>NoMaD 的重点在统一两个任务。它用一个二值目标掩码（训练时以 0.5 的概率遮蔽目标）加一个一维扩散动作头（10 步去噪），把”去某个地方”和”四处看看”变成同一个策略的两种模式。在真实室内外环境中，它的探索成功率 98%、导航成功率 90%、平均碰撞数 0.2——对比另一个 335M 参数的子目标扩散方法（探索成功率 77%、碰撞 1.7），更小且更安全。</p>
+<p>但这里必须说清楚一条边界：<strong>NoMaD 的公开结果主要是单一平台上的部署，没有像 GNM 和 ViNT 那样按机器人平台拆分的零样本迁移表。</strong> 所以它是”目标导航与探索统一”的强证据，不是”跨本体泛化”的最强证据。</p>
+<p>补一个数据侧的细节：GNM 的训练表合计 70 小时（摘要口径约 60 小时），覆盖 TurtleBot2、Jackal、遥控车、Spot、Warthog、ATV 等六类平台，环境从办公室、走廊到郊区人行道和越野。它的零样本部署名单里有 DJI Tello（欠驱动四旋翼）和 LoCoBot——<strong>这两种都不在训练平台里，成功率分别是 0.99 和 0.96。</strong> 相反，只用单一数据集训练的对照策略在同一批平台上明显更差。ViNT 把数据扩到 160 小时（实际使用 80 小时）、平台扩到 8 类，输出也从单纯的路点扩成”到目标的距离”加”未来 5 个路点”——距离输出让下游可以直接构建拓扑图做路径规划，而不是只会跟着目标图走。</p>
+<h2 id="动作接口决定了迁移能力"><a href="#动作接口决定了迁移能力" class="headerlink" title="动作接口决定了迁移能力"></a>动作接口决定了迁移能力</h2><p>GNM 的消融是这篇里我认为最值得记住的一组数字：</p>
+<table>
+<thead>
+<tr>
+<th>动作接口</th>
+<th>简单条件成功率</th>
+<th>中等条件成功率</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>速度动作</td>
+<td>0.73</td>
+<td>0.54</td>
+</tr>
+<tr>
+<td>未归一化路点</td>
+<td>0.42</td>
+<td>0.26</td>
+</tr>
+<tr>
+<td><strong>归一化路点</strong></td>
+<td><strong>1.00</strong></td>
+<td><strong>0.95</strong></td>
+</tr>
+</tbody></table>
+<p>含义是：<strong>跨本体的核心障碍不是”图像能不能看懂”，而是动作空间能不能统一。</strong> 把机器人的速度、尺度和控制接口吸收进缩放因子和低层控制器之后，同一个策略才能同时驱动轮式底盘、四足和无人机。</p>
+<p>代价同样明显：<strong>归一化路点把复杂动力学交给了低层控制器</strong>。ViNT 论文明确指出它不能直接控制四旋翼的高度，也不能自然处理激光雷达等新传感器或显著不同的动作表示。腿足和人形的姿态控制、灵巧手的精细操作，都不是”相对路点”能表达的。</p>
+<p>GNM 还报告了一组鲁棒性数据：在转向退化、视角扰动和物理损伤三种情况下，GNM 的成功率是 0.89&#x2F;0.81&#x2F;1.0，而单域策略是 0.30&#x2F;0.17&#x2F;0.81。<strong>时间上下文带来的”知道自己是什么”的能力，同时也是对退化鲁棒性的来源之一。</strong></p>
+<h2 id="语言路线：接口更自然，但更贵"><a href="#语言路线：接口更自然，但更贵" class="headerlink" title="语言路线：接口更自然，但更贵"></a>语言路线：接口更自然，但更贵</h2><p>目标条件之外的另一条路是用语言和视觉语言模型（VLM）做导航。</p>
+<p><strong>NaVid</strong> 用单目 RGB 视频和自然语言指令直接输出低层动作（前进、左转、右转、停止加距离与角度参数），不需要地图、里程计或深度。在连续环境基准上成功率 37.4；真实部署在 200 条指令上整体约 66%，其中简单指令约 84%、复杂指令约 48%——<strong>复杂度带来的性能落差接近一半</strong>。代价是每一步都需要远程推理，单步约 1.2 到 1.5 秒。</p>
+<p><strong>NaVILA</strong> 面向腿足机器人，做了两级拆分：高层 VLA 输出”右转 30 度””前进 75 厘米”这样的<strong>中层语言动作</strong>，低层用强化学习训练的运动策略执行（输入本体感知、速度命令和激光雷达生成的 2.5D 高度图）。这个设计牺牲了端到端的统一性，但换来了物理可执行性：在它自建的物理基准上，视觉低层策略的成功率 50.2，明显高于盲策略的 36.2；真实部署覆盖 25 条指令、每条重复 3 次，报告整体 88% 成功率、复杂指令 75%。</p>
+<p>两条路线可以这样对比：</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>目标条件</th>
+<th>语言条件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>监督信号</td>
+<td>从轨迹里采样未来帧天然可得</td>
+<td>需要标注或模型生成</td>
+</tr>
+<tr>
+<td>动作输出</td>
+<td>连续路点，易用真实轨迹监督</td>
+<td>需要离散化或正则解析</td>
+</tr>
+<tr>
+<td>接口自然度</td>
+<td>目标图像或坐标不太符合人的表达习惯</td>
+<td>接近人类指令</td>
+</tr>
+<tr>
+<td>语义与约束</td>
+<td>难处理”不要靠近人群”这类条件</td>
+<td>可利用常识与场景语义</td>
+</tr>
+<tr>
+<td>成本</td>
+<td>小模型可实时</td>
+<td>大模型推理，单步以秒计</td>
+</tr>
+</tbody></table>
+<p>合流的方向不是二选一，而是<strong>让语言和 VLM 负责语义与长程子目标，导航基础策略负责局部连续控制，中间用像素目标（pixel goal）、目标图像或中层语言动作连接</strong>。2026 年的新工作基本都在这条线上，但它们的真实部署量化结果（成功率、延迟、里程）在公开页面上大多还没有给全，我按”未验证”处理。</p>
+<h2 id="导航和操作能用同一个骨干吗"><a href="#导航和操作能用同一个骨干吗" class="headerlink" title="导航和操作能用同一个骨干吗"></a>导航和操作能用同一个骨干吗</h2><p>这是我认为最有意思的问题，目前只有早期证据。</p>
+<p><strong>正面证据</strong>来自一项把导航、驾驶和操作都写成”视觉目标到达”的工作：输入当前与历史观测加目标图像，输出未来动作序列，用 18 个数据集（导航与操作大致各一半）联合训练。结果是<strong>双向受益</strong>——操作任务平均成功率 71%，比只训操作提升约 20%；导航相比只训导航提升约 5 到 7 个百分点（不同平台 1 到 12 个百分点不等）；在训练中没见过的移动操作平台上，零样本成功率 50%。</p>
+<p>但作者自己列了局限：目标图像接口不自然、高自由度系统（灵巧手）难以用同一套动作抽象、移动操作对底盘位置非常敏感。这些限制指向同一个原因：<strong>统一动作空间保证了迁移，但会限制能力上限。</strong></p>
+<p><strong>反面参照</strong>是模块化系统：把视觉语言模型的物体检测、导航原语和抓取原语串起来，在 10 个真实家庭里做开放词汇的取放，总体成功率 58.5%，环境干净时 82%。它说明即使每个模块都很强，<strong>真实家庭移动操作仍然受模块接口、环境杂乱和失败恢复拖累</strong>——但它是系统集成，不是同一个骨干，不应该和前一项混为一谈。</p>
+<p>至于操作方向的 VLA 模型（RT-2、Open X-Embodiment、Octo、OpenVLA），它们的摘要都聚焦抓取、放置这类操作任务，<strong>没有导航证据</strong>。正确的表述是：它们为导航提供了数据标准化、语言动作 token 化和大模型微调的经验，但导航能不能纳入同一套体系，还需要像上面那样的直接实验来证明。</p>
+<h2 id="基准还是碎片化的"><a href="#基准还是碎片化的" class="headerlink" title="基准还是碎片化的"></a>基准还是碎片化的</h2><p>现有基准各覆盖一块：连续环境语言导航（去掉导航图和完美定位）、仿真到真实的对应场景、固定机器人配置的物体与图像导航、家庭重排与移动操作、多人形机器人的物理语言导航（933 个回合）、动态行人环境下的社交合规导航（33093 个回合）、以及评估 VLM 场景理解能力的问答集。</p>
+<p>结论很清楚：<strong>现在是”任务族加若干垂直基准”的阶段，还没有出现 ImageNet 或 GLUE 式的统一排行榜。</strong> 各家报告的成功率、路径加权成功率、碰撞数、最大无干预距离、推理延迟互不相同，横向比较的误差可能比方法差异还大。</p>
+<h2 id="三个还没有答案的问题"><a href="#三个还没有答案的问题" class="headerlink" title="三个还没有答案的问题"></a>三个还没有答案的问题</h2><p><strong>统一动作空间会不会限制能力上限？</strong> 归一化路点让跨平台迁移成立，代价是把复杂动力学交给低层控制器——四旋翼高度、腿足姿态、机械臂接触力和灵巧手控制都表达不了。争议点在于：未来应该追求”统一的低层动作 token”，还是接受”高层统一、低层平台专用”。目前的证据更支持后者，NaVILA 的两级设计就是这种折中，它牺牲了端到端统一性，换来了物理可执行性。</p>
+<p><strong>语言大模型能否替代导航策略？</strong> 大模型确实能做下一步动作或中层动作规划，但真实系统仍然依赖低层控制、地图记忆或探索策略。单步 1.2 到 1.5 秒的推理延迟和 66% 的实机成功率说明，大模型直接闭环导航在实时性和长时稳定性上都还没准备好。</p>
+<p><strong>数据规模和数据质量哪个更重要？</strong> 这个方向的数据很小——几十到一百小时的真实轨迹就能得到强迁移，而操作方向的 VLA 用的是近百万级演示。差异可能来自任务本身：导航的监督信号（从轨迹里采样未来帧）天然密集，动作空间也低维得多。但”相机几何、动作归一化、时间上下文和低层控制器设计比堆数据更关键”这个判断，目前还只有小规模证据，没有跨平台的定量对照。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>导航基础模型这件事的有趣之处在于：<strong>它把”基础”两个字从参数量拉回了接口设计。</strong> 70 小时的数据、31M 的参数，通过统一视觉输入、归一化动作和可替换的目标编码器，换来了真正的跨平台零样本部署；而更大的模型在语言理解上更强，跨本体的证据反而更弱。</p>
+<p>如果要我押一个方向，我会押在<strong>接口与评测</strong>上，而不是更大模型。三件具体的事：把小模型（19M 到 31M）的开源代码复现起来，做跨数据集和跨平台的迁移曲线；研究”语言到像素目标”的中间层（用开源 VLM 选目标，用导航策略执行，失败后重新选）；以及给真实部署补一份统一报告模板——把平台、相机、控制频率、干预次数、失败类型都写清楚。前两件单卡可做，第三件只要你有一台机器人就能开始。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.03370">GNM: A General Navigation Model to Drive Any Robot</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2306.14846">ViNT: A Foundation Model for Visual Navigation</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.07896">NoMaD: Goal Masked Diffusion Policies for Navigation and Exploration</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.15852">NaVid: Video-based VLM Plans the Next Step for Vision-and-Language Navigation</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.04453">NaVILA: Legged Robot Vision-Language-Action Model for Navigation</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.19432">Pushing the Limits of Cross-Embodiment Learning for Manipulation and Navigation</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2401.12202">OK-Robot: What Really Matters in Integrating Open-Knowledge Models for Robotics</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.09246">OpenVLA: An Open-Source Vision-Language-Action Model</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.12213">Octo: An Open-Source Generalist Robot Policy</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.15818">RT-2: Vision-Language-Action Models Transfer Web Knowledge to Robotic Control</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.08864">Open X-Embodiment: Robotic Learning Datasets and RT-X Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2004.02857">Beyond the Nav-Graph: Vision-and-Language Navigation in Continuous Environments</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2608.12860">HumanoidVLN: A Physics-Grounded Simulator and Benchmark for VLN Across Humanoid Embodiments</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2609.21504">DPed-VLN: Socially Compliant VLN in Dynamic Pedestrian Environments</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2509.12129">Embodied Navigation Foundation Model（NavFoM）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2607.10383">ABot-N1: Toward a General Visual Language Navigation Foundation Model</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2605.27582">Uni-LaViRA: Language-Vision-Robot Actions Translation for Unified Embodied Navigation</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/">https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/robotics/">robotics</a><a class="post-meta__tags" href="/tags/navigation/">navigation</a><a class="post-meta__tags" href="/tags/cross-embodiment/">cross-embodiment</a><a class="post-meta__tags" href="/tags/foundation-model/">foundation-model</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/navigation-foundation-models/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-sim2real-real-world-evaluation/" title="仿真分数高，真机就一定好吗：Sim2Real 评估的缺口"><img class="cover" src="/images/posts/sim2real-real-world-evaluation/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">仿真分数高，真机就一定好吗：Sim2Real 评估的缺口</div></div><div class="info-2"><div class="info-item-1">Domain randomization、3D Gaussian Splatting、Isaac Lab、Genesis 和视频世界模型分别解决了什么？从 SIMPLER 与 GAUGE 出发，说明仿真—真机相关性为何仍缺统一协议，以及个人研究者如何做配对评估。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-robot-data-engine-scaling-laws/" title="机器人没有互联网数据：一张数据引擎与 Scaling Law 地图"><img class="cover" src="/images/posts/robot-data-engine-scaling-laws/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">机器人没有互联网数据：一张数据引擎与 Scaling Law 地图</div></div><div class="info-2"><div class="info-item-1">机器人数据从哪里来？梳理真机遥操作、仿真合成与人类视频三条路线，以及多样性幂律、跨本体混合和负迁移之间的张力：机器人 scaling law 存在，但远不是把数据量乘大那么简单。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-vln-long-horizon/" title="走了 150 步之后：VLN 的长程与真实化难题"><img class="cover" src="/images/posts/vln-long-horizon/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">走了 150 步之后：VLN 的长程与真实化难题</div></div><div class="info-2"><div class="info-item-1">VLN 从短指令加导航图走向长程任务与连续环境，但长程化远未解决：LH-VLN 上领先方法的成功率只有 2.44。梳理任务演化、稳定的失败模式（停止错误、过度旋转、错误累积）、测试时适应与大模型时代的合流。</div></div></div></a><a class="pagination-related" href="/2026/09/29/2026-09-29-vla-cross-embodiment/" title="换一台机器人就不灵了：VLA 跨本体泛化卡在哪"><img class="cover" src="/images/posts/vla-cross-embodiment/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-29</div><div class="info-item-2">换一台机器人就不灵了：VLA 跨本体泛化卡在哪</div></div><div class="info-2"><div class="info-item-1">拆解 VLA 跨本体泛化的核心障碍——动作空间异构，以及从离散 token 到物理对齐的四代解法。重点梳理一份系统消融的实证：物理对齐比数据规模更重要，异构数据朴素混合反而带来负迁移（LIBERO 上 77.3% 逐级降到 72.1%）。</div></div></div></a><a class="pagination-related" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年"><img class="cover" src="/images/posts/world-action-models/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-29</div><div class="info-item-2">先想象，再动手：世界动作模型这一年</div></div><div class="info-2"><div class="info-item-1">半年内两篇独立综述把世界动作模型（WAM）立成正式方向。梳理它的定义边界、三种工程实现与产业合流，以及正反两面证据：最强证据来自把世界模型当训练器而非直接当策略，而联合评估协议至今缺失。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-world-models-three-domains/" title="能被控制的未来：世界模型的三种动作接口"><img class="cover" src="/images/posts/world-models-three-domains/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">能被控制的未来：世界模型的三种动作接口</div></div><div class="info-2"><div class="info-item-1">游戏、驾驶与机器人对世界模型的要求并不相同，统一它们的不是像素而是动作接口：显式动作条件、潜在动作与视觉动作。从 Genie 到 KineBench，梳理正面证据、物理基准的负面结论，以及尚未被证实的强命题。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-direct-decision-lineage/" title="直接读出答案：从 GPT 双头到 Jev 的一条线索"><img class="cover" src="/images/posts/direct-decision-lineage/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">直接读出答案：从 GPT 双头到 Jev 的一条线索</div></div><div class="info-2"><div class="info-item-1">闭集判断为什么要先生成一串文本？这个问题在 Jev 出现之前已经问了八年：从 GPT 的双头模型、DETR 和 Perceiver IO 的 query 读出、Hydragen 的共享 prefix，到 FIRST 的首 token 排序，三条线索最终在 Jev 汇合。</div></div></div></a><a class="pagination-related" href="/2026/09/21/2026-09-21-robot-slam-localization-navigation/" title="跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"><img class="cover" src="/images/posts/robot-slam-localization-navigation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航</div></div><div class="info-2"><div class="info-item-1">从传感器、运动估计、SLAM、有图定位到全局规划、局部控制与恢复行为，把移动机器人自主导航整条链路串一遍，并附上自己用 Gazebo + ROS 2 跑出来的实测数字。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">80</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E6%A8%A1%E5%9E%8B%E4%B8%8E%E4%B8%89%E4%B8%AA%E6%8A%BD%E8%B1%A1"><span class="toc-number">2.</span> <span class="toc-text">三个模型与三个抽象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E4%BD%9C%E6%8E%A5%E5%8F%A3%E5%86%B3%E5%AE%9A%E4%BA%86%E8%BF%81%E7%A7%BB%E8%83%BD%E5%8A%9B"><span class="toc-number">3.</span> <span class="toc-text">动作接口决定了迁移能力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E8%A8%80%E8%B7%AF%E7%BA%BF%EF%BC%9A%E6%8E%A5%E5%8F%A3%E6%9B%B4%E8%87%AA%E7%84%B6%EF%BC%8C%E4%BD%86%E6%9B%B4%E8%B4%B5"><span class="toc-number">4.</span> <span class="toc-text">语言路线：接口更自然，但更贵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E8%88%AA%E5%92%8C%E6%93%8D%E4%BD%9C%E8%83%BD%E7%94%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E9%AA%A8%E5%B9%B2%E5%90%97"><span class="toc-number">5.</span> <span class="toc-text">导航和操作能用同一个骨干吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E5%87%86%E8%BF%98%E6%98%AF%E7%A2%8E%E7%89%87%E5%8C%96%E7%9A%84"><span class="toc-number">6.</span> <span class="toc-text">基准还是碎片化的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E8%BF%98%E6%B2%A1%E6%9C%89%E7%AD%94%E6%A1%88%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">7.</span> <span class="toc-text">三个还没有答案的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img src="/images/posts/driving-world-models/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="重建还是生成：驾驶世界模型与安全验证"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证">重建还是生成：驾驶世界模型与安全验证</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img src="/images/posts/e2e-driving-evaluation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="L2 误差不是指标：端到端智驾的评测重建"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建">L2 误差不是指标：端到端智驾的评测重建</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人不是一个大模型：全身控制的分层答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案">人形机器人不是一个大模型：全身控制的分层答案</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img src="/images/posts/mapless-driving-perception/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无图智驾去掉了哪张图：在线感知的边界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界">无图智驾去掉了哪张图：在线感知的边界</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/" title="机器人为什么会在第十步出错：长时程推理与记忆"><img src="/images/posts/long-horizon-robot-reasoning-memory/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器人为什么会在第十步出错：长时程推理与记忆"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/" title="机器人为什么会在第十步出错：长时程推理与记忆">机器人为什么会在第十步出错：长时程推理与记忆</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

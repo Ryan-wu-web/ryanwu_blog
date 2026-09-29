@@ -1,0 +1,828 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>车路云一体化：项目变多了，钱变少了 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="车路云一体化是中国官方明确的技术路线，协同感知的学术脉络也已成形；但 2025 年项目数量增长 20%、市场规模却下降超过 30%。梳理政策要求、融合范式、数据集演进、海外路线，以及还没有闭环的商业模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="车路云一体化：项目变多了，钱变少了">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-vehicle-road-cloud-integration/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="车路云一体化是中国官方明确的技术路线，协同感知的学术脉络也已成形；但 2025 年项目数量增长 20%、市场规模却下降超过 30%。梳理政策要求、融合范式、数据集演进、海外路线，以及还没有闭环的商业模式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/vehicle-road-cloud-integration/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T08:56:30.381Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="autonomous-driving">
+<meta property="article:tag" content="cooperative-perception">
+<meta property="article:tag" content="policy">
+<meta property="article:tag" content="v2x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/vehicle-road-cloud-integration/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "车路云一体化：项目变多了，钱变少了",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-vehicle-road-cloud-integration/",
+  "image": "https://ryanwu.cn/images/posts/vehicle-road-cloud-integration/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-29T08:56:30.381Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-vehicle-road-cloud-integration/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '车路云一体化：项目变多了，钱变少了',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">80</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/vehicle-road-cloud-integration/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">车路云一体化：项目变多了，钱变少了</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">车路云一体化：项目变多了，钱变少了</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T08:56:30.381Z" title="更新于 2026-09-29 16:56:30">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理车路云一体化的政策、技术与商业现状。政策文件与论文按一手来源引用，券商研报和媒体口径单独标注，未能核实的内容不写成结论。文中的 arXiv 编号我都核对过页面，其中几个编号在整理时被纠正过，下面用的是核实后的版本。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>车路云一体化在中国是一条<strong>官方明确的路线</strong>：2024 年 1 月五部门印发试点通知，7 月公布 20 个试点城市（联合体），政策甚至给出了量化指标——路侧设施与路口联网率不低于 90%，试点车辆 100% 搭载 C-V2X 车载终端。</p>
+<p>学术侧的协同感知也已经体系化。从 2018 年第一个特征级融合框架，到 2022 年三个数据集集中出现，再到 2024 年的异构协同与 2025 年的路侧-路侧数据集，方法链条是完整的：<strong>“多车协同能提升感知”这件事，学术界已经证明过很多遍了。</strong></p>
+<p>但产业侧出现了一个反直觉的数字：<strong>2025 年项目数量同比增加约 20%，市场规模却下降超过 30%</strong>（赛文研究院报告摘要）。项目变多、单个项目变小、总投资收缩。</p>
+<p>我的判断是这样：<strong>技术不是当前的瓶颈，缺的是商业闭环和公平评测。</strong> 路侧设备装起来之后，谁付费、按什么标准验收、收益归谁，这三个问题都还没有公认答案。</p>
+<h2 id="政策把要求写成了数字"><a href="#政策把要求写成了数字" class="headerlink" title="政策把要求写成了数字"></a>政策把要求写成了数字</h2><p>268 号文（《关于开展智能网联汽车”车路云一体化”应用试点工作的通知》）把系统拆成三层：</p>
+<ul>
+<li><strong>车端</strong>：单车智能为基础，加装 C-V2X 车载终端负责本车感知决策；</li>
+<li><strong>路侧</strong>：相机、激光雷达、毫米波雷达加路侧计算与通信单元，官方表述是”能感知、会思考、可进化、有温度”；</li>
+<li><strong>云端</strong>：城市级服务管理平台，采用<strong>边缘云—区域云—中心云</strong>三级架构，负责全量数据接入、融合与监管。</li>
+</ul>
+<p>试点文件里的量化要求值得单独看，因为它们决定了工程量级：</p>
+<table>
+<thead>
+<tr>
+<th>要求</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路侧设施与路口联网率</td>
+<td>≥ 90%</td>
+</tr>
+<tr>
+<td>试点车辆终端搭载</td>
+<td>100% 搭载 C-V2X</td>
+</tr>
+<tr>
+<td>智慧停车场</td>
+<td>试点 ≥10 个，每个 ≥30 车位</td>
+</tr>
+<tr>
+<td>场景示范</td>
+<td>智慧乘用车、城市物流配送车、低速无人车等规模化</td>
+</tr>
+</tbody></table>
+<p>截至 2024 年 7 月的官方存量口径是：17 个国家级测试示范区、7 个车联网先导区、16 个”双智”试点城市，开放测试道路超 3.2 万公里，发放测试牌照 7700 多张，路侧单元部署超过 8700 套。</p>
+<p>20 个试点城市名单也在那时公布：北京、上海、重庆、鄂尔多斯、沈阳、长春、南京、苏州、无锡、杭州—桐乡—德清、合肥、福州、济南、武汉、十堰、长沙、广州、深圳、海口、成都。</p>
+<h2 id="学术侧：协同感知在解决什么问题"><a href="#学术侧：协同感知在解决什么问题" class="headerlink" title="学术侧：协同感知在解决什么问题"></a>学术侧：协同感知在解决什么问题</h2><p>单车主视距内的感知受遮挡和视距限制——一辆大车挡住前方，本车就看不见。协同感知的思路是通过 V2X 通信聚合多个智能体的信息，把”谁能看见”扩展成”车队和路侧都能看见”。</p>
+<p>融合范式分三档：<strong>早期融合</strong>传原始数据，带宽最贵；<strong>中间（特征）融合</strong>传 BEV 或特征图，是当前主流；<strong>晚期融合</strong>传检测结果，最省带宽但精度最低。</p>
+<pre><code class="highlight mermaid">timeline
+    title 协同感知的数据集与方法
+    2018 : F-Cooper 首个特征级协同框架
+    2020 : V2VNet 感知与预测联合
+         : Who2com / When2com 通信选择与调度
+    2021 : DiscoNet 蒸馏协同图
+    2022 : OPV2V 首个大规模仿真 V2V 基准
+         : DAIR-V2X 首个大规模真实车路数据集
+         : V2X-Sim 多智能体仿真基准
+         : Where2comm 空间置信图
+    2023 : V2X-ViT 视觉 Transformer 协同
+    2024 : HEAL 异构智能体协同
+    2025 : RCooper 真实路侧-路侧数据</code></pre>
+
+<p>数据集这条线能看出问题的演进方向：</p>
+<table>
+<thead>
+<tr>
+<th>数据集</th>
+<th>年份</th>
+<th>协同类型</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OPV2V</td>
+<td>2022（ICRA）</td>
+<td>仿真 V2V</td>
+<td>首个大规模车车协同基准与融合管线</td>
+</tr>
+<tr>
+<td>DAIR-V2X</td>
+<td>2022</td>
+<td>真实车路（V2I）</td>
+<td>首个大规模真实车路协同 3D 检测数据集</td>
+</tr>
+<tr>
+<td>V2X-Sim</td>
+<td>2022（RA-L）</td>
+<td>仿真多智能体</td>
+<td>覆盖检测、跟踪、分割的多智能体基准</td>
+</tr>
+<tr>
+<td>V2X-ViT</td>
+<td>2023（ICCV）</td>
+<td>含噪声与时延设置</td>
+<td>提供位姿噪声、时延下的鲁棒性评测</td>
+</tr>
+<tr>
+<td>HEAL</td>
+<td>2024（CVPR）</td>
+<td>异构协同</td>
+<td>处理”新的异构智能体不断出现”的开放问题</td>
+</tr>
+<tr>
+<td>RCooper</td>
+<td>2025</td>
+<td>真实路侧-路侧</td>
+<td>把协同从”车与车、车与路”扩展到路侧之间</td>
+</tr>
+</tbody></table>
+<p>方法侧最核心的约束是<strong>带宽</strong>：中间融合的特征量随智能体数量线性增长，不可能无限传。Where2comm 的做法是用一张空间置信图决定”发什么、发给谁”——只在对方可能感兴趣的区域传特征。这类”选择性通信”是过去几年最活跃的方向之一。</p>
+<p>HEAL 解决的是另一个问题：现实里协作方的传感器和模型都不一样，不能假设大家都是同一款车。它把异构对齐当成开放问题，目标是新类型的智能体接入时成本尽量低。</p>
+<h2 id="两种账本"><a href="#两种账本" class="headerlink" title="两种账本"></a>两种账本</h2><p>技术账和商业账必须分开看，因为它们的结论相反。</p>
+<p><strong>技术账</strong>：数据集从仿真走到真实，从车-车走到车-路、路-路；方法从”传数据”走到”选择性传特征”；鲁棒性（位姿噪声、时延）有专门基准。这条线是往上走的。</p>
+<p><strong>商业账</strong>：单体项目确实做起来了——北京的车路云一体化新型基础设施建设项目总投资约 99.39 亿元、覆盖 13 个区约 6050 个路口（券商研报拆解口径，非官方）；武汉规划了约 2324 平方公里的部署范围，并设立全市统一运营主体。但 2025 年行业整体是”项目数量 +20%、市场规模 −30%”。</p>
+<p>这个组合的含义是：<strong>单子变碎、变小，总投资在收缩。</strong> 路侧感知的钱主要来自政府专项债、地方国企和高速运营方，投资回报机制没有闭环——设备装完之后，靠什么收费、向谁收费，目前没有跑通的公开样本。</p>
+<p>这可能是整个方向当前最大的争议点，而且它不完全是技术问题。</p>
+<h2 id="路侧的价值主张，和它的三个前提"><a href="#路侧的价值主张，和它的三个前提" class="headerlink" title="路侧的价值主张，和它的三个前提"></a>路侧的价值主张，和它的三个前提</h2><p>把路侧的作用拆开会更容易看清争论。路侧感知主要提供三类价值：</p>
+<ul>
+<li><strong>超视距</strong>：看到本车视野之外的情况，比如被大车遮挡的横穿行人、路口另一侧的排队；</li>
+<li><strong>盲区覆盖</strong>：在遮挡密集的路口提供”上帝视角”，这类场景单车无论算法多强都解决不了；</li>
+<li><strong>全局信息</strong>：路口级的信号相位、排队长度和调度意图，用于做更优的通行决策。</li>
+</ul>
+<p>这三类价值在论文里都有对应证据——协同感知的核心指标，本来就是”遮挡场景下的检测提升”。但它们成立有三个前提：</p>
+<ol>
+<li><strong>联网率要够高。</strong> 路侧看到的东西如果传不出去或传得不够快，价值就会衰减。这也是试点把”联网率不低于 90%”写进量化指标的原因；</li>
+<li><strong>时延要进预算。</strong> V2X-ViT 专门构造了位姿噪声与时延下的鲁棒性评测，说明这两项误差会直接吃掉协同收益；而真实 4G&#x2F;5G 网络抖动下的性能损失，目前缺少公开的系统性评测；</li>
+<li><strong>口径要统一。</strong> 不同厂商车端和路侧的特征空间互不相通，异构协同（HEAL 这类工作）是学术回应，产业侧依赖标准与数字身份的推进。</li>
+</ol>
+<p>三个前提里，第一个是钱的问题，第二个是工程问题，第三个是标准问题。<strong>这正是”技术已经成熟”和”能规模落地”之间的差距不会自动消失的原因。</strong></p>
+<h2 id="学术侧真正在卷的是什么"><a href="#学术侧真正在卷的是什么" class="headerlink" title="学术侧真正在卷的是什么"></a>学术侧真正在卷的是什么</h2><p>把协同感知的方法拉平看，竞争的维度只有三个：</p>
+<p><strong>精度</strong>——遮挡场景下能把检测率提升多少，这是所有数据集论文的主指标。</p>
+<p><strong>带宽</strong>——传多少信息才能换到这个精度。中间融合的特征量随智能体数量线性增长，所以”选择性传”是过去三年最活跃的方向：有的工作决定跟谁握手，有的决定什么时候通信，Where2comm 用空间置信图决定传哪些区域。这三条线的共同假设是：<strong>大部分特征对协作者没有用，通信应该花在对方真正关心的区域。</strong></p>
+<p><strong>鲁棒性</strong>——位姿误差、时延、丢包下还能不能协同。V2X-ViT 把这三项做成了标准评测设置，我认为这是最容易被忽视、也最有实际价值的一环：真实部署里传感器标定误差和网络抖动是常态，不是异常。</p>
+<p>换句话说，这个方向已经从”证明协同有用”进入”证明协同在什么条件下还有用”的阶段。而后一类证据，恰好是量产决策最需要、目前又最缺的。</p>
+<h2 id="海外在走三条不同的路"><a href="#海外在走三条不同的路" class="headerlink" title="海外在走三条不同的路"></a>海外在走三条不同的路</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>中国</th>
+<th>美国</th>
+<th>欧盟</th>
+<th>日本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>通信制式</td>
+<td>C-V2X（向 5G&#x2F;5G-A 演进）</td>
+<td>C-V2X（DSRC 退场）</td>
+<td>ITS-G5 与 C-V2X 并行</td>
+<td>ITS Connect（760 MHz）向 5.9 GHz 演进</td>
+</tr>
+<tr>
+<td>主导方</td>
+<td>政府主导基建与试点</td>
+<td>联邦定频谱与计划，州和地方部署</td>
+<td>成员国加欧盟法规</td>
+<td>车企与政府联合</td>
+</tr>
+<tr>
+<td>核心目标</td>
+<td>产业化”中国方案”，三级云控</td>
+<td>交通安全优先</td>
+<td>数据共享与隐私合规</td>
+<td>安全驾驶辅助与协调型自动驾驶</td>
+</tr>
+<tr>
+<td>部署现状</td>
+<td>20 个试点城市、RSU 超 8700 套</td>
+<td>分散部署，2028 覆盖目标</td>
+<td>跨国走廊（C-Roads）</td>
+<td>2015 年起量产商用</td>
+</tr>
+</tbody></table>
+<p>美国的进展值得单独说：FCC 在 2024 年 11 月通过最终规则，把 5.9 GHz 上部 30 MHz（5.895–5.925 GHz）正式保留给 C-V2X，规则 2025 年 2 月 11 日生效，并要求 DSRC 向 C-V2X 迁移。频谱不确定性结束之后，USDOT 的全国 V2X 部署计划给出 2028 年的覆盖目标（约 7.5 万英里州际公路与 25% 信号交叉口，媒体口径）。</p>
+<p>欧盟走的是”数据法规加跨国走廊”的路线：在 ITS 指令框架下发布授权条例（包含实时交通信息一条，要求成员国通过国家接入点以统一标准供数），修订版 ITS 指令已在 2024 年发布，C-Roads 平台负责组织成员国做跨国走廊的协同服务部署。这条路线的重心不在路侧硬件，而在<strong>数据共享的合规与互操作</strong>。</p>
+<p>日本是商用最早的一个：760 MHz 的 ITS Connect 从 2015 年就上车，丰田、本田的多款车型搭载；随后在国家级项目里做协调型自动驾驶的大规模实证，并开始向 5.9 GHz 与 C-V2X 演进。</p>
+<p>三条路线的选择其实对应三种”谁承担成本”的答案：美国联邦层面负责频谱与规划、部署交给州；欧盟把成本放在数据合规与互操作上；日本由车企主导商用。中国则是政府主导基建与试点。<strong>路线差异的背后是投资主体差异，不是技术差异。</strong></p>
+<h2 id="路线之争的新格局"><a href="#路线之争的新格局" class="headerlink" title="路线之争的新格局"></a>路线之争的新格局</h2><p>“单车智能还是车路协同”这个争论在 2021 年前后是”二选一”的架势，端到端大模型出现后重新洗牌。</p>
+<p>一边的观点是端到端让 L2 直接跨越到 L4 成为可能（2026 年 4 月的公开讨论中，何小鹏与卓驭沈劭劼都表达了类似判断）。另一边是官方与学界的定调：<strong>单车智能是基础，车路云一体化是升级</strong>（李克强院士），路侧的价值转向安全兜底、监管与数据底座。</p>
+<p>特斯拉 FSD 在 2025 年 2 月 25 日起向中国部分车主分批推送城市道路辅助驾驶（L2 级、6.4 万元选装），被不少讨论当作”纯视觉单车路线天花板”的检验。</p>
+<p>我的理解是：<strong>争论的焦点已经从”要不要路侧”变成了”路侧的钱从哪来、谁买单”。</strong> 因为路侧的价值主张（超视距、盲区、全局调度）在技术上是成立的，但它的收益是<strong>社会化的</strong>——事故率下降、通行效率提升的好处分散给所有用路人，而成本集中在一个主体身上。这是典型的需要公共投入的结构，商业模式自然难闭环。</p>
+<p>（网上流传”何小鹏 2021 年明确表态不做车路协同”的报道，我没有检索到原文，不作为事实引用。）</p>
+<h2 id="取舍与局限"><a href="#取舍与局限" class="headerlink" title="取舍与局限"></a>取舍与局限</h2><p><strong>带宽与性能的权衡还没有真实信道下的系统评测。</strong> 选择性通信（Where2comm）、时机调度（When2com）、特征压缩都在论文里有效，但真实 4G&#x2F;5G 网络的丢包、抖动下性能损失多少，缺少公开的系统性评测。</p>
+<p><strong>标准化还在路上。</strong> 不同厂商的车端和路侧特征空间互不相通，268 号文把数字身份、信息交互标准和场景数据库列为试点任务，产业侧的实际进展没有统一口径。</p>
+<p><strong>数据集有 sim2real 缺口。</strong> 早期三大数据集里两个是仿真；真实数据集在 2022 年之后补位，但”车、路、云全链路且带时延标签”的公开数据仍然稀缺。这既是缺口，也是个人研究者最容易切入的位置。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>车路云一体化现在的状态是：<strong>技术账很清楚，商业账不清楚。</strong></p>
+<p>学术界已经用一长串数据集和方法证明”协同能提升感知”，政策也把要求写成了可验收的数字。但设备装好之后的价值如何变现，没有跑通的样本——2025 年的”项目 +20%、市场 −30%”就是这个状态最直接的读数。</p>
+<p>如果你想做研究而不是判断商业，公开数据集（OPV2V、DAIR-V2X、RCooper）加上统一的”精度—带宽—时延”三元评测，是门槛最低、也最缺人的位置：现有论文各报各的口径，缺一份公平对比。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2109.07644">OPV2V: An Open Benchmark Dataset and Fusion Pipeline for Perception with Vehicle-to-Vehicle Communication</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2204.05575">DAIR-V2X: A Large-Scale Dataset for Vehicle-Infrastructure Cooperative 3D Object Detection</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2202.08449">V2X-Sim: Multi-Agent Collaborative Perception Dataset and Benchmark for Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2008.07519">V2VNet: Vehicle-to-Vehicle Communication for Joint Perception and Prediction</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.02202">CoBEVT: Cooperative Bird’s Eye View Semantic Segmentation with Sparse Transformers</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2209.12836">Where2comm: Communication-Efficient Collaborative Perception via Spatial Confidence Maps</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.10638">V2X-ViT: Vehicle-to-Everything Cooperative Perception with Vision Transformer</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2401.13964">An Extensible Framework for Open Heterogeneous Collaborative Perception（HEAL）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.10145">RCooper: A Real-world Large-scale Dataset for Roadside Cooperative Perception</a></li>
+</ol>
+<p><strong>政策与市场</strong></p>
+<ol start="10">
+<li><a target="_blank" rel="noopener" href="https://www.waizi.org.cn/law/218324.html">《关于开展智能网联汽车”车路云一体化”应用试点工作的通知》（工信部联通装〔2023〕268 号）转载版</a></li>
+<li><a target="_blank" rel="noopener" href="https://jingji.cctv.com/2024/07/03/ARTI24eZYhw1aPFkR1hmAhHT240703.shtml">五部门确定 20 个试点城市（联合体）及政策问答（央视财经，2024-07）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.vzkoo.com/">赛文研究院《2026 年中国车路云一体化市场研究报告》摘要页</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-vehicle-road-cloud-integration/">https://ryanwu.cn/2026/09/30/2026-09-30-vehicle-road-cloud-integration/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/autonomous-driving/">autonomous-driving</a><a class="post-meta__tags" href="/tags/v2x/">v2x</a><a class="post-meta__tags" href="/tags/cooperative-perception/">cooperative-perception</a><a class="post-meta__tags" href="/tags/policy/">policy</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/vehicle-road-cloud-integration/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-vln-long-horizon/" title="走了 150 步之后：VLN 的长程与真实化难题"><img class="cover" src="/images/posts/vln-long-horizon/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">走了 150 步之后：VLN 的长程与真实化难题</div></div><div class="info-2"><div class="info-item-1">VLN 从短指令加导航图走向长程任务与连续环境，但长程化远未解决：LH-VLN 上领先方法的成功率只有 2.44。梳理任务演化、稳定的失败模式（停止错误、过度旋转、错误累积）、测试时适应与大模型时代的合流。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-sim2real-real-world-evaluation/" title="仿真分数高，真机就一定好吗：Sim2Real 评估的缺口"><img class="cover" src="/images/posts/sim2real-real-world-evaluation/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">仿真分数高，真机就一定好吗：Sim2Real 评估的缺口</div></div><div class="info-2"><div class="info-item-1">Domain randomization、3D Gaussian Splatting、Isaac Lab、Genesis 和视频世界模型分别解决了什么？从 SIMPLER 与 GAUGE 出发，说明仿真—真机相关性为何仍缺统一协议，以及个人研究者如何做配对评估。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img class="cover" src="/images/posts/driving-safety-uncertainty/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">知道自己什么时候不确定：智驾安全量化的缺口</div></div><div class="info-2"><div class="info-item-1">校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img class="cover" src="/images/posts/driving-world-models/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">重建还是生成：驾驶世界模型与安全验证</div></div><div class="info-2"><div class="info-item-1">驾驶世界模型分成重建与生成两条路线：重建式保真但只能覆盖采过的场景，生成式可控但物理一致性受质疑。从 NeuroNCAP 的强证据到视频模型的物理理解缺陷，说明它们各自能承担安全验证的哪一部分。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img class="cover" src="/images/posts/mapless-driving-perception/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">无图智驾去掉了哪张图：在线感知的边界</div></div><div class="info-2"><div class="info-item-1">「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img class="cover" src="/images/posts/e2e-driving-evaluation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">L2 误差不是指标：端到端智驾的评测重建</div></div><div class="info-2"><div class="info-item-1">端到端智驾的评测正在被重建：只看轨迹 L2 误差的模型能打平甚至超过感知方案，开环排名与闭环排名会发生反转。梳理三组否定开环指标的证据、闭环与伪闭环基准的迁移，以及 VLA 化之后动作输出机制的真实形态。</div></div></div></a><a class="pagination-related" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img class="cover" src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-16</div><div class="info-item-2">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</div></div><div class="info-2"><div class="info-item-1">从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-world-models-three-domains/" title="能被控制的未来：世界模型的三种动作接口"><img class="cover" src="/images/posts/world-models-three-domains/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">能被控制的未来：世界模型的三种动作接口</div></div><div class="info-2"><div class="info-item-1">游戏、驾驶与机器人对世界模型的要求并不相同，统一它们的不是像素而是动作接口：显式动作条件、潜在动作与视觉动作。从 Genie 到 KineBench，梳理正面证据、物理基准的负面结论，以及尚未被证实的强命题。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">80</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BF%E7%AD%96%E6%8A%8A%E8%A6%81%E6%B1%82%E5%86%99%E6%88%90%E4%BA%86%E6%95%B0%E5%AD%97"><span class="toc-number">2.</span> <span class="toc-text">政策把要求写成了数字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E6%9C%AF%E4%BE%A7%EF%BC%9A%E5%8D%8F%E5%90%8C%E6%84%9F%E7%9F%A5%E5%9C%A8%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">学术侧：协同感知在解决什么问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E8%B4%A6%E6%9C%AC"><span class="toc-number">4.</span> <span class="toc-text">两种账本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E4%BE%A7%E7%9A%84%E4%BB%B7%E5%80%BC%E4%B8%BB%E5%BC%A0%EF%BC%8C%E5%92%8C%E5%AE%83%E7%9A%84%E4%B8%89%E4%B8%AA%E5%89%8D%E6%8F%90"><span class="toc-number">5.</span> <span class="toc-text">路侧的价值主张，和它的三个前提</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%A6%E6%9C%AF%E4%BE%A7%E7%9C%9F%E6%AD%A3%E5%9C%A8%E5%8D%B7%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">6.</span> <span class="toc-text">学术侧真正在卷的是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%B7%E5%A4%96%E5%9C%A8%E8%B5%B0%E4%B8%89%E6%9D%A1%E4%B8%8D%E5%90%8C%E7%9A%84%E8%B7%AF"><span class="toc-number">7.</span> <span class="toc-text">海外在走三条不同的路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%AF%E7%BA%BF%E4%B9%8B%E4%BA%89%E7%9A%84%E6%96%B0%E6%A0%BC%E5%B1%80"><span class="toc-number">8.</span> <span class="toc-text">路线之争的新格局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%96%E8%88%8D%E4%B8%8E%E5%B1%80%E9%99%90"><span class="toc-number">9.</span> <span class="toc-text">取舍与局限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">10.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">11.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img src="/images/posts/driving-world-models/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="重建还是生成：驾驶世界模型与安全验证"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证">重建还是生成：驾驶世界模型与安全验证</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img src="/images/posts/e2e-driving-evaluation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="L2 误差不是指标：端到端智驾的评测重建"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建">L2 误差不是指标：端到端智驾的评测重建</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人不是一个大模型：全身控制的分层答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案">人形机器人不是一个大模型：全身控制的分层答案</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img src="/images/posts/mapless-driving-perception/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无图智驾去掉了哪张图：在线感知的边界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界">无图智驾去掉了哪张图：在线感知的边界</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/" title="机器人为什么会在第十步出错：长时程推理与记忆"><img src="/images/posts/long-horizon-robot-reasoning-memory/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="机器人为什么会在第十步出错：长时程推理与记忆"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/" title="机器人为什么会在第十步出错：长时程推理与记忆">机器人为什么会在第十步出错：长时程推理与记忆</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
