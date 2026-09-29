@@ -1,0 +1,759 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>无图智驾去掉了哪张图：在线感知的边界 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无图智驾去掉了哪张图：在线感知的边界">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-mapless-driving-perception/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/mapless-driving-perception/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T07:22:44.525Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="autonomous-driving">
+<meta property="article:tag" content="mapping">
+<meta property="article:tag" content="occupancy">
+<meta property="article:tag" content="perception">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/mapless-driving-perception/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "无图智驾去掉了哪张图：在线感知的边界",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-mapless-driving-perception/",
+  "image": "https://ryanwu.cn/images/posts/mapless-driving-perception/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-29T07:22:44.525Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-mapless-driving-perception/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '无图智驾去掉了哪张图：在线感知的边界',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">73</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/mapless-driving-perception/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">无图智驾去掉了哪张图：在线感知的边界</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">无图智驾去掉了哪张图：在线感知的边界</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T07:22:44.525Z" title="更新于 2026-09-29 15:22:44">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇讨论无图智驾背后的感知与建图技术，以及这个说法在技术上的准确含义。车企口径按官方表述引用，媒体转述单独标注；<strong>未验证</strong>的内容不写成结论。文中不涉及传感器配置的比较，那部分可以看之前写的《特斯拉纯视觉与国产智驾》。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p><strong>“无图”不是一个技术事实，而是一个相对说法：去掉的是车道级高精地图（HD map），保留的是导航地图（SD map）。</strong></p>
+<p>这个边界很具体。理想官方的表述是”不依赖包括高精地图在内的先验信息，可在有导航覆盖的道路上使用”；小鹏的口径是”能导航的地方，就能 AI 智驾”，其高管公开称 XNGP 为”轻地图方案”。也就是说，<strong>功能边界等于导航覆盖范围</strong>——没有被去掉的粗先验，恰恰定义了这套系统能开到哪里。</p>
+<p>技术上真正发生的事是：用车端实时的 BEV 感知、在线矢量建图、导航地图先验和车端拓扑推理，替代了”高精地图的生产与订阅依赖”。这条路线的代价是把一部分此前由地图承担的工作——超视距的”虚拟感知”、车道级拓扑——转移给了车端模型的推理能力和算力。</p>
+<p>还有一个值得记住的负面发现：<strong>关于雨雾、夜间、无车道线等极端场景，公开可核实的量化证据非常少</strong>。能查到的只有官方演示口径和第三方基准的负面结论（BEV 模型在雾、雪、暗光下普遍显著掉点），而不是”某家系统在雨夜城区跑得如何”的实测数据。行业宣传和公开证据之间的差距，在这个话题上尤其大。</p>
+<h2 id="三个阶段"><a href="#三个阶段" class="headerlink" title="三个阶段"></a>三个阶段</h2><pre><code class="highlight mermaid">timeline
+    title 从高精地图到无图
+    ~2020 : 高精地图时代
+         : 车道级先验与超视距感知
+         : 成本与鲜度是痛点
+    2020 : BEV 统一表征
+         : LSS 把多相机提升到鸟瞰栅格
+         : BEVFormer nuScenes 56.9 NDS
+    2021 : 在线矢量建图
+         : HDMapNet 提出在线建图问题
+         : MapTR 做到实时
+    2023 : 无图端到端
+         : UniAD 与 VAD 规划导向
+         : 车企转向无图量产
+    2025 : 端到端吸收建图
+         : 在线建图不再作为独立模块</code></pre>
+
+<p><strong>高精地图时代的痛点有两类。</strong> 一类是成本与鲜度：HDMapNet 论文开篇就指出，离线高精地图的人工采集标注成本高、难以随道路变化扩展。另一类在中国更特殊——监管。2022 年 8 月自然资源部明确，智驾传感器在运行和路测中采集的空间坐标、影像、点云属于测绘行为，须由具备导航电子地图制作资质的单位承担。无资质车企自建高精地图更新体系的合规成本很高，这是”去高精地图”最直接的政策推力之一。</p>
+<p><strong>BEV 统一表征解决的是”多相机怎么在一个坐标系里融合”。</strong> LSS（Lift-Splat-Shoot）把每个相机的特征沿视锥提升到 3D 再投影到鸟瞰栅格；BEVFormer 用时空 Transformer 直接从多相机学习 BEV，在 nuScenes 测试集上把 NDS 推到 56.9%（比此前最佳高 9.0 个点）；StreamPETR 用目标中心的时序建模做到 67.6% NDS，轻量版 31.7 FPS。这些工作的意义是把”感知”从各自为战的透视视图，变成一个可供预测和规划共享的统一表征。</p>
+<p><strong>在线矢量建图是”无图”在学术上的直接对应物。</strong> HDMapNet（2021）第一次把”从传感器在线生成矢量地图”作为问题提出；MapTR（ICLR 2023 Spotlight）用置换等价点集建模加层级二分匹配，把这件事做到实时——nano 版在 RTX 3090 上 25.1 FPS，比当时 SOTA 纯视觉方法快 8 倍；MapTRv2（IJCV 2024）加速收敛并在两个数据集上达到 SOTA。最新的方向是把建图形式化为<strong>跟踪</strong>问题：MapTracker（ECCV 2024 Oral）用 BEV 栅格与矢量双记忆缓冲处理时序一致性，一致性指标提升 19%，直接回应了逐帧建图闪烁不稳定的问题。</p>
+<h2 id="在线建图：学术很热，量产很冷"><a href="#在线建图：学术很热，量产很冷" class="headerlink" title="在线建图：学术很热，量产很冷"></a>在线建图：学术很热，量产很冷</h2><p>这是这篇里我认为最值得记下来的一个判断。</p>
+<p>在线矢量建图在 2021–2024 年论文密集，但车企转向端到端之后（理想 2024 年 10 月的端到端加 VLM 双系统、华为 ADS 4 的 WEWA、特斯拉 FSD v12 的单一网络），<strong>显式的在线矢量建图在量产架构中不再作为独立模块存在</strong>——端到端训练把建图的输出隐式吸收进了特征。</p>
+<p>这不是说建图研究没用了，而是它的角色变了：从”输出一张可读的地图给下游”变成”作为一种中间监督或表征学习任务”。学术界最后的活跃点是把建图做成跟踪、以及与导航地图先验融合（Neural Map Prior 一类工作用 SD 地图增强在线建图——这本身也说明”无图”在往回摆为”轻图”）。</p>
+<p><strong>BEV 内部其实有两条技术路线。</strong> 自底向上（bottom-up）以 LSS 为代表：把每个相机的特征沿视锥”提升”到 3D 再投影到鸟瞰栅格，后续的 BEVDet、BEVDepth 都沿此改进。自顶向下（top-down）以 DETR3D、PETR 系列的 query-based 检测为代表：用预设的查询直接向图像特征取信息。BEVFormer 属于后者的时空版本。两条路线后来在工程上趋于混合，但它们的差异解释了一个现象：<strong>深度估计的误差来源不同</strong>——自底向上路线对深度分布敏感，自顶向下路线则更依赖查询与视图的对应关系。</p>
+<p><strong>量产时间线方面</strong>，几个可核验的节点是：</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>事件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2023-04</td>
+<td>华为发布 ADS 2.0，官方表述”有图无图都能开”</td>
+</tr>
+<tr>
+<td>2023-10</td>
+<td>小鹏科技日宣布 XNGP 进入无图时代，首批 20 城</td>
+</tr>
+<tr>
+<td>2024-02</td>
+<td>小鹏开放至”全国不限城市、不限路线、不限路况”</td>
+</tr>
+<tr>
+<td>2024-07</td>
+<td>理想 OTA 6.0 全量推送无图 NOA（仅 AD Max）；小鹏 XOS 5.2.0 全量</td>
+</tr>
+<tr>
+<td>2024-10</td>
+<td>理想 OTA 6.4 推送端到端加 VLM 双系统</td>
+</tr>
+<tr>
+<td>2025-04</td>
+<td>华为 ADS 4（WEWA 架构）</td>
+</tr>
+</tbody></table>
+<p>这条时间线的跨度是两年多：从”宣布无图”到”端到端吸收建图”，行业把一张车道级地图的生产问题，换成了车端模型的能力问题。</p>
+<h2 id="Occupancy：纯视觉开集感知的答案，和它的四个瓶颈"><a href="#Occupancy：纯视觉开集感知的答案，和它的四个瓶颈" class="headerlink" title="Occupancy：纯视觉开集感知的答案，和它的四个瓶颈"></a>Occupancy：纯视觉开集感知的答案，和它的四个瓶颈</h2><p>长尾障碍物（异形车、掉落物、施工设施）用传统闭集检测很难覆盖。车端的答案是不做闭集分类，改做<strong>占用预测（Occupancy）</strong>：判断体素是否被占用、是否可行驶，把”这是什么”的问题换成”这里能不能走”的问题。特斯拉在 2022 年 AI Day 提出 Occupancy Network，华为的 GOD（通用障碍物检测）也是类似的思路。</p>
+<p>学术侧的基准和真值管线也成熟了：OccNet 把占据作为统一多任务表征、附 OpenOcc 基准；Occ3D 提供 Waymo 和 nuScenes 双基准与 visibility-aware 标签；FB-OCC 拿到 CVPR 2023 占据挑战赛冠军，nuScenes mIoU 54.19%。但这条路线有四个明确的瓶颈：</p>
+<table>
+<thead>
+<tr>
+<th>瓶颈</th>
+<th>具体表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>真值昂贵</td>
+<td>OpenOccupancy 用约 4000 人工小时把标注增密约 2 倍；Occ3D 用三阶段半自动管线</td>
+</tr>
+<tr>
+<td>几何误差传导</td>
+<td>纯视觉占据依赖深度估计，深度不确定性会传到占用判断</td>
+</tr>
+<tr>
+<td>算力与延迟</td>
+<td>稠密体素预测计算量大，冠军方案靠模型扩缩才到精度，车端需要小得多的头</td>
+</tr>
+<tr>
+<td>可见性与远距离</td>
+<td>遮挡区域的标签本身就需要推断，远距离体素监督信号很弱</td>
+</tr>
+</tbody></table>
+<p>真值质量的上限决定模型的上限——这句在占据任务里尤其成立。</p>
+<h2 id="无图之后，定位靠什么"><a href="#无图之后，定位靠什么" class="headerlink" title="无图之后，定位靠什么"></a>无图之后，定位靠什么</h2><p>高精地图时代，定位的闭环是”GNSS-RTK 加惯导推算，再把点云和高精地图做配准”。去掉地图之后，这套机制被重构为三层：</p>
+<ol>
+<li><strong>粗先验</strong>：导航地图给出道路级先验和功能边界，定位从”地图匹配”退化为”导航引导加实时感知对齐”；</li>
+<li><strong>高频局部里程计</strong>：激光雷达-惯性里程计成为关键组件（FAST-LIO2 以紧耦合迭代卡尔曼滤波加工直接配准实现高精度低算力的 LIO；Point-LIO 用逐点更新应对高动态与高带宽 IMU），在隧道、城市峡谷这类 GNSS 退化场景承担全部位姿递推；</li>
+<li><strong>重定位</strong>：视觉位置识别与场景重定位决定”上电即定位”的能力。</li>
+</ol>
+<p>这条链在正常场景是够用的，但在 GNSS 长期退化的场景（长隧道、密集高架）会更脆弱——这是一个基于组件特性的分析结论，量产的完整方案细节多不公开。</p>
+<h2 id="极端场景：证据为什么这么少"><a href="#极端场景：证据为什么这么少" class="headerlink" title="极端场景：证据为什么这么少"></a>极端场景：证据为什么这么少</h2><p>调研里我专门找了”雨雾、夜间、无车道线”的公开硬证据，能核实的只有三类：</p>
+<ul>
+<li><strong>官方演示口径</strong>：理想发布会提到 VLM 负责无路灯夜间、坑洼、减速带、施工区；小鹏官方称覆盖掉头、环岛、窄路；华为 ADS 4 的公开数字是重刹率降低 30%、高速 L3 仿真验证 6 亿公里——注意这是仿真里程，不是雨雾实车数据；</li>
+<li><strong>第三方基准的负面结论</strong>：RoboBEV 用 8 类传感器退化（明暗、雾、雪、运动模糊等）测 BEV 模型，结论是普遍显著掉点；</li>
+<li><strong>试点运营的公开事件</strong>：特斯拉 Robotaxi 上线首日出现急刹等问题引发监管关注（媒体报道）。</li>
+</ul>
+<p>至于”某家系统在雨夜城区跑得怎么样”这类流传案例，公开渠道只有自媒体线索，<strong>没有可核实的量化数据</strong>（成功率、接管率、事故率）。这个负面发现本身值得记住：<strong>行业对恶劣天气的公开量化证据基本缺位</strong>，目前只有演示级证据和基准级的负面结论。</p>
+<h2 id="取舍与局限"><a href="#取舍与局限" class="headerlink" title="取舍与局限"></a>取舍与局限</h2><p><strong>无图不是免费的。</strong> 去掉高精地图意味着把地图承担的职责转移到车端：更大的感知算力、更强的在线推理、以及一层新的合规问题——监管要求智驾测绘数据由持资质图商处理，因此”无图方案”的定位栈实际上常与图商的轻地图产品耦合。小鹏称自己是”轻地图方案”，这个措辞比”无图”更准确。</p>
+<p><strong>基准与量产之间已经脱节。</strong> nuScenes 的检测榜刷点收益递减（相机方法 NDS 三年从 56.9 涨到论文自报的约 70.9，未经官方榜单核对），而量产功能的瓶颈早就不在这个基准所测的对象上。CVPR 2025 的挑战赛风向已经转向世界模型与端到端 2.0。</p>
+<p><strong>开集感知有两条平行线。</strong> 车端的范式是”不分类、判占用”（Occupancy、GOD）；学术的开放词汇 3D 检测（用 2D VLM 先验发现新类别）刚起步，还没有看到量产上车的公开证据。两条线什么时候汇合，是个开放问题。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>无图智驾去掉了高精地图这张”提前画好的车道级底图”，但保留了导航先验，并把车道级的理解交给了车端实时推理。真正的技术含量不在”有没有图”这个口号里，而在三件事上：在线感知的时序一致性、占用预测的真值与算力、以及定位在 GNSS 退化时的稳健性。</p>
+<p>如果要做一个具体判断：<strong>看到”无图”的宣传时，问一句”极端天气下的接管率和成功率有没有公开数据”。</strong> 目前这个问题几乎没有公开答案，而这恰恰是用户最需要知道的部分。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.06307">HDMapNet: An Online HD Map Construction and Evaluation Framework</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2206.08920">VectorMapNet: End-to-end Vectorized HD Map Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2208.14437">MapTR: Structured Modeling and Learning for Online Vectorized HD Map Construction</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2308.05736">MapTRv2</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.15951">MapTracker: Tracking with Strided Memory Fusion for Consistent Vector HD Mapping</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2008.05711">Lift, Splat, Shoot</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2203.17270">BEVFormer</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.11926">StreamPETR: Exploring Object-Centric Temporal Modeling</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2306.02851">Scene as Occupancy（OccNet）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2304.14365">Occ3D: A Large-Scale 3D Occupancy Prediction Benchmark</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.03991">OpenOccupancy</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2307.01492">FB-OCC</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2304.06719">RoboBEV: Towards Robust Bird’s Eye View Perception under Corruptions</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2212.10156">UniAD: Planning-oriented Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12077">VAD</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2411.15139">DiffusionDrive</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2107.06829">FAST-LIO2</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-mapless-driving-perception/">https://ryanwu.cn/2026/09/30/2026-09-30-mapless-driving-perception/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/autonomous-driving/">autonomous-driving</a><a class="post-meta__tags" href="/tags/perception/">perception</a><a class="post-meta__tags" href="/tags/mapping/">mapping</a><a class="post-meta__tags" href="/tags/occupancy/">occupancy</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/mapless-driving-perception/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-robot-data-engine-scaling-laws/" title="机器人没有互联网数据：一张数据引擎与 Scaling Law 地图"><img class="cover" src="/images/posts/robot-data-engine-scaling-laws/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">机器人没有互联网数据：一张数据引擎与 Scaling Law 地图</div></div><div class="info-2"><div class="info-item-1">机器人数据从哪里来？梳理真机遥操作、仿真合成与人类视频三条路线，以及多样性幂律、跨本体混合和负迁移之间的张力：机器人 scaling law 存在，但远不是把数据量乘大那么简单。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img class="cover" src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">人形机器人不是一个大模型：全身控制的分层答案</div></div><div class="info-2"><div class="info-item-1">全身控制的核心不是把语言模型直接接到电机，而是让语义任务、运动生成、接触动力学和安全约束在不同频率上协同：梳理 RL、MPC、WBC、loco-manipulation 与人形数据采集。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img class="cover" src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-16</div><div class="info-item-2">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</div></div><div class="info-2"><div class="info-item-1">从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img class="cover" src="/images/posts/e2e-driving-evaluation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">L2 误差不是指标：端到端智驾的评测重建</div></div><div class="info-2"><div class="info-item-1">端到端智驾的评测正在被重建：只看轨迹 L2 误差的模型能打平甚至超过感知方案，开环排名与闭环排名会发生反转。梳理三组否定开环指标的证据、闭环与伪闭环基准的迁移，以及 VLA 化之后动作输出机制的真实形态。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img class="cover" src="/images/posts/driving-safety-uncertainty/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">知道自己什么时候不确定：智驾安全量化的缺口</div></div><div class="info-2"><div class="info-item-1">校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img class="cover" src="/images/posts/driving-world-models/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">重建还是生成：驾驶世界模型与安全验证</div></div><div class="info-2"><div class="info-item-1">驾驶世界模型分成重建与生成两条路线：重建式保真但只能覆盖采过的场景，生成式可控但物理一致性受质疑。从 NeuroNCAP 的强证据到视频模型的物理理解缺陷，说明它们各自能承担安全验证的哪一部分。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img class="cover" src="/images/posts/humanoid-whole-body-control/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">人形机器人不是一个大模型：全身控制的分层答案</div></div><div class="info-2"><div class="info-item-1">全身控制的核心不是把语言模型直接接到电机，而是让语义任务、运动生成、接触动力学和安全约束在不同频率上协同：梳理 RL、MPC、WBC、loco-manipulation 与人形数据采集。</div></div></div></a><a class="pagination-related" href="/2026/06/05/my-first-tech-note/" title="我的第一篇技术笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-05</div><div class="info-item-2">我的第一篇技术笔记</div></div><div class="info-2"><div class="info-item-1">这是一篇技术笔记的示例文章。 代码示例12345def hello_world():    print(&quot;Hello, World!&quot;)    return &quot;success&quot;hello_world()  后续计划后续我会在这里分享更多技术文章，包括但不限于：  Python 编程技巧 前端开发经验 机器学习项目实践 算法题解  </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">73</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5"><span class="toc-number">2.</span> <span class="toc-text">三个阶段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E5%BB%BA%E5%9B%BE%EF%BC%9A%E5%AD%A6%E6%9C%AF%E5%BE%88%E7%83%AD%EF%BC%8C%E9%87%8F%E4%BA%A7%E5%BE%88%E5%86%B7"><span class="toc-number">3.</span> <span class="toc-text">在线建图：学术很热，量产很冷</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Occupancy%EF%BC%9A%E7%BA%AF%E8%A7%86%E8%A7%89%E5%BC%80%E9%9B%86%E6%84%9F%E7%9F%A5%E7%9A%84%E7%AD%94%E6%A1%88%EF%BC%8C%E5%92%8C%E5%AE%83%E7%9A%84%E5%9B%9B%E4%B8%AA%E7%93%B6%E9%A2%88"><span class="toc-number">4.</span> <span class="toc-text">Occupancy：纯视觉开集感知的答案，和它的四个瓶颈</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E5%9B%BE%E4%B9%8B%E5%90%8E%EF%BC%8C%E5%AE%9A%E4%BD%8D%E9%9D%A0%E4%BB%80%E4%B9%88"><span class="toc-number">5.</span> <span class="toc-text">无图之后，定位靠什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E7%AB%AF%E5%9C%BA%E6%99%AF%EF%BC%9A%E8%AF%81%E6%8D%AE%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%99%E4%B9%88%E5%B0%91"><span class="toc-number">6.</span> <span class="toc-text">极端场景：证据为什么这么少</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%96%E8%88%8D%E4%B8%8E%E5%B1%80%E9%99%90"><span class="toc-number">7.</span> <span class="toc-text">取舍与局限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img src="/images/posts/driving-safety-uncertainty/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="知道自己什么时候不确定：智驾安全量化的缺口"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口">知道自己什么时候不确定：智驾安全量化的缺口</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img src="/images/posts/driving-world-models/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="重建还是生成：驾驶世界模型与安全验证"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证">重建还是生成：驾驶世界模型与安全验证</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img src="/images/posts/e2e-driving-evaluation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="L2 误差不是指标：端到端智驾的评测重建"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建">L2 误差不是指标：端到端智驾的评测重建</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人不是一个大模型：全身控制的分层答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案">人形机器人不是一个大模型：全身控制的分层答案</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img src="/images/posts/mapless-driving-perception/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无图智驾去掉了哪张图：在线感知的边界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界">无图智驾去掉了哪张图：在线感知的边界</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

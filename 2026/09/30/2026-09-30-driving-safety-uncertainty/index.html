@@ -1,0 +1,773 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>知道自己什么时候不确定：智驾安全量化的缺口 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知道自己什么时候不确定：智驾安全量化的缺口">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-driving-safety-uncertainty/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/driving-safety-uncertainty/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T07:22:44.524Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="autonomous-driving">
+<meta property="article:tag" content="regulation">
+<meta property="article:tag" content="safety">
+<meta property="article:tag" content="uncertainty">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/driving-safety-uncertainty/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "知道自己什么时候不确定：智驾安全量化的缺口",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-driving-safety-uncertainty/",
+  "image": "https://ryanwu.cn/images/posts/driving-safety-uncertainty/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-29T07:22:44.524Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-driving-safety-uncertainty/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '知道自己什么时候不确定：智驾安全量化的缺口',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">73</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/driving-safety-uncertainty/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">知道自己什么时候不确定：智驾安全量化的缺口</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">知道自己什么时候不确定：智驾安全量化的缺口</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T07:22:44.524Z" title="更新于 2026-09-29 15:22:44">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理学习型智驾的安全与不确定性量化（uncertainty quantification, UQ）现状。标准与法规按官方或权威来源引用，二手来源单独标注；<strong>未验证</strong>的内容不写成结论。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>端到端和 VLA 驾驶模型面对一个结构性问题：<strong>它们无法像传统软件那样建立”显式需求 → 逐条验证”的对应关系。</strong> 你没法给一个神经网络写需求文档，也没法证明它满足某条规则。</p>
+<p>行业的应对是两条腿走路：<strong>安全案例（safety case）加运行时护栏</strong>。标准体系正在补课（ISO&#x2F;PAS 8800:2024 是首个针对车辆 AI 安全的全球规范），但真正难的是那个没有闭环的地方：<strong>“不确定性 → 降级决策”这一环</strong>。</p>
+<p>具体来说：不确定性量化（UQ）的证据几乎全部来自仿真和公开数据集；共形预测（Conformal Prediction, CP）有漂亮的覆盖保证，但它的两个理论前提在驾驶里并不天然成立；形式化验证对十亿参数的视觉模型还不可用；而最新的公开事故分析甚至开始反思”停车即安全”这个兜底假设本身。</p>
+<p>一句话：<strong>现在的系统能算出”我不确定”，但还不能可靠地证明”因此该怎么做”。</strong></p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;感知与规划输出&quot;] --&gt; B[&quot;不确定性量化&lt;br/&gt;集成 / 共形预测 / 风险监控&quot;]
+    B --&gt; C[&quot;降级与接管决策&quot;]
+    C --&gt; D[&quot;护栏与最小风险机动&quot;]
+    D --&gt; E[&quot;真实世界结果&quot;]
+    B -.-&gt;|&quot;缺口一：证据多在仿真&quot;| C
+    C -.-&gt;|&quot;缺口二：阈值靠调参&quot;| D</code></pre>
+
+<p>图中两条虚线，就是这篇文章要讲的两个缺口：<strong>从”不确定性数值”到”降级决策”没有经过验证的桥，从”降级决策”到”兜底动作”也还没有场景化的安全论证。</strong></p>
+<h2 id="UQ-现在能做什么"><a href="#UQ-现在能做什么" class="headerlink" title="UQ 现在能做什么"></a>UQ 现在能做什么</h2><p>不确定性量化的主流方法分几类，各自的保证性质差别很大。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>给出什么保证</th>
+<th>证据状态</th>
+<th>主要局限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MC Dropout</td>
+<td>启发式置信度</td>
+<td>仿真对比中低于集成方法</td>
+<td>校准差、单模型近似</td>
+</tr>
+<tr>
+<td>Deep Ensembles</td>
+<td>集成一致性</td>
+<td>零误报下检出最多不安全行为</td>
+<td>推理成本成倍</td>
+</tr>
+<tr>
+<td>共形预测（CP）</td>
+<td>分布无关的有限样本覆盖</td>
+<td>已用于轨迹安全界、检测框区间、OOD 兜底</td>
+<td>边际覆盖、需要可交换性</td>
+</tr>
+<tr>
+<td>风险监控模块</td>
+<td>二分类碰撞风险估计</td>
+<td>闭环安全测试中碰撞规避提升 66.5%</td>
+<td>风险定义限于碰撞</td>
+</tr>
+<tr>
+<td>形式化验证</td>
+<td>数学证明</td>
+<td>中小网络可行</td>
+<td>对视觉 Transformer 不可用</td>
+</tr>
+</tbody></table>
+<p>在实证对比里，Deep Ensembles 优于 MC Dropout 和自编码器基线——在零误报的前提下，它检出的不安全行为最多。《Predicting Safety Misbehaviours in Autonomous Driving Systems using Uncertainty Quantification》这篇 2024 年的工作就是这个结论。</p>
+<p>共形预测在 2024–2026 年最活跃，因为它给的是<strong>分布无关的有限样本覆盖保证</strong>：只要数据可交换，你就能构造出一个区间，让真实值的落入概率不低于 1−α。它已经被用到轨迹预测的规划安全界（CP 区间包裹预测，接入 MPC）、可验证的神经控制屏障函数、OOD 检测触发兜底控制切换，以及检测框的自适应区间。</p>
+<h2 id="共形预测的两个理论缺口"><a href="#共形预测的两个理论缺口" class="headerlink" title="共形预测的两个理论缺口"></a>共形预测的两个理论缺口</h2><p>CP 的保证很漂亮，但驾驶场景会正面撞上它的两个前提。</p>
+<p><strong>第一，覆盖保证是边际的，不是条件的。</strong> “整体上 95% 的情况被覆盖”不等于”在夜间、雨天、某个特定城市这种条件子集里也有 95% 覆盖”。对安全来说，重要的恰恰是那些困难子集。</p>
+<p><strong>第二，可交换性假设在分布偏移下不成立。</strong> 天气、地区、长尾场景都会改变数据分布，而 CP 的覆盖保证依赖于数据可交换。学界用自适应 CP、加权 CP 等方法缓解，但在安全论证语境下，这些缓解手段怎么写成可审计的证据，目前没有共识。</p>
+<p>这个缺口在实践中的表现是：<strong>不确定性数值本身校准好了，不等于决策规则也可靠。</strong> 现在缺少的是从”不确定性指标”到”降级&#x2F;接管动作”之间经过验证的桥——这正是目前几个公开研究项目要测”不确定性提取策略”而不是只测”不确定性数值”的原因。</p>
+<h2 id="形式化验证的规模墙"><a href="#形式化验证的规模墙" class="headerlink" title="形式化验证的规模墙"></a>形式化验证的规模墙</h2><p>形式化验证听起来是安全问题的终极答案：不只是测，而是证明。</p>
+<p>现状是：验证器工具在进步（alpha-beta-CROWN 连续拿下 VNN-COMP 2021–2025 五届冠军；2025 年的竞赛有 8 支队伍、16 个常规基准加 9 个扩展基准，网络用 ONNX、规约用 VNN-LIB 标准化），但<strong>基准仍以中小型网络为主</strong>。</p>
+<p>更能说明问题的是闭环验证的标志性案例（2019 年）：验证一个神经网络控制的自动驾驶赛车，当时只能处理约 40 线的 LiDAR 输入，而系统总共有 1081 线。规模差了二十多倍。</p>
+<p>对视觉 Transformer、扩散策略、十亿参数的 VLA，当前没有可用的非平凡验证结果。所以航空领域（EASA）的路线也是组合式的：学习保障（learning assurance）加形式化方法作为补充，加运行时保障——而不是纯验证。</p>
+<h2 id="护栏这一层现在做到了什么"><a href="#护栏这一层现在做到了什么" class="headerlink" title="护栏这一层现在做到了什么"></a>护栏这一层现在做到了什么</h2><p>把”神经输出加确定性护栏”拆开看，护栏一侧已经有几种成型的做法。</p>
+<p><strong>形式化风险模型是最早的尝试。</strong> Mobileye 的 RSS（责任敏感安全）从 2015 年起提出用形式化规则定义”谁该负责”，NVIDIA 的安全力场（SFF）则用控制论里的”力场”概念在驾驶栈之上做一层防碰撞监督。它们的问题是覆盖范围：Koopman 在 2019 年指出，RSS 的形式化保证只覆盖决策层，感知不确定性进来之后只能变得更保守；后续的实证研究也确认 RSS 的安全距离模型偏大、损失通行效率。它们是有用的规则层，但不是整车安全论证。</p>
+<p><strong>学习式护栏是近几年的主流。</strong> 2025 年的《Drive in Corridors》让系统先学一条安全走廊，再在走廊内规划，把端到端的输出约束在可验证的几何范围内；2026 年的模块化护栏工作提出”监测—评估—干预”的三段式架构（决策门与动作门）；还有面向端到端栈的优化式运行时监控。它们的共同思路是：<strong>不碰神经网络内部，在输出端加一道可独立验证的关卡。</strong></p>
+<p><strong>但这里有个未解的矛盾。</strong> 护栏要不要触发、什么时候触发，依赖对”当前输出是否可信”的判断——也就是 E2E 模型的置信度或不确定性。而这恰恰是前面说的尚未解决的 UQ 问题。护栏与 UQ 两条线在”不确定性到降级决策”这个地方汇合，然后双双停在那里：一边假设有可靠的置信度输入，另一边给不出经过验证的决策规则。</p>
+<h2 id="兜底本身也会出事"><a href="#兜底本身也会出事" class="headerlink" title="兜底本身也会出事"></a>兜底本身也会出事</h2><p>法规为”系统不行了怎么办”定义了标准答案：<strong>最小风险机动（Minimal Risk Maneuver, MRM）</strong>，目标是进入最小风险状态（MRC）。UN R157 的要求很具体：系统故障或驾驶人未响应时，减速至本车道内静止并开启危险报警灯；减速度需求超过 5.0 m&#x2F;s² 归为紧急机动。</p>
+<p>学术与行业的主流做法是”神经端到端加确定性护栏”：学习安全走廊、模块化决策门控、优化式运行时监控，让神经网络的输出先过一道可验证的关卡。</p>
+<p>但 2026 年出现了对这个假设本身的反思。一篇题为《When Stopping Fails》的工作用公开事故数据重新审视停车类兜底：<strong>停在车道内或路边本身会制造追尾、阻碍救援、以及人车交互失败等次生风险。</strong> 另一个更早的实锤是：Waymo 在 2024 年 6 月一次撞杆事故后召回了全部 672 辆车——说明兜底机动本身也需要和主系统同等强度的场景化验证，而不是被当作”最后的安全选项”免检。</p>
+<p>这一条对我冲击挺大：我们在讨论”系统什么时候该停下来”时，默认了”停下来是安全的”，但这个默认在真实交通里并不总成立。</p>
+<h2 id="标准和法规在补什么课"><a href="#标准和法规在补什么课" class="headerlink" title="标准和法规在补什么课"></a>标准和法规在补什么课</h2><table>
+<thead>
+<tr>
+<th>层级</th>
+<th>文件</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能安全</td>
+<td>ISO 26262</td>
+<td>两版现行；第三版修订中，动向含 AI&#x2F;ML（二手来源）</td>
+</tr>
+<tr>
+<td>预期功能安全</td>
+<td>ISO 21448:2022（SOTIF）</td>
+<td>现行；修订进行中</td>
+</tr>
+<tr>
+<td>AI 安全</td>
+<td>ISO&#x2F;PAS 8800:2024</td>
+<td>2024-12 发布，首个车辆 AI 安全全球规范</td>
+</tr>
+<tr>
+<td>安全案例</td>
+<td>UL 4600 第三版（2023）</td>
+<td>用证据型论证显式覆盖神经网络组件</td>
+</tr>
+<tr>
+<td>航空参照</td>
+<td>EASA CoDANN &#x2F; AI Concept Paper</td>
+<td>学习保障加运行时保障的组合路线</td>
+</tr>
+</tbody></table>
+<p>法规落地的时间线也在推进：德国奔驰 Drive Pilot 于 2021 年 12 月获得全球首个 L3 型式批准，2024 年 12 月获批提速至 95 km&#x2F;h；日本 2020 年 4 月起 L3 实际允许上路、2023 年 4 月修法放行 L4；中国 2025 年 12 月发出首批 L3 车型准入许可；英国 Automated Vehicles Act 2024 于 2024 年 5 月御准，但全面实施计划推迟到 2027 年。</p>
+<p>共同趋势是<strong>责任从驾驶人向车企和系统激活状态转移</strong>。深圳的条例已经细化到”自动驾驶系统是否激活”来划责；中国的推荐性国标 GB&#x2F;T 44721-2024 正升级为首部 L3&#x2F;L4 强制性国标。</p>
+<p>法规把责任讲清楚了，技术侧的对应问题却没有解决：<strong>L3 的责任切换要求”系统知道自己什么时候不行”</strong>——把感知不确定性量化为可审计的接管与降级判据。这正是标准（8800、21448 修订）和学术（UQ）双方都指向、但都没解决的地方。</p>
+<h2 id="缺的到底是什么"><a href="#缺的到底是什么" class="headerlink" title="缺的到底是什么"></a>缺的到底是什么</h2><p>把上面的线索合起来，缺口有三处：</p>
+<p><strong>一是校准与决策之间没有桥。</strong> UQ 的证据（校准误差、覆盖率、检出率）几乎全部来自仿真或公开数据集；”校准良好的不确定性加正确的决策规则”这个组合，没有经过验证的完整方案。</p>
+<p><strong>二是驾驶领域的 VLA 不确定性几乎空白。</strong> 机器人操作领域在 2026 年已经出现一批方法：对动作块做共形校准并按风险排序送人工复核、在冻结 VLA 上加可拒绝的校准决策头、把不确定性作为联合预测目标之一。驾驶侧的对应工作很少，公开可查的只有个别研究项目在启动这件事。</p>
+<p><strong>三是评测基准缺位。</strong> 现有的 UQ 评测基准只覆盖异常分割和 BEV 分割；3D 占据预测、端到端闭环、VLA 驾驶模型都没有公开的 UQ 排行榜。</p>
+<h2 id="取舍与局限"><a href="#取舍与局限" class="headerlink" title="取舍与局限"></a>取舍与局限</h2><p><strong>“证明神经网络安全”这条路目前走不通</strong>，主流的替代是证据型安全案例加过程认证，但批评者指出安全案例的”证据充分性”标准模糊，可能退化为形式合规。中国选择把关键要求直接写成强制性国标条款，与欧美的安全案例路线形成对照——两条路线的实际效果还没有公开比较（<strong>未验证</strong>）。</p>
+<p><strong>风险模型（RSS、安全力场）只覆盖决策层。</strong> 它们把责任敏感的规则形式化，但感知不确定性进来之后只能变得更保守；实测也显示 RSS 的安全距离偏大、损失通行效率。它们不是整车安全论证。</p>
+<p><strong>公司层面的兜底细节没有公开。</strong> 各家 MRM 的具体触发阈值、降级策略和执行细节属于不公开内容，公开材料只到宣传级别。这也是为什么这篇文章只能讨论标准、论文和公开事故，而不能说”某家的兜底做得如何”。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>智驾安全量化的现状可以概括成一句：<strong>方法很多，保证很少，闭环没有。</strong></p>
+<p>UQ 能给出不确定性数值，CP 能给出分布无关的覆盖保证，形式化验证能证明小网络的性质，法规能定义责任归属——但把这些拼成”系统在不确定时安全降级”的完整链条，每一步之间都还缺经过验证的连接。而最新的反思提醒我们：连”停下来就安全”这个最底层的假设，都需要重新做场景化验证。</p>
+<p>如果要选一个判断：<strong>下一步最有价值的进展，可能不是更准的不确定性数值，而是”不确定性到降级决策”这一环的可验证协议。</strong> 它比训练更大的模型更便宜，也比写更多安全文档更有用。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2302.13425">A Survey on Uncertainty Quantification Methods for Deep Neural Networks</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.18573">Predicting Safety Misbehaviours in Autonomous Driving Systems using Uncertainty Quantification</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.12826">UncAD: Towards Safe End-to-end Autonomous Driving via Online Map Uncertainty</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2210.10254">Safe Planning in Dynamic Environments using Conformal Prediction</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2409.00536">Formal Verification and Control with Conformal Prediction</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.09427">SafePath: Conformal Prediction for Safe LLM-Based Autonomous Navigation</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.07263">Adaptive Bounding Box Uncertainties via Two-Step Conformal Prediction</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.17395">CP-NCBF: Conformal Prediction-based Neural Control Barrier Functions</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.02436">SODA-MPC: Safe, Out-of-Distribution-Adaptive MPC</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.07425">Collision Risk Estimation via Loss Prediction in End-to-End Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.07507">Drive in Corridors: Enhancing the Safety of End-to-end Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.04056">Modular Safety Guardrails Are Necessary for Foundation-Model-Enabled Robots</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2606.29115">When Stopping Fails: Rethinking Minimal Risk Conditions</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2512.19007">VNN-COMP 2025: Summary and Results</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/shizhouxing/alpha-beta-CROWN">alpha-beta-CROWN</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1910.11309">Case Study: Verifying the Safety of an Autonomous Racing Car</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentmeifyoucan.github.io/">Segment Me If You Can（异常分割基准）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.20986">Predictive Uncertainty Quantification for Bird’s Eye View Segmentation</a></li>
+<li><a target="_blank" rel="noopener" href="https://unece.org/sites/default/files/2023-12/R157e.pdf">UN Regulation No. 157（ALKS）合并文本</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.easa.europa.eu/en/document-library/general-publications/concepts-design-assurance-neural-networks-codann">EASA CoDANN 与 AI Concept Paper</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-driving-safety-uncertainty/">https://ryanwu.cn/2026/09/30/2026-09-30-driving-safety-uncertainty/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/autonomous-driving/">autonomous-driving</a><a class="post-meta__tags" href="/tags/safety/">safety</a><a class="post-meta__tags" href="/tags/uncertainty/">uncertainty</a><a class="post-meta__tags" href="/tags/regulation/">regulation</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/driving-safety-uncertainty/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img class="cover" src="/images/posts/driving-world-models/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">重建还是生成：驾驶世界模型与安全验证</div></div><div class="info-2"><div class="info-item-1">驾驶世界模型分成重建与生成两条路线：重建式保真但只能覆盖采过的场景，生成式可控但物理一致性受质疑。从 NeuroNCAP 的强证据到视频模型的物理理解缺陷，说明它们各自能承担安全验证的哪一部分。</div></div></div></a><a class="pagination-related" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年"><img class="cover" src="/images/posts/world-action-models/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">先想象，再动手：世界动作模型这一年</div></div><div class="info-2"><div class="info-item-1">半年内两篇独立综述把世界动作模型（WAM）立成正式方向。梳理它的定义边界、三种工程实现与产业合流，以及正反两面证据：最强证据来自把世界模型当训练器而非直接当策略，而联合评估协议至今缺失。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img class="cover" src="/images/posts/mapless-driving-perception/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">无图智驾去掉了哪张图：在线感知的边界</div></div><div class="info-2"><div class="info-item-1">「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img class="cover" src="/images/posts/driving-world-models/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">重建还是生成：驾驶世界模型与安全验证</div></div><div class="info-2"><div class="info-item-1">驾驶世界模型分成重建与生成两条路线：重建式保真但只能覆盖采过的场景，生成式可控但物理一致性受质疑。从 NeuroNCAP 的强证据到视频模型的物理理解缺陷，说明它们各自能承担安全验证的哪一部分。</div></div></div></a><a class="pagination-related" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img class="cover" src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-16</div><div class="info-item-2">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</div></div><div class="info-2"><div class="info-item-1">从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img class="cover" src="/images/posts/e2e-driving-evaluation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">L2 误差不是指标：端到端智驾的评测重建</div></div><div class="info-2"><div class="info-item-1">端到端智驾的评测正在被重建：只看轨迹 L2 误差的模型能打平甚至超过感知方案，开环排名与闭环排名会发生反转。梳理三组否定开环指标的证据、闭环与伪闭环基准的迁移，以及 VLA 化之后动作输出机制的真实形态。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-sim2real-real-world-evaluation/" title="仿真分数高，真机就一定好吗：Sim2Real 评估的缺口"><img class="cover" src="/images/posts/sim2real-real-world-evaluation/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">仿真分数高，真机就一定好吗：Sim2Real 评估的缺口</div></div><div class="info-2"><div class="info-item-1">Domain randomization、3D Gaussian Splatting、Isaac Lab、Genesis 和视频世界模型分别解决了什么？从 SIMPLER 与 GAUGE 出发，说明仿真—真机相关性为何仍缺统一协议，以及个人研究者如何做配对评估。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img class="cover" src="/images/posts/vla-architecture-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</div></div><div class="info-2"><div class="info-item-1">梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">73</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#UQ-%E7%8E%B0%E5%9C%A8%E8%83%BD%E5%81%9A%E4%BB%80%E4%B9%88"><span class="toc-number">2.</span> <span class="toc-text">UQ 现在能做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E5%BD%A2%E9%A2%84%E6%B5%8B%E7%9A%84%E4%B8%A4%E4%B8%AA%E7%90%86%E8%AE%BA%E7%BC%BA%E5%8F%A3"><span class="toc-number">3.</span> <span class="toc-text">共形预测的两个理论缺口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%A2%E5%BC%8F%E5%8C%96%E9%AA%8C%E8%AF%81%E7%9A%84%E8%A7%84%E6%A8%A1%E5%A2%99"><span class="toc-number">4.</span> <span class="toc-text">形式化验证的规模墙</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A4%E6%A0%8F%E8%BF%99%E4%B8%80%E5%B1%82%E7%8E%B0%E5%9C%A8%E5%81%9A%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">5.</span> <span class="toc-text">护栏这一层现在做到了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%9C%E5%BA%95%E6%9C%AC%E8%BA%AB%E4%B9%9F%E4%BC%9A%E5%87%BA%E4%BA%8B"><span class="toc-number">6.</span> <span class="toc-text">兜底本身也会出事</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%92%8C%E6%B3%95%E8%A7%84%E5%9C%A8%E8%A1%A5%E4%BB%80%E4%B9%88%E8%AF%BE"><span class="toc-number">7.</span> <span class="toc-text">标准和法规在补什么课</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E7%9A%84%E5%88%B0%E5%BA%95%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">8.</span> <span class="toc-text">缺的到底是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%96%E8%88%8D%E4%B8%8E%E5%B1%80%E9%99%90"><span class="toc-number">9.</span> <span class="toc-text">取舍与局限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">10.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">11.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img src="/images/posts/driving-safety-uncertainty/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="知道自己什么时候不确定：智驾安全量化的缺口"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口">知道自己什么时候不确定：智驾安全量化的缺口</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img src="/images/posts/driving-world-models/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="重建还是生成：驾驶世界模型与安全验证"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证">重建还是生成：驾驶世界模型与安全验证</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img src="/images/posts/e2e-driving-evaluation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="L2 误差不是指标：端到端智驾的评测重建"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建">L2 误差不是指标：端到端智驾的评测重建</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人不是一个大模型：全身控制的分层答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案">人形机器人不是一个大模型：全身控制的分层答案</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img src="/images/posts/mapless-driving-perception/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无图智驾去掉了哪张图：在线感知的边界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界">无图智驾去掉了哪张图：在线感知的边界</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

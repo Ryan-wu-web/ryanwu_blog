@@ -1,0 +1,817 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>L2 误差不是指标：端到端智驾的评测重建 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="端到端智驾的评测正在被重建：只看轨迹 L2 误差的模型能打平甚至超过感知方案，开环排名与闭环排名会发生反转。梳理三组否定开环指标的证据、闭环与伪闭环基准的迁移，以及 VLA 化之后动作输出机制的真实形态。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="L2 误差不是指标：端到端智驾的评测重建">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="端到端智驾的评测正在被重建：只看轨迹 L2 误差的模型能打平甚至超过感知方案，开环排名与闭环排名会发生反转。梳理三组否定开环指标的证据、闭环与伪闭环基准的迁移，以及 VLA 化之后动作输出机制的真实形态。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/e2e-driving-evaluation/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-29T07:22:44.525Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="autonomous-driving">
+<meta property="article:tag" content="end-to-end">
+<meta property="article:tag" content="evaluation">
+<meta property="article:tag" content="vla">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/e2e-driving-evaluation/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "L2 误差不是指标：端到端智驾的评测重建",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/",
+  "image": "https://ryanwu.cn/images/posts/e2e-driving-evaluation/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-29T07:22:44.525Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'L2 误差不是指标：端到端智驾的评测重建',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">73</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/e2e-driving-evaluation/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">L2 误差不是指标：端到端智驾的评测重建</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">L2 误差不是指标：端到端智驾的评测重建</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-29T07:22:44.525Z" title="更新于 2026-09-29 15:22:44">2026-09-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇讨论端到端智驾的评测方法，不针对任何具体车型或公司，也不构成购买建议。文中引用的论文编号我都逐条核对过 arXiv 页面；公司口径会明确标注来源性质；标注为<strong>未验证</strong>的内容不写成结论。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>端到端智驾这几年最大的进展，可能不是某个模型变强了，而是<strong>大家终于承认原来的评测指标是坏的</strong>。</p>
+<p>在被广泛使用的 nuScenes 开环评测里，一个只吃自车历史轨迹、完全不看感知的 MLP，L2 误差能比正经的感知方案还低；在 nuPlan 上，开环指标与闭环表现被证明是<strong>负相关</strong>；在 CARLA 上，开环 SOTA 的两个模型（UniAD、VAD）闭环成绩掉到 40 出头，开环排名和闭环排名直接<strong>反转</strong>。</p>
+<p>也就是说，如果你只看 2023–2024 年间大部分端到端论文汇报的那个数字，你很可能排错了名次。</p>
+<p>评测体系的迁移方向是清楚的：从 nuScenes 开环，转向 NAVSIM 这类伪闭环，再转向 Bench2Drive、CARLA 这类全反应式闭环。同时，VLA 化之后一个常被忽略的事实是：<strong>主流的智驾 VLA 论文里，没有一篇让语言模型直接输出转向、油门、刹车</strong>——动作最终都由轨迹、waypoint 加上额外的控制层完成。</p>
+<h2 id="三组证据：开环指标是怎么被否定的"><a href="#三组证据：开环指标是怎么被否定的" class="headerlink" title="三组证据：开环指标是怎么被否定的"></a>三组证据：开环指标是怎么被否定的</h2><p>否定开环指标的不是一篇论文，而是三条独立的证据链。</p>
+<p><strong>第一，自车状态泄漏。</strong> 《Rethinking the Open-Loop Evaluation of End-to-End Autonomous Driving in nuScenes》发现，一个只输入自车历史轨迹和状态的 MLP，L2 误差可以比带完整感知的方案低约 20%。原因是 nuScenes 里大量场景是直行，未来轨迹几乎可以由历史轨迹线性外推——模型不需要”看见”任何东西，就能预测得很准。紧接着，NVIDIA 与南京大学合作的《Is Ego Status All You Need for Open-Loop End-to-End Autonomous Driving?》把这件事做到了极致：仅凭 ego status 的 MLP 就能打平 UniAD、VAD、ST-P3 的开环成绩。</p>
+<p><strong>第二，开环与闭环负相关。</strong> TUM 与 ETH 的 PDM 工作给出了最具体的一个数字：把 IDM 的加速度参数从 1.0 调到 0.1，nuPlan 开环 OLS 从 38 升到 48，看起来是”变好了”；但同一配置的闭环 CLS-R 从 77 掉到 54，实际驾驶质量崩了。论文的结论很直接：<strong>在 nuPlan 指标下，开环与闭环负相关</strong>。更精确的 8 秒预测对闭环几乎没有附加价值。</p>
+<p><strong>第三，排名反转的实锤。</strong> Bench2Drive 在 CARLA 上做闭环复测，结果是：UniAD-Base 的开环 L2（0.73）优于 VAD（0.91），但闭环 DS 反而更低（45.81 对 42.35）；nuScenes 开环 SOTA 的 UniAD&#x2F;VAD 闭环只有 40 出头 DS，明显低于 TCP-traj（59.90）、ThinkTwice（62.44）、DriveAdapter（64.22）；而开环打平 SOTA 的 AD-MLP，闭环 DS 只有 18.05、成功率 0.00。</p>
+<p>Bench2Drive 官方仓库在 2025 年 2 月发过一条声明，原话大意是：<strong>L2 error is not a meaningful indicator at all</strong>，作者们应该停止报告 nuScenes 开环规划结果。UniAD 官方仓库也就开环对比单独发过澄清声明。</p>
+<table>
+<thead>
+<tr>
+<th>证据</th>
+<th>做法</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rethinking（2023）</td>
+<td>纯轨迹 MLP，不用任何感知</td>
+<td>L2 比感知方案低约 20%</td>
+</tr>
+<tr>
+<td>AD-MLP（CVPR 2024）</td>
+<td>仅 ego status 的 MLP</td>
+<td>开环打平 UniAD&#x2F;VAD&#x2F;ST-P3</td>
+</tr>
+<tr>
+<td>PDM（CoRL 2023）</td>
+<td>调 IDM 加速度参数 1.0→0.1</td>
+<td>开环 38→48，闭环 77→54</td>
+</tr>
+<tr>
+<td>Bench2Drive（NeurIPS 2024）</td>
+<td>CARLA 闭环复测开环 SOTA</td>
+<td>UniAD&#x2F;VAD 闭环 40+ DS，排名反转</td>
+</tr>
+</tbody></table>
+<h2 id="为什么会失效"><a href="#为什么会失效" class="headerlink" title="为什么会失效"></a>为什么会失效</h2><p>开环评测的本质是：拿一段真实驾驶日志，让模型预测未来轨迹，和人类司机的轨迹比对，算 L2 和碰撞率。它有两个结构性问题。</p>
+<p><strong>一是模仿学习的因果混淆。</strong> 模型只需要复现人类司机的路径，而不需要理解为什么这样走。日志里 75% 左右的场景是简单直行（NAVSIM 论文转述），这些场景的 L2 对任何合理模型都很低，真正区分能力的长尾场景被平均掉了。</p>
+<p><strong>二是”预测未来”与”控制未来”不是一回事。</strong> 开环里模型预测的轨迹不会改变世界；闭环里车辆的动作会改变其他交通参与者的行为。PDM 那组数字说明：一个在开环里”预测更准”的模型，可能只是更保守或更激进，而在闭环里这两者都可能是灾难。图宾根大学的《Hidden Biases of End-to-End Driving Models》进一步指出，闭环方法同样有隐藏偏差——目标点跟随的横向强偏置、路径点平均导致的纵向减速，这些问题连 infraction 类指标都会掩盖。</p>
+<h2 id="评测体系在往哪迁移"><a href="#评测体系在往哪迁移" class="headerlink" title="评测体系在往哪迁移"></a>评测体系在往哪迁移</h2><pre><code class="highlight mermaid">timeline
+    title 端到端智驾评测的迁移
+    2023 : nuScenes 开环
+         : L2 加碰撞率，后被三组证据否定
+    2023 : nuPlan 闭环
+         : PDM 确立规则加学习混合路线
+    2024 : NAVSIM PDMS
+         : 非反应式短时程，143 队参赛
+    2024 : Bench2Drive
+         : CARLA 全反应式，220 条路线
+    2025 : NAVSIM v2 EPDMS
+         : 3DGS 伪闭环，与闭环相关性 R²=0.8</code></pre>
+
+<p><strong>NAVSIM</strong> 用真实数据展开的 BEV 抽象做非反应式短时程仿真。它把”开环”里的碰撞概念换成了更细的评分：PDMS &#x3D; NC × DAC × (5·EP + 5·TTC + 2·Comfort) &#x2F; 12，其中 NC 是无责任碰撞、DAC 是可行驶区域合规、TTC 是碰撞时间、EP 是相对 PDM-Closed 的进度、Comfort 是平顺性。一个有意思的对照是：UniAD 的 PDMS 是 83.4，没有超过更简单的 TransFuser（84.0），而人类驾驶员是 94.8。</p>
+<p><strong>NAVSIM v2（EPDMS）</strong> 用 3D Gaussian Splatting 生成合成观测，做”伪闭环”：通过改变位置、朝向和速度来近似未来状态。论文报告它与真实闭环仿真的相关性 R²&#x3D;0.8，而此前的开环方法最好只有 0.7。这是目前”开环便宜、闭环贵”之间最接近的折中。</p>
+<p><strong>Bench2Drive</strong> 是 CARLA 上的全反应式闭环基准：220 条路线、44 种交互场景、五类能力维度，还有配套的训练数据。它也是目前唯一能把”开环 SOTA”和”闭环表现”放在同一张表里对照的公开平台——排名反转就是在这里被抓出来的。</p>
+<p>值得注意的是交互性的谱系：NAVSIM 是非反应式的（其他车辆按真实数据重放），CARLA 是全反应式的。<strong>“闭环”这个词在两者之间不能随便互换</strong>，”仿真里表现好”这句话，先要问清楚是哪种闭环。</p>
+<h2 id="VLA-化之后：动作从哪里出来"><a href="#VLA-化之后：动作从哪里出来" class="headerlink" title="VLA 化之后：动作从哪里出来"></a>VLA 化之后：动作从哪里出来</h2><p>2024 年下半年起，智驾开始 VLA 化：把视觉语言模型搬进驾驶栈。但把七篇代表工作放在一起看，动作输出只有三种形态，<strong>没有一篇由 VLM 直接输出控制信号</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>论文</th>
+<th>底座</th>
+<th>动作输出形式</th>
+<th>最终执行</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>EMMA（Waymo）</td>
+<td>Gemini 1.0 Nano-1</td>
+<td>纯文本：轨迹写成浮点 waypoint 文本</td>
+<td>坐标转数值，接下游规划</td>
+</tr>
+<tr>
+<td>DriveVLM（清华+理想）</td>
+<td>Qwen-VL</td>
+<td>自然语言元动作（17 类）+ 轨迹文本</td>
+<td>慢系统给初始解，快系统精修</td>
+</tr>
+<tr>
+<td>Senna</td>
+<td>Vicuna-7B</td>
+<td>7 类元动作 + 规划解释</td>
+<td>元动作嵌入注入 VADv2 系 E2E</td>
+</tr>
+<tr>
+<td>LMDrive</td>
+<td>7B LLM</td>
+<td>未来 waypoints + 指令完成 flag</td>
+<td>两层 MLP 加两个 PID 控制器</td>
+</tr>
+<tr>
+<td>OmniDrive（NVIDIA）</td>
+<td>LLaMA2-7B</td>
+<td>文本 QA 形式轨迹</td>
+<td>VLM 直接文本生成轨迹</td>
+</tr>
+<tr>
+<td>OpenDriveVLA</td>
+<td>Qwen2.5</td>
+<td>自回归文本轨迹，3 秒 6 个点</td>
+<td>坐标直接转文本</td>
+</tr>
+<tr>
+<td>AutoVLA</td>
+<td>自回归 VLM</td>
+<td>轨迹离散化为动作 token</td>
+<td>token 并入词表自回归生成</td>
+</tr>
+</tbody></table>
+<p>最接近控制的 LMDrive，仍然经由 waypoints 加 PID 控制器兜底。这条边界的含义是：<strong>大模型负责”想”，数值精度和实时控制仍交给传统层。</strong> EMMA 自己承认无法融合 LiDAR 和雷达，闭环验证需要昂贵的传感器仿真，算力开销大。</p>
+<p>这也解释了 2025–2026 的技术收敛方向为什么都指向”解码效率”：自回归 VLA 的解码延迟（DriveVLM 慢系统 410ms&#x2F;帧，需要双 OrinX）和数值精度不足，正是扩散式解码（DiffusionDrive 把去噪步数降到 2 步，NAVSIM 88.1 PDMS、4090 上 45 FPS）、MoE 稀疏化（DriveMoE 在 Bench2Drive 拿到 74.22 DS）和强化学习后训练（AutoVLA 的 GRPO）的共同动机。</p>
+<h2 id="量产侧为什么看不见这些数字"><a href="#量产侧为什么看不见这些数字" class="headerlink" title="量产侧为什么看不见这些数字"></a>量产侧为什么看不见这些数字</h2><p>学术评测重建得再彻底，量产系统的真实数字也不会进入这套体系——这不是缺陷，而是商业现实。把公开信息摊开看，各家发布的技术叙事都很宏大，可核验的量化结果却很少。</p>
+<table>
+<thead>
+<tr>
+<th>厂商</th>
+<th>关键节点</th>
+<th>技术叙事</th>
+<th>证据性质</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>华为</td>
+<td>2024-04 ADS 3.0（GOD 感知大网 + PDP 网络）；2025-04 ADS 4 的 WEWA 架构（云端世界引擎 + 车端世界行为模型）</td>
+<td>云端生成难例、车端决策</td>
+<td>发布会与媒体转述</td>
+</tr>
+<tr>
+<td>理想</td>
+<td>2024-10-23 向 AD Max 全量推送「端到端 + VLM 双系统」；2025-03 发布 MindVLA（MoE 加稀疏注意力基座、扩散模型优化轨迹）</td>
+<td>快系统端到端、慢系统 VLM</td>
+<td>发布会口径</td>
+</tr>
+<tr>
+<td>小鹏</td>
+<td>2024-04 端到端大模型量产上车；2025-11-05 发布第二代 VLA（去掉语言转译、视觉信号直接生成动作），计划 2026 Q1 向 Ultra 车型推送</td>
+<td>云端基座加蒸馏车端</td>
+<td>发布会口径</td>
+</tr>
+<tr>
+<td>Tesla</td>
+<td>FSD v13（2024-11&#x2F;12 推送），36Hz 全分辨率输入，纯视觉</td>
+<td>端到端网络全面升级</td>
+<td>官方 release notes</td>
+</tr>
+<tr>
+<td>Waymo</td>
+<td>2025-12 披露 Foundation Model（传感器融合编码器 + Gemini 训练的 VLM + 世界解码器），蒸馏出车载 Student Driver；2026-08 官方长文明确拒绝”纯端到端捷径”</td>
+<td>混合架构</td>
+<td>官方博客</td>
+</tr>
+</tbody></table>
+<p>两点值得注意。<strong>第一，中国三家都保留了”快慢双系统”或分层结构</strong>，没有走 EMMA 式”语言模型直接生成全部动作”的路，这与 Waymo”拒绝纯端到端”的判断相近。<strong>第二，这些数字无法进入任何公开评测</strong>：没有权重、没有评测协议、没有可复现的基线，外部只能做架构层面的分析。</p>
+<p>所以现状是：<strong>学术侧已经承认开环指标不可信，量产侧则干脆不公布数字。</strong> 双方各说各话，用户能拿到的只有发布会口径。这不是一个健康的状态，但它是当下真实的状态。</p>
+<h2 id="取舍与局限"><a href="#取舍与局限" class="headerlink" title="取舍与局限"></a>取舍与局限</h2><p><strong>闭环也不是完美的。</strong> EPDMS 的乘法结构有个被社区讨论的问题：任何一个乘法项归零，整体分数就归零，不同失败类型的严重程度被压平。Bench2Drive 自己也提示长路线的 DS 方差较大。闭环评测贵、方差大，这是它至今没有完全取代开环报告的原因——2026 年的新论文仍然普遍”闭环为主加开环为辅”双报。</p>
+<p><strong>协议仍然不可比。</strong> 各家 nuScenes 开环协议不同（是否输入 ego status、用谁的划分、碰撞率怎么定义），EMMA 甚至没有报告碰撞率。跨论文的数字放在一张表里比较，本身就是一种污染。</p>
+<p><strong>公司口径无法用这套方法核验。</strong> 华为 ADS、小鹏二代 VLA、理想 MindVLA 的技术细节多为发布会口径经媒体转述；量产系统不公开权重和评测协议，只能做外部分析。这一点在做”谁更强”的判断时必须诚实。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>端到端智驾的评测重建，是一次<strong>方法论上的自我纠正</strong>：模型预测轨迹准不准，和它开车开得好不好，是两个问题。前者便宜、可复现、能自动化，但它奖励的是对数据的记忆，不是对场景的理解。</p>
+<p>现在的共识路径是：<strong>用闭环或准闭环测能力，用开环做回归，别用开环排名。</strong> 对做研究的人来说，这个转向也打开了一个门槛不高的方向：在同一批 checkpoint 上同时算开环与闭环指标、量化它们的相关性——现有证据只有”负相关””排名反转””单点 R²”，跨基准的大样本相关系数还没人系统做过。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.10430">Rethinking the Open-Loop Evaluation of End-to-End Autonomous Driving in nuScenes</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.03031">Is Ego Status All You Need for Open-Loop End-to-End Autonomous Driving?</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2306.07962">Parting with Misconceptions about Learning-based Vehicle Motion Planning（PDM）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.03877">Bench2Drive: Towards Multi-Ability Benchmarking of Closed-Loop End-To-End Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.15349">NAVSIM: Data-Driven Non-Reactive Autonomous Vehicle Simulation and Benchmarking</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.04218">Pseudo-Simulation for Autonomous Driving（NAVSIM v2）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2306.07957">Hidden Biases of End-to-End Driving Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2212.10156">UniAD: Planning-oriented Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.12077">VAD: Vectorized Scene Representation for Efficient Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.13243">VADv2: End-to-End Vectorized Autonomous Driving via Probabilistic Planning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2410.23262">EMMA: End-to-End Multimodal Model for Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.12289">DriveVLM: The Convergence of Autonomous Driving and Large Vision-Language Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2410.22313">Senna: Bridging Large Vision-Language Models and End-to-End Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2312.07488">LMDrive: Closed-Loop End-to-End Driving with Large Language Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2405.01533">OmniDrive: A Holistic Vision-Language Dataset for Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.23463">OpenDriveVLA</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.13757">AutoVLA</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2411.15139">DiffusionDrive: Truncated Diffusion Model for End-to-End Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.16278">DriveMoE: Mixture-of-Experts for Vision-Language-Action Model in End-to-End Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2603.29163">SparseDriveV2: Scoring is All You Need for End-to-End Autonomous Driving</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.06978">Hydra-MDP</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2205.15997">TransFuser</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/">https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/autonomous-driving/">autonomous-driving</a><a class="post-meta__tags" href="/tags/vla/">vla</a><a class="post-meta__tags" href="/tags/end-to-end/">end-to-end</a><a class="post-meta__tags" href="/tags/evaluation/">evaluation</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/e2e-driving-evaluation/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img class="cover" src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">人形机器人不是一个大模型：全身控制的分层答案</div></div><div class="info-2"><div class="info-item-1">全身控制的核心不是把语言模型直接接到电机，而是让语义任务、运动生成、接触动力学和安全约束在不同频率上协同：梳理 RL、MPC、WBC、loco-manipulation 与人形数据采集。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img class="cover" src="/images/posts/driving-world-models/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">重建还是生成：驾驶世界模型与安全验证</div></div><div class="info-2"><div class="info-item-1">驾驶世界模型分成重建与生成两条路线：重建式保真但只能覆盖采过的场景，生成式可控但物理一致性受质疑。从 NeuroNCAP 的强证据到视频模型的物理理解缺陷，说明它们各自能承担安全验证的哪一部分。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-robot-data-engine-scaling-laws/" title="机器人没有互联网数据：一张数据引擎与 Scaling Law 地图"><img class="cover" src="/images/posts/robot-data-engine-scaling-laws/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">机器人没有互联网数据：一张数据引擎与 Scaling Law 地图</div></div><div class="info-2"><div class="info-item-1">机器人数据从哪里来？梳理真机遥操作、仿真合成与人类视频三条路线，以及多样性幂律、跨本体混合和负迁移之间的张力：机器人 scaling law 存在，但远不是把数据量乘大那么简单。</div></div></div></a><a class="pagination-related" href="/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/" title="特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"><img class="cover" src="/images/posts/tesla-vs-china-autonomous-driving/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-16</div><div class="info-item-2">特斯拉纯视觉与国产智驾：传感器不同，终点可能相同</div></div><div class="info-2"><div class="info-item-1">从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img class="cover" src="/images/posts/mapless-driving-perception/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">无图智驾去掉了哪张图：在线感知的边界</div></div><div class="info-2"><div class="info-item-1">「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img class="cover" src="/images/posts/vla-architecture-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</div></div><div class="info-2"><div class="info-item-1">梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-tactile-vla-multimodal-perception/" title="触觉不是多一张图：它如何进入 VLA"><img class="cover" src="/images/posts/tactile-vla-multimodal-perception/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">触觉不是多一张图：它如何进入 VLA</div></div><div class="info-2"><div class="info-item-1">触觉补上的不是视觉分辨率，而是接触状态：滑动、力、局部几何与形变。梳理 GelSight、AnySkin、Sparsh 到触觉残差、未来触觉预测和柔性物体评测，给个人实验室一条低成本路线。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img class="cover" src="/images/posts/driving-safety-uncertainty/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">知道自己什么时候不确定：智驾安全量化的缺口</div></div><div class="info-2"><div class="info-item-1">校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">31</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">73</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%BB%84%E8%AF%81%E6%8D%AE%EF%BC%9A%E5%BC%80%E7%8E%AF%E6%8C%87%E6%A0%87%E6%98%AF%E6%80%8E%E4%B9%88%E8%A2%AB%E5%90%A6%E5%AE%9A%E7%9A%84"><span class="toc-number">2.</span> <span class="toc-text">三组证据：开环指标是怎么被否定的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E5%A4%B1%E6%95%88"><span class="toc-number">3.</span> <span class="toc-text">为什么会失效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%84%E6%B5%8B%E4%BD%93%E7%B3%BB%E5%9C%A8%E5%BE%80%E5%93%AA%E8%BF%81%E7%A7%BB"><span class="toc-number">4.</span> <span class="toc-text">评测体系在往哪迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VLA-%E5%8C%96%E4%B9%8B%E5%90%8E%EF%BC%9A%E5%8A%A8%E4%BD%9C%E4%BB%8E%E5%93%AA%E9%87%8C%E5%87%BA%E6%9D%A5"><span class="toc-number">5.</span> <span class="toc-text">VLA 化之后：动作从哪里出来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8F%E4%BA%A7%E4%BE%A7%E4%B8%BA%E4%BB%80%E4%B9%88%E7%9C%8B%E4%B8%8D%E8%A7%81%E8%BF%99%E4%BA%9B%E6%95%B0%E5%AD%97"><span class="toc-number">6.</span> <span class="toc-text">量产侧为什么看不见这些数字</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%96%E8%88%8D%E4%B8%8E%E5%B1%80%E9%99%90"><span class="toc-number">7.</span> <span class="toc-text">取舍与局限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img src="/images/posts/driving-safety-uncertainty/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="知道自己什么时候不确定：智驾安全量化的缺口"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口">知道自己什么时候不确定：智驾安全量化的缺口</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证"><img src="/images/posts/driving-world-models/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="重建还是生成：驾驶世界模型与安全验证"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-driving-world-models/" title="重建还是生成：驾驶世界模型与安全验证">重建还是生成：驾驶世界模型与安全验证</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建"><img src="/images/posts/e2e-driving-evaluation/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="L2 误差不是指标：端到端智驾的评测重建"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-e2e-driving-evaluation/" title="L2 误差不是指标：端到端智驾的评测重建">L2 误差不是指标：端到端智驾的评测重建</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案"><img src="/images/posts/humanoid-whole-body-control/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人不是一个大模型：全身控制的分层答案"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-humanoid-whole-body-control/" title="人形机器人不是一个大模型：全身控制的分层答案">人形机器人不是一个大模型：全身控制的分层答案</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img src="/images/posts/mapless-driving-perception/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="无图智驾去掉了哪张图：在线感知的边界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界">无图智驾去掉了哪张图：在线感知的边界</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
