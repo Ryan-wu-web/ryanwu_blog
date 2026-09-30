@@ -1,0 +1,744 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>读到的内容也会变成指令：Agent 安全的结构性难题 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="Agent 把读到的网页、邮件、工具返回值都变成了可执行上下文，于是指令与数据共用同一个自然语言通道。梳理四层信任边界错配、六类攻击面、七层防御的证据强度，以及为什么这个问题至今没有完备解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="读到的内容也会变成指令：Agent 安全的结构性难题">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="Agent 把读到的网页、邮件、工具返回值都变成了可执行上下文，于是指令与数据共用同一个自然语言通道。梳理四层信任边界错配、六类攻击面、七层防御的证据强度，以及为什么这个问题至今没有完备解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/agent-security-prompt-injection/cover.webp">
+<meta property="article:published_time" content="2026-10-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-30T08:05:55.276Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="mcp">
+<meta property="article:tag" content="prompt-injection">
+<meta property="article:tag" content="security">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/agent-security-prompt-injection/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "读到的内容也会变成指令：Agent 安全的结构性难题",
+  "url": "https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/",
+  "image": "https://ryanwu.cn/images/posts/agent-security-prompt-injection/cover.webp",
+  "datePublished": "2026-10-01T04:00:00.000Z",
+  "dateModified": "2026-09-30T08:05:55.276Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '读到的内容也会变成指令：Agent 安全的结构性难题',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">109</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/agent-security-prompt-injection/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">读到的内容也会变成指令：Agent 安全的结构性难题</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">读到的内容也会变成指令：Agent 安全的结构性难题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-30T08:05:55.276Z" title="更新于 2026-09-30 16:05:55">2026-09-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理 Agent 安全的核心问题与防御现状。文中只做学术与防御分析，不涉及可操作攻击步骤。论文编号已核对；厂商产品细节中未能核实的一律标注为未验证。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>Agent 与聊天机器人最重要的区别是：<strong>它读到的内容会变成可执行上下文。</strong> 网页正文、邮件、文档、搜索结果、工具返回值、甚至另一个 Agent 的消息，都可能携带间接提示注入（indirect prompt injection）；一旦模型能调用工具，注入就可能转化为数据泄露、越权写入或外发消息。</p>
+<p>但真正的根因不是”缺少某个过滤器”，而是一个结构性问题：<strong>指令与数据共用同一个自然语言通道。</strong> 模型看到的是同一串 token，它没有形式化的机制区分”这是用户让我做的事”和”这是某网页里写着的字”。</p>
+<p>这决定了一个不太好接受的结论：<strong>来源标记、训练、分类器或二次审查，都只能提供概率性缓解，而不是全局安全证明。</strong></p>
+<h2 id="四层信任边界"><a href="#四层信任边界" class="headerlink" title="四层信任边界"></a>四层信任边界</h2><p>理解这个问题最好的方式是把 Agent 拆成四层，然后看它们之间的边界在哪里错配：</p>
+<pre><code class="highlight mermaid">flowchart TD
+    A[&quot;指令层&lt;br/&gt;系统提示、开发者策略、用户任务&quot;] --&gt; B[&quot;计划与工具选择&quot;]
+    C[&quot;数据层&lt;br/&gt;网页、邮件、工具返回值&quot;] --&gt; B
+    B --&gt; D[&quot;能力层&lt;br/&gt;文件读写、网络、发信、凭据&quot;]
+    D --&gt; E[&quot;状态层&lt;br/&gt;记忆、历史、批准过的权限&quot;]
+    E --&gt; B
+    C -.-&gt;|&quot;攻击链：内容到计划到副作用&quot;| A</code></pre>
+
+<p><strong>指令层</strong>是控制面（系统提示、开发者策略、工具定义）；<strong>数据层</strong>是内容面（网页、邮件、数据库记录、工具返回、图片 OCR）；<strong>能力层</strong>是权限面（文件、网络、发信、代码执行、凭据）；<strong>状态层</strong>是记忆与历史（含缓存的工具描述、批准过的权限、任务队列）。</p>
+<p>风险的来源是：<strong>如果数据层内容能影响控制层决策，而控制层又能直接使用能力层权限，就形成了一条”内容 → 计划 → 工具副作用”的完整攻击链。</strong> 这条链的每一环单独看都是合理设计，串起来就成了漏洞。</p>
+<h2 id="六类攻击面"><a href="#六类攻击面" class="headerlink" title="六类攻击面"></a>六类攻击面</h2><p><strong>一、直接提示注入。</strong> 攻击者直接提交输入，试图覆盖系统约束。它更容易被发现，但仍会通过角色扮演、编码、语言切换、长上下文稀释等方式增加检测难度。</p>
+<p><strong>二、间接提示注入。</strong> 这是 Agent 时代的新问题：恶意指令藏在 Agent 读取的第三方数据里。来源极广——网页、广告、搜索结果、邮件正文、日历描述、工单、共享文档、代码仓库、PDF 元数据、隐藏文本、图像 OCR、工具返回值、API 错误信息，以及另一个 Agent 的摘要。有评测框架把注入端点直接放进收件箱这类应用状态里，要求 Agent 在有状态的多工具环境中同时完成用户目标和安全属性——这比单轮测试更接近产品形态。</p>
+<p><strong>三、工具投毒与 MCP 工具投毒。</strong> MCP 客户端通常会把服务器提供的工具名称、描述、参数和返回值放进模型上下文。这里有个容易被忽略的事实：<strong>工具描述本身也是不可信输入。</strong> 有安全研究披露了三种进阶手法——在工具描述里藏入人类界面不完整展示但模型可见的隐藏指令；恶意工具诱导 Agent 读取本地配置或凭据；以及”rug pull”（工具在首次批准后改变描述或行为）。还有跨服务器影响：多服务器共存时，恶意服务器的描述可能污染可信服务器的工具行为。</p>
+<p><strong>四、混淆代理与 token 透传。</strong> 当代理服务器代表用户访问上游服务时，它可能把”收到的 token”误当成”自己有权使用的 token”，或把 token 原样转发给下游。结果是下游服务误以为请求来自合法代理，或者一个资源的 token 被复用于另一个资源。<strong>值得注意的是，这不是学术假设——MCP 官方授权规范把它写进了正式要求</strong>：客户端必须在授权请求中包含资源参数，服务器必须验证 token 是否确实以自己为受众，且不得转发不属于自己的 token。</p>
+<p><strong>五、多 Agent 信任传递。</strong> 多 Agent 系统常把一个 Agent 的输出当成另一个 Agent 的高可信任务或建议。风险包括：权限传递（上游 Agent 以自己的身份调用工具，下游当作用户授权）、来源丢失（摘要删掉了”该字段来自不可信网页”的出处）、目标漂移、循环放大（恶意内容经多次改写后变成”内部建议”），以及批准继承（一次低风险批准被解释为对后续高影响动作的长期授权）。</p>
+<p><strong>六、数据外泄与副作用放大。</strong> 即使单个工具只有读权限，多个工具组合也可能形成”读敏感数据 → 写入外部服务”的跨工具数据流。</p>
+<h2 id="七层防御与各自的证据"><a href="#七层防御与各自的证据" class="headerlink" title="七层防御与各自的证据"></a>七层防御与各自的证据</h2><table>
+<thead>
+<tr>
+<th>防御层</th>
+<th>做法</th>
+<th>已知效果</th>
+<th>主要不足</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>指令分层</td>
+<td>系统&#x2F;开发者&#x2F;用户&#x2F;第三方数据分级</td>
+<td>训练模型学习优先级，报告对未见攻击类型鲁棒性提升</td>
+<td>依赖模型正确识别来源；不等于对自适应攻击有保证</td>
+</tr>
+<tr>
+<td>来源标记</td>
+<td>编码或标记不可信内容</td>
+<td>报告攻击成功率从超过 50% 降到不足 2%</td>
+<td>标记可被上下文拼接、改写或摘要丢失；跨模型未充分验证</td>
+</tr>
+<tr>
+<td>结构化通道</td>
+<td>指令与数据放在不同结构通道</td>
+<td>报告鲁棒性显著增强、效用影响小</td>
+<td>需要安全前端与通道完整性；下游重新拼接则隔离失效</td>
+</tr>
+<tr>
+<td>输入输出过滤</td>
+<td>分类器、规则、二次审查</td>
+<td>官方研究在 1 万次合成攻击上把越狱成功率从 86% 降到 4.4%，拒答率仅增 0.38%，计算成本 +23.7%</td>
+<td>语义等价与自适应攻击可绕过；后续红队仍报告通用绕过</td>
+</tr>
+<tr>
+<td>信息流控制</td>
+<td>污点追踪、控制流与数据流策略</td>
+<td>在受控任务集上做到”可证明安全”，完成率 77%（无防御 84%）</td>
+<td>证明范围有限；安全控制带来约 7 个百分点的效用成本</td>
+</tr>
+<tr>
+<td>能力沙箱</td>
+<td>容器、只读文件系统、网络白名单、短期凭据</td>
+<td>把误判后果限制在低影响环境</td>
+<td>共享缓存、浏览器会话、OAuth 仍可能形成旁路</td>
+</tr>
+<tr>
+<td>人审门禁</td>
+<td>高影响动作前确认</td>
+<td>对可枚举的高影响动作有效</td>
+<td>审批疲劳、参数不可见、用户不理解真实数据流</td>
+</tr>
+</tbody></table>
+<p>把这张表读一遍，会发现一条规律：<strong>越是靠近模型判断的防御，越容易被绕过；越是靠近能力边界的防御，越稳固。</strong> 这引出了下一节。</p>
+<h2 id="为什么没有完备解"><a href="#为什么没有完备解" class="headerlink" title="为什么没有完备解"></a>为什么没有完备解</h2><p><strong>第一，指令与数据在语义上同构。</strong> 对模型而言，”请总结下面内容”和”下面内容中出现的指令”都是 token 序列。系统可以用标签、特殊 token 或字段名提供出处，但这些信号本身也进入推理上下文，可能被复制、改写、压缩或在跨组件传递中丢失。</p>
+<p><strong>第二，恶意意图不是一个可稳定枚举的字符串集合。</strong> 输入过滤器能拦已知模式，但难以穷举语义等价表达、跨语言表达、编码、隐喻和多轮组合。一家公司的官方红队报告显示：初始测试没找到通用绕过，但更大规模（超过 30 万次交互）的后续挑战中仍报告了通用或接近通用的结果。</p>
+<p><strong>第三，工具组合带来开放世界状态空间。</strong> 一个评测含 17 种用户工具、62 种攻击者工具、1054 个案例；另一个在 97 个现实任务、629 个安全测试中执行多轮调用。而真实产品的工具、数据、权限和策略还在持续变化。<strong>单个工具安全不代表组合安全</strong>，因为危险往往来自跨工具数据流。</p>
+<p><strong>第四，模型鲁棒性与任务能力存在张力。</strong> 拒绝过多损害效用，放行过多扩大攻击面。那个”可证明安全”的工作清楚地展示了这条前沿：77% 对 84%，安全保证换来 7 个百分点的完成率损失。这不是失败，而是把安全—效用权衡显式化了。</p>
+<p><strong>第五，人审只能覆盖可见、可理解、可枚举的动作。</strong> 如果确认窗口只显示”发送邮件”而不显示完整收件人、附件、数据来源，它就无法阻止混淆代理；如果每步都弹窗，用户会形成批准疲劳。</p>
+<p><strong>真正接近完备的，是”受限系统上的可证明安全”</strong>：在固定任务、固定工具、固定数据流和明确能力策略下，可以证明某类外部内容不能影响某类敏感操作。但这只是<strong>局部保证</strong>。要扩展到开放世界，需要显式的能力令牌与资源受众绑定、不可信数据的污点传播、工具调用前的策略判定（而不是只靠模型输出）、沙箱隔离，以及对策略覆盖范围的诚实声明。</p>
+<h2 id="从案例里学到的"><a href="#从案例里学到的" class="headerlink" title="从案例里学到的"></a>从案例里学到的</h2><p>有两类公开案例值得区分对待。</p>
+<p><strong>已核实的公开研究披露</strong>：一份安全通知演示了工具投毒、跨服务器影响、rug pull 与确认窗口信息不完整。<strong>需要强调的是它的证据等级是”公开研究演示”</strong>——我没有在可核实页面上找到 CVE、现实受害者或入侵时间线，因此不能称它为已确认的生产环境漏洞。</p>
+<p><strong>协议维护者的公开承认</strong>：MCP 官方规范明确要求服务器验证 token 受众、禁止 token 透传、讨论混淆代理风险。这不是某个 CVE，而是协议层对现实架构风险的正式要求——<strong>它证明混淆代理不是只存在于学术讨论</strong>。</p>
+<p>至于更广为人知的某个办公套件零点击数据外泄事件，我这次未能完整复核一手来源（厂商公告与 CVE 条目），因此不在这里写成已验证的事实。<strong>原则是：媒体文章和二手博客只能作为线索，正式引用应同时保留原始披露、受影响版本、修复公告和独立复核状态。</strong></p>
+<h2 id="产品设计的共同趋势"><a href="#产品设计的共同趋势" class="headerlink" title="产品设计的共同趋势"></a>产品设计的共同趋势</h2><p>不同产品的命名不同，但稳健的共同模式是清晰的：</p>
+<ol>
+<li><strong>短生命周期运行环境</strong>：每个任务用临时容器、虚拟机或 CI runner，完成后销毁；</li>
+<li><strong>仓库或工作区作用域</strong>：默认只读或只改一个项目、分支；</li>
+<li><strong>动作级确认</strong>：发送、付款、删除、外发、提交前重新确认；</li>
+<li><strong>OAuth 范围与资源受众</strong>：token 绑定到特定服务，禁止无条件转发；</li>
+<li><strong>审计与回放</strong>：保存工具调用、策略决定、用户批准、数据来源与最终副作用；</li>
+<li><strong>可配置的出站策略</strong>：网络、域名、文件系统和凭据都应有白名单或黑名单，而不是”模型自己决定”。</li>
+</ol>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>Agent 安全的核心矛盾可以用一句话概括：<strong>检测器的目标是识别恶意文本，而安全系统的目标应该是”即使文本被误判，敏感动作也无法越权发生”。</strong></p>
+<p>这个差别决定了投入方向。加大分类器有用，但收益递减；真正的结构性改善来自能力边界——最小权限、资源受众绑定、沙箱、动作级确认、可审计的数据流。这些不是 prompt 层面的技巧，而是围绕模型的系统工程。</p>
+<p>对做研究的人来说，这个领域有几个明确缺口：<strong>可复现的动态评测</strong>（现有基准的工具集与环境仍有限）、<strong>攻击—防御消融矩阵</strong>（各防御的相对贡献缺少同台对比）、<strong>跨工具的信息流与污点追踪</strong>（工具组合是当前最不清楚的盲区），以及<strong>多 Agent 信任传递评测</strong>（消息携带出处与能力令牌的效果）。这些都只需要本地合成环境，不需要真实账户。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.13352">AgentDojo: A Dynamic Environment to Evaluate Prompt Injection Attacks and Defenses for LLM Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.02691">InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated LLM Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2403.14720">Defending Against Indirect Prompt Injection Attacks With Spotlighting</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2404.13208">The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.06363">StruQ: Defending Against Prompt Injection with Structured Queries</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.18813">Defeating Prompt Injections by Design（CaMeL）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2508.19461">Reliable Weak-to-Strong Monitoring of LLM Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization">MCP 授权规范</a></li>
+<li><a target="_blank" rel="noopener" href="https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks">Invariant Labs: MCP Tool Poisoning Attacks</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/research/constitutional-classifiers">Anthropic: Constitutional Classifiers</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anthropic.com/research/prompt-injection-defenses">Anthropic: Mitigating the risk of prompt injections in browser use</a></li>
+<li><a target="_blank" rel="noopener" href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">OWASP: LLM01 Prompt Injection</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter">Microsoft Foundry: Content filtering</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">GitHub: About Copilot coding agent</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/">https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/agent/">agent</a><a class="post-meta__tags" href="/tags/mcp/">mcp</a><a class="post-meta__tags" href="/tags/security/">security</a><a class="post-meta__tags" href="/tags/prompt-injection/">prompt-injection</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/agent-security-prompt-injection/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈"><img class="cover" src="/images/posts/llm-inference-optimization/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">推理为什么贵：从显存带宽看加速技术栈</div></div><div class="info-2"><div class="info-item-1">自回归解码是显存带宽受限问题，这是所有加速技术的共同出发点。梳理投机解码、KV 缓存、量化、MoE、批处理调度五族的原理与实测数字，以及为什么技术能叠加但收益不是乘法——高并发下投机解码会坍缩到一点三倍。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-world-models-three-domains/" title="能被控制的未来：世界模型的三种动作接口"><img class="cover" src="/images/posts/world-models-three-domains/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">能被控制的未来：世界模型的三种动作接口</div></div><div class="info-2"><div class="info-item-1">游戏、驾驶与机器人对世界模型的要求并不相同，统一它们的不是像素而是动作接口：显式动作条件、潜在动作与视觉动作。从 Genie 到 KineBench，梳理正面证据、物理基准的负面结论，以及尚未被证实的强命题。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-mcp-a2a-protocols/" title="协议之争落幕：MCP 与 A2A 的收敛与新的分歧"><img class="cover" src="/images/posts/mcp-a2a-protocols/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">协议之争落幕：MCP 与 A2A 的收敛与新的分歧</div></div><div class="info-2"><div class="info-item-1">MCP 管工具、A2A 管代理，两个协议同归 Linux Foundation 治理，标准之战告一段落。但真正的分歧转移到别处：工具投毒与供应链攻击、代码执行对工具调用的替代、以及跨协议信任的空白地带。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img class="cover" src="/images/posts/computer-use-gui-agents/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">点不准是最大瓶颈：计算机使用代理的两年</div></div><div class="info-2"><div class="info-item-1">纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img class="cover" src="/images/posts/agent-evaluation-science/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">考卷本身也会错：Agent 评测学的四大失效</div></div><div class="info-2"><div class="info-item-1">OpenAI 正式弃用 SWE-bench Verified：审计发现近六成判分有实质缺陷。从判分器可被绕过、数据污染、跑间抖动的量化证据，到统计功效与排行榜操纵，梳理 Agent 评测为什么必须被当作一门学科来对待。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-long-horizon-agents-harness/" title="模型之外的胜负手：长时程 Agent 与 Harness 工程"><img class="cover" src="/images/posts/long-horizon-agents-harness/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">模型之外的胜负手：长时程 Agent 与 Harness 工程</div></div><div class="info-2"><div class="info-item-1">Agent 等于模型加 Harness：同一模型换一套外置工程，表现可以相差数倍甚至排名逆转。梳理四类失败模式的实证、六件套武器库、压缩为什么不够，以及 2026 年关于 harness 披露的规范之争。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agentic-rl-deep-research/" title="从会搜到会研究：Agentic RL 的配方与头号风险"><img class="cover" src="/images/posts/agentic-rl-deep-research/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">从会搜到会研究：Agentic RL 的配方与头号风险</div></div><div class="info-2"><div class="info-item-1">深度研究代理的训练配方高度趋同：可验证结果奖励加多轮工具环境加异步 rollout。梳理 GRPO 算法谱系、从 Search-R1 到 Kimi-Researcher 的路线，以及 reward hacking 这个头号工程问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img class="cover" src="/images/posts/agent-memory-systems/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</div></div><div class="info-2"><div class="info-item-1">Agent 记忆已成为独立工程学科：四条实现路线、四类记忆操作、以及一场至今没有中立复现的基准争议。梳理 mem0 与 Zep 各自的证据、长上下文与记忆的成本-延迟取舍，以及为什么评测是这个领域最大的短板。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">109</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E5%B1%82%E4%BF%A1%E4%BB%BB%E8%BE%B9%E7%95%8C"><span class="toc-number">2.</span> <span class="toc-text">四层信任边界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E7%B1%BB%E6%94%BB%E5%87%BB%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">六类攻击面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E5%B1%82%E9%98%B2%E5%BE%A1%E4%B8%8E%E5%90%84%E8%87%AA%E7%9A%84%E8%AF%81%E6%8D%AE"><span class="toc-number">4.</span> <span class="toc-text">七层防御与各自的证据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E6%9C%89%E5%AE%8C%E5%A4%87%E8%A7%A3"><span class="toc-number">5.</span> <span class="toc-text">为什么没有完备解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%A1%88%E4%BE%8B%E9%87%8C%E5%AD%A6%E5%88%B0%E7%9A%84"><span class="toc-number">6.</span> <span class="toc-text">从案例里学到的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%85%B1%E5%90%8C%E8%B6%8B%E5%8A%BF"><span class="toc-number">7.</span> <span class="toc-text">产品设计的共同趋势</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-agent-security-prompt-injection/" title="读到的内容也会变成指令：Agent 安全的结构性难题"><img src="/images/posts/agent-security-prompt-injection/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="读到的内容也会变成指令：Agent 安全的结构性难题"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-agent-security-prompt-injection/" title="读到的内容也会变成指令：Agent 安全的结构性难题">读到的内容也会变成指令：Agent 安全的结构性难题</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈"><img src="/images/posts/llm-inference-optimization/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="推理为什么贵：从显存带宽看加速技术栈"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈">推理为什么贵：从显存带宽看加速技术栈</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-ai-algorithm-discovery/" title="让 AI 去发现算法：进化搜索能走多远"><img src="/images/posts/ai-algorithm-discovery/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="让 AI 去发现算法：进化搜索能走多远"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-ai-algorithm-discovery/" title="让 AI 去发现算法：进化搜索能走多远">让 AI 去发现算法：进化搜索能走多远</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程"><img src="/images/posts/long-context-engineering/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="塞得进不等于用得好：长上下文与上下文工程"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程">塞得进不等于用得好：长上下文与上下文工程</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-small-data-reasoning/" title="一千条样本够吗：小数据如何激发大推理"><img src="/images/posts/small-data-reasoning/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一千条样本够吗：小数据如何激发大推理"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-small-data-reasoning/" title="一千条样本够吗：小数据如何激发大推理">一千条样本够吗：小数据如何激发大推理</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

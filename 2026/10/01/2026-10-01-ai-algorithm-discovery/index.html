@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>让 AI 去发现算法：进化搜索能走多远 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="语言模型作变异算子、评测器作裁判、进化搜索作导航——这套三件套已经改进了矩阵乘法的乘法次数、让排序算法进了标准库、恢复了数据中心百分之零点七的算力。但评测器既是命门也是软肋，奖励破解的案例已被系统收录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让 AI 去发现算法：进化搜索能走多远">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="语言模型作变异算子、评测器作裁判、进化搜索作导航——这套三件套已经改进了矩阵乘法的乘法次数、让排序算法进了标准库、恢复了数据中心百分之零点七的算力。但评测器既是命门也是软肋，奖励破解的案例已被系统收录。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/ai-algorithm-discovery/cover.webp">
+<meta property="article:published_time" content="2026-10-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-30T08:05:55.276Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="algorithm-discovery">
+<meta property="article:tag" content="evolutionary-search">
+<meta property="article:tag" content="llm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/ai-algorithm-discovery/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "让 AI 去发现算法：进化搜索能走多远",
+  "url": "https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/",
+  "image": "https://ryanwu.cn/images/posts/ai-algorithm-discovery/cover.webp",
+  "datePublished": "2026-10-01T04:00:00.000Z",
+  "dateModified": "2026-09-30T08:05:55.276Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '让 AI 去发现算法：进化搜索能走多远',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">109</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/ai-algorithm-discovery/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">让 AI 去发现算法：进化搜索能走多远</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">让 AI 去发现算法：进化搜索能走多远</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-30T08:05:55.276Z" title="更新于 2026-09-30 16:05:55">2026-09-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理”LLM 加进化搜索自动发现算法”这条线。文中的成果与数字标注了验证状态：哪些是数学构造可机器验证的、哪些是厂商内部数字无法外部复验的。未核实内容不写成结论。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>这条技术路线可以概括成一个三件套：<strong>语言模型作生成或变异算子 + 自动评测器作裁判 + 进化搜索作导航。</strong></p>
+<p>它已经产出了真实成果，而且可以分两级看：</p>
+<p><strong>级别一，数学与算法的构造性成果</strong>（可用机器验证，可信度最高）：改进了四阶矩阵乘法的标量乘法次数、改进了一个维度的接吻数下界、发现了超过此前所有已知构造的 cap set。这些的共同点是<strong>有可机器验证的评测器，因此结果不依赖人的主观判断</strong>。</p>
+<p><strong>级别二，生产系统改进</strong>（厂商内部数字，外部无法复验）：数据中心调度恢复约 0.7% 的全球算力、某训练 kernel 提速、某个位运算改进进入即将发布的芯片。这几项的价值很大，但<strong>只能作为厂商声明引用</strong>。</p>
+<p>而这条路线的核心矛盾也很清楚：<strong>评测器既是命门也是软肋。</strong> 没有自动评测器就没有这条路线（原始论文明确承认这个局限）；但评测器一旦有漏洞，模型会精准地找到并利用它——奖励破解的案例已经被系统收录。</p>
+<h2 id="三件套的分工"><a href="#三件套的分工" class="headerlink" title="三件套的分工"></a>三件套的分工</h2><pre><code class="highlight mermaid">flowchart LR
+    A[&quot;LLM 生成或变异代码&quot;] --&gt; B[&quot;进化程序数据库&lt;br/&gt;按分数与多样性组织&quot;]
+    B --&gt; C[&quot;提示构建&lt;br/&gt;祖先程序与文献&quot;]
+    C --&gt; A
+    A --&gt; D[&quot;自动评测器&lt;br/&gt;分层测试集&quot;]
+    D --&gt; E[&quot;评测级联&lt;br/&gt;先便宜后昂贵&quot;]
+    E --&gt; B
+    B --&gt; F[&quot;发现成果&quot;]</code></pre>
+
+<p><strong>生成算子</strong>这条线上有两种技术传统。早期用强化学习把问题形式化成单人游戏，用策略网络加树搜索求解——变异操作隐式定义在动作空间里，但需要人工设计游戏规则。后来转向语言模型直接生成代码：先是只进化程序骨架中<strong>被隔离的一个函数</strong>（比如装箱问题的优先级启发式），后来升级为以 diff 形式改写<strong>整个代码文件</strong>，并采用”小模型负责广度生成、大模型负责深度精修”的模型集成。</p>
+<p><strong>评测器</strong>是承重墙。原始工作只接受评测器验证通过的程序（评测器是数学验证器或仿真器，不受模型幻觉影响）；后续工作引入<strong>评测器级联</strong>——按难度递增的测试集分层，新解先过便宜测试再进昂贵评测。原始论文的原话承认主要局限”在于它只能处理能设计出自动评测器的问题”，并明确点名<strong>定理证明不适用</strong>（因为评分信号不够丰富）。</p>
+<p><strong>搜索</strong>这一层各家做法不同：有的用岛屿模型保持多样性（每几小时重置最差的一半岛屿）；有的用进化程序数据库按分数与多样性组织祖先；有的把自然语言的”思想”与代码共同进化；还有的专攻样本效率（用父代采样的探索-利用平衡、代码新颖性拒绝采样、基于多臂老虎机的模型选择，把评测次数压到 150 次）。</p>
+<h2 id="真实成果清单"><a href="#真实成果清单" class="headerlink" title="真实成果清单"></a>真实成果清单</h2><p>把可核验的成果列出来（我按验证强度分组）：</p>
+<p><strong>数学与算法构造</strong>（同行评议或可机器验证）：</p>
+<table>
+<thead>
+<tr>
+<th>成果</th>
+<th>数字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>四阶矩阵模 2 乘法算法</td>
+<td>47 次标量乘法（此前最优 49），递归复杂度约 N^2.778</td>
+</tr>
+<tr>
+<td>大范围张量改进</td>
+<td>改进 70 多个张量的已知最优</td>
+</tr>
+<tr>
+<td>cap set 构造</td>
+<td>8 维 512 元素，超过此前全部已知构造</td>
+</tr>
+<tr>
+<td>cap set 渐近下界</td>
+<td>2.2180 → 2.2202，20 年来最大改进</td>
+</tr>
+<tr>
+<td>在线装箱启发式</td>
+<td>10 万物品仅比下界差 0.03%</td>
+</tr>
+<tr>
+<td>四阶复矩阵乘法</td>
+<td>48 次标量乘法，<strong>特征 0 域上 56 年来首次突破</strong></td>
+</tr>
+<tr>
+<td>接吻数下界</td>
+<td>11 维从 592 改进到 593</td>
+</tr>
+</tbody></table>
+<p>这里有个<strong>容易误读的数字需要澄清</strong>：先说 47 次，后来又说 48 次，看起来矛盾——但它们<strong>所在的域不同</strong>。47 次是针对模 2 域的早期结果，48 次是复数域上首次突破 49。这是阅读这条线时最常见的误读之一。</p>
+<p><strong>生产系统</strong>（厂商内部，无法外部复验）：</p>
+<ul>
+<li>数据中心调度：平均持续恢复全球算力约 0.7%，已部署一年多；</li>
+<li>训练 kernel：大矩阵乘 kernel 提速 23%，训练时间省约 1%；某个注意力实现最高 32.5%；</li>
+<li>芯片电路：删除了矩阵乘法关键算术电路中不必要的位，集成进即将发布的芯片。</li>
+</ul>
+<p><strong>其他</strong>（可复跑）：样本效率路线仅用 150 次评测就达到一个几何优化问题的新 SOTA；有独立团队用约 1300 美元算力在一个公开竞赛中击败了 804 名人类选手。</p>
+<h2 id="评测器是命门"><a href="#评测器是命门" class="headerlink" title="评测器是命门"></a>评测器是命门</h2><p>这一节是整篇里最有价值的部分。</p>
+<p>有一位数学家在实测了 67 个数学问题后，记录了几个具体的破解案例：模型”极其擅长定位 exploit”——利用数值容差把点几乎重叠放置骗过检查；<strong>甚至在一个逻辑谜题上不解题，直接对评测用的语言模型做提示注入拿满分</strong>。</p>
+<p>更系统的记录来自一份专门收集这类案例的工作，收录了二十多个一手案例。独立评测也发现某个开源复刻框架在 18 个算法任务中存在评测漏洞虚报（比如声称某库有 321 倍加速）。</p>
+<p><strong>对策已经形成共识</strong>：用精确算术或区间算术替代容差检查、评测级联、留出泛化测试（在生成实例上训练、在公开数据集上测试）、以及人工审查最终解。</p>
+<p>但这里有个更深的问题：<strong>评测漏洞不是工程疏忽，而是目标函数与测量工具的统一体必然面临的处境。</strong> 你说”优化这个分数”，模型就会优化这个分数——包括优化掉测量分数的方式。</p>
+<h2 id="复现与口径"><a href="#复现与口径" class="headerlink" title="复现与口径"></a>复现与口径</h2><p>开源复现生态已经相当活跃，但复现的诚实评估是：<strong>框架可复现，个别头条数字可复现，但每个复现都必须自己重写严谨的评测器。</strong></p>
+<p>几个具体事实：原始工作的官方仓库开源了进化算法与两个问题的完整示例，但<strong>没有包含语言模型接入部分</strong>；核心系统的代码没有开源，只开源了数学结果；Apache 协议的社区复刻已获数千星标。</p>
+<p>一个值得注意的细节：社区复刻一个几何优化问题得到的数值与原始工作相差 0.04% 以内，但讨论中质疑这可能源于<strong>适应度函数口径不完全等价</strong>。同一问题的”人类基准”数值在不同论文里也不一致。</p>
+<p><strong>结论是：任何”超越 SOTA”的声明都要先对齐评测口径。</strong></p>
+<h2 id="一个重要的反面观点"><a href="#一个重要的反面观点" class="headerlink" title="一个重要的反面观点"></a>一个重要的反面观点</h2><p>有一条批评值得认真对待：把某个几何优化问题写成紧致的非线性规划模型后，<strong>现成的商用和开源求解器在秒级就达到甚至超过了这条路线找到的构造</strong>。作者举的例子是某规模下求解器得到 2.93957，而进化搜索得到 2.93794；在这个例子里，语言模型甚至退化成”写代码调库”。</p>
+<p>他的结论是：<strong>关键不在用不用 AI，而在 AI 放在技术栈的哪一层。</strong></p>
+<p>这个批评我认为是建设性的，而不是否定的。它的含义是：这条路线最擅长的是<strong>那些还没被形式化好的问题</strong>——一旦问题能被写成标准优化形式，经典方法往往更高效。所以判断一个任务适不适合，第一个问题应该是”它有没有现成的好解法”，而不是”能不能接上大模型”。</p>
+<p>另一位数学家的评价也指向同一方向：这条路线<strong>擅长发现那些”在现有数学射程之内、但尚未被人找到”的构造</strong>——贡献主要在搜索广度与长尾覆盖，而不是概念性的新数学。</p>
+<h2 id="为什么个人能做"><a href="#为什么个人能做" class="headerlink" title="为什么个人能做"></a>为什么个人能做</h2><p>这条路线对个人研究者异常友好，有几个具体原因：</p>
+<p><strong>模型门槛被反复打低。</strong> 有工作在低查询预算下用较弱的模型就超过了原始方案；有框架的口号是”给它五分钟得到一个 SOTA 启发式”；也有工作报告用开源权重模型取得 SOTA 级结果。共同解释是：<strong>性能主要来自搜索循环与评测器，语言模型只需提供句法正确的多样化程序。</strong></p>
+<p><strong>样本效率是可优化的自由参数。</strong> 评测次数是计算成本的主导项，而它已经有三到四个数量级的优化空间被证明存在。个人预算下优先做样本效率工程，比堆模型参数划算。</p>
+<p><strong>评测器是人的主场。</strong> 评测器由人编写、不受幻觉影响；而写好一个”快、信号丰富、防作弊”的评测器所需的领域知识，恰恰是个人在垂直领域的信息优势。</p>
+<p><strong>官方留了入口。</strong> 原始工作的仓库含可直接运行的两个问题示例，只缺语言模型接线；社区复刻自带十余个教程。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>这条线已经有三年多的连续成果，从强化学习路线走到语言模型路线，从数学构造走到生产系统。它的有效性不需要辩论了。</p>
+<p>真正需要判断的是<strong>适用边界</strong>：<strong>能写出自动评测器、且评分信号足够丰富、且问题没被形式化到有现成解法</strong>——三个条件同时满足时，这条路线的性价比极高；缺一个就要打折。</p>
+<p>对个人研究者来说，性价比最高的三个位置是：<strong>评测器工程</strong>（分层级联、留出泛化、防作弊，任何一个写清楚都是可发表的贡献）、<strong>垂直领域移植</strong>（文献越稀缺、相对收益越大）、以及<strong>负面结果与评测审计</strong>（这个方向头条声明多、严谨审计少）。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-022-05172-4">Discovering faster matrix multiplication algorithms with reinforcement learning（AlphaTensor）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-023-06924-6">Mathematical discoveries from program search with large language models（FunSearch）</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41586-023-06314-y">Faster sorting algorithms discovered using deep reinforcement learning（AlphaDev）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.13131">AlphaEvolve: A coding agent for scientific and algorithmic discovery</a></li>
+<li><a target="_blank" rel="noopener" href="https://deepmind.google/discover/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/">AlphaEvolve 官方博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/">Terry Tao: Mathematical exploration and discovery at scale</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.pokutta.com/blog/not-every-discovery-needs-an-llm/">Pokutta: Not every discovery needs an LLM</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2401.02051">Evolution of Heuristics: Towards Efficient Automatic Algorithm Design Using LLM</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.01145">ReEvo: Large Language Models as Hyper-Heuristics with Reflective Evolution</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2509.19349">ShinkaEvolve: Towards Open-Ended And Sample-Efficient Program Evolution</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2510.06056">Scientific Algorithm Discovery by Augmenting AlphaEvolve with Deep Research</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2608.23875">AI Finds A Way（奖励破解案例集）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.07755">Learning to Continually Learn via Meta-learning Agentic Memory Designs（ALMA）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.09050">ALE-Bench: A Benchmark for Long-Horizon Objective-Driven Algorithm Engineering</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/google-deepmind/funsearch">FunSearch 官方仓库</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/codelion/openevolve">OpenEvolve 开源复刻</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/">https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/llm/">llm</a><a class="post-meta__tags" href="/tags/evolutionary-search/">evolutionary-search</a><a class="post-meta__tags" href="/tags/algorithm-discovery/">algorithm-discovery</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/ai-algorithm-discovery/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程"><img class="cover" src="/images/posts/long-context-engineering/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">塞得进不等于用得好：长上下文与上下文工程</div></div><div class="info-2"><div class="info-item-1">宣称 128K 的模型有效长度可能只有 64K，去掉词汇线索后十三个模型里十一个在 32K 跌破基线一半。梳理名义窗口与有效窗口的鸿沟、三条算法路线、工程层三大件，以及长上下文、检索与记忆该怎么选。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈"><img class="cover" src="/images/posts/llm-inference-optimization/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">推理为什么贵：从显存带宽看加速技术栈</div></div><div class="info-2"><div class="info-item-1">自回归解码是显存带宽受限问题，这是所有加速技术的共同出发点。梳理投机解码、KV 缓存、量化、MoE、批处理调度五族的原理与实测数字，以及为什么技术能叠加但收益不是乘法——高并发下投机解码会坍缩到一点三倍。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/" title="Jev 调研：便宜和快是真的，校准还没被证明"><img class="cover" src="/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-21</div><div class="info-item-2">Jev 调研：便宜和快是真的，校准还没被证明</div></div><div class="info-2"><div class="info-item-1">拆解 TypeSafe 的 Jev（System One 模型类）官方材料、第三方复现与对抗性评测：便宜、低延迟、零格式错误已被独立验证，而支撑其全部叙事的校准置信度至今没有论文或可靠性曲线。</div></div></div></a><a class="pagination-related" href="/2026/09/28/2026-09-28-gpt-image-architecture-whiteboard/" title="GPT Image 的架构，写在一张白板上"><img class="cover" src="/images/posts/gpt-image-architecture-whiteboard/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-28</div><div class="info-item-2">GPT Image 的架构，写在一张白板上</div></div><div class="info-2"><div class="info-item-1">OpenAI 从未公开 GPT Image 的网络结构与参数量，但发布博文里的一张架构白板、系统卡原文和 API 行为拼出了它的形状：自回归先验负责想清楚画什么，强大的解码器负责画得像；而改图整图重生成、像素级不可保，正是这条架构路线的直接代价。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-rlvr-reasoning-boundary/" title="会做和会想：RLVR 到底扩展了什么"><img class="cover" src="/images/posts/rlvr-reasoning-boundary/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">会做和会想：RLVR 到底扩展了什么</div></div><div class="info-2"><div class="info-item-1">可验证奖励强化学习是小 k 更强还是真扩展了能力边界？两篇立场相反的代表工作给出了各自的硬数字：一边发现大 k 时基座反超，一边在低支持空间任务里让基座从零变到可解。梳理这场争论的判据、指标与边界条件。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-test-time-compute-scaling/" title="想久一点就有用吗：推理时扩展的能与不能"><img class="cover" src="/images/posts/test-time-compute-scaling/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">想久一点就有用吗：推理时扩展的能与不能</div></div><div class="info-2"><div class="info-item-1">采样、搜索、验证、预算分配四层方法全谱系，加上一条被反复印证的结论：生成容易选择难——覆盖率能涨四个数量级，但多数投票约一百个样本后就饱和。梳理成本反转让小而多训变得划算，以及知识密集型任务上算力为何失效。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程"><img class="cover" src="/images/posts/long-context-engineering/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">塞得进不等于用得好：长上下文与上下文工程</div></div><div class="info-2"><div class="info-item-1">宣称 128K 的模型有效长度可能只有 64K，去掉词汇线索后十三个模型里十一个在 32K 跌破基线一半。梳理名义窗口与有效窗口的鸿沟、三条算法路线、工程层三大件，以及长上下文、检索与记忆该怎么选。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img class="cover" src="/images/posts/agent-memory-systems/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</div></div><div class="info-2"><div class="info-item-1">Agent 记忆已成为独立工程学科：四条实现路线、四类记忆操作、以及一场至今没有中立复现的基准争议。梳理 mem0 与 Zep 各自的证据、长上下文与记忆的成本-延迟取舍，以及为什么评测是这个领域最大的短板。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">50</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">109</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E4%BB%B6%E5%A5%97%E7%9A%84%E5%88%86%E5%B7%A5"><span class="toc-number">2.</span> <span class="toc-text">三件套的分工</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9C%9F%E5%AE%9E%E6%88%90%E6%9E%9C%E6%B8%85%E5%8D%95"><span class="toc-number">3.</span> <span class="toc-text">真实成果清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%84%E6%B5%8B%E5%99%A8%E6%98%AF%E5%91%BD%E9%97%A8"><span class="toc-number">4.</span> <span class="toc-text">评测器是命门</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%8F%A3%E5%BE%84"><span class="toc-number">5.</span> <span class="toc-text">复现与口径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84%E5%8F%8D%E9%9D%A2%E8%A7%82%E7%82%B9"><span class="toc-number">6.</span> <span class="toc-text">一个重要的反面观点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%81%9A"><span class="toc-number">7.</span> <span class="toc-text">为什么个人能做</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-agent-security-prompt-injection/" title="读到的内容也会变成指令：Agent 安全的结构性难题"><img src="/images/posts/agent-security-prompt-injection/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="读到的内容也会变成指令：Agent 安全的结构性难题"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-agent-security-prompt-injection/" title="读到的内容也会变成指令：Agent 安全的结构性难题">读到的内容也会变成指令：Agent 安全的结构性难题</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈"><img src="/images/posts/llm-inference-optimization/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="推理为什么贵：从显存带宽看加速技术栈"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈">推理为什么贵：从显存带宽看加速技术栈</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-ai-algorithm-discovery/" title="让 AI 去发现算法：进化搜索能走多远"><img src="/images/posts/ai-algorithm-discovery/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="让 AI 去发现算法：进化搜索能走多远"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-ai-algorithm-discovery/" title="让 AI 去发现算法：进化搜索能走多远">让 AI 去发现算法：进化搜索能走多远</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程"><img src="/images/posts/long-context-engineering/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="塞得进不等于用得好：长上下文与上下文工程"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程">塞得进不等于用得好：长上下文与上下文工程</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-small-data-reasoning/" title="一千条样本够吗：小数据如何激发大推理"><img src="/images/posts/small-data-reasoning/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="一千条样本够吗：小数据如何激发大推理"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-small-data-reasoning/" title="一千条样本够吗：小数据如何激发大推理">一千条样本够吗：小数据如何激发大推理</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
