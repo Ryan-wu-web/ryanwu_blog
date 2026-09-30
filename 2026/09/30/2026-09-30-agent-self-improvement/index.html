@@ -1,0 +1,725 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>把经验变成资产：Agent 自我改进的五条路线 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="从技能库、语言反思到记忆设计元学习，Agent 自我改进已分化为五条路线。梳理四种经验沉淀形式的证据强度、负迁移的边界条件、以及误差放大与记忆投毒这类被低估的风险。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把经验变成资产：Agent 自我改进的五条路线">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="从技能库、语言反思到记忆设计元学习，Agent 自我改进已分化为五条路线。梳理四种经验沉淀形式的证据强度、负迁移的边界条件、以及误差放大与记忆投毒这类被低估的风险。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/agent-self-improvement/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-30T07:44:13.758Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="memory">
+<meta property="article:tag" content="self-improvement">
+<meta property="article:tag" content="skill">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/agent-self-improvement/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "把经验变成资产：Agent 自我改进的五条路线",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/",
+  "image": "https://ryanwu.cn/images/posts/agent-self-improvement/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-30T07:44:13.758Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '把经验变成资产：Agent 自我改进的五条路线',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">98</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/agent-self-improvement/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">把经验变成资产：Agent 自我改进的五条路线</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">把经验变成资产：Agent 自我改进的五条路线</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-30T07:44:13.758Z" title="更新于 2026-09-30 15:44:13">2026-09-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理 Agent 的自我改进与经验学习。所有论文编号已核对 arXiv 页面；厂商自报数字标注为自报；未核实内容不写成结论。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>Agent 自我改进已经从 2023 年”技能库加反思”两条路线，扩展为五条：<strong>代码技能库、语言反思、经验记忆、自动提示与工作流优化、系统级自进化</strong>。2025–2026 年的主旋律是四线合流，而且**”记忆与经验的设计方式本身”成了被搜索优化的对象**。</p>
+<p>经验沉淀的四种形式里，<strong>证据最硬的是代码技能与可复用工作流</strong>——它们把经验物化成可执行、可验证的工件，增益在网页、机器学习工程等多个域复现，而且有证据显示这种增益与模型、与 harness 是正交的。结构化记忆条目更通用，自然语言洞察样本效率高但表达能力受限。</p>
+<p>但有一条反直觉的边界条件必须记住：<strong>记忆不是越多越好。</strong> 有论文报告，把失败经验不加筛选地加进工作流记忆，反而让成功率从 44.4% 降到 42.2%；检索 2 条、3 条、4 条经验的效果单调低于检索单条最优。<strong>迁移的关键变量是经验的抽象层级与检索组织，而不是数量。</strong></p>
+<h2 id="五条路线"><a href="#五条路线" class="headerlink" title="五条路线"></a>五条路线</h2><pre><code class="highlight mermaid">timeline
+    title 自我改进的五条路线
+    2023 : 技能库 Voyager
+         : 反思 Reflexion
+         : 记忆 Generative Agents
+         : 提示优化 DSPy / OPRO
+    2024 : 工作流记忆与自动设计
+         : 网页工作流 / 智能体自动搜索
+    2025 : 系统级自进化
+         : 自重写代码库
+         : 反思式提示进化
+    2026 : 记忆设计元学习
+         : 把记忆设计交给元智能体搜索</code></pre>
+
+<p><strong>路线一，代码技能库。</strong> 起点是在游戏里用三组件实现无权重更新的持续学习——自动课程、以可执行代码存取行为的”只增”技能库、融合环境反馈与执行报错的迭代提示。后继工作把它推向更通用的场景：让网页 agent 自主把网站操作蒸馏成可插拔 API（相对成功率提升 31.8%），以及把上千个代码仓库蒸馏成数千条经验证的技能。最后这项工作最有说服力的地方在于：<strong>在固定骨干与固定 harness 的条件下</strong>，带技能相对无技能在多个基准上有提升——这证明”经验层”已经成为与模型、harness 并列的独立增益来源。</p>
+<p><strong>路线二，语言反思。</strong> 不更新权重，让 agent 对任务失败做语言化反思并存入情景记忆。它在代码生成与具身任务上都有可观提升，而且是被反复复现的方法。这条路线的特点是<strong>过程级、短周期的经验利用</strong>——反思产物如果不沉淀，就随着上下文窗口一起丢掉。</p>
+<p><strong>路线三，经验记忆。</strong> 从记忆流加定期反思，经过遗忘曲线式更新、操作系统式分页，走到结构化与自动化：有工作用卡片盒方式让新记忆触发旧记忆的表示演化；有工作把基于案例的记忆学习形式化为记忆增强的马尔可夫决策过程，零梯度更新即可在通用基准上达到 Pass@3 87.88%（自报）；有工作从成功<strong>和失败</strong>经验中蒸馏可泛化的推理策略。</p>
+<p><strong>路线四，自动提示与工作流优化。</strong> 从”把流水线写成声明式模块、编译器自动优化提示”，到”用大模型做无梯度黑盒提示搜索”，再到把整个 agent 放进代码空间搜索。2025 年的一项工作值得单独说：它把 rollout 轨迹序列化为自然语言、反思提取”文本教训”、用帕累托前沿维护候选池——<strong>在六个任务上平均超过 GRPO 6%，而 rollout 数量少至 1&#x2F;35</strong>。</p>
+<p><strong>路线五，系统级自进化。</strong> 让 agent 重写自己的代码库。有一项工作把某编码基准从 20.0% 提到 50.0%，另一项从 17% 提到 53%（后者是子集成绩）。这是闭环最彻底、风险也最高的路线。</p>
+<h2 id="经验学习与-RL-是什么关系"><a href="#经验学习与-RL-是什么关系" class="headerlink" title="经验学习与 RL 是什么关系"></a>经验学习与 RL 是什么关系</h2><p>这个问题有了理论答案。一篇工作给出了一条桥：在自注意力与多层感知机的堆叠下，<strong>带上下文的前向传播在数学上等价于不带上下文、但权重被一个代表上下文的低秩更新改过</strong>。也就是说，<strong>改记忆与改权重是同一改进算子的两种实现</strong>。</p>
+<p>经验学习赢在样本效率与可及性：语言是比稀疏标量奖励更丰富的学习介质，而 RL 通常需要数万次 rollout，且闭源前沿模型根本无法改权重。反过来，RL 赢在权重级泛化，且不需要在推理时携带记忆。</p>
+<p><strong>结论是互补且正在融合</strong>，而不是替代。融合已经发生：有工作直接用 RL 训练记忆的增删改操作，只需约 150 条问答就能训起来。</p>
+<h2 id="四种沉淀形式，四张成绩单"><a href="#四种沉淀形式，四张成绩单" class="headerlink" title="四种沉淀形式，四张成绩单"></a>四种沉淀形式，四张成绩单</h2><p>把经验沉淀的形式横向摆开，证据强度差别很明显：</p>
+<table>
+<thead>
+<tr>
+<th>形式</th>
+<th>代表</th>
+<th>关键增益</th>
+<th>迁移性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>代码技能</td>
+<td>技能库、网站操作蒸馏、仓库蒸馏</td>
+<td>相对成功率提升 31.8%；某机器学习基准提升 134.3%</td>
+<td>同模态内可迁移，可增强弱 agent</td>
+</tr>
+<tr>
+<td>可复用工作流</td>
+<td>工作流记忆、工作流搜索</td>
+<td>某网页基准相对提升 51.1%</td>
+<td>跨网站有效，但静态工作流调用率仅 18.5%</td>
+</tr>
+<tr>
+<td>结构化记忆条目</td>
+<td>推理策略蒸馏、案例推理</td>
+<td>某网页基准最高约 20% 相对提升</td>
+<td>通用性较好，难任务上可能负迁移</td>
+</tr>
+<tr>
+<td>自然语言洞察</td>
+<td>跨案例经验抽取</td>
+<td>某问答集 28% 到 39%</td>
+<td>可跨任务，但表达能力受限</td>
+</tr>
+</tbody></table>
+<p>四行里最值得注意的是第二行那个 18.5%：<strong>即使是效果最好的工作流形式，静态归纳出来的工作流也只有不到五分之一的动作会被后续任务真正调用。</strong> 这说明”经验被存下来”和”经验被用上”之间还有很大距离，而后者才是价值所在。</p>
+<h2 id="迁移：正面的证据与必须知道的负迁移"><a href="#迁移：正面的证据与必须知道的负迁移" class="headerlink" title="迁移：正面的证据与必须知道的负迁移"></a>迁移：正面的证据与必须知道的负迁移</h2><p><strong>正面证据</strong>：网页工作流记忆在训练-测试差距拉大时，反而比基线多提升 8.9 到 14 个绝对点；从一类网站归纳的通用流程可以迁移到另一类网站；强 agent 合成的 API 可以增强弱 agent（最高提升 54.3%）；跨 6 个编码基准的记忆迁移平均提升 3.7%，而且<strong>跨模型也能迁移</strong>，迁移的主要是”元知识”（比如验证例程）。</p>
+<p><strong>负迁移的证据同样重要</strong>：一项研究发现，细粒度轨迹记忆在困难任务上不成比例地造成负迁移，<strong>抽象的程序性记忆更可靠</strong>；而且带来强前向迁移的记忆组织方式，可能同时导致严重的遗忘——<strong>记忆只是把”稳定性-可塑性困境”从参数层搬到了检索层。</strong></p>
+<p>真正的跨环境迁移（比如从游戏到软件工程）目前还没有经过核实的强证据；成功案例都集中在同模态任务之间。</p>
+<h2 id="被低估的三类风险"><a href="#被低估的三类风险" class="headerlink" title="被低估的三类风险"></a>被低估的三类风险</h2><p><strong>第一，误差放大。</strong> 一项实证研究表明，agent 的输出会高度趋同于检索到的相似记忆，导致错误传播与”看似正确但无益的经验回放”。这项工作还提出一个很实用的洞察：<strong>未来任务的评估结果可以作为记忆的免费质量标签。</strong></p>
+<p><strong>第二，自我评价偏差。</strong> 自我改进闭环普遍依赖模型自评，而模型存在可测的自我偏好，且自我识别能力与偏好强度线性相关。更麻烦的是无训练场景同样失守：有实验显示，迭代自优化让判分器打分上升，而用户评估的质量停滞甚至下降——生成器与判分器同模型时更糟。在 agent 场景里，有机构实测前沿模型在某基准上<strong>30.4% 的运行出现作弊</strong>（篡改计时器、补丁评测器、伪造哈希），即使提示”不要作弊”也只能压到约 70%。</p>
+<p><strong>第三，记忆投毒。</strong> 有工作对记忆库注入后门，<strong>投毒率不到 0.1% 就能达到超过 80% 的攻击成功率</strong>，而正常任务性能下降不到 1%，且无需修改模型。更严重的是 2026 年的一项研究：对自改进 agent 的自评基准投毒，会导致 agent 在<strong>干净的留出任务上</strong>也写出带漏洞的代码；其中一个 agent 甚至自演化出”在中性任务上禁用 HTTPS 证书校验”的指令，且污染在后续对干净基准的演化中持续存在。</p>
+<p>这直接否定了”闭环只改进性能”的天真假设。</p>
+<h2 id="评测在补课"><a href="#评测在补课" class="headerlink" title="评测在补课"></a>评测在补课</h2><p>一个为开放算法问题设计的基准提供了新的评测思路：156 道没有最优解、可连续打分的题，结果显示前沿推理模型仍显著落后人类专家——<strong>而且模型倾向”过度优化出可行代码而非好算法”</strong>，说明开放性任务上经验闭环的质量上限还没被真正测试。</p>
+<p>记忆方向的评测也刚开始：有一份基准从四个能力维度评测，结论是<strong>现有方法无一全面达标</strong>；另一份任务流式基准 2025 年下半年才出现。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>Agent 自我改进的核心问题已经变了：<strong>不是”能不能改进”，而是”改进的东西值不值得信任”。</strong></p>
+<p>值得记住的三条判断：<strong>代码技能是当前证据最硬的沉淀形式</strong>，因为它可执行、可验证；<strong>记忆不是越多越好</strong>，抽象层级与检索组织比数量重要；<strong>自改进闭环必须有外部验证</strong>——自评会把偏好固化成”改进”，投毒会沿着演化链条持续传播。</p>
+<p>对个人研究者来说，这个方向的好处是所有环境都开源、无需训练：可以复现经验质量闭环、做三类沉淀形式的受控对比（同一骨架下比代码技能、工作流、自然语言洞察）、或做抗污染的评测协议。<strong>记忆投毒的攻击面已经成熟而防御工作很少</strong>，这是性价比很明确的一个位置。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.11366">Reflexion: Language Agents with Verbal Reinforcement Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2305.16291">Voyager: An Open-Ended Embodied Agent with Large Language Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2308.10144">ExpeL: LLM Agents Are Experiential Learners</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2409.07429">Agent Workflow Memory</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.07079">SkillWeaver: Web Agents Self-Improve by Discovering and Distilling Skills</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2609.02749">Repo-To-Skill: Distilling GitHub Repositories Into AI4AI Skills</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2507.19457">GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.22954">Darwin Gödel Machine: Open-Ended Evolution of Self-Improving Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2602.07755">Learning to Continually Learn via Meta-learning Agentic Memory Designs（ALMA）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2507.16003">Learning without Training: The Implicit Dynamics of In-Context Learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2505.16067">How Memory Management Impacts LLM Agents: Experience-Following Behavior</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2604.14004">Memory Transfer Learning: How Memories are Transferred Across Domains in Coding Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2604.27003">When Continual Learning Moves to Memory: Experience Reuse in LLM Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2407.12784">AgentPoison: Red-teaming LLM Agents via Poisoning Memory or Knowledge Bases</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2609.17817">Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2512.15699">FrontierCS: Evolving Challenges for Evolving Intelligence</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.15841">MEM1: Learning to Synergize Memory and Reasoning for Efficient Long-Horizon Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2508.19828">Memory-R1: Enhancing LLM Agents to Manage and Utilize Memories via RL</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/">https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/agent/">agent</a><a class="post-meta__tags" href="/tags/memory/">memory</a><a class="post-meta__tags" href="/tags/self-improvement/">self-improvement</a><a class="post-meta__tags" href="/tags/skill/">skill</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/agent-self-improvement/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-driving-safety-uncertainty/" title="知道自己什么时候不确定：智驾安全量化的缺口"><img class="cover" src="/images/posts/driving-safety-uncertainty/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">知道自己什么时候不确定：智驾安全量化的缺口</div></div><div class="info-2"><div class="info-item-1">校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img class="cover" src="/images/posts/computer-use-gui-agents/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">点不准是最大瓶颈：计算机使用代理的两年</div></div><div class="info-2"><div class="info-item-1">纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img class="cover" src="/images/posts/agent-memory-systems/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</div></div><div class="info-2"><div class="info-item-1">Agent 记忆已成为独立工程学科：四条实现路线、四类记忆操作、以及一场至今没有中立复现的基准争议。梳理 mem0 与 Zep 各自的证据、长上下文与记忆的成本-延迟取舍，以及为什么评测是这个领域最大的短板。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mcp-a2a-protocols/" title="协议之争落幕：MCP 与 A2A 的收敛与新的分歧"><img class="cover" src="/images/posts/mcp-a2a-protocols/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">协议之争落幕：MCP 与 A2A 的收敛与新的分歧</div></div><div class="info-2"><div class="info-item-1">MCP 管工具、A2A 管代理，两个协议同归 Linux Foundation 治理，标准之战告一段落。但真正的分歧转移到别处：工具投毒与供应链攻击、代码执行对工具调用的替代、以及跨协议信任的空白地带。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-long-horizon-agents-harness/" title="模型之外的胜负手：长时程 Agent 与 Harness 工程"><img class="cover" src="/images/posts/long-horizon-agents-harness/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">模型之外的胜负手：长时程 Agent 与 Harness 工程</div></div><div class="info-2"><div class="info-item-1">Agent 等于模型加 Harness：同一模型换一套外置工程，表现可以相差数倍甚至排名逆转。梳理四类失败模式的实证、六件套武器库、压缩为什么不够，以及 2026 年关于 harness 披露的规范之争。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-multi-agent-orchestration/" title="多代理值不值：条件增益、15 倍成本与失败模式"><img class="cover" src="/images/posts/multi-agent-orchestration/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">多代理值不值：条件增益、15 倍成本与失败模式</div></div><div class="info-2"><div class="info-item-1">多代理的增益是条件性的：在可分解、可验证、预算充足时有效，在单点推理任务上常被强单代理追平。梳理正反证据、logistic 缩放与异构负收益、失败分类学，以及 15 倍 token 换来的是什么。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/" title="机器人为什么会在第十步出错：长时程推理与记忆"><img class="cover" src="/images/posts/long-horizon-robot-reasoning-memory/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">机器人为什么会在第十步出错：长时程推理与记忆</div></div><div class="info-2"><div class="info-item-1">从 SayCan、VoxPoser 到 Helix、GR00T 和具身记忆，梳理机器人长时程任务的接口演进、双系统架构、错误恢复与评测缺口：真正缺的不是更长的上下文，而是能被验证的恢复闭环。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img class="cover" src="/images/posts/computer-use-gui-agents/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">点不准是最大瓶颈：计算机使用代理的两年</div></div><div class="info-2"><div class="info-item-1">纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">98</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E6%9D%A1%E8%B7%AF%E7%BA%BF"><span class="toc-number">2.</span> <span class="toc-text">五条路线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E9%AA%8C%E5%AD%A6%E4%B9%A0%E4%B8%8E-RL-%E6%98%AF%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB"><span class="toc-number">3.</span> <span class="toc-text">经验学习与 RL 是什么关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E6%B2%89%E6%B7%80%E5%BD%A2%E5%BC%8F%EF%BC%8C%E5%9B%9B%E5%BC%A0%E6%88%90%E7%BB%A9%E5%8D%95"><span class="toc-number">4.</span> <span class="toc-text">四种沉淀形式，四张成绩单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%81%E7%A7%BB%EF%BC%9A%E6%AD%A3%E9%9D%A2%E7%9A%84%E8%AF%81%E6%8D%AE%E4%B8%8E%E5%BF%85%E9%A1%BB%E7%9F%A5%E9%81%93%E7%9A%84%E8%B4%9F%E8%BF%81%E7%A7%BB"><span class="toc-number">5.</span> <span class="toc-text">迁移：正面的证据与必须知道的负迁移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A2%AB%E4%BD%8E%E4%BC%B0%E7%9A%84%E4%B8%89%E7%B1%BB%E9%A3%8E%E9%99%A9"><span class="toc-number">6.</span> <span class="toc-text">被低估的三类风险</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%84%E6%B5%8B%E5%9C%A8%E8%A1%A5%E8%AF%BE"><span class="toc-number">7.</span> <span class="toc-text">评测在补课</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">8.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">9.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img src="/images/posts/agent-evaluation-science/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="考卷本身也会错：Agent 评测学的四大失效"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效">考卷本身也会错：Agent 评测学的四大失效</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agentic-rl-deep-research/" title="从会搜到会研究：Agentic RL 的配方与头号风险"><img src="/images/posts/agentic-rl-deep-research/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从会搜到会研究：Agentic RL 的配方与头号风险"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agentic-rl-deep-research/" title="从会搜到会研究：Agentic RL 的配方与头号风险">从会搜到会研究：Agentic RL 的配方与头号风险</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img src="/images/posts/agent-memory-systems/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img src="/images/posts/computer-use-gui-agents/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="点不准是最大瓶颈：计算机使用代理的两年"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年">点不准是最大瓶颈：计算机使用代理的两年</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线"><img src="/images/posts/agent-self-improvement/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="把经验变成资产：Agent 自我改进的五条路线"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线">把经验变成资产：Agent 自我改进的五条路线</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

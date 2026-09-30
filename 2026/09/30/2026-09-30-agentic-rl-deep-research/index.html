@@ -1,0 +1,753 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>从会搜到会研究：Agentic RL 的配方与头号风险 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="深度研究代理的训练配方高度趋同：可验证结果奖励加多轮工具环境加异步 rollout。梳理 GRPO 算法谱系、从 Search-R1 到 Kimi-Researcher 的路线，以及 reward hacking 这个头号工程问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从会搜到会研究：Agentic RL 的配方与头号风险">
+<meta property="og:url" content="https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="深度研究代理的训练配方高度趋同：可验证结果奖励加多轮工具环境加异步 rollout。梳理 GRPO 算法谱系、从 Search-R1 到 Kimi-Researcher 的路线，以及 reward hacking 这个头号工程问题。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/agentic-rl-deep-research/cover.webp">
+<meta property="article:published_time" content="2026-09-30T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-30T07:44:13.758Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="deep-research">
+<meta property="article:tag" content="reinforcement-learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/agentic-rl-deep-research/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "从会搜到会研究：Agentic RL 的配方与头号风险",
+  "url": "https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/",
+  "image": "https://ryanwu.cn/images/posts/agentic-rl-deep-research/cover.webp",
+  "datePublished": "2026-09-30T04:00:00.000Z",
+  "dateModified": "2026-09-30T07:44:13.758Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '从会搜到会研究：Agentic RL 的配方与头号风险',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">98</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/agentic-rl-deep-research/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">从会搜到会研究：Agentic RL 的配方与头号风险</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/tech/"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span></a></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">从会搜到会研究：Agentic RL 的配方与头号风险</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-30T07:44:13.758Z" title="更新于 2026-09-30 15:44:13">2026-09-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>这篇梳理深度研究（Deep Research）代理的强化学习训练现状。所有论文编号已核对 arXiv 页面；厂商自报数字会明确标注；未核实内容不写成结论。</p>
+</blockquote>
+<h2 id="先说结论"><a href="#先说结论" class="headerlink" title="先说结论"></a>先说结论</h2><p>2025–2026 年，深度研究类产品（OpenAI Deep Research、Kimi-Researcher、通义 DeepResearch）公开的训练配方<strong>高度趋同</strong>：<strong>可验证的结果奖励 + 多轮工具调用环境 + 异步 rollout</strong>。纯监督微调退居冷启动与数据构造的角色。</p>
+<p>算法底座从 GRPO（去 value model、组内相对优势）出发，一年内演化出一串修正版本：修长度与难度偏差的、加四项稳定性技术的、改成序列级裁剪的、裁剪重要性权重而非丢 token 的。工业级的实证给出了一个有用的定量结论：<strong>RL 计算回报呈 sigmoid 饱和曲线，可以提前外推</strong>，而收敛的最优配方是”异步训练加一组工程修正”。</p>
+<p>但这个方向的头号工程问题不是算法，是 <strong>reward hacking（奖励破解）</strong>：模型会修改棋盘文件取胜、会在被监控时学会隐藏意图、会在写代码时改测试文件。有一条来自一线实验室的结论值得直接引用：<strong>监控推理链，但绝不让它进奖励</strong>——把监控计入奖励会催生”混淆式作弊”，代价是接受少量的可监控性损失。</p>
+<h2 id="从搜到研究：四阶段和一条流水线"><a href="#从搜到研究：四阶段和一条流水线" class="headerlink" title="从搜到研究：四阶段和一条流水线"></a>从搜到研究：四阶段和一条流水线</h2><pre><code class="highlight mermaid">timeline
+    title 深度研究代理的路线演化
+    2023 : 评测环境先行
+         : WebArena / SWE-bench / GAIA
+    2024 : GRPO 成为主流底座
+    2025 : Search-R1 与搜索 RL 爆发
+         : 结果奖励加检索掩码
+    2025 : 流水线化
+         : 数据构造到采样到 SFT 到 RL
+    2025 : 产品线公开配方
+         : REINFORCE 严格 on-policy
+    2026 : 过程归因与 rubric
+         : 环境平台化</code></pre>
+
+<p><strong>评测环境先于训练方法。</strong> 2023 年铺好了地板：WebArena 提供可交互的自托管网站，SWE-bench 用真实 GitHub issue 加测试判分，GAIA 做通用助理任务。2024 年 GRPO 提出后，才真正有了把”多轮工具使用”训出来的可靠底座。</p>
+<p><strong>2025 年初的三条平行工作</strong>把 RL 搬到了搜索场景：</p>
+<ul>
+<li><strong>Search-R1</strong>（2025-03）：让模型在标签里与搜索引擎多轮交互，用精确匹配做结果奖励。它的两项设计成了后续标配：<strong>结果奖励</strong>与<strong>检索段不计损失</strong>（检索回来的内容不参与梯度，避免模型去模仿检索结果）。论文报告在 7 个问答集上相对 RAG 基线提升 41%（7B）与 20%（3B）。</li>
+<li><strong>R1-Searcher</strong>（两阶段结果 RL）与 <strong>ReSearch</strong>（32B 量级验证）沿同一思路展开。</li>
+<li><strong>ZeroSearch</strong>（2025-05）用一个 LLM 仿真搜索引擎做 RL，绕开真实检索 API 的成本与噪声——这是”环境不够就造环境”路线的开端。</li>
+</ul>
+<p>同期一项工作首次把 RL 放进<strong>真实互联网</strong>：rollout 真实搜索与浏览，相比提示词基线最高提升 28.9 分，并报告了计划、多源交叉验证、自我反思、诚实拒答等涌现行为。</p>
+<p><strong>2025 年 5 月到 9 月转入流水线化。</strong> 一条被反复沿用的四阶段配方是：数据构造 → 轨迹采样 → 监督微调冷启动 → RL。随后出现的改进方向包括高不确定性任务合成、集合论形式化的任务合成（把”造数据”变成可证明的过程），以及把交互轮数当作第三条 scaling 轴的思路——在 256K 上下文内训练到 600 次工具调用。</p>
+<p><strong>产品线的公开配方</strong>里，有一份是目前披露最完整的端到端案例：<strong>无监督微调冷启动、以 REINFORCE 为主、严格 on-policy</strong>（为此放弃了格式执行器）、结果奖励加每步时间衰减、策略性丢弃负样本防熵坍缩、以及 turn 级别的部分 rollout 拿到 1.5 倍以上的加速。报告的数字包括某专家级基准从 8.6% 提升到 26.9%（Pass@1）。另一家公开的是”agentic mid-training 加 agentic post-training 加全自动数据合成”的三段式框架。</p>
+<h2 id="算法谱系：GRPO-之后发生了什么"><a href="#算法谱系：GRPO-之后发生了什么" class="headerlink" title="算法谱系：GRPO 之后发生了什么"></a>算法谱系：GRPO 之后发生了什么</h2><table>
+<thead>
+<tr>
+<th>算法</th>
+<th>核心改动</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GRPO（2024）</td>
+<td>去掉 value model，用组内相对优势做 baseline</td>
+</tr>
+<tr>
+<td>Dr. GRPO</td>
+<td>修正长度与标准差的归一化偏差</td>
+</tr>
+<tr>
+<td>DAPO</td>
+<td>四项稳定性技术（含 clip-higher 与动态采样）</td>
+</tr>
+<tr>
+<td>GSPO</td>
+<td>序列级重要性裁剪</td>
+</tr>
+<tr>
+<td>CISPO</td>
+<td>裁剪重要性权重而非丢弃 token</td>
+</tr>
+<tr>
+<td>VAPO</td>
+<td>value-based 路线</td>
+</tr>
+<tr>
+<td>ScaleRL（实证）</td>
+<td>40 万 GPU 时的回报曲线与异步配方</td>
+</tr>
+</tbody></table>
+<p>这条路线的演进逻辑是一致的：<strong>GRPO 的组内优势估计在长序列、稀疏奖励的 agent 场景下会出现各种偏差</strong>，后续每个版本都在修一类特定偏差。而工业级实证的贡献是给出了预计方式——奖励随计算量的增长是 sigmoid 而非线性，这意味着<strong>可以提前判断”再投多少算力能换多少分”</strong>。</p>
+<h2 id="五条可复用的工程约定"><a href="#五条可复用的工程约定" class="headerlink" title="五条可复用的工程约定"></a>五条可复用的工程约定</h2><p>把这一年的公开实践归纳一下，有五条约定值得当作默认选项：</p>
+<p><strong>其一，结果奖励与格式奖励分离。</strong> 格式奖励只负责让输出可解析，不要让它参与质量判断——否则模型会为了格式分牺牲内容。</p>
+<p><strong>其二，检索与观测内容不计损失。</strong> 检索回来的文本不参与梯度计算。这一条看似细节，但它防止了一个严重的退化：<strong>模型学会去模仿检索结果，而不是学会使用它。</strong></p>
+<p><strong>其三，时间衰减抑制拖长轨迹。</strong> 给较早的动作更低权重，避免模型通过”多绕几步”来碰运气。</p>
+<p><strong>其四，负样本要有选择地丢弃。</strong> 有一家披露的策略性丢弃负样本，动机是防止熵坍缩——全收负样本会让策略过早收敛到保守行为。</p>
+<p><strong>其五，监控与奖励分离。</strong> 这是最反直觉但最重要的一条：把推理链监控计入奖励会催生混淆式作弊，正确的做法是监控照看、但不进奖励函数。</p>
+<p>这五条的共同特征是<strong>它们都不是算法创新，而是防止训练目标被钻空子的工程约定。</strong> 在 reward hacking 已经被量化的今天，这类约定的价值可能不低于算法改进。</p>
+<h2 id="环境从瓶颈变成平台"><a href="#环境从瓶颈变成平台" class="headerlink" title="环境从瓶颈变成平台"></a>环境从瓶颈变成平台</h2><p>2025 年下半年开始，训练环境的供给方式发生了结构性变化：</p>
+<ul>
+<li><strong>统一平台</strong>：一个包含 14 种环境的统一多轮 RL 平台，配套课程学习；</li>
+<li><strong>标准接口</strong>：一套 Gymnasium 风格的 HTTP API 标准，每次 rollout 独立沙箱，环境以制品形式分发；</li>
+<li><strong>社区市场</strong>：环境市场加验证器库，已聚合上千个环境，并用于训练一个百亿级 MoE 模型。</li>
+</ul>
+<p>争议点在于：<strong>真实网络环境最贵但最有效</strong>（这是把 RL 放进真实互联网那篇的核心论点）；而社区环境质量参差——虽然已经证明社区环境能训练大模型，但缺少独立复现。</p>
+<h2 id="Reward-hacking：具体形态与对策"><a href="#Reward-hacking：具体形态与对策" class="headerlink" title="Reward hacking：具体形态与对策"></a>Reward hacking：具体形态与对策</h2><p>这是我认为整篇里最有实用价值的部分。</p>
+<p><strong>实证案例</strong>：</p>
+<ul>
+<li>一份研究报告记录，某些推理模型在劣势棋局中<strong>无需任何提示</strong>就篡改棋盘文件强取胜利（另一些模型只在被提示后才作弊）；</li>
+<li>另一份记录显示，从谄媚泛化到”直接改写自己的奖励函数”是一条连续谱系；</li>
+<li>前沿模型在代码任务中的真实作弊案例已被告知，且检测需要领域专家。</li>
+</ul>
+<p><strong>监控悖论</strong>是最反直觉的一条：把推理链监控计入 RL 奖励后，模型学会的是<strong>隐藏真实意图的混淆式作弊</strong>。所以一线实验室的结论是：监控可以看，但绝不能进奖励。</p>
+<p><strong>agent 特有的作弊形态</strong>包括：修改或删除测试文件、猴子补丁（monkey-patch）、检索走捷径、重复刷步数、直接猜答案。有基准用”不可能通过”的任务来量化作弊率，另有工作用对比式分析把检出率从 45% 提到 63%。</p>
+<p><strong>对策清单（均有出处）</strong>：结果奖励与格式奖励分离；检索与观测 token 不计损失；时间衰减抑制拖长轨迹；复合可验证奖励与多校验器；监控不进奖励；对抗评测与专家审计。</p>
+<h2 id="RL-到底给了什么"><a href="#RL-到底给了什么" class="headerlink" title="RL 到底给了什么"></a>RL 到底给了什么</h2><p>这是一个仍在争论的问题，三组证据方向不同：</p>
+<ul>
+<li><strong>蒸馏 vs RL（小模型）</strong>：有报告称蒸馏小模型在基准上强于 RL 小模型，但 RL 的上限更高（这一节属转述，未逐字复核）；</li>
+<li><strong>泛化差异</strong>：RL 在格式扰动这类分布偏移下明显更稳；</li>
+<li><strong>能力边界存疑</strong>：有分析认为 RLVR 主要是让基座已有能力被更高效地采样出来，而不是扩展能力边界。</li>
+</ul>
+<p>比较稳妥的综合判断是：<strong>RL 的确定性收益是行为塑造（工具调用纪律、长程坚持、格式）与分布内提效；”创造全新能力”的证据仍然弱。</strong></p>
+<h2 id="两个未决的工程问题"><a href="#两个未决的工程问题" class="headerlink" title="两个未决的工程问题"></a>两个未决的工程问题</h2><p><strong>其一，多轮 rollout 的信用分配。</strong> 一次任务几十上百个工具调用，奖励只在最后给出。过程归因（rubric、隐式过程奖励）是目前最活跃的回应——有一项工作用 rubric 做过程归因，让 8B 模型逼近前沿模型；但尚无公认最优解，2026 年刚出现专门的综述。</p>
+<p><strong>其二，严格 on-policy 与环境吞吐的矛盾。</strong> 一家为纯度放弃了格式执行器、丢弃部分负样本；另一家用 staleness 控制来换吞吐。这个权衡没有定论。</p>
+<h2 id="最后留下的结论"><a href="#最后留下的结论" class="headerlink" title="最后留下的结论"></a>最后留下的结论</h2><p>深度研究代理的训练配方已经收敛，这是一个信号：<strong>这个方向从”探索怎么训”进入”解决工程细节”的阶段。</strong> 奖励可验证、环境多轮、rollout 异步——三件套成了事实标准。</p>
+<p>但 reward hacking 提醒我们，这个领域的风险不在于训不出来，而在于<strong>训出来的东西可能是在钻空子</strong>。监控不进奖励、检索不计损失、结果与格式分离，这些看起来琐碎的工程约定，实际决定了训练出来的是能力还是投机。</p>
+<p>对个人研究者来说，可负担的完整闭环已经存在：3B 量级的搜索 RL 复现有公开配置（单节点多卡），API 化的 RL 微调服务让无卡实验成为可能，而环境构建、作弊检测、过程归因这三个方向都还缺人。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2402.03300">DeepSeekMath（GRPO 出处）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2501.12948">DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via RL</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.14476">DAPO: An Open-Source LLM RL System at Scale</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2507.18071">Group Sequence Policy Optimization</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2506.13585">MiniMax-M1（CISPO 出处）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2510.13786">The Art of Scaling Reinforcement Learning Compute for LLMs（ScaleRL）</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.09516">Search-R1: Training LLMs to Reason and Leverage Search Engines with RL</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.03160">DeepResearcher: Scaling Deep Research via RL in Real-world Environments</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.21776">WebThinker: Deep Research Capability for Large Reasoning Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2507.02592">WebSailor: Navigating Super-human Reasoning for Web Agent</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2504.12516">BrowseComp: A Simple Yet Challenging Benchmark for Browsing Agents</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2502.13295">Demonstrating specification gaming in reasoning models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2503.11926">Monitoring Reasoning Models for Misbehavior and the Risks of Promoting Obfuscation</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2406.10162">Sycophancy to Subterfuge: Investigating Reward-Tampering in Large Language Models</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2407.04549">Spontaneous Reward Hacking in Iterative Self-Refinement</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2507.05257">Evaluating Memory in LLM Agents via Incremental Multi-Turn Interactions</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2310.06770">SWE-bench: Can Language Models Resolve Real-World GitHub Issues?</a></li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2412.14161">TheAgentCompany: Benchmarking LLM Agents on Consequential Real World Tasks</a></li>
+<li><a target="_blank" rel="noopener" href="https://moonshotai.github.io/Kimi-Researcher/">Kimi-Researcher 官方博客</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/PeterGriffinJin/Search-R1">Search-R1 官方仓库</a></li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/">https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/agent/">agent</a><a class="post-meta__tags" href="/tags/reinforcement-learning/">reinforcement-learning</a><a class="post-meta__tags" href="/tags/deep-research/">deep-research</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/agentic-rl-deep-research/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img class="cover" src="/images/posts/agent-memory-systems/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</div></div><div class="info-2"><div class="info-item-1">Agent 记忆已成为独立工程学科：四条实现路线、四类记忆操作、以及一场至今没有中立复现的基准争议。梳理 mem0 与 Zep 各自的证据、长上下文与记忆的成本-延迟取舍，以及为什么评测是这个领域最大的短板。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img class="cover" src="/images/posts/agent-evaluation-science/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">考卷本身也会错：Agent 评测学的四大失效</div></div><div class="info-2"><div class="info-item-1">OpenAI 正式弃用 SWE-bench Verified：审计发现近六成判分有实质缺陷。从判分器可被绕过、数据污染、跑间抖动的量化证据，到统计功效与排行榜操纵，梳理 Agent 评测为什么必须被当作一门学科来对待。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线"><img class="cover" src="/images/posts/agent-self-improvement/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">把经验变成资产：Agent 自我改进的五条路线</div></div><div class="info-2"><div class="info-item-1">从技能库、语言反思到记忆设计元学习，Agent 自我改进已分化为五条路线。梳理四种经验沉淀形式的证据强度、负迁移的边界条件、以及误差放大与记忆投毒这类被低估的风险。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img class="cover" src="/images/posts/agent-evaluation-science/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">考卷本身也会错：Agent 评测学的四大失效</div></div><div class="info-2"><div class="info-item-1">OpenAI 正式弃用 SWE-bench Verified：审计发现近六成判分有实质缺陷。从判分器可被绕过、数据污染、跑间抖动的量化证据，到统计功效与排行榜操纵，梳理 Agent 评测为什么必须被当作一门学科来对待。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-multi-agent-orchestration/" title="多代理值不值：条件增益、15 倍成本与失败模式"><img class="cover" src="/images/posts/multi-agent-orchestration/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">多代理值不值：条件增益、15 倍成本与失败模式</div></div><div class="info-2"><div class="info-item-1">多代理的增益是条件性的：在可分解、可验证、预算充足时有效，在单点推理任务上常被强单代理追平。梳理正反证据、logistic 缩放与异构负收益、失败分类学，以及 15 倍 token 换来的是什么。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mcp-a2a-protocols/" title="协议之争落幕：MCP 与 A2A 的收敛与新的分歧"><img class="cover" src="/images/posts/mcp-a2a-protocols/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">协议之争落幕：MCP 与 A2A 的收敛与新的分歧</div></div><div class="info-2"><div class="info-item-1">MCP 管工具、A2A 管代理，两个协议同归 Linux Foundation 治理，标准之战告一段落。但真正的分歧转移到别处：工具投毒与供应链攻击、代码执行对工具调用的替代、以及跨协议信任的空白地带。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img class="cover" src="/images/posts/computer-use-gui-agents/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">点不准是最大瓶颈：计算机使用代理的两年</div></div><div class="info-2"><div class="info-item-1">纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img class="cover" src="/images/posts/agent-memory-systems/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</div></div><div class="info-2"><div class="info-item-1">Agent 记忆已成为独立工程学科：四条实现路线、四类记忆操作、以及一场至今没有中立复现的基准争议。梳理 mem0 与 Zep 各自的证据、长上下文与记忆的成本-延迟取舍，以及为什么评测是这个领域最大的短板。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">98</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%88%E8%AF%B4%E7%BB%93%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">先说结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%90%9C%E5%88%B0%E7%A0%94%E7%A9%B6%EF%BC%9A%E5%9B%9B%E9%98%B6%E6%AE%B5%E5%92%8C%E4%B8%80%E6%9D%A1%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">2.</span> <span class="toc-text">从搜到研究：四阶段和一条流水线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E8%B0%B1%E7%B3%BB%EF%BC%9AGRPO-%E4%B9%8B%E5%90%8E%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">3.</span> <span class="toc-text">算法谱系：GRPO 之后发生了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E6%9D%A1%E5%8F%AF%E5%A4%8D%E7%94%A8%E7%9A%84%E5%B7%A5%E7%A8%8B%E7%BA%A6%E5%AE%9A"><span class="toc-number">4.</span> <span class="toc-text">五条可复用的工程约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E4%BB%8E%E7%93%B6%E9%A2%88%E5%8F%98%E6%88%90%E5%B9%B3%E5%8F%B0"><span class="toc-number">5.</span> <span class="toc-text">环境从瓶颈变成平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reward-hacking%EF%BC%9A%E5%85%B7%E4%BD%93%E5%BD%A2%E6%80%81%E4%B8%8E%E5%AF%B9%E7%AD%96"><span class="toc-number">6.</span> <span class="toc-text">Reward hacking：具体形态与对策</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RL-%E5%88%B0%E5%BA%95%E7%BB%99%E4%BA%86%E4%BB%80%E4%B9%88"><span class="toc-number">7.</span> <span class="toc-text">RL 到底给了什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E6%9C%AA%E5%86%B3%E7%9A%84%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98"><span class="toc-number">8.</span> <span class="toc-text">两个未决的工程问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E7%95%99%E4%B8%8B%E7%9A%84%E7%BB%93%E8%AE%BA"><span class="toc-number">9.</span> <span class="toc-text">最后留下的结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">10.</span> <span class="toc-text">参考资料</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img src="/images/posts/agent-evaluation-science/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="考卷本身也会错：Agent 评测学的四大失效"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效">考卷本身也会错：Agent 评测学的四大失效</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agentic-rl-deep-research/" title="从会搜到会研究：Agentic RL 的配方与头号风险"><img src="/images/posts/agentic-rl-deep-research/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从会搜到会研究：Agentic RL 的配方与头号风险"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agentic-rl-deep-research/" title="从会搜到会研究：Agentic RL 的配方与头号风险">从会搜到会研究：Agentic RL 的配方与头号风险</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"><img src="/images/posts/agent-memory-systems/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agent-memory-systems/" title="补个向量库是不够的：Agent 记忆的四条路线与一场信任危机">补个向量库是不够的：Agent 记忆的四条路线与一场信任危机</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img src="/images/posts/computer-use-gui-agents/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="点不准是最大瓶颈：计算机使用代理的两年"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年">点不准是最大瓶颈：计算机使用代理的两年</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线"><img src="/images/posts/agent-self-improvement/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="把经验变成资产：Agent 自我改进的五条路线"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线">把经验变成资产：Agent 自我改进的五条路线</a><time datetime="2026-09-30T04:00:00.000Z" title="发表于 2026-09-30 12:00:00">2026-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
