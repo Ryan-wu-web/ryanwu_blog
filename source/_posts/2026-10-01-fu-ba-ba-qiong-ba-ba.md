@@ -2,7 +2,7 @@
 title: "学校什么都在教，除了怎么跟钱打交道"
 date: 2026-10-01 12:00:00
 tags: [reading, finance]
-categories: life
+categories: [life, reading]
 description: "《富爸爸穷爸爸》卖了三千多万册，也挨了二十多年的骂。对还没被账单追着跑的人，它戳中的不是理财技巧，而是人生默认脚本；但它推崇的杠杆操作和作者本人的争议，同样要看清楚。"
 cover: "/images/posts/fu-ba-ba-qiong-ba-ba/cover.webp"
 ---

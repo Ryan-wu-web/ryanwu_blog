@@ -2,7 +2,7 @@
 title: "生活本就没有答案，也不需要答案"
 date: 2026-09-19 12:00:00
 tags: [daily, journal]
-categories: life
+categories: [life, journal]
 description: "刷到一句话后，忽然觉得有些问题可以先不急着回答。"
 cover: "/images/posts/sheng-huo-ben-jiu-mei-you-da-an/cover.jpg"
 ---

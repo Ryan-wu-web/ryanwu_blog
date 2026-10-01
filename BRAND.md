@@ -72,11 +72,7 @@ Ryanwu 不以单一职业标签定义自己。写作可以同时使用以下视�
 
 ## 分类与标签
 
-使用两个顶层分类，`tech` 下按主题细分子分类；技术文章 Front Matter 写作 `categories: [tech, 子分类]`。
-
-生活：
-
-- `life`：生活、职业、销售、管理和个人随笔。
+使用两个顶层分类，各自按主题细分子分类；文章 Front Matter 写作 `categories: [顶层, 子分类]`。
 
 技术子分类：
 
@@ -86,6 +82,13 @@ Ryanwu 不以单一职业标签定义自己。写作可以同时使用以下视�
 - `autonomous-driving`：自动驾驶；
 - `image-generation`：图像生成；
 - `dev-notes`：开发入门与工程实践笔记。
+
+生活子分类：
+
+- `reading`：读书笔记；
+- `fitness`：健身与健康；
+- `career`：求职与职业；
+- `journal`：日常随笔。
 
 标签用于表达更细的主题，例如：
 

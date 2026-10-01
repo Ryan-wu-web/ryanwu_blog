@@ -2,7 +2,7 @@
 title: "大学这座迷宫，有人是带着地图入场的"
 date: 2026-10-01 12:00:00
 tags: [reading, education]
-categories: life
+categories: [life, reading]
 description: "同样考进顶尖大学，四年后为什么差距那么大？郑雅君在《金榜题名之后》里访谈了 62 名毕业生，给出的答案是“地图”——有人带着地图入场，有人从未见过迷宫的全貌。"
 cover: "/images/posts/jin-bang-ti-ming-zhi-hou/cover.webp"
 ---

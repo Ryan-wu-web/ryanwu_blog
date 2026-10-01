@@ -2,7 +2,7 @@
 title: "你缺的不是时间，是一次诚实的记账"
 date: 2026-10-01 12:00:00
 tags: [reading, management]
-categories: life
+categories: [life, reading]
 description: "德鲁克 1966 年就把时间管理写透了：先记录时间，再谈效率。五个习惯、三个案例，以及一个诚实的问题——这本六十年前的书，离学生到底远不远。"
 cover: "/images/posts/zhuo-you-cheng-xiao-de-guan-li-zhe/cover.webp"
 ---

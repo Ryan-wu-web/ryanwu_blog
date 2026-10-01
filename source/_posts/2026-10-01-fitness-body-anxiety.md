@@ -2,7 +2,7 @@
 title: "比练出腹肌更难的，是学会不讨厌自己的肚子"
 date: 2026-10-01 12:00:00
 tags: [fitness, health]
-categories: life
+categories: [life, fitness]
 description: "为什么练着练着，焦虑长得比肌肉快？聊聊社会比较、励志健身内容和“功能目标”，研究怎么看、网友怎么说，以及哪些状态该去求助。"
 cover: "/images/posts/fitness-body-anxiety/cover.webp"
 ---

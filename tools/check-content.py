@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "source" / "_posts"
 ALLOWED_CATEGORIES = {"tech", "life"}
 ALLOWED_TECH_SUBCATEGORIES = {"agent", "llm", "robotics", "autonomous-driving", "image-generation", "dev-notes"}
+ALLOWED_LIFE_SUBCATEGORIES = {"reading", "fitness", "career", "journal"}
 REQUIRED_FIELDS = ("title", "date", "tags", "categories", "description", "cover")
 TAG_PATTERN = re.compile(r"^[a-z0-9\u4e00-\u9fff][a-z0-9\u4e00-\u9fff-]*$")
 MARKDOWN_IMAGE_PATTERN = re.compile(r"!\[([^\]]*)\]\((?:<)?([^\s)>]+)(?:>)?(?:\s+[\"'][^\"']*[\"'])?\)")
@@ -165,11 +166,22 @@ def validate_metadata(path: Path, data: dict[str, object], strict: bool, finding
 
     categories = list_value(data.get("categories"))
     valid_categories = (len(categories) == 1 and categories[0] in ALLOWED_CATEGORIES) or (
-        len(categories) == 2 and categories[0] == "tech" and categories[1] in ALLOWED_TECH_SUBCATEGORIES
+        len(categories) == 2
+        and categories[0] == "tech"
+        and categories[1] in ALLOWED_TECH_SUBCATEGORIES
+    ) or (
+        len(categories) == 2
+        and categories[0] == "life"
+        and categories[1] in ALLOWED_LIFE_SUBCATEGORIES
     )
     if categories and not valid_categories:
-        subcategories = "、".join(sorted(ALLOWED_TECH_SUBCATEGORIES))
-        add(findings, "ERROR", path, f"categories 必须是 life、tech 或 [tech, 子分类]；子分类只能是：{subcategories}")
+        subcategories = "、".join(sorted(ALLOWED_TECH_SUBCATEGORIES | ALLOWED_LIFE_SUBCATEGORIES))
+        add(
+            findings,
+            "ERROR",
+            path,
+            f"categories 必须是 tech、life 或 [顶层, 子分类]；子分类只能是：{subcategories}",
+        )
 
     for tag in list_value(data.get("tags")):
         if tag != tag.lower() or not TAG_PATTERN.fullmatch(tag):

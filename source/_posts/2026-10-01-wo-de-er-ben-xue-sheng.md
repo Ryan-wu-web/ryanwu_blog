@@ -2,7 +2,7 @@
 title: "大多数人读的那种大学，有人认真写了下来"
 date: 2026-10-01 12:00:00
 tags: [reading, education]
-categories: life
+categories: [life, reading]
 description: "黄灯跟踪一个二本班级八年：52 人、毕业时无人考研、八年后散落珠三角。关于学历的“初始定价单”、普通家庭的风险计算，以及“被看见”本身的价值。"
 cover: "/images/posts/wo-de-er-ben-xue-sheng/cover.webp"
 ---

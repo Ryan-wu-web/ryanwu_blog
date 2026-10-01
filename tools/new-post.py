@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "source" / "_posts"
 MEDIA_ROOT = ROOT / "source" / "images" / "posts"
 SLUG_PATTERN = re.compile(r"^[a-z0-9\u4e00-\u9fff]+(?:-[a-z0-9\u4e00-\u9fff]+)*$")
-# 与 tools/check-content.py 的 ALLOWED_TECH_SUBCATEGORIES 保持同步
+# 与 tools/check-content.py 的 ALLOWED_*_SUBCATEGORIES 保持同步
 TECH_SUBCATEGORIES = (
     ("agent", "Agent"),
     ("llm", "LLM"),
@@ -23,7 +23,14 @@ TECH_SUBCATEGORIES = (
     ("image-generation", "图像生成"),
     ("dev-notes", "开发笔记"),
 )
+LIFE_SUBCATEGORIES = (
+    ("reading", "读书"),
+    ("fitness", "健身"),
+    ("career", "求职"),
+    ("journal", "日常随笔"),
+)
 TECH_SUBCATEGORY_IDS = tuple(subcategory for subcategory, _ in TECH_SUBCATEGORIES)
+LIFE_SUBCATEGORY_IDS = tuple(subcategory for subcategory, _ in LIFE_SUBCATEGORIES)
 
 
 def configure_console() -> None:
@@ -37,7 +44,7 @@ def configure_console() -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="创建文章和独立媒体目录。省略参数时进入交互模式。")
     parser.add_argument("--title")
-    parser.add_argument("--category", choices=("tech", "life") + TECH_SUBCATEGORY_IDS, help="tech、life 或技术子分类（如 agent、llm）")
+    parser.add_argument("--category", choices=("tech", "life") + TECH_SUBCATEGORY_IDS + LIFE_SUBCATEGORY_IDS, help="tech、life 或子分类（如 agent、reading）")
     parser.add_argument("--date")
     parser.add_argument("--tags", help="英文逗号分隔")
     parser.add_argument("--description")
@@ -89,26 +96,28 @@ def choose_category(value: str | None) -> str:
     while True:
         choice = input("请选择 (1/2): ").strip()
         if choice == "2":
-            return "life"
+            return choose_subcategory(LIFE_SUBCATEGORIES)
         if choice == "1":
-            return choose_tech_subcategory()
+            return choose_subcategory(TECH_SUBCATEGORIES)
         print("请输入 1 或 2。")
 
 
-def choose_tech_subcategory() -> str:
-    print("\n技术子分类:")
-    for index, (_, label) in enumerate(TECH_SUBCATEGORIES, start=1):
+def choose_subcategory(subcategories: tuple[tuple[str, str], ...]) -> str:
+    print("\n子分类:")
+    for index, (_, label) in enumerate(subcategories, start=1):
         print(f"  {index}. {label}")
     while True:
-        choice = input(f"请选择 (1-{len(TECH_SUBCATEGORIES)}): ").strip()
-        if choice.isdigit() and 1 <= int(choice) <= len(TECH_SUBCATEGORIES):
-            return TECH_SUBCATEGORY_IDS[int(choice) - 1]
-        print(f"请输入 1 到 {len(TECH_SUBCATEGORIES)} 之间的数字。")
+        choice = input(f"请选择 (1-{len(subcategories)}): ").strip()
+        if choice.isdigit() and 1 <= int(choice) <= len(subcategories):
+            return subcategories[int(choice) - 1][0]
+        print(f"请输入 1 到 {len(subcategories)} 之间的数字。")
 
 
 def categories_line(category: str) -> str:
     if category in TECH_SUBCATEGORY_IDS:
         return f"categories: [tech, {category}]"
+    if category in LIFE_SUBCATEGORY_IDS:
+        return f"categories: [life, {category}]"
     return f"categories: {category}"
 
 
