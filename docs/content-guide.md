@@ -51,9 +51,10 @@ AI 协作时，先判定文章类型：AI、技术分析、行业观察这类需
 
 模板是写作骨架，不是必须填满的表格。先运行 `npm run post:new`，再用所选模板替换新文章中的默认正文。
 
-分类为两个顶层分类，技术文章使用 `tech` 子分类：
+分类为两个顶层分类，各自按主题细分子分类：
 
-- `life`：生活、职业、销售、管理和个人随笔；
+技术：
+
 - `[tech, agent]`：Agent 工程、协议与安全；
 - `[tech, llm]`：大模型推理、训练与评测；
 - `[tech, robotics]`：具身智能与机器人；
@@ -61,7 +62,14 @@ AI 协作时，先判定文章类型：AI、技术分析、行业观察这类需
 - `[tech, image-generation]`：图像生成；
 - `[tech, dev-notes]`：开发入门与工程实践笔记。
 
-`tech` 也可单独使用（不带子分类）。使用 `ai`、`product`、`sales`、`management`、`career`、`journal` 等标签表达更细的主题；新增子分类前先评估已有分类是否足够承载。
+生活：
+
+- `[life, reading]`：读书笔记；
+- `[life, fitness]`：健身与健康；
+- `[life, career]`：求职与职业；
+- `[life, journal]`：日常随笔。
+
+`tech`、`life` 也可单独使用（不带子分类）。使用 `ai`、`product`、`sales`、`management`、`career`、`journal` 等标签表达更细的主题；新增子分类前先评估已有分类是否足够承载。
 
 ## 2. 创建文章
 
@@ -76,7 +84,7 @@ npm run post:new
 - `title`：文章标题；
 - `date`：`YYYY-MM-DD`；
 - `tags`：至少一个，小写字母、数字、中文或连字符；
-- `categories`：先选「技术笔记」或「生活随笔」；技术笔记再选子分类（agent、llm、robotics、autonomous-driving、image-generation、dev-notes）；
+- `categories`：先选「技术笔记」或「生活随笔」，再选子分类；完整清单见第 1.2 节；
 - `description`：用于列表摘要和搜索描述，不能为空；
 - `cover`：文章封面，默认指向该文章的媒体目录。
 
@@ -121,7 +129,7 @@ cover: "/images/posts/agent-memory-selection/cover.jpg"
 | `title` | 非空，表达文章主题 |
 | `date` | `YYYY-MM-DD` 或 `YYYY-MM-DD HH:MM:SS` |
 | `tags` | 至少一个；统一小写，可用数字、中文和连字符 |
-| `categories` | `life` 或 `[tech, 子分类]`；`tech` 可单独使用，子分类清单见第 1.2 节 |
+| `categories` | `[tech, 子分类]` 或 `[life, 子分类]`；`tech`、`life` 可单独使用，子分类清单见第 1.2 节 |
 | `description` | 新文章必填，不直接复制标题 |
 | `cover` | 新文章必填；本地路径必须真实存在，也可使用完整的远程 URL |
 

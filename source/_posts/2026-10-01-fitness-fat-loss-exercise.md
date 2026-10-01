@@ -2,7 +2,7 @@
 title: "掉秤卡住之后，我才把“动”这件事想明白"
 date: 2026-10-01 12:00:00
 tags: [fitness, training]
-categories: life
+categories: [life, fitness]
 description: "每天跑步体重却不动？为什么减脂必须练力量、每周怎么排、平台期先查什么，以及“局部瘦”“暴汗服”等说法逐条拆。"
 cover: "/images/posts/fitness-fat-loss-exercise/cover.webp"
 ---

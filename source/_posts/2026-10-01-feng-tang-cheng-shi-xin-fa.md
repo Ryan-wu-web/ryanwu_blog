@@ -2,7 +2,7 @@
 title: "不着急，不害怕，不要脸——读一本教人“成事”的争议之书"
 date: 2026-10-01 12:00:00
 tags: [reading, management]
-categories: life
+categories: [life, reading]
 description: "《冯唐成事心法》豆瓣 7.3 分，夸和骂都很认真。我整理了书里现在就能用的三招——100 个关键词、九字真言、真猛人，也说了我对“鸡汤”争议的判断。"
 cover: "/images/posts/feng-tang-cheng-shi-xin-fa/cover.webp"
 ---

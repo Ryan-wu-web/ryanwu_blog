@@ -2,7 +2,7 @@
 title: "饿掉的三斤，多半会回来"
 date: 2026-10-01 12:00:00
 tags: [fitness, nutrition]
-categories: life
+categories: [life, fitness]
 description: "饿掉的不是肥，是水和肌肉。从 TDEE 到“今天能吃多少”：缺口怎么算、食堂怎么选、轻断食和代餐的坑分别在哪。"
 cover: "/images/posts/fitness-fat-loss-diet/cover.webp"
 ---

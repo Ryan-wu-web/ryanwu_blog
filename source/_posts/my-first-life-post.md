@@ -2,7 +2,7 @@
 title: 开始记录生活
 date: 2026-06-05 12:00:00
 tags: [daily, travel, reading]
-categories: life
+categories: [life, journal]
 ---
 
 今天开始在这个博客记录生活！

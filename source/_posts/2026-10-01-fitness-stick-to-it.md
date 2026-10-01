@@ -2,7 +2,7 @@
 title: "年卡只去过三次的人，别急着骂自己"
 date: 2026-10-01 12:00:00
 tags: [fitness, habits]
-categories: life
+categories: [life, fitness]
 description: "办年卡只去三次，多半不是意志力问题。运动心理学给了几个实在解法：把目标缩到不可能失败、写“如果-那么”计划、中断后按协议重启，而不是骂自己。"
 cover: "/images/posts/fitness-stick-to-it/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "增肌没有捷径，但有说明书"
 date: 2026-10-01 12:00:00
 tags: [fitness, training]
-categories: life
+categories: [life, fitness]
 description: "增肌是怎么发生的、每周怎么练、一份能直接照做的新手计划。机械张力、渐进超负荷、频率与容量，附加重规则和记录方法。"
 cover: "/images/posts/fitness-training-guide/cover.webp"
 ---

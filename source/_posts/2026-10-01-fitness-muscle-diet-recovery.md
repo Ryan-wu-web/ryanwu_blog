@@ -2,7 +2,7 @@
 title: "你的肌肉不是在健身房里长的"
 date: 2026-10-01 12:00:00
 tags: [fitness, nutrition]
-categories: life
+categories: [life, fitness]
 description: "训练只是下单，肌肉是在餐盘里和床上长出来的：多 300 大卡、每公斤 1.6 克蛋白质、7 小时睡眠，以及补剂的钱到底该花在哪。"
 cover: "/images/posts/fitness-muscle-diet-recovery/cover.webp"
 ---

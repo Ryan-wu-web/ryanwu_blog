@@ -28,7 +28,12 @@ menu:
     自动驾驶: /categories/tech/autonomous-driving/ || fas fa-car
     图像生成: /categories/tech/image-generation/ || fas fa-image
     开发笔记: /categories/tech/dev-notes/ || fas fa-book
-  生活随笔: /categories/life/ || fas fa-coffee
+  生活随笔 || fas fa-coffee:
+    全部生活随笔: /categories/life/ || fas fa-folder-open
+    读书: /categories/life/reading/ || fas fa-book-open
+    健身: /categories/life/fitness/ || fas fa-dumbbell
+    求职: /categories/life/career/ || fas fa-briefcase
+    日常随笔: /categories/life/journal/ || fas fa-pen
   归档: /archives/ || fas fa-archive
   标签: /tags/ || fas fa-tags
 
@@ -104,6 +109,11 @@ category_per_img:
   autonomous-driving: /tech-bg.jpg
   image-generation: /tech-bg.jpg
   dev-notes: /tech-bg.jpg
+  # 生活子分类沿用 life 主题背景
+  reading: /life-bg.jpg
+  fitness: /life-bg.jpg
+  career: /life-bg.jpg
+  journal: /life-bg.jpg
 
 # The background image of footer
 footer_img: false

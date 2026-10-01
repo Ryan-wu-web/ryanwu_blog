@@ -2,7 +2,7 @@
 title: "Flag 总倒，先别怪自己"
 date: 2026-10-01 12:00:00
 tags: [reading, habits]
-categories: life
+categories: [life, reading]
 description: "为什么 flag 总倒？《掌控习惯》给的答案不是意志力，而是环境设计：四定律、身份认同、复利曲线的平段，以及“糟糕的坚持好过放弃”这句话为什么有用。"
 cover: "/images/posts/zhang-kong-xi-guan/cover.webp"
 ---
