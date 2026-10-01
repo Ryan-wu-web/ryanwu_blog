@@ -1,0 +1,706 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>饿掉的三斤，多半会回来 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="饿掉的不是肥，是水和肌肉。从 TDEE 到“今天能吃多少”：缺口怎么算、食堂怎么选、轻断食和代餐的坑分别在哪。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="饿掉的三斤，多半会回来">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-diet/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="饿掉的不是肥，是水和肌肉。从 TDEE 到“今天能吃多少”：缺口怎么算、食堂怎么选、轻断食和代餐的坑分别在哪。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/fitness-fat-loss-diet/cover.webp">
+<meta property="article:published_time" content="2026-10-01T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-01T10:07:26.750Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="fitness">
+<meta property="article:tag" content="nutrition">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/fitness-fat-loss-diet/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "饿掉的三斤，多半会回来",
+  "url": "https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-diet/",
+  "image": "https://ryanwu.cn/images/posts/fitness-fat-loss-diet/cover.webp",
+  "datePublished": "2026-10-01T04:00:00.000Z",
+  "dateModified": "2026-10-01T10:07:26.750Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-diet/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '饿掉的三斤，多半会回来',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">117</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/fitness-fat-loss-diet/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">饿掉的三斤，多半会回来</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/categories/life/"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">饿掉的三斤，多半会回来</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-01T10:07:26.750Z" title="更新于 2026-10-01 18:07:26">2026-10-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/life/">life</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>健身系列随笔 · 第 5 篇 &#x2F; 共 6 篇。上一篇聊了增肌怎么吃、怎么恢复，从这篇开始聊减脂。本篇只讲“吃”，运动怎么安排留给下一篇。</p>
+</blockquote>
+<h2 id="你一定见过这种剧本"><a href="#你一定见过这种剧本" class="headerlink" title="你一定见过这种剧本"></a>你一定见过这种剧本</h2><p>饿了两周，掉秤三斤，逢人就说自己在减肥；一回食堂正常吃饭，五斤又贴了回来，于是得出结论“我喝凉水都胖”。这个剧本你可能比我熟。</p>
+<p>问题多半不在毅力，而在方法：你饿掉的不是肥，是水分和肌肉，而身体早就悄悄调低了“油耗”。这篇想把减脂饮食里真正重要的几件事讲清楚：缺口怎么算、饭怎么吃、网友踩过的坑有哪些。</p>
+<h2 id="底层原理：热量守恒，和身体的“报复”"><a href="#底层原理：热量守恒，和身体的“报复”" class="headerlink" title="底层原理：热量守恒，和身体的“报复”"></a>底层原理：热量守恒，和身体的“报复”</h2><p>先说研究共识：体重的涨跌，基本等于“摄入热量 − 消耗热量”。消耗分三块——基础代谢（维持心跳体温，占六七成）、日常活动和运动、消化食物本身的花销。摄入长期低于消耗，脂肪就会降，这条没什么可吵的。</p>
+<p>分歧在“缺口开多大”。突然吃很少时，身体不会乖乖按比例掉脂肪，而是启动节能模式：下调代谢、减少不自觉的小动作，同时把食欲信号拉满。研究显示，维持 10% 以上的体重下降时，24 小时总消耗大约会少 20%–25%，其中超出体成分预测的那部分（约 10%–15%），就是身体的“报复性省钱”——适应性产热下降（<a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3673773/">Rosenbaum &amp; Leibel，2010</a>）。</p>
+<p>“超级减肥王”节目选手的 6 年追踪更扎心：减掉几十公斤后，他们的静息代谢仍比同体型的人低约 500 大卡&#x2F;天（<a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4989512/">Fothergill 等，2016</a>）。心理学界对长期节食者的综述则发现，1&#x2F;3 到 2&#x2F;3 的人在几年内回弹的重量超过当初减掉的（<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/17469900/">Mann 等，2007</a>）。</p>
+<p>所以“饿瘦”不是意志力较量，是在和几百万年的生存本能对线。结论一句话：缺口要有，但要小而稳。</p>
+<p>顺便解释一个高频困惑：很多人头一周掉秤飞快，先别高兴——那是糖原带着它绑的水分走了（每克糖原绑着约 3 克水，断碳水几天就能掉一两公斤“假体重”），脂肪还没怎么动。反过来，某天吃咸了、来大姨妈，涨的那一斤也多是水，不是肥。体重短期波动主要由水决定，趋势才由脂肪决定。</p>
+<h2 id="算缺口：从-TDEE-到“今天能吃多少”"><a href="#算缺口：从-TDEE-到“今天能吃多少”" class="headerlink" title="算缺口：从 TDEE 到“今天能吃多少”"></a>算缺口：从 TDEE 到“今天能吃多少”</h2><p><strong>第一步，算基础代谢（BMR）</strong>。公认较准的是 Mifflin-St Jeor 公式，对健康成年人的误差一般在 ±10% 以内（<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/2305711/">Mifflin &amp; St Jeor，1990</a>）：</p>
+<ul>
+<li>男：BMR &#x3D; 10×体重（公斤） + 6.25×身高（厘米） − 5×年龄 + 5</li>
+<li>女：BMR &#x3D; 10×体重（公斤） + 6.25×身高（厘米） − 5×年龄 − 161</li>
+</ul>
+<p><strong>第二步，乘活动系数，得到每日总消耗（TDEE）</strong>。常用档位：久坐不动 1.2；每周动 1–3 次 1.375；每周动 3–5 次 1.55；几乎每天练 1.725。活动系数是整套估算里最大的误差来源，选档宁可偏低。</p>
+<p><strong>第三步，定缺口</strong>。循证范围有两条，彼此印证：每天 300–500 大卡，或按“每周减体重的 0.5–1%”反推（<a target="_blank" rel="noopener" href="https://www.mdpi.com/2072-6643/13/9/3255">Ruiz-Castellano 等，2021</a>）。对 70 公斤的人，就是每周 0.35–0.7 公斤。别贪快——这是保住肌肉和代谢的底线，也是不反弹的前提。</p>
+<p><strong>算个完整的例子</strong>。70 公斤、175 厘米、20 岁男大学生，一周三练：</p>
+<ul>
+<li>BMR &#x3D; 10×70 + 6.25×175 − 5×20 + 5 ≈ 1700 大卡</li>
+<li>活动系数取 1.375（练三次，但平时久坐上课）：TDEE ≈ 1700×1.375 ≈ 2350 大卡</li>
+<li>缺口取 400：每天吃约 1950 大卡</li>
+<li>分配：蛋白质按 1.6 克&#x2F;公斤 ≈ 112 克（约 450 大卡）；脂肪按 0.8 克&#x2F;公斤 ≈ 56 克（约 500 大卡）；剩下约 1000 大卡给主食、水果和奶——量和现在吃得差不多，根本用不着饿</li>
+<li>折算效果：400×7 ≈ 2800 大卡，按 1 公斤脂肪约 7700 大卡算，一周约 0.35–0.5 公斤，正好落在 0.5–1% 区间</li>
+</ul>
+<p>女生照同法算：60 公斤、160 厘米、20 岁，BMR ≈ 10×60 + 6.25×160 − 5×20 − 161 ≈ 1340，TDEE ≈ 1840，缺口取 300，每天约 1550 大卡——同样不算饿，但把缺口开到 500 就偏激进了，体重越小越要保守。</p>
+<p><strong>第四步，用体重校准公式</strong>。公式只是起点。吃满两周后看“每周平均体重”：周均值每周降 0.3–0.7 公斤，说明缺口合适；没降，先检查是不是漏记了零食饮料，再考虑下调 100–200 大卡；降得比 1% 还快，加回来一点。减脂是随体重下降逐步收紧的动态过程，不是算一次管到底。</p>
+<h2 id="吃的方法论：三餐、食堂、外卖与饥饿感"><a href="#吃的方法论：三餐、食堂、外卖与饥饿感" class="headerlink" title="吃的方法论：三餐、食堂、外卖与饥饿感"></a>吃的方法论：三餐、食堂、外卖与饥饿感</h2><p><strong>三餐结构</strong>。减脂期蛋白质反而要吃够，推荐 1.6–2.2 克&#x2F;公斤（<a target="_blank" rel="noopener" href="https://bjsm.bmj.com/content/52/12/776">Morton 等，2018</a>；<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/24092765/">Helms 等，2014</a>）——它最扛饿、最保肌肉，消化时还多花点热量，这点算研究共识。把一天的量摊进三餐：每餐一掌心瘦肉蛋豆、一拳主食、一两拳蔬菜。</p>
+<p>以 70 公斤要吃 112 克蛋白为例：早餐两个鸡蛋加一盒牛奶（约 20 克），午餐食堂一荤（约 35 克），晚餐半块豆腐或一份瘦肉（约 30 克），加上主食和零嘴里的蛋白，一天就凑够了——不用吃成“鸡胸肉刺客”。餐餐有肉有菜，远胜一顿水煮鸡胸饿三顿。</p>
+<p><strong>食堂怎么选</strong>。一荤两素优于两荤一素；米饭先打平时的一半，不够再添；红烧汁别拌饭；炒饭炒面是“主食+油”二合一，少碰；含糖饮料是最大的隐形热量，先戒它，其他慢慢改。</p>
+<p><strong>外卖怎么办</strong>。优先蒸煮炖和轻食；麻辣烫可以吃——清汤锅底、多选绿叶菜瘦肉豆制品、少麻酱；备注少油；奶茶换无糖。实在想吃炸鸡，去皮吃，当天另外两餐清淡些。减脂看的是周和月的平均，不是单日考试。</p>
+<p><strong>饥饿感管理</strong>。先分清“真饿”和“馋”：喝一大杯水等十分钟，还饿就是真饿，加份蛋白质或蔬菜；吃完很快又饿，通常是上一餐蛋白或纤维不够。睡够觉，熬夜第二天人会格外馋。另外一条红线：任何只让你吃一种东西的方法——苹果餐、水煮菜、过午不食——先默认它是错的。每周留一顿弹性餐，聚餐不焦虑，吃完回到日常即可。</p>
+<h2 id="网友们怎么说"><a href="#网友们怎么说" class="headerlink" title="网友们怎么说"></a>网友们怎么说</h2><p>减脂圈吵得最凶的三件事，我分别去看了看研究和实战讨论。</p>
+<p><strong>16+8 轻断食有没有用</strong>？Reddit r&#x2F;Fitness 的高赞很直白：“说到底，它只是让你少吃了的一种方式”（<a target="_blank" rel="noopener" href="https://www.reddit.com/r/Fitness/comments/bjllu3/regarding_intermittent_fasting_and_losing_weight/">r&#x2F;Fitness 讨论帖</a>）。研究基本同意：12 周的 TREAT 试验里，16:8 组的减重和对照组没有显著差异（<a target="_blank" rel="noopener" href="https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2771095">Lowe 等，2020</a>）；NEJM 的 1 年试验里，轻断食组比单纯控热量的组多减了 1.8 公斤，但差异不显著（P&#x3D;0.11，<a target="_blank" rel="noopener" href="https://www.nejm.org/doi/full/10.1056/NEJMoa2114833">Liu 等，2022</a>），所以它算不算“独立有效”仍有争议。B 站基德的科普把这层窗户纸捅得很透（<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Cq421c7hY/">B 站@基德</a>）。结论：它是“少吃”的脚手架，适合早上不饿的人；会饿到报复性进食的人别勉强。</p>
+<p><strong>生酮适合谁</strong>？网友经验很一致：前两周掉秤飞快，但那是糖原带着水走了，“很难长期坚持”是出现频率最高的评价（<a target="_blank" rel="noopener" href="https://www.reddit.com/r/Fitness/comments/69e5eo/is_a_keto_diet_a_useful_cutting_tool_the_studies/">r&#x2F;Fitness 生酮讨论</a>）。DIETFIT 试验让 609 人吃一年低脂或低碳饮食，12 个月只差 0.7 公斤，不显著（<a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5839290/">Gardner 等，2018</a>）——长期看没有本质差别，这点算研究共识。多数人不需要这么极端。</p>
+<p><strong>代餐靠不靠谱</strong>？研究层面，把一两餐换成规范代餐确实能短期多减一些（<a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/12704397/">Heymsfield 等，2003</a>）；但停掉之后复胖明显，“不节食、躺着瘦”的宣传属于典型的营销话术。r&#x2F;loseit 的总结很实用：真食物永远比奶昔抗饿（<a target="_blank" rel="noopener" href="https://www.reddit.com/r/loseit/comments/n19iyo/meal_replacements/">r&#x2F;loseit 讨论</a>）；界面新闻干脆把行业乱象写成《代餐收割智商税》（<a target="_blank" rel="noopener" href="https://www.jiemian.com/article/5018400.html">界面新闻，2020</a>）。应急工具可以，长期方案不行。</p>
+<h2 id="我的感悟"><a href="#我的感悟" class="headerlink" title="我的感悟"></a>我的感悟</h2><p>把这些研究和讨论翻完，我有三点很深的感触。</p>
+<p>第一，可持续比快重要。这不是鸡汤，是长期随访数据共同指向的结论：快的都还回去了，慢的留了下来。与其问“这方法多快见效”，不如问“过年回家、期末周、朋友生日，这套吃法还成立吗？”成立，才叫方法；不成立，那叫临时刑罚——刑满释放那天，就是反弹开始那天。</p>
+<p>第二，不饿着也能减。算完 1950 大卡那笔账，我最大的感受是：减脂吃的量并不少，少的只是热量密度。把一勺油换成一碗菜，把含糖饮料换成水，盘子反而更满，饱腹感反而更强；蛋白质吃够之后，失控的馋也会少很多。身体不是敌人，它像个讲道理但记仇的室友：你把饭吃对，它就把代谢和食欲调回讲道理的模式；你天天饿它，它就用更强的食欲和更省的代谢跟你算总账。</p>
+<p>第三，数字是工具，不是裁判。体重秤尤其如此：一天之内，糖原、盐和水分能让体重上下浮动一两公斤，女生经期前后还有额外波动（<a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3154522/">White 等，2011</a>），这些和脂肪毫无关系。称重要么不看，要么固定条件（早起、空腹、上完厕所）称完就记，周末算平均，和上周比，别和昨天比。连续两三周周均值纹丝不动才算平台期，处理顺序是查记录误差、微调缺口、增加日常活动，而不是把饭砍半。如果发现自己开始为 0.2 公斤焦虑，就把秤收起来两周，用裤腰代替数据——体重焦虑会把“好好吃饭”逼成“报复性暴食”，那才是减脂真正的敌人。</p>
+<h2 id="新手行动清单（本周就能开始）"><a href="#新手行动清单（本周就能开始）" class="headerlink" title="新手行动清单（本周就能开始）"></a>新手行动清单（本周就能开始）</h2><ol>
+<li>花 10 分钟照第三节的公式算出 BMR 和 TDEE；</li>
+<li>定一个 300–500 大卡的缺口，写下每天的目标热量；</li>
+<li>记住蛋白质目标 &#x3D; 体重 × 1.6 克，先保证这个数，再管别的；</li>
+<li>固定条件称重并记录，周末算周平均（嫌麻烦就每周称两三次）；</li>
+<li>食堂改成“一荤两素 + 半份饭”，含糖饮料全部换掉；</li>
+<li>外卖一周不超过两三次，选蒸煮炖，备注少油少糖；</li>
+<li>每周留一顿弹性餐，正常吃，不加倍补偿；</li>
+<li>两周后看趋势：周均值每周降 0.3–0.7% 就继续；没降，先查记录，再微调缺口。</li>
+</ol>
+<p>特别提醒：有糖尿病、甲状腺疾病等基础问题，正在服药，有过进食障碍经历，孕期哺乳期，或 BMI 已低于 18.5，请先咨询医生再开始。减脂是健康项目，不是急诊手术，慢一点没有任何问题。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>减脂最难的不是知道，而是相信“慢的才是真的”。算清自己的账，吃够蛋白质，把缺口藏进一日三餐，剩下的交给时间。</p>
+<p>下一篇我们聊运动：减脂期要不要跑步、局部瘦是不是骗局、哪些“燃脂运动”纯属话术——<a href="/2026/10/01/2026-10-01-fitness-fat-loss-exercise/">《掉秤卡住之后，我才把“动”这件事想明白》</a>见。</p>
+<hr>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><p><strong>研究与综述</strong></p>
+<ol>
+<li>Mifflin &amp; St Jeor (1990)：静息能耗预测公式（TDEE 估算的基础） — <a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/2305711/">PubMed</a></li>
+<li>Ruiz-Castellano 等 (2021)：减脂期营养安排综述（0.5–1%&#x2F;周出处） — <a target="_blank" rel="noopener" href="https://www.mdpi.com/2072-6643/13/9/3255">MDPI Nutrients</a></li>
+<li>Morton 等 (2018)：蛋白质与增肌 meta 分析（1.6 g&#x2F;kg 拐点） — <a target="_blank" rel="noopener" href="https://bjsm.bmj.com/content/52/12/776">BJSM</a></li>
+<li>Helms 等 (2014)：热量限制期蛋白质需求系统综述 — <a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/24092765/">PubMed</a></li>
+<li>Rosenbaum &amp; Leibel (2010)：人类适应性产热综述 — <a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3673773/">PMC</a></li>
+<li>Fothergill 等 (2016)：“超级减肥王”6 年追踪 — <a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC4989512/">PMC</a></li>
+<li>Mann 等 (2007)：节食长期效果综述 — <a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/17469900/">PubMed</a></li>
+<li>Lowe 等 (2020)：TREAT 试验（16:8 vs 常规进餐 12 周） — <a target="_blank" rel="noopener" href="https://jamanetwork.com/journals/jamainternalmedicine/fullarticle/2771095">JAMA Internal Medicine</a></li>
+<li>Liu 等 (2022)：控热量±轻断食 1 年 RCT — <a target="_blank" rel="noopener" href="https://www.nejm.org/doi/full/10.1056/NEJMoa2114833">NEJM</a></li>
+<li>Gardner 等 (2018)：DIETFIT 试验（低脂 vs 低碳 12 个月） — <a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5839290/">PMC</a></li>
+<li>Heymsfield 等 (2003)：代餐 6 项研究 meta 分析 — <a target="_blank" rel="noopener" href="https://pubmed.ncbi.nlm.nih.gov/12704397/">PubMed</a></li>
+<li>White 等 (2011)：经期体液潴留 1 年队列 — <a target="_blank" rel="noopener" href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3154522/">PMC</a></li>
+</ol>
+<p><strong>社区讨论</strong></p>
+<ol start="13">
+<li>r&#x2F;Fitness：关于轻断食的讨论 — <a target="_blank" rel="noopener" href="https://www.reddit.com/r/Fitness/comments/bjllu3/regarding_intermittent_fasting_and_losing_weight/">Reddit</a></li>
+<li>r&#x2F;Fitness：生酮是不是好的减脂工具 — <a target="_blank" rel="noopener" href="https://www.reddit.com/r/Fitness/comments/69e5eo/is_a_keto_diet_a_useful_cutting_tool_the_studies/">Reddit</a></li>
+<li>r&#x2F;loseit：代餐讨论（真食物 vs 奶昔） — <a target="_blank" rel="noopener" href="https://www.reddit.com/r/loseit/comments/n19iyo/meal_replacements/">Reddit</a></li>
+<li>B 站@基德：168 断食法的真相 — <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Cq421c7hY/">Bilibili</a></li>
+<li>界面新闻：代餐收割智商税 (2020) — <a target="_blank" rel="noopener" href="https://www.jiemian.com/article/5018400.html">Jiemian</a></li>
+</ol>
+<blockquote>
+<p>说明：小红书站内内容无法被搜索引擎检索，本次未能引用；知乎的相关讨论未能定位到稳定的具体回答链接，社区观点以 Reddit、B 站和国内媒体报道为主。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-diet/">https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-diet/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/fitness/">fitness</a><a class="post-meta__tags" href="/tags/nutrition/">nutrition</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/fitness-fat-loss-diet/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/01/2026-10-01-fitness-muscle-diet-recovery/" title="你的肌肉不是在健身房里长的"><img class="cover" src="/images/posts/fitness-muscle-diet-recovery/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">你的肌肉不是在健身房里长的</div></div><div class="info-2"><div class="info-item-1">训练只是下单，肌肉是在餐盘里和床上长出来的：多 300 大卡、每公斤 1.6 克蛋白质、7 小时睡眠，以及补剂的钱到底该花在哪。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-feng-tang-cheng-shi-xin-fa/" title="不着急，不害怕，不要脸——读一本教人“成事”的争议之书"><img class="cover" src="/images/posts/feng-tang-cheng-shi-xin-fa/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">不着急，不害怕，不要脸——读一本教人“成事”的争议之书</div></div><div class="info-2"><div class="info-item-1">《冯唐成事心法》豆瓣 7.3 分，夸和骂都很认真。我整理了书里现在就能用的三招——100 个关键词、九字真言、真猛人，也说了我对“鸡汤”争议的判断。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/01/2026-10-01-fitness-muscle-diet-recovery/" title="你的肌肉不是在健身房里长的"><img class="cover" src="/images/posts/fitness-muscle-diet-recovery/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">你的肌肉不是在健身房里长的</div></div><div class="info-2"><div class="info-item-1">训练只是下单，肌肉是在餐盘里和床上长出来的：多 300 大卡、每公斤 1.6 克蛋白质、7 小时睡眠，以及补剂的钱到底该花在哪。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-fitness-body-anxiety/" title="比练出腹肌更难的，是学会不讨厌自己的肚子"><img class="cover" src="/images/posts/fitness-body-anxiety/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">比练出腹肌更难的，是学会不讨厌自己的肚子</div></div><div class="info-2"><div class="info-item-1">为什么练着练着，焦虑长得比肌肉快？聊聊社会比较、励志健身内容和“功能目标”，研究怎么看、网友怎么说，以及哪些状态该去求助。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-fitness-stick-to-it/" title="年卡只去过三次的人，别急着骂自己"><img class="cover" src="/images/posts/fitness-stick-to-it/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">年卡只去过三次的人，别急着骂自己</div></div><div class="info-2"><div class="info-item-1">办年卡只去三次，多半不是意志力问题。运动心理学给了几个实在解法：把目标缩到不可能失败、写“如果-那么”计划、中断后按协议重启，而不是骂自己。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-fitness-training-guide/" title="增肌没有捷径，但有说明书"><img class="cover" src="/images/posts/fitness-training-guide/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">增肌没有捷径，但有说明书</div></div><div class="info-2"><div class="info-item-1">增肌是怎么发生的、每周怎么练、一份能直接照做的新手计划。机械张力、渐进超负荷、频率与容量，附加重规则和记录方法。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-fitness-fat-loss-exercise/" title="掉秤卡住之后，我才把“动”这件事想明白"><img class="cover" src="/images/posts/fitness-fat-loss-exercise/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">掉秤卡住之后，我才把“动”这件事想明白</div></div><div class="info-2"><div class="info-item-1">每天跑步体重却不动？为什么减脂必须练力量、每周怎么排、平台期先查什么，以及“局部瘦”“暴汗服”等说法逐条拆。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">62</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">117</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%A0%E4%B8%80%E5%AE%9A%E8%A7%81%E8%BF%87%E8%BF%99%E7%A7%8D%E5%89%A7%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">你一定见过这种剧本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86%EF%BC%9A%E7%83%AD%E9%87%8F%E5%AE%88%E6%81%92%EF%BC%8C%E5%92%8C%E8%BA%AB%E4%BD%93%E7%9A%84%E2%80%9C%E6%8A%A5%E5%A4%8D%E2%80%9D"><span class="toc-number">2.</span> <span class="toc-text">底层原理：热量守恒，和身体的“报复”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E7%BC%BA%E5%8F%A3%EF%BC%9A%E4%BB%8E-TDEE-%E5%88%B0%E2%80%9C%E4%BB%8A%E5%A4%A9%E8%83%BD%E5%90%83%E5%A4%9A%E5%B0%91%E2%80%9D"><span class="toc-number">3.</span> <span class="toc-text">算缺口：从 TDEE 到“今天能吃多少”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%83%E7%9A%84%E6%96%B9%E6%B3%95%E8%AE%BA%EF%BC%9A%E4%B8%89%E9%A4%90%E3%80%81%E9%A3%9F%E5%A0%82%E3%80%81%E5%A4%96%E5%8D%96%E4%B8%8E%E9%A5%A5%E9%A5%BF%E6%84%9F"><span class="toc-number">4.</span> <span class="toc-text">吃的方法论：三餐、食堂、外卖与饥饿感</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E5%8F%8B%E4%BB%AC%E6%80%8E%E4%B9%88%E8%AF%B4"><span class="toc-number">5.</span> <span class="toc-text">网友们怎么说</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E7%9A%84%E6%84%9F%E6%82%9F"><span class="toc-number">6.</span> <span class="toc-text">我的感悟</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E6%89%8B%E8%A1%8C%E5%8A%A8%E6%B8%85%E5%8D%95%EF%BC%88%E6%9C%AC%E5%91%A8%E5%B0%B1%E8%83%BD%E5%BC%80%E5%A7%8B%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">新手行动清单（本周就能开始）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">8.</span> <span class="toc-text">写在最后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">9.</span> <span class="toc-text">参考来源</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-ai-algorithm-discovery/" title="让 AI 去发现算法：进化搜索能走多远"><img src="/images/posts/ai-algorithm-discovery/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="让 AI 去发现算法：进化搜索能走多远"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-ai-algorithm-discovery/" title="让 AI 去发现算法：进化搜索能走多远">让 AI 去发现算法：进化搜索能走多远</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-agent-security-prompt-injection/" title="读到的内容也会变成指令：Agent 安全的结构性难题"><img src="/images/posts/agent-security-prompt-injection/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="读到的内容也会变成指令：Agent 安全的结构性难题"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-agent-security-prompt-injection/" title="读到的内容也会变成指令：Agent 安全的结构性难题">读到的内容也会变成指令：Agent 安全的结构性难题</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-fitness-body-anxiety/" title="比练出腹肌更难的，是学会不讨厌自己的肚子"><img src="/images/posts/fitness-body-anxiety/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="比练出腹肌更难的，是学会不讨厌自己的肚子"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-fitness-body-anxiety/" title="比练出腹肌更难的，是学会不讨厌自己的肚子">比练出腹肌更难的，是学会不讨厌自己的肚子</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-feng-tang-cheng-shi-xin-fa/" title="不着急，不害怕，不要脸——读一本教人“成事”的争议之书"><img src="/images/posts/feng-tang-cheng-shi-xin-fa/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="不着急，不害怕，不要脸——读一本教人“成事”的争议之书"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-feng-tang-cheng-shi-xin-fa/" title="不着急，不害怕，不要脸——读一本教人“成事”的争议之书">不着急，不害怕，不要脸——读一本教人“成事”的争议之书</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/01/2026-10-01-fitness-fat-loss-diet/" title="饿掉的三斤，多半会回来"><img src="/images/posts/fitness-fat-loss-diet/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="饿掉的三斤，多半会回来"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/01/2026-10-01-fitness-fat-loss-diet/" title="饿掉的三斤，多半会回来">饿掉的三斤，多半会回来</a><time datetime="2026-10-01T04:00:00.000Z" title="发表于 2026-10-01 12:00:00">2026-10-01</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
