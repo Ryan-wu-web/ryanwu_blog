@@ -2,7 +2,7 @@
 title: "把经验变成资产：Agent 自我改进的五条路线"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, self-improvement, memory, skill]
-categories: tech
+categories: [tech, agent]
 description: "从技能库、语言反思到记忆设计元学习，Agent 自我改进已分化为五条路线。梳理四种经验沉淀形式的证据强度、负迁移的边界条件、以及误差放大与记忆投毒这类被低估的风险。"
 cover: "/images/posts/agent-self-improvement/cover.webp"
 ---

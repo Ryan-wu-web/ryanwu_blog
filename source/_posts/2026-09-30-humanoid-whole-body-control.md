@@ -2,7 +2,7 @@
 title: "人形机器人不是一个大模型：全身控制的分层答案"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, humanoid, wbc, locomotion]
-categories: tech
+categories: [tech, robotics]
 description: "全身控制的核心不是把语言模型直接接到电机，而是让语义任务、运动生成、接触动力学和安全约束在不同频率上协同：梳理 RL、MPC、WBC、loco-manipulation 与人形数据采集。"
 cover: "/images/posts/humanoid-whole-body-control/cover.webp"
 ---

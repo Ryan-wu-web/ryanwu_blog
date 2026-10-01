@@ -2,7 +2,7 @@
 title: "会做和会想：RLVR 到底扩展了什么"
 date: 2026-10-01 12:00:00
 tags: [ai, llm, reinforcement-learning, reasoning]
-categories: tech
+categories: [tech, llm]
 description: "可验证奖励强化学习是小 k 更强还是真扩展了能力边界？两篇立场相反的代表工作给出了各自的硬数字：一边发现大 k 时基座反超，一边在低支持空间任务里让基座从零变到可解。梳理这场争论的判据、指标与边界条件。"
 cover: "/images/posts/rlvr-reasoning-boundary/cover.webp"
 ---

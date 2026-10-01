@@ -2,7 +2,7 @@
 title: "GPT Image 的架构，写在一张白板上"
 date: 2026-09-28 12:00:00
 tags: [ai, image-generation, llm, architecture]
-categories: tech
+categories: [tech, image-generation]
 description: "OpenAI 从未公开 GPT Image 的网络结构与参数量，但发布博文里的一张架构白板、系统卡原文和 API 行为拼出了它的形状：自回归先验负责想清楚画什么，强大的解码器负责画得像；而改图整图重生成、像素级不可保，正是这条架构路线的直接代价。"
 cover: "/images/posts/gpt-image-architecture-whiteboard/cover.webp"
 ---

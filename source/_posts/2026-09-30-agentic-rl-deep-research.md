@@ -2,7 +2,7 @@
 title: "从会搜到会研究：Agentic RL 的配方与头号风险"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, reinforcement-learning, deep-research]
-categories: tech
+categories: [tech, agent]
 description: "深度研究代理的训练配方高度趋同：可验证结果奖励加多轮工具环境加异步 rollout。梳理 GRPO 算法谱系、从 Search-R1 到 Kimi-Researcher 的路线，以及 reward hacking 这个头号工程问题。"
 cover: "/images/posts/agentic-rl-deep-research/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "让 AI 去发现算法：进化搜索能走多远"
 date: 2026-10-01 12:00:00
 tags: [ai, llm, evolutionary-search, algorithm-discovery]
-categories: tech
+categories: [tech, llm]
 description: "语言模型作变异算子、评测器作裁判、进化搜索作导航——这套三件套已经改进了矩阵乘法的乘法次数、让排序算法进了标准库、恢复了数据中心百分之零点七的算力。但评测器既是命门也是软肋，奖励破解的案例已被系统收录。"
 cover: "/images/posts/ai-algorithm-discovery/cover.webp"
 ---

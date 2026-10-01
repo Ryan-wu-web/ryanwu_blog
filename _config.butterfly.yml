@@ -20,7 +20,14 @@ nav:
 menu:
   首页: / || fas fa-home
   关于我: /about/ || fas fa-user
-  技术笔记: /categories/tech/ || fas fa-code
+  技术笔记 || fas fa-code:
+    全部技术文章: /categories/tech/ || fas fa-folder-open
+    Agent: /categories/tech/agent/ || fas fa-robot
+    LLM: /categories/tech/llm/ || fas fa-brain
+    机器人: /categories/tech/robotics/ || fas fa-microchip
+    自动驾驶: /categories/tech/autonomous-driving/ || fas fa-car
+    图像生成: /categories/tech/image-generation/ || fas fa-image
+    开发笔记: /categories/tech/dev-notes/ || fas fa-book
   生活随笔: /categories/life/ || fas fa-coffee
   归档: /archives/ || fas fa-archive
   标签: /tags/ || fas fa-tags
@@ -90,6 +97,13 @@ category_img: /index-bg.jpg
 category_per_img:
   tech: /tech-bg.jpg
   life: /life-bg.jpg
+  # 技术子分类沿用 tech 主题背景
+  agent: /tech-bg.jpg
+  llm: /tech-bg.jpg
+  robotics: /tech-bg.jpg
+  autonomous-driving: /tech-bg.jpg
+  image-generation: /tech-bg.jpg
+  dev-notes: /tech-bg.jpg
 
 # The background image of footer
 footer_img: false

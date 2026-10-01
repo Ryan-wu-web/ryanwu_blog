@@ -2,7 +2,7 @@
 title: "协议之争落幕：MCP 与 A2A 的收敛与新的分歧"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, mcp, a2a, protocol]
-categories: tech
+categories: [tech, agent]
 description: "MCP 管工具、A2A 管代理，两个协议同归 Linux Foundation 治理，标准之战告一段落。但真正的分歧转移到别处：工具投毒与供应链攻击、代码执行对工具调用的替代、以及跨协议信任的空白地带。"
 cover: "/images/posts/mcp-a2a-protocols/cover.webp"
 ---

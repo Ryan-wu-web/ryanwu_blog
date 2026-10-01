@@ -2,7 +2,7 @@
 title: "无图智驾去掉了哪张图：在线感知的边界"
 date: 2026-09-30 12:00:00
 tags: [ai, autonomous-driving, perception, mapping, occupancy]
-categories: tech
+categories: [tech, autonomous-driving]
 description: "「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。"
 cover: "/images/posts/mapless-driving-perception/cover.webp"
 ---

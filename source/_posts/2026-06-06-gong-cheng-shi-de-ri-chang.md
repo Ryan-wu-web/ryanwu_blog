@@ -2,7 +2,7 @@
 title: 工程师的日常工具链
 date: 2026-06-06 17:00:00
 tags: [git, docker, linux, tools, devops]
-categories: tech
+categories: [tech, dev-notes]
 description: 分享日常开发中离不开的工具和最佳实践
 ---
 

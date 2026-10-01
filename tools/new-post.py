@@ -14,6 +14,16 @@ ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "source" / "_posts"
 MEDIA_ROOT = ROOT / "source" / "images" / "posts"
 SLUG_PATTERN = re.compile(r"^[a-z0-9\u4e00-\u9fff]+(?:-[a-z0-9\u4e00-\u9fff]+)*$")
+# 与 tools/check-content.py 的 ALLOWED_TECH_SUBCATEGORIES 保持同步
+TECH_SUBCATEGORIES = (
+    ("agent", "Agent"),
+    ("llm", "LLM"),
+    ("robotics", "机器人"),
+    ("autonomous-driving", "自动驾驶"),
+    ("image-generation", "图像生成"),
+    ("dev-notes", "开发笔记"),
+)
+TECH_SUBCATEGORY_IDS = tuple(subcategory for subcategory, _ in TECH_SUBCATEGORIES)
 
 
 def configure_console() -> None:
@@ -27,7 +37,7 @@ def configure_console() -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="创建文章和独立媒体目录。省略参数时进入交互模式。")
     parser.add_argument("--title")
-    parser.add_argument("--category", choices=("tech", "life"))
+    parser.add_argument("--category", choices=("tech", "life") + TECH_SUBCATEGORY_IDS, help="tech、life 或技术子分类（如 agent、llm）")
     parser.add_argument("--date")
     parser.add_argument("--tags", help="英文逗号分隔")
     parser.add_argument("--description")
@@ -78,9 +88,28 @@ def choose_category(value: str | None) -> str:
     print("\n文章类型:\n  1. 技术笔记\n  2. 生活随笔")
     while True:
         choice = input("请选择 (1/2): ").strip()
-        if choice in {"1", "2"}:
-            return "tech" if choice == "1" else "life"
+        if choice == "2":
+            return "life"
+        if choice == "1":
+            return choose_tech_subcategory()
         print("请输入 1 或 2。")
+
+
+def choose_tech_subcategory() -> str:
+    print("\n技术子分类:")
+    for index, (_, label) in enumerate(TECH_SUBCATEGORIES, start=1):
+        print(f"  {index}. {label}")
+    while True:
+        choice = input(f"请选择 (1-{len(TECH_SUBCATEGORIES)}): ").strip()
+        if choice.isdigit() and 1 <= int(choice) <= len(TECH_SUBCATEGORIES):
+            return TECH_SUBCATEGORY_IDS[int(choice) - 1]
+        print(f"请输入 1 到 {len(TECH_SUBCATEGORIES)} 之间的数字。")
+
+
+def categories_line(category: str) -> str:
+    if category in TECH_SUBCATEGORY_IDS:
+        return f"categories: [tech, {category}]"
+    return f"categories: {category}"
 
 
 def create_post(args: argparse.Namespace) -> Path:
@@ -115,7 +144,7 @@ def create_post(args: argparse.Namespace) -> Path:
             f"title: {yaml_string(title)}",
             f"date: {date_value} 12:00:00",
             f"tags: [{', '.join(tags)}]",
-            f"categories: {category}",
+            categories_line(category),
             f"description: {yaml_string(description)}",
             f"cover: {yaml_string(cover)}",
             "---",

@@ -2,7 +2,7 @@
 title: "读到的内容也会变成指令：Agent 安全的结构性难题"
 date: 2026-10-01 12:00:00
 tags: [ai, agent, security, prompt-injection, mcp]
-categories: tech
+categories: [tech, agent]
 description: "Agent 把读到的网页、邮件、工具返回值都变成了可执行上下文，于是指令与数据共用同一个自然语言通道。梳理四层信任边界错配、六类攻击面、七层防御的证据强度，以及为什么这个问题至今没有完备解。"
 cover: "/images/posts/agent-security-prompt-injection/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"
 date: 2026-09-22 12:00:00
 tags: [ai, robotics, vla, llm]
-categories: tech
+categories: [tech, robotics]
 description: "梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。"
 cover: "/images/posts/vla-architecture-2026/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "触觉不是多一张图：它如何进入 VLA"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, tactile, vla, multimodal]
-categories: tech
+categories: [tech, robotics]
 description: "触觉补上的不是视觉分辨率，而是接触状态：滑动、力、局部几何与形变。梳理 GelSight、AnySkin、Sparsh 到触觉残差、未来触觉预测和柔性物体评测，给个人实验室一条低成本路线。"
 cover: "/images/posts/tactile-vla-multimodal-perception/cover.webp"
 ---

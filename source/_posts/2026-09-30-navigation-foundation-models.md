@@ -2,7 +2,7 @@
 title: "31M 参数的导航模型，凭什么叫基础模型"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, navigation, foundation-model, cross-embodiment]
-categories: tech
+categories: [tech, robotics]
 description: "导航领域还没有稳定定义的基础模型。GNM 与 ViNT 用 70 到 80 小时数据和归一化路点做到了跨机器人零样本部署，而大模型路线的跨本体证据反而更弱。动作空间消融最能说明问题：归一化路点的成功率是未归一化的两倍以上。"
 cover: "/images/posts/navigation-foundation-models/cover.webp"
 ---

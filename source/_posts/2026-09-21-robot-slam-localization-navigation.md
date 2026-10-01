@@ -2,7 +2,7 @@
 title: "跑通一遍 SLAM 和 Nav2 之后，我理解的建图、定位与自主导航"
 date: 2026-09-21 12:00:00
 tags: [robotics, ros2, slam, navigation]
-categories: tech
+categories: [tech, robotics]
 description: "从传感器、运动估计、SLAM、有图定位到全局规划、局部控制与恢复行为，把移动机器人自主导航整条链路串一遍，并附上自己用 Gazebo + ROS 2 跑出来的实测数字。"
 cover: "/images/posts/robot-slam-localization-navigation/cover.webp"
 ---

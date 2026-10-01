@@ -2,7 +2,7 @@
 title: "车路云一体化：项目变多了，钱变少了"
 date: 2026-09-30 12:00:00
 tags: [ai, autonomous-driving, v2x, cooperative-perception, policy]
-categories: tech
+categories: [tech, autonomous-driving]
 description: "车路云一体化是中国官方明确的技术路线，协同感知的学术脉络也已成形；但 2025 年项目数量增长 20%、市场规模却下降超过 30%。梳理政策要求、融合范式、数据集演进、海外路线，以及还没有闭环的商业模式。"
 cover: "/images/posts/vehicle-road-cloud-integration/cover.webp"
 ---

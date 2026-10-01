@@ -2,7 +2,7 @@
 title: "L2 误差不是指标：端到端智驾的评测重建"
 date: 2026-09-30 12:00:00
 tags: [ai, autonomous-driving, end-to-end, evaluation, vla]
-categories: tech
+categories: [tech, autonomous-driving]
 description: "端到端智驾的评测正在被重建：只看轨迹 L2 误差的模型能打平甚至超过感知方案，开环排名与闭环排名会发生反转。梳理三组否定开环指标的证据、闭环与伪闭环基准的迁移，以及 VLA 化之后动作输出机制的真实形态。"
 cover: "/images/posts/e2e-driving-evaluation/cover.webp"
 ---

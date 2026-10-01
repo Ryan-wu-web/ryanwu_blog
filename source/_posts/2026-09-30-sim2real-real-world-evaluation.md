@@ -2,7 +2,7 @@
 title: "仿真分数高，真机就一定好吗：Sim2Real 评估的缺口"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, sim2real, simulation, evaluation]
-categories: tech
+categories: [tech, robotics]
 description: "Domain randomization、3D Gaussian Splatting、Isaac Lab、Genesis 和视频世界模型分别解决了什么？从 SIMPLER 与 GAUGE 出发，说明仿真—真机相关性为何仍缺统一协议，以及个人研究者如何做配对评估。"
 cover: "/images/posts/sim2real-real-world-evaluation/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "多代理值不值：条件增益、15 倍成本与失败模式"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, multi-agent, orchestration]
-categories: tech
+categories: [tech, agent]
 description: "多代理的增益是条件性的：在可分解、可验证、预算充足时有效，在单点推理任务上常被强单代理追平。梳理正反证据、logistic 缩放与异构负收益、失败分类学，以及 15 倍 token 换来的是什么。"
 cover: "/images/posts/multi-agent-orchestration/cover.webp"
 ---

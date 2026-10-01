@@ -2,7 +2,7 @@
 title: "换一台机器人就不灵了：VLA 跨本体泛化卡在哪"
 date: 2026-09-29 12:00:00
 tags: [ai, robotics, vla, cross-embodiment]
-categories: tech
+categories: [tech, robotics]
 description: "拆解 VLA 跨本体泛化的核心障碍——动作空间异构，以及从离散 token 到物理对齐的四代解法。重点梳理一份系统消融的实证：物理对齐比数据规模更重要，异构数据朴素混合反而带来负迁移（LIBERO 上 77.3% 逐级降到 72.1%）。"
 cover: "/images/posts/vla-cross-embodiment/cover.webp"
 ---

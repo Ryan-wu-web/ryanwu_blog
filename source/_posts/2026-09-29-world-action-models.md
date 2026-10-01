@@ -2,7 +2,7 @@
 title: "先想象，再动手：世界动作模型这一年"
 date: 2026-09-29 12:00:00
 tags: [ai, robotics, world-model, vla]
-categories: tech
+categories: [tech, robotics]
 description: "半年内两篇独立综述把世界动作模型（WAM）立成正式方向。梳理它的定义边界、三种工程实现与产业合流，以及正反两面证据：最强证据来自把世界模型当训练器而非直接当策略，而联合评估协议至今缺失。"
 cover: "/images/posts/world-action-models/cover.webp"
 ---

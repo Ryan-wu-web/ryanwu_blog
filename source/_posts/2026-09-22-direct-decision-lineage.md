@@ -2,7 +2,7 @@
 title: "直接读出答案：从 GPT 双头到 Jev 的一条线索"
 date: 2026-09-22 12:00:00
 tags: [ai, llm, robotics, vla]
-categories: tech
+categories: [tech, llm]
 description: "闭集判断为什么要先生成一串文本？这个问题在 Jev 出现之前已经问了八年：从 GPT 的双头模型、DETR 和 Perceiver IO 的 query 读出、Hydragen 的共享 prefix，到 FIRST 的首 token 排序，三条线索最终在 Jev 汇合。"
 cover: "/images/posts/direct-decision-lineage/cover.webp"
 ---
