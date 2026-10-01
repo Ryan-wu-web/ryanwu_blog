@@ -2,7 +2,7 @@
 title: "生成模型画不对一颗松动的螺栓"
 date: 2026-09-23 12:00:00
 tags: [ai, image-generation, industrial, dataset]
-categories: tech
+categories: [tech, image-generation]
 description: "做工业巡检缺陷图时发现，通用图生图模型改小色块和小组件很不可靠。从失败模式出发，说明为什么机械缺陷必须交给确定性几何编辑，AI 只负责补洞和纹理。"
 cover: "/images/posts/mechanical-defect-image-editing/cover.webp"
 ---

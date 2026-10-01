@@ -2,7 +2,7 @@
 title: "知道自己什么时候不确定：智驾安全量化的缺口"
 date: 2026-09-30 12:00:00
 tags: [ai, autonomous-driving, safety, uncertainty, regulation]
-categories: tech
+categories: [tech, autonomous-driving]
 description: "校准好的不确定性不等于安全的决策：智驾安全量化的证据几乎全部来自仿真。梳理共形预测的理论缺口、形式化验证的规模墙、最小风险机动的现实反思，以及 L3 法规落地后仍未闭环的问题。"
 cover: "/images/posts/driving-safety-uncertainty/cover.webp"
 ---

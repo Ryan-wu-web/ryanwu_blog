@@ -2,7 +2,7 @@
 title: AI 大模型应用实践
 date: 2026-06-06 16:30:00
 tags: [ai, openai, gpt, prompt-engineering, vision]
-categories: tech
+categories: [tech, dev-notes]
 description: 分享在实际项目中接入 AI 大模型的经验
 ---
 

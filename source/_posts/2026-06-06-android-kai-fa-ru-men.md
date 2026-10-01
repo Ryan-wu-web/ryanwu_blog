@@ -2,7 +2,7 @@
 title: Android 开发入门记录
 date: 2026-06-06 16:00:00
 tags: [android, kotlin, mobile, opengl]
-categories: tech
+categories: [tech, dev-notes]
 description: 记录 Android 原生开发的学习过程
 ---
 

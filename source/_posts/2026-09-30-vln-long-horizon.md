@@ -2,7 +2,7 @@
 title: "走了 150 步之后：VLN 的长程与真实化难题"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, vln, navigation, embodied-ai]
-categories: tech
+categories: [tech, robotics]
 description: "VLN 从短指令加导航图走向长程任务与连续环境，但长程化远未解决：LH-VLN 上领先方法的成功率只有 2.44。梳理任务演化、稳定的失败模式（停止错误、过度旋转、错误累积）、测试时适应与大模型时代的合流。"
 cover: "/images/posts/vln-long-horizon/cover.webp"
 ---

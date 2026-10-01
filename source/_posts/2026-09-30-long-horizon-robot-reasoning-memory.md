@@ -2,7 +2,7 @@
 title: "机器人为什么会在第十步出错：长时程推理与记忆"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, vla, memory, reasoning]
-categories: tech
+categories: [tech, robotics]
 description: "从 SayCan、VoxPoser 到 Helix、GR00T 和具身记忆，梳理机器人长时程任务的接口演进、双系统架构、错误恢复与评测缺口：真正缺的不是更长的上下文，而是能被验证的恢复闭环。"
 cover: "/images/posts/long-horizon-robot-reasoning-memory/cover.webp"
 ---

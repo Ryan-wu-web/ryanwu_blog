@@ -2,7 +2,7 @@
 title: "补个向量库是不够的：Agent 记忆的四条路线与一场信任危机"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, memory, llm, rag]
-categories: tech
+categories: [tech, agent]
 description: "Agent 记忆已成为独立工程学科：四条实现路线、四类记忆操作、以及一场至今没有中立复现的基准争议。梳理 mem0 与 Zep 各自的证据、长上下文与记忆的成本-延迟取舍，以及为什么评测是这个领域最大的短板。"
 cover: "/images/posts/agent-memory-systems/cover.webp"
 ---

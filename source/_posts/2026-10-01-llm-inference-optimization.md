@@ -2,7 +2,7 @@
 title: "推理为什么贵：从显存带宽看加速技术栈"
 date: 2026-10-01 12:00:00
 tags: [ai, llm, inference, optimization, quantization]
-categories: tech
+categories: [tech, llm]
 description: "自回归解码是显存带宽受限问题，这是所有加速技术的共同出发点。梳理投机解码、KV 缓存、量化、MoE、批处理调度五族的原理与实测数字，以及为什么技术能叠加但收益不是乘法——高并发下投机解码会坍缩到一点三倍。"
 cover: "/images/posts/llm-inference-optimization/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "点不准是最大瓶颈：计算机使用代理的两年"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, computer-use, gui, grounding]
-categories: tech
+categories: [tech, agent]
 description: "纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。"
 cover: "/images/posts/computer-use-gui-agents/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "重建还是生成：驾驶世界模型与安全验证"
 date: 2026-09-30 12:00:00
 tags: [ai, autonomous-driving, world-model, simulation]
-categories: tech
+categories: [tech, autonomous-driving]
 description: "驾驶世界模型分成重建与生成两条路线：重建式保真但只能覆盖采过的场景，生成式可控但物理一致性受质疑。从 NeuroNCAP 的强证据到视频模型的物理理解缺陷，说明它们各自能承担安全验证的哪一部分。"
 cover: "/images/posts/driving-world-models/cover.webp"
 ---

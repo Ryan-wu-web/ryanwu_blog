@@ -2,7 +2,7 @@
 title: SpringBoot 后端开发笔记
 date: 2026-06-06 15:30:00
 tags: [springboot, java, backend, mysql, redis]
-categories: tech
+categories: [tech, dev-notes]
 description: SpringBoot 项目开发中的一些实践经验
 ---
 

@@ -2,7 +2,7 @@
 title: Vue3 项目开发心得
 date: 2026-06-06 15:00:00
 tags: [vue, javascript, frontend, typescript]
-categories: tech
+categories: [tech, dev-notes]
 description: 分享在 Vue3 项目开发中的一些实践经验
 ---
 

@@ -2,7 +2,7 @@
 title: "想久一点就有用吗：推理时扩展的能与不能"
 date: 2026-10-01 12:00:00
 tags: [ai, llm, test-time-compute, reasoning]
-categories: tech
+categories: [tech, llm]
 description: "采样、搜索、验证、预算分配四层方法全谱系，加上一条被反复印证的结论：生成容易选择难——覆盖率能涨四个数量级，但多数投票约一百个样本后就饱和。梳理成本反转让小而多训变得划算，以及知识密集型任务上算力为何失效。"
 cover: "/images/posts/test-time-compute-scaling/cover.webp"
 ---

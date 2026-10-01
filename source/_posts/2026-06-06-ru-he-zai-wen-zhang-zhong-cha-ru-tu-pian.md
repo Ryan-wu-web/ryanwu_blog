@@ -2,7 +2,7 @@
 title: 如何在文章中插入图片
 date: 2026-06-06 14:00:00
 tags: [tutorial, hexo, frontend, blog]
-categories: tech
+categories: [tech, dev-notes]
 description: 教你如何在博客文章中上传和引用图片
 ---
 

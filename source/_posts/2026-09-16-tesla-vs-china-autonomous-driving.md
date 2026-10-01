@@ -2,7 +2,7 @@
 title: "特斯拉纯视觉与国产智驾：传感器不同，终点可能相同"
 date: 2026-09-16 12:00:00
 tags: [ai, autonomous-driving, tesla, lidar, computer-vision]
-categories: tech
+categories: [tech, autonomous-driving]
 description: "从摄像头、激光雷达、毫米波雷达和定位系统出发，梳理特斯拉纯视觉与国内多路线智驾方案的差异，并讨论自动驾驶未来可能走向何处。"
 cover: "/images/posts/tesla-vs-china-autonomous-driving/cover.webp"
 ---

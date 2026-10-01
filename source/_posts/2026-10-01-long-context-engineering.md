@@ -2,7 +2,7 @@
 title: "塞得进不等于用得好：长上下文与上下文工程"
 date: 2026-10-01 12:00:00
 tags: [ai, llm, long-context, rag, context-engineering]
-categories: tech
+categories: [tech, llm]
 description: "宣称 128K 的模型有效长度可能只有 64K，去掉词汇线索后十三个模型里十一个在 32K 跌破基线一半。梳理名义窗口与有效窗口的鸿沟、三条算法路线、工程层三大件，以及长上下文、检索与记忆该怎么选。"
 cover: "/images/posts/long-context-engineering/cover.webp"
 ---

@@ -2,7 +2,7 @@
 title: "机器人没有互联网数据：一张数据引擎与 Scaling Law 地图"
 date: 2026-09-30 12:00:00
 tags: [ai, robotics, vla, data, scaling-laws]
-categories: tech
+categories: [tech, robotics]
 description: "机器人数据从哪里来？梳理真机遥操作、仿真合成与人类视频三条路线，以及多样性幂律、跨本体混合和负迁移之间的张力：机器人 scaling law 存在，但远不是把数据量乘大那么简单。"
 cover: "/images/posts/robot-data-engine-scaling-laws/cover.webp"
 ---

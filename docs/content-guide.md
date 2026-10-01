@@ -1,6 +1,6 @@
 # Ryan's Blog 内容维护指南
 
-> 适用于当前的 Hexo 8.1.2 + Butterfly 5.7.0。最后更新：2026-09-16。
+> 适用于当前的 Hexo 8.1.2 + Butterfly 5.7.0。最后更新：2026-10-01。
 
 ## 1. 推荐写作链路
 
@@ -51,12 +51,17 @@ AI 协作时，先判定文章类型：AI、技术分析、行业观察这类需
 
 模板是写作骨架，不是必须填满的表格。先运行 `npm run post:new`，再用所选模板替换新文章中的默认正文。
 
-当前仍使用两个 Hexo 分类：
+分类为两个顶层分类，技术文章使用 `tech` 子分类：
 
-- `tech`：AI、开发、产品、工程和技术项目；
-- `life`：生活、职业、销售、管理和个人随笔。
+- `life`：生活、职业、销售、管理和个人随笔；
+- `[tech, agent]`：Agent 工程、协议与安全；
+- `[tech, llm]`：大模型推理、训练与评测；
+- `[tech, robotics]`：具身智能与机器人；
+- `[tech, autonomous-driving]`：自动驾驶；
+- `[tech, image-generation]`：图像生成；
+- `[tech, dev-notes]`：开发入门与工程实践笔记。
 
-使用 `ai`、`product`、`sales`、`management`、`career`、`journal` 等标签表达细分主题。AI 内容积累到足够规模后，再评估是否增加独立分类。
+`tech` 也可单独使用（不带子分类）。使用 `ai`、`product`、`sales`、`management`、`career`、`journal` 等标签表达更细的主题；新增子分类前先评估已有分类是否足够承载。
 
 ## 2. 创建文章
 
@@ -71,7 +76,7 @@ npm run post:new
 - `title`：文章标题；
 - `date`：`YYYY-MM-DD`；
 - `tags`：至少一个，小写字母、数字、中文或连字符；
-- `categories`：只能是 `tech` 或 `life`；
+- `categories`：先选「技术笔记」或「生活随笔」；技术笔记再选子分类（agent、llm、robotics、autonomous-driving、image-generation、dev-notes）；
 - `description`：用于列表摘要和搜索描述，不能为空；
 - `cover`：文章封面，默认指向该文章的媒体目录。
 
@@ -88,12 +93,12 @@ source/images/posts/文章-slug/
 
 ```powershell
 python tools/new-post.py `
-  --title "AI 产品复盘" `
-  --category tech `
-  --date 2026-09-14 `
-  --tags "ai,product-management" `
-  --description "一次 AI 产品从想法到验证的完整复盘" `
-  --slug "ai-product-retrospective"
+  --title "Agent 记忆系统选型" `
+  --category agent `
+  --date 2026-10-02 `
+  --tags "ai,agent,memory" `
+  --description "对比三种 Agent 记忆实现路线的取舍" `
+  --slug "agent-memory-selection"
 ```
 
 ## 3. Front Matter 规范
@@ -102,12 +107,12 @@ python tools/new-post.py `
 
 ```yaml
 ---
-title: "AI 产品复盘"
-date: 2026-09-14 12:00:00
-tags: [ai, product-management]
-categories: tech
-description: "一句完整、具体的文章摘要"
-cover: "/images/posts/ai-product-retrospective/cover.jpg"
+title: "Agent 记忆系统选型"
+date: 2026-10-02 12:00:00
+tags: [ai, agent, memory]
+categories: [tech, agent]
+description: "对比三种 Agent 记忆实现路线的取舍"
+cover: "/images/posts/agent-memory-selection/cover.jpg"
 ---
 ```
 
@@ -116,7 +121,7 @@ cover: "/images/posts/ai-product-retrospective/cover.jpg"
 | `title` | 非空，表达文章主题 |
 | `date` | `YYYY-MM-DD` 或 `YYYY-MM-DD HH:MM:SS` |
 | `tags` | 至少一个；统一小写，可用数字、中文和连字符 |
-| `categories` | 只能是 `tech` 或 `life` |
+| `categories` | `life` 或 `[tech, 子分类]`；`tech` 可单独使用，子分类清单见第 1.2 节 |
 | `description` | 新文章必填，不直接复制标题 |
 | `cover` | 新文章必填；本地路径必须真实存在，也可使用完整的远程 URL |
 

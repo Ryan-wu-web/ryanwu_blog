@@ -2,7 +2,7 @@
 title: "能被控制的未来：世界模型的三种动作接口"
 date: 2026-09-30 12:00:00
 tags: [ai, world-model, robotics, autonomous-driving, video-generation]
-categories: tech
+categories: [tech, robotics]
 description: "游戏、驾驶与机器人对世界模型的要求并不相同，统一它们的不是像素而是动作接口：显式动作条件、潜在动作与视觉动作。从 Genie 到 KineBench，梳理正面证据、物理基准的负面结论，以及尚未被证实的强命题。"
 cover: "/images/posts/world-models-three-domains/cover.webp"
 ---

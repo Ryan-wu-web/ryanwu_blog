@@ -2,7 +2,7 @@
 title: "模型之外的胜负手：长时程 Agent 与 Harness 工程"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, harness, long-horizon, engineering]
-categories: tech
+categories: [tech, agent]
 description: "Agent 等于模型加 Harness：同一模型换一套外置工程，表现可以相差数倍甚至排名逆转。梳理四类失败模式的实证、六件套武器库、压缩为什么不够，以及 2026 年关于 harness 披露的规范之争。"
 cover: "/images/posts/long-horizon-agents-harness/cover.webp"
 ---

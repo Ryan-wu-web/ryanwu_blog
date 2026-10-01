@@ -2,7 +2,7 @@
 title: "一千条样本够吗：小数据如何激发大推理"
 date: 2026-10-01 12:00:00
 tags: [ai, llm, distillation, data-efficiency, reasoning]
-categories: tech
+categories: [tech, llm]
 description: "强基座上一千条精选长思维链就能把竞赛数学从个位数拉到六成，成本仅七张 H100 的 GPU 时。但精选是否必要正在被推翻，而评测噪声比效果本身还大：三十道题、单点提升常常落在噪声带里。"
 cover: "/images/posts/small-data-reasoning/cover.webp"
 ---

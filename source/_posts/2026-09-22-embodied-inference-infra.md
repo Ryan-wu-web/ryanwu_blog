@@ -2,7 +2,7 @@
 title: "机器人推理的指标不是 Token/s"
 date: 2026-09-22 12:00:00
 tags: [ai, robotics, vla, inference]
-categories: tech
+categories: [tech, robotics]
 description: "LLM 推理基础设施优化的是 Token 吞吐，机器人要的是 Observation → Action 的闭环延迟。梳理两者在缓存对象、调度目标、延迟语义上的根本差异，以及目前最接近「机器人 vLLM」的几条技术路线。"
 cover: "/images/posts/embodied-inference-infra/cover.webp"
 ---

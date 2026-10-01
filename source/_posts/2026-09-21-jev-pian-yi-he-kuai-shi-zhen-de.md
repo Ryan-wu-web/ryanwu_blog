@@ -2,7 +2,7 @@
 title: "Jev 调研：便宜和快是真的，校准还没被证明"
 date: 2026-09-21 12:00:00
 tags: [ai, llm, jev, model-evaluation]
-categories: tech
+categories: [tech, llm]
 description: "拆解 TypeSafe 的 Jev（System One 模型类）官方材料、第三方复现与对抗性评测：便宜、低延迟、零格式错误已被独立验证，而支撑其全部叙事的校准置信度至今没有论文或可靠性曲线。"
 cover: "/images/posts/jev-pian-yi-he-kuai-shi-zhen-de/cover.webp"
 ---

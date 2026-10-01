@@ -2,7 +2,7 @@
 title: "考卷本身也会错：Agent 评测学的四大失效"
 date: 2026-09-30 12:00:00
 tags: [ai, agent, evaluation, benchmark]
-categories: tech
+categories: [tech, agent]
 description: "OpenAI 正式弃用 SWE-bench Verified：审计发现近六成判分有实质缺陷。从判分器可被绕过、数据污染、跑间抖动的量化证据，到统计功效与排行榜操纵，梳理 Agent 评测为什么必须被当作一门学科来对待。"
 cover: "/images/posts/agent-evaluation-science/cover.webp"
 ---
