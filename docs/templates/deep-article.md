@@ -1,6 +1,6 @@
 # 深度文章模板
 
-适用于 AI、技术分析、行业观察和需要完整论证的观点文章。分类使用 `[tech, 子分类]`：agent、llm、robotics、autonomous-driving、image-generation、dev-notes。
+适用于 AI、技术分析、行业观察和需要完整论证的观点文章。分类使用 `[tech, 子分类]`：agent、llm、robotics、autonomous-driving、image-generation、dev-notes、tech-news。
 
 ## 使用方式
 

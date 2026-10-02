@@ -22,6 +22,7 @@ TECH_SUBCATEGORIES = (
     ("autonomous-driving", "自动驾驶"),
     ("image-generation", "图像生成"),
     ("dev-notes", "开发笔记"),
+    ("tech-news", "科技最新资讯"),
 )
 LIFE_SUBCATEGORIES = (
     ("reading", "读书"),

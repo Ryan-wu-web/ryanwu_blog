@@ -81,7 +81,8 @@ Ryanwu 不以单一职业标签定义自己。写作可以同时使用以下视�
 - `robotics`：具身智能与机器人；
 - `autonomous-driving`：自动驾驶；
 - `image-generation`：图像生成；
-- `dev-notes`：开发入门与工程实践笔记。
+- `dev-notes`：开发入门与工程实践笔记；
+- `tech-news`：科技最新资讯与行业动态。
 
 生活子分类：
 

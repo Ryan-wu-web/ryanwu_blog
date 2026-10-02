@@ -15,7 +15,7 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 POSTS_DIR = ROOT / "source" / "_posts"
 ALLOWED_CATEGORIES = {"tech", "life"}
-ALLOWED_TECH_SUBCATEGORIES = {"agent", "llm", "robotics", "autonomous-driving", "image-generation", "dev-notes"}
+ALLOWED_TECH_SUBCATEGORIES = {"agent", "llm", "robotics", "autonomous-driving", "image-generation", "dev-notes", "tech-news"}
 ALLOWED_LIFE_SUBCATEGORIES = {"reading", "fitness", "career", "journal"}
 REQUIRED_FIELDS = ("title", "date", "tags", "categories", "description", "cover")
 TAG_PATTERN = re.compile(r"^[a-z0-9\u4e00-\u9fff][a-z0-9\u4e00-\u9fff-]*$")
