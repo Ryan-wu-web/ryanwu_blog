@@ -7,3 +7,7 @@ public/
 .deploy*/
 __pycache__/
 *.py[cod]
+
+# AI 工具本地配置（自动生成，不入库）
+.serena/
+.zcodeignore

@@ -28,6 +28,7 @@ menu:
     自动驾驶: /categories/tech/autonomous-driving/ || fas fa-car
     图像生成: /categories/tech/image-generation/ || fas fa-image
     开发笔记: /categories/tech/dev-notes/ || fas fa-book
+    科技最新资讯: /categories/tech/tech-news/ || fas fa-newspaper
   生活随笔 || fas fa-coffee:
     全部生活随笔: /categories/life/ || fas fa-folder-open
     读书: /categories/life/reading/ || fas fa-book-open
@@ -109,6 +110,7 @@ category_per_img:
   autonomous-driving: /tech-bg.jpg
   image-generation: /tech-bg.jpg
   dev-notes: /tech-bg.jpg
+  tech-news: /tech-bg.jpg
   # 生活子分类沿用 life 主题背景
   reading: /life-bg.jpg
   fitness: /life-bg.jpg

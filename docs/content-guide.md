@@ -60,7 +60,8 @@ AI 协作时，先判定文章类型：AI、技术分析、行业观察这类需
 - `[tech, robotics]`：具身智能与机器人；
 - `[tech, autonomous-driving]`：自动驾驶；
 - `[tech, image-generation]`：图像生成；
-- `[tech, dev-notes]`：开发入门与工程实践笔记。
+- `[tech, dev-notes]`：开发入门与工程实践笔记；
+- `[tech, tech-news]`：科技最新资讯与行业动态。
 
 生活：
 
