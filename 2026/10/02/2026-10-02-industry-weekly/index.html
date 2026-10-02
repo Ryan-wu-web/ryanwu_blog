@@ -1,0 +1,832 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="AMD 收购李飞飞 World Labs、Anthropic 招股书曝光估值或超 2 万亿美元；美光、Oracle、埃森哲财报全线超预期，AI 景气沿产业链兑现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="AMD 收购李飞飞 World Labs、Anthropic 招股书曝光估值或超 2 万亿美元；美光、Oracle、埃森哲财报全线超预期，AI 景气沿产业链兑现。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/industry-weekly/cover.webp">
+<meta property="article:published_time" content="2026-10-02T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-02T04:57:13.884Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="industry">
+<meta property="article:tag" content="news">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/industry-weekly/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO",
+  "url": "https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/",
+  "image": "https://ryanwu.cn/images/posts/industry-weekly/cover.webp",
+  "datePublished": "2026-10-02T04:00:00.000Z",
+  "dateModified": "2026-10-02T04:57:13.884Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/industry-weekly/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-02T04:57:13.884Z" title="更新于 2026-10-02 12:57:13">2026-10-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/tech-news/">tech-news</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>这是「科技最新资讯」栏目的公司周报，覆盖 2026-09-25 ~ 10-02（重大事件回溯至 09-02），视角是公司动作与行业冷暖。本周的两条主线：<strong>资本在向 AI 核心资产疯狂集中</strong>（AMD 天价收购、Anthropic 冲刺史上最大 IPO），而<strong>同期的裁员与并购降温数据</strong>提醒我们这不是普涨。</p>
+<blockquote>
+<p>阅读说明：<strong>【事实】</strong>&#x3D; 多个独立来源报道；<strong>【官方宣称】</strong>&#x3D; 公司单方口径（财报&#x2F;公告以官方文件为准，分析师预期另注）；<strong>【传闻&#x2F;爆料】</strong>&#x3D; 未获权威渠道证实的消息。</p>
+</blockquote>
+<h2 id="本期要点"><a href="#本期要点" class="headerlink" title="本期要点"></a>本期要点</h2><ol>
+<li><strong>AMD 宣布以约 82 亿美元全股票收购李飞飞的 World Labs</strong>（9&#x2F;28），李飞飞出任 AMD 执行副总裁兼首席科学家——AMD 押注物理 AI&#x2F;空间智能路线【事实，双源验证】。</li>
+<li><strong>Anthropic IPO 进程启动</strong>：招股书要点曝光，2025 年收入约 46 亿美元、亏损约 420 亿美元，分析师预计 IPO 估值区间 1.8-2.2 万亿美元，目标感恩节前挂牌【官方宣称&#x2F;分析师预期】。</li>
+<li><strong>财报季全线超预期</strong>：美光（营收 +379%）、Oracle（IaaS +121%）、Accenture、Jabil（FY27 指引 +24%）——AI 需求从算力向存储、云、服务、制造全链条扩散【事实】。</li>
+<li><strong>反垄断双线</strong>：Google 广告技术案免于剥离 AdX 但须接受行为性救济与 6 年监察（9&#x2F;16 裁决）；Google EU DMA 合规大限 9&#x2F;21，逾期按全球日均营业额 5% 周期计罚【事实】。</li>
+<li><strong>行业温差显著</strong>：Uber 裁员 10%（2026 年科技裁员同比 +54%）、MongoDB CEO 跳槽 Meta 致股价单日暴跌约 21-26%；Q3 全球并购环比 -41%，但 Anthropic 抢跑 IPO——一级二级市场分化加剧【事实】。</li>
+</ol>
+<h2 id="速览表"><a href="#速览表" class="headerlink" title="速览表"></a>速览表</h2><table>
+<thead>
+<tr>
+<th>事件</th>
+<th>日期</th>
+<th>一句话概述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://ir.amd.com/news-events/press-releases/detail/1299/amd-to-acquire-world-labs-to-advance-the-future-of-ai-compute">AMD 82 亿美元收购 World Labs</a></td>
+<td>09-28</td>
+<td>李飞飞出任 AMD 首席科学家，史上第二大并购</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/business/finance/anthropics-ipo-prospectus-shows-sweeping-ai-vision-surging-costs-2026-09-28">Anthropic 招股书曝光</a></td>
+<td>09-28~10-01</td>
+<td>IPO 估值或超 2 万亿美元，目标感恩节前挂牌</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://investors.micron.com/news/press-release/2026/Micron-Technology-Inc--Reports-Record-Fiscal-Fourth-Quarter-and-Full-Year-2026-Results/default.aspx">美光创纪录财报</a></td>
+<td>09-30</td>
+<td>FQ4 营收 542.3 亿美元、同比 +379%</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.oracle.com/news/announcement/q1fy27-earnings-release-2026-09-10">Oracle Q1 FY27 云业务爆发</a></td>
+<td>09-10</td>
+<td>IaaS +121%，RPO 冲上 6,640 亿美元</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/world/google-should-appoint-antitrust-compliance-officer-us-judge-says-ad-tech-case-2026-09-16">Google 广告技术反垄断补救裁决</a></td>
+<td>09-16</td>
+<td>免于剥离 AdX，但须接受 6 年外部监察</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.businesswire.com/news/home/20261001220695/en/Accenture-Reports-Fourth-Quarter-and-Full-Year-Fiscal-2026-Results">Accenture FY26 Q4 超预期</a></td>
+<td>10-01</td>
+<td>Q4 收入 186.8 亿美元，FY27 指引 3-6% 增长</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.nytimes.com/2026/09/02/technology/uber-layoffs.html">Uber 裁员 10%</a></td>
+<td>09-02</td>
+<td>约 3,300 人，2026 年科技裁员同比 +54%</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://investors.mongodb.com/news-releases/news-release-details/mongodb-announces-ceo-transition">MongoDB CEO 辞职转投 Meta</a></td>
+<td>09-28</td>
+<td>老将 Ittycheria 回归救场，股价暴跌约 21-26%</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/technology/ai-agent-firm-instinct-raises-1-billion-latest-funding-round-2026-09-28">Instinct 融资 10 亿美元</a></td>
+<td>09-28</td>
+<td>一个月估值翻四倍至 100 亿美元</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://investors.jabil.com/news/news-details/2026/Jabil-Posts-Fourth-Quarter-and-Fiscal-Year-2026-Results/default.aspx">Jabil FY26 收官超预期</a></td>
+<td>09-30</td>
+<td>FY27 指引营收 445 亿美元（+24%）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.securityweek.com/island-raises-400-million-at-6-4-billion-valuation">网安融资潮</a></td>
+<td>09-24~10-01</td>
+<td>Island 4 亿美元 F 轮（64 亿估值）、Armadin 2.555 亿美元</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://blogs.microsoft.com/blog/2026/09/28/new-microsoft-data-innovations-unlock-what-only-your-business-knows">微软收购 Osmos</a></td>
+<td>09-28</td>
+<td>强化 Fabric 自主化数据管线（金额未披露）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.marketwatch.com/story/salesforce-agrees-to-buy-listen-labs-ce163d6d">Salesforce 收购 Listen Labs</a></td>
+<td>约 09-29</td>
+<td>AI 客户研究平台并入 Agentforce 版图</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.stcn.com/article/detail/4203369.html">港股 Q3 IPO 收官</a></td>
+<td>09-29&#x2F;30</td>
+<td>前三季度募资超 3,800 亿港元，六家公司同日敲钟</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/business/finance/global-ma-deal-rush-fades-third-quarter-rising-borrowing-costs-bite-2026-10-01">Q3 全球并购降温</a></td>
+<td>10-01</td>
+<td>单季 9,930 亿美元环比 -41%，前九月仍达 4.44 万亿</td>
+</tr>
+<tr>
+<td>Oura&#x2F;SB Energy 推迟 IPO</td>
+<td>09-29~10 月初</td>
+<td>IPO 窗口对非 AI 核心资产明显收紧（各单源）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="http://www.xinhuanet.com/finance/20260921/4eba396840414c2bb29a0aa2fe6b3783/c.html">芯驰科技 C 轮系列约 10 亿元</a></td>
+<td>09-21</td>
+<td>车规芯片 + 具身智能成中国半导体一级市场主线</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.oracle.com/cn/news/announcement/oracle-releases-java-27-and-strengthens-post-quantum-cryptography-support-2026-09-15">Java 27 发布 &#x2F; PostgreSQL 19 延期</a></td>
+<td>09-15&#x2F;24</td>
+<td>后量子密码强化；PG 19 回退 6 项特性、GA 延期</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/world/google-warns-lower-quality-it-revamps-europe-search-results-avoid-eu-fines-2026-09-08">Google EU DMA 合规大限</a></td>
+<td>09-08&#x2F;21</td>
+<td>欧洲搜索改版自认「可能降低质量」，逾期按日计罚</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://news.cctv.com/2026/09/22/ARTIAF8TIXcdyp4ESGXBMSsZ260922.shtml">中国境外反垄断合规指引征求意见</a></td>
+<td>09-22</td>
+<td>市场监管总局为企业出海立规</td>
+</tr>
+</tbody></table>
+<h2 id="详细内容"><a href="#详细内容" class="headerlink" title="详细内容"></a>详细内容</h2><h3 id="1-美光发布创纪录-FY2026-Q4-及全年财报"><a href="#1-美光发布创纪录-FY2026-Q4-及全年财报" class="headerlink" title="1. 美光发布创纪录 FY2026 Q4 及全年财报"></a>1. 美光发布创纪录 FY2026 Q4 及全年财报</h3><p><strong>【事实】官方新闻稿 + 多家媒体一致转述 · 2026-09-30</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://investors.micron.com/news/press-release/2026/Micron-Technology-Inc--Reports-Record-Fiscal-Fourth-Quarter-and-Full-Year-2026-Results/default.aspx">美光 IR 官方新闻稿</a>与 <a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/09/30/micron-mu-q4-earnings-report-2026.html">CNBC</a>：Q4 收入 542.3 亿美元（同比 +379%），non-GAAP 摊薄 EPS 33.42 美元，non-GAAP 毛利率约 87%；FY2026 全年收入 1,331.9 亿美元。公司预计下季收入环比再增 12 亿美元。产业链视角的完整分析见<a href="/2026/10/02/2026-10-02-semiconductors-weekly/">同期芯片周报</a>。</p>
+<p><strong>为什么重要</strong>：印证 AI 算力景气已全面传导至存储环节，直接影响下游云厂商与整机成本结构。</p>
+<h3 id="2-AMD-宣布以约-82-亿美元全股票收购-World-Labs"><a href="#2-AMD-宣布以约-82-亿美元全股票收购-World-Labs" class="headerlink" title="2. AMD 宣布以约 82 亿美元全股票收购 World Labs"></a>2. AMD 宣布以约 82 亿美元全股票收购 World Labs</h3><p><strong>【事实】官方 + 路透&#x2F;WSJ&#x2F;彭博 · 2026-09-28</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://ir.amd.com/news-events/press-releases/detail/1299/amd-to-acquire-world-labs-to-advance-the-future-of-ai-compute">AMD 官方新闻稿</a>与<a target="_blank" rel="noopener" href="https://www.reuters.com/technology/amd-acquire-fei-fei-lis-world-labs-82-billion-deal-2026-09-28">路透</a>：AMD 以约 82 亿美元全股票收购「空间智能」公司 World Labs，为 AMD 史上第二大并购；联合创始人李飞飞将加入 AMD 任执行副总裁兼首席科学家，直接向 CEO 苏姿丰汇报，联合创始人 Justin Johnson、Ben Mildenhall 一同加入。此前 AMD 已是 World Labs 投资方；交易需监管审批、年底前完成。</p>
+<p><strong>为什么重要</strong>：AMD 以「物理 AI&#x2F;空间智能」世界模型对赌下一代 AI 计算叙事，是与英伟达生态竞争的关键落子；李飞飞进入大厂高管序列也是 AI 学界产业化的标志性事件。</p>
+<h3 id="3-Anthropic-上市进程启动：招股书曝光，IPO-估值可能超-2-万亿美元"><a href="#3-Anthropic-上市进程启动：招股书曝光，IPO-估值可能超-2-万亿美元" class="headerlink" title="3. Anthropic 上市进程启动：招股书曝光，IPO 估值可能超 2 万亿美元"></a>3. Anthropic 上市进程启动：招股书曝光，IPO 估值可能超 2 万亿美元</h3><p><strong>【官方宣称】招股书为事实，估值预测为分析师预期 · 2026-09-28</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.reuters.com/business/finance/anthropics-ipo-prospectus-shows-sweeping-ai-vision-surging-costs-2026-09-28">路透</a>与 <a target="_blank" rel="noopener" href="https://siliconangle.com/2026/10/01/report-anthropic-targets-pre-thanksgiving-ipo-launch-despite-warning-of-ais-existential-risks">SiliconAngle</a>：招股书显示 2025 年收入约 46 亿美元（约 12 倍同比增速）、2025 年亏损约 420 亿美元（其中约 340 亿为会计费用，经营亏损约 80 亿美元）、算力支出 73.3 亿美元；基于 7 月销售的 2026 年收入运行率约 650 亿美元。公司 5 月投后估值约 9,650 亿美元，分析师预计 IPO 估值区间 1.8-2.2 万亿美元；计划 10 月 14 日举办 pre-IPO 投资者日，目标感恩节前挂牌。</p>
+<p><strong>为什么重要</strong>：或成为年度最大科技 IPO，将为整个 AI 行业建立公开市场估值基准；巨额亏损与天价估值的组合也将检验二级市场对 AI 资产的承受力。</p>
+<h3 id="4-Google-广告技术反垄断案补救裁决"><a href="#4-Google-广告技术反垄断案补救裁决" class="headerlink" title="4. Google 广告技术反垄断案补救裁决"></a>4. Google 广告技术反垄断案补救裁决</h3><p><strong>【事实】路透 + NYT + 司法部声明 · 2026-09-16</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.reuters.com/world/google-should-appoint-antitrust-compliance-officer-us-judge-says-ad-tech-case-2026-09-16">路透</a>与<a target="_blank" rel="noopener" href="https://www.justice.gov/opa/pr/department-justice-again-wins-substantial-relief-against-google">司法部声明</a>：Brinkema 法官裁定 Google 须放宽在线广告竞价规则、与竞争对手互操作并共享更多数据，任命内部反垄断合规官并接受 6 年外部监察；但驳回了强制剥离 AdX 的结构性救济请求。另据雅虎财经，曼哈顿联邦法院已允许出版商推进逾 32 亿美元的损害索赔。</p>
+<p><strong>为什么重要</strong>：广告技术案以「行为救济」收场避免了分拆，是近年美国反垄断对超大平台最重要的判决之一。</p>
+<h3 id="5-Accenture-FY2026-Q4-超预期"><a href="#5-Accenture-FY2026-Q4-超预期" class="headerlink" title="5. Accenture FY2026 Q4 超预期"></a>5. Accenture FY2026 Q4 超预期</h3><p><strong>【事实】官方财报 · 2026-10-01</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.businesswire.com/news/home/20261001220695/en/Accenture-Reports-Fourth-Quarter-and-Full-Year-Fiscal-2026-Results">Business Wire 官方新闻稿</a>：Q4 FY26 收入 186.8 亿美元，本币增长 7%，超指引上限；FY26 全年收入 742 亿美元。公司指引 FY2027 本币收入增长 3-6%。财报还披露因 Cyber OT 收购的监管时点原因，约 30 亿美元订单顺延至 9 月。</p>
+<p><strong>为什么重要</strong>：企业 AI 落地从试点走向规模化采购，咨询龙头业绩是观察企业级 AI 需求的关键晴雨表。</p>
+<h3 id="6-Oracle-Q1-FY27-云业务爆发：IaaS-翻倍、RPO-冲上-6-640-亿美元"><a href="#6-Oracle-Q1-FY27-云业务爆发：IaaS-翻倍、RPO-冲上-6-640-亿美元" class="headerlink" title="6. Oracle Q1 FY27 云业务爆发：IaaS 翻倍、RPO 冲上 6,640 亿美元"></a>6. Oracle Q1 FY27 云业务爆发：IaaS 翻倍、RPO 冲上 6,640 亿美元</h3><p><strong>【事实】官方新闻稿 + CNBC · 2026-09-10</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.oracle.com/news/announcement/q1fy27-earnings-release-2026-09-10">Oracle 官方新闻稿</a>与 <a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/09/10/oracle-orcl-q1-earnings-report-2027.html">CNBC</a>：总收入 193.5 亿美元；总云收入 116 亿美元（+62%），其中 IaaS 达 74 亿美元（+121%）；本季新增逾 300 亿美元 AI 云合同，剩余履约义务（RPO）创纪录达 6,640 亿美元。另据报道 Oracle 于 9 月 14 日裁减云部门约 8% 员工（单一来源，待证实）。</p>
+<p><strong>为什么重要</strong>：RPO 规模印证 AI 算力合同远期化，Oracle 已成 AI 云第二极；「收入暴增与裁员并行」凸显 AI 基建的人力替代效应。</p>
+<h3 id="7-Uber-裁员-10-；2026-年科技业裁员总量同比增-54"><a href="#7-Uber-裁员-10-；2026-年科技业裁员总量同比增-54" class="headerlink" title="7. Uber 裁员 10%；2026 年科技业裁员总量同比增 54%"></a>7. Uber 裁员 10%；2026 年科技业裁员总量同比增 54%</h3><p><strong>【事实】NYT + 多源 · 2026-09-02</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.nytimes.com/2026/09/02/technology/uber-layoffs.html">NYT</a> 与 <a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/09/02/uber-to-cut-10percent-of-workforce-in-bid-to-move-simpler-and-faster.html">CNBC</a>：Uber 宣布裁减约 10% 员工（约 3,300 人），压缩管理层级，CEO 称要让公司「更简单、更快」。据 Fast Company 统计，2026 年截至 9 月科技公司已宣布裁员 165,925 人，同比增长 54%。</p>
+<p><strong>为什么重要</strong>：头部平台在业务增长期主动瘦身并压缩管理层数，是 AI 提效替代组织膨胀的典型案例，或引发同业跟进。</p>
+<h3 id="8-MongoDB-CEO-突然辞职转投-Meta"><a href="#8-MongoDB-CEO-突然辞职转投-Meta" class="headerlink" title="8. MongoDB CEO 突然辞职转投 Meta"></a>8. MongoDB CEO 突然辞职转投 Meta</h3><p><strong>【事实】官方公告 + 8-K 文件 · 2026-09-28</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://investors.mongodb.com/news-releases/news-release-details/mongodb-announces-ceo-transition">MongoDB IR 官方公告</a>：总裁兼 CEO Chirantan “CJ” Desai 辞职（9 月 24 日提交辞呈），转赴 Meta 担任高级职务（即主导 Meta Enterprise Platform，见<a href="/2026/10/02/2026-10-02-ai-weekly/">同期 AI 周报</a>）；曾执掌公司 2014-2024 年的 Dev Ittycheria 回归出任临时 CEO。消息公布后股价单日大跌约 21-26%。</p>
+<p><strong>为什么重要</strong>：大型科技公司高薪虹吸数据库&#x2F;基础设施公司 CEO，凸显 Meta 等在 AI 基础软件上的人才争夺。</p>
+<h3 id="9-AI-代理初创-Instinct-融资-10-亿美元，一个月估值翻四倍"><a href="#9-AI-代理初创-Instinct-融资-10-亿美元，一个月估值翻四倍" class="headerlink" title="9. AI 代理初创 Instinct 融资 10 亿美元，一个月估值翻四倍"></a>9. AI 代理初创 Instinct 融资 10 亿美元，一个月估值翻四倍</h3><p><strong>【事实】路透 + 彭博 · 2026-09-28</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.reuters.com/technology/ai-agent-firm-instinct-raises-1-billion-latest-funding-round-2026-09-28">路透</a>与 <a target="_blank" rel="noopener" href="https://techcrunch.com/2026/09/28/viral-ai-agent-instinct-raises-1b-series-c-at-a-10b-valuation">TechCrunch</a>：Instinct 完成 10 亿美元 C 轮融资，投后估值 100 亿美元——较一个月前 25 亿美元的谈判估值翻四倍；红杉、Coatue、Benchmark 领投。公司由 Noah Shinn 创立，团队仅约 14 人。</p>
+<p><strong>为什么重要</strong>：「极小团队 + 天价估值」成为 AI 代理赛道的典型融资形态，一级市场对 Agent 应用的押注进入亢奋阶段。</p>
+<h3 id="10-Jabil-FY2026-收官超预期，FY2027-指引营收增-24"><a href="#10-Jabil-FY2026-收官超预期，FY2027-指引营收增-24" class="headerlink" title="10. Jabil FY2026 收官超预期，FY2027 指引营收增 24%"></a>10. Jabil FY2026 收官超预期，FY2027 指引营收增 24%</h3><p><strong>【事实】官方新闻稿 · 2026-09-30</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://investors.jabil.com/news/news-details/2026/Jabil-Posts-Fourth-Quarter-and-Fiscal-Year-2026-Results/default.aspx">Jabil IR 官方新闻稿</a>：FY2026 全年收入 360 亿美元；Q4 收入 106 亿美元（+29%）。公司指引 FY2027 收入约 445 亿美元（+24%），大幅超出市场预期；但财报电话会后股价回落。</p>
+<p><strong>为什么重要</strong>：AI 服务器&#x2F;数据中心硬件制造的订单能见度延伸至 2027 年；「利好兑现即回调」反映市场对 AI 链涨幅的谨慎。</p>
+<h3 id="11-网络安全融资潮：Island-4-亿美元-F-轮、Armadin-2-555-亿美元"><a href="#11-网络安全融资潮：Island-4-亿美元-F-轮、Armadin-2-555-亿美元" class="headerlink" title="11. 网络安全融资潮：Island 4 亿美元 F 轮、Armadin 2.555 亿美元"></a>11. 网络安全融资潮：Island 4 亿美元 F 轮、Armadin 2.555 亿美元</h3><p><strong>【事实】双源验证 · 2026-09-24~10-01</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.securityweek.com/island-raises-400-million-at-6-4-billion-valuation">SecurityWeek</a> 与<a target="_blank" rel="noopener" href="https://www.reuters.com/legal/transactional/ai-cybersecurity-startup-armadin-valued-over-25-billion-after-new-funding-round-2026-10-01">路透</a>：企业浏览器公司 Island 宣布 4 亿美元 F 轮，估值 64 亿美元，并转型定位「企业级 AI 代理控制平面」；AI 网安公司 Armadin 宣布 2.555 亿美元 B 轮，估值超 25 亿美元。数据安全公司 Cyera 同期完成约 4 亿美元新融资（金额存在来源冲突，待证实）。</p>
+<p><strong>为什么重要</strong>：安全是 AI 应用放大的直接受益板块，一级市场对「AI 代理安全」形成新叙事。</p>
+<h3 id="12-微软收购数据工程初创-Osmos"><a href="#12-微软收购数据工程初创-Osmos" class="headerlink" title="12. 微软收购数据工程初创 Osmos"></a>12. 微软收购数据工程初创 Osmos</h3><p><strong>【事实】官方博客 · 2026-09-28</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://blogs.microsoft.com/blog/2026/09/28/new-microsoft-data-innovations-unlock-what-only-your-business-knows">微软官方博客</a>：收购西雅图初创 Osmos，其自主 AI 技术可将原始数据自动转换为可用于分析的数据集，将整合进 Microsoft Fabric 以推进「自主数据工程」战略（金额未披露）。</p>
+<p><strong>为什么重要</strong>：大厂并购重点正从模型公司转向「数据层」工具，Fabric 与 Snowflake&#x2F;Databricks 的数据管道之争升级。</p>
+<h3 id="13-Salesforce-签约收购-AI-客户研究平台-Listen-Labs"><a href="#13-Salesforce-签约收购-AI-客户研究平台-Listen-Labs" class="headerlink" title="13. Salesforce 签约收购 AI 客户研究平台 Listen Labs"></a>13. Salesforce 签约收购 AI 客户研究平台 Listen Labs</h3><p><strong>【事实】双源验证，金额未披露 · 约 2026-09-29</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.salesforceben.com/salesforce-acquires-ai-customer-research-company-listen-labs">SalesforceBen</a> 与 <a target="_blank" rel="noopener" href="https://www.marketwatch.com/story/salesforce-agrees-to-buy-listen-labs-ce163d6d">MarketWatch</a>：Salesforce 签署最终协议收购 Listen Labs——一家用 AI 模拟受访者、规模化完成客户访谈与洞察的平台，将并入其 Agentforce&#x2F;Data Cloud 版图。</p>
+<p><strong>为什么重要</strong>：SaaS 巨头继续用并购补齐「AI 原生研究&#x2F;洞察」能力。</p>
+<h3 id="14-港股三季度-IPO-收官：前三季度募资超-3-800-亿港元"><a href="#14-港股三季度-IPO-收官：前三季度募资超-3-800-亿港元" class="headerlink" title="14. 港股三季度 IPO 收官：前三季度募资超 3,800 亿港元"></a>14. 港股三季度 IPO 收官：前三季度募资超 3,800 亿港元</h3><p><strong>【事实】证券时报 + 21 财经 · 2026-09-29&#x2F;30</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.stcn.com/article/detail/4203369.html">证券时报</a>与 <a target="_blank" rel="noopener" href="https://www.21jingji.com/article/20260930/herald/f4d0e346ca5f40a28b66aebaffc73703.html">21财经</a>：9 月 29 日景旺电子、罗博特科、彤程新材、本末科技四家在港交所挂牌，同日鸿富诚登陆深交所、安达股份登陆北交所；前三季度港股 IPO 募资超 3,800 亿港元。截至 9 月底共 238 家中企进行境外发行备案。</p>
+<p><strong>为什么重要</strong>：港股已成为中国硬科技公司首选上市地，A+H 模式常态化；境外备案排队数上行预示四季度供给仍大。</p>
+<h3 id="15-全球-Q3-并购降温：单季-9-930-亿美元环比降-41"><a href="#15-全球-Q3-并购降温：单季-9-930-亿美元环比降-41" class="headerlink" title="15. 全球 Q3 并购降温：单季 9,930 亿美元环比降 41%"></a>15. 全球 Q3 并购降温：单季 9,930 亿美元环比降 41%</h3><p><strong>【事实】路透 + WSJ · 2026-10-01</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.reuters.com/business/finance/global-ma-deal-rush-fades-third-quarter-rising-borrowing-costs-bite-2026-10-01">路透</a>与 <a target="_blank" rel="noopener" href="https://www.wsj.com/business/earnings/global-dealmaking-cools-in-third-quarter-53a43430">WSJ</a>：Q3 全球并购总额 9,930 亿美元，环比下降 41%，主因借贷成本上升；但 2026 年前九个月并购总额 4.44 万亿美元、同比增 27%，全年有望成为历史第二高。</p>
+<p><strong>为什么重要</strong>：利率环境正在给并购热潮降温，四季度大型交易节奏或放缓；科技巨头的并购预算将更多转向股票支付（如 AMD&#x2F;World Labs）。</p>
+<h3 id="16-IPO-市场分化：Oura-推迟上市，SB-Energy-搁置-50-亿美元-IPO"><a href="#16-IPO-市场分化：Oura-推迟上市，SB-Energy-搁置-50-亿美元-IPO" class="headerlink" title="16. IPO 市场分化：Oura 推迟上市，SB Energy 搁置 50 亿美元 IPO"></a>16. IPO 市场分化：Oura 推迟上市，SB Energy 搁置 50 亿美元 IPO</h3><p><strong>【事实】推迟决定本身（各为单一来源报道） · 2026-09-29~10 月初</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://news.pedaily.cn/202609/569785.shtml">投资界</a>：智能戒指厂商 Oura 宣布推迟原定的纳斯达克 IPO；软银与英伟达支持的 SB Energy 亦因需求疲弱推迟 50 亿美元 IPO。与此同时 Anthropic 等仍在推进大型上市。</p>
+<p><strong>为什么重要</strong>：美股 IPO 窗口对 AI 关联度低、估值偏高的发行人明显收紧，四季度上市潮将高度集中于 AI 核心资产。</p>
+<h3 id="17-芯驰科技完成-C-、C-轮，C-轮系列合计约-10-亿元人民币"><a href="#17-芯驰科技完成-C-、C-轮，C-轮系列合计约-10-亿元人民币" class="headerlink" title="17. 芯驰科技完成 C+、C++ 轮，C 轮系列合计约 10 亿元人民币"></a>17. 芯驰科技完成 C+、C++ 轮，C 轮系列合计约 10 亿元人民币</h3><p><strong>【事实】新华网 + 东方财富 · 2026-09-21</strong></p>
+<p>据<a target="_blank" rel="noopener" href="http://www.xinhuanet.com/finance/20260921/4eba396840414c2bb29a0aa2fe6b3783/c.html">新华网</a>：芯驰科技宣布连续完成 C+ 和 C++ 轮融资，叠加 5 月公布的近 1 亿美元 C 轮，年内 C 轮系列合计约 10 亿元人民币；资金投向智能座舱&#x2F;智能车控芯片研发并切入具身智能方向。</p>
+<p><strong>为什么重要</strong>：国产车规 SoC 在资本市场上持续获得地方产业资本加持，「汽车芯片 + 具身智能」成为中国半导体一级市场主线。</p>
+<h3 id="18-开源里程碑：Oracle-发布-Java-27；PostgreSQL-19-回退-6-项特性、GA-延期"><a href="#18-开源里程碑：Oracle-发布-Java-27；PostgreSQL-19-回退-6-项特性、GA-延期" class="headerlink" title="18. 开源里程碑：Oracle 发布 Java 27；PostgreSQL 19 回退 6 项特性、GA 延期"></a>18. 开源里程碑：Oracle 发布 Java 27；PostgreSQL 19 回退 6 项特性、GA 延期</h3><p><strong>【事实】官方公告 · 2026-09-15&#x2F;24</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.oracle.com/cn/news/announcement/oracle-releases-java-27-and-strengthens-post-quantum-cryptography-support-2026-09-15">Oracle 官方公告</a>：Java 27 重点强化后量子密码支持；<a target="_blank" rel="noopener" href="https://www.postgresql.org/about/news/postgresql-19-beta-4-released-3386">PostgreSQL 官方</a>发布 19 Beta 4，回退了 SQL&#x2F;PGQ 图查询等 6 项原定特性，正式版 GA 预计延至 10 月（<a target="_blank" rel="noopener" href="https://www.snowflake.com/en/blog/engineering/postgresql-19-release-delay-feature-reverts">Snowflake 工程博客</a>佐证）。</p>
+<p><strong>为什么重要</strong>：主流基础软件全面向后量子安全靠拢；PG 19 的特性回退说明社区对稳定性优先于功能节奏，数据库升级计划需相应调整。</p>
+<h3 id="19-Google-在欧盟-DMA-项下进入合规关键期"><a href="#19-Google-在欧盟-DMA-项下进入合规关键期" class="headerlink" title="19. Google 在欧盟 DMA 项下进入合规关键期"></a>19. Google 在欧盟 DMA 项下进入合规关键期</h3><p><strong>【事实】改版决定 &#x2F; 【官方宣称】处罚口径 · 2026-09-08~21</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.reuters.com/world/google-warns-lower-quality-it-revamps-europe-search-results-avoid-eu-fines-2026-09-08">路透</a>：为避免在 7 月 8.9 亿欧元 DMA 自我优待罚款后再遭处罚，Google 宣布调整欧洲搜索结果展示方式，并承认改动可能降低搜索质量；合规大限为 9 月 21 日，逾期将面临最高按全球日均营业额 5% 计的周期性罚款。Google 近二十年累计欧盟反垄断罚款已达 103.8 亿欧元。</p>
+<p><strong>为什么重要</strong>：DMA 执法进入「按日计罚」威慑阶段，Google 欧洲搜索产品的形态将被迫持续调整。</p>
+<h3 id="20-中国反垄断监管：境外反垄断合规指引征求意见"><a href="#20-中国反垄断监管：境外反垄断合规指引征求意见" class="headerlink" title="20. 中国反垄断监管：境外反垄断合规指引征求意见"></a>20. 中国反垄断监管：境外反垄断合规指引征求意见</h3><p><strong>【事实】央视网（单一来源） · 2026-09-22</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://news.cctv.com/2026/09/22/ARTIAF8TIXcdyp4ESGXBMSsZ260922.shtml">央视网</a>：市场监管总局就《企业境外反垄断合规指引（修订草案）》公开征求意见，修订内容体现域外最新反垄断监管趋势。此前 KKR 因反复违反美国 HSR 申报要求于 8 月与美国司法部达成 2.5 亿美元民事罚款和解（背景事件）。</p>
+<p><strong>为什么重要</strong>：中国监管层正在为出海企业建立更明确的域外反垄断合规框架，对计划境外并购的中国科技公司具有直接指引意义。</p>
+<h2 id="趋势观察"><a href="#趋势观察" class="headerlink" title="趋势观察"></a>趋势观察</h2><p><strong>可以验证的事实：</strong></p>
+<ul>
+<li><strong>AI 景气沿产业链全面兑现</strong>：存储（美光 +379%）、云（Oracle IaaS +121%）、服务（Accenture 超 7% 增长）、制造（Jabil FY27 +24% 指引）四环节财报同向超预期，AI 需求不再是单一环节叙事。</li>
+<li><strong>资本市场「AI 核心资产」与「其余资产」分化</strong>：Anthropic 冲刺 2 万亿美元估值 IPO、Instinct 一个月估值翻四倍；同期 Oura&#x2F;SB Energy 推迟上市、Q3 并购环比 -41%、Uber 等仍在裁员。</li>
+<li><strong>反垄断进入「行为救济 + 计罚威慑」阶段</strong>：Google 广告技术案免于剥离但接受 6 年监察、EU DMA 按日计罚、中国出台境外合规指引——三大司法域执法风格趋同于精细监管。</li>
+<li><strong>人才向 AI 基础设施公司虹吸</strong>：MongoDB CEO 转投 Meta，传统基础软件公司管理层稳定性承压。</li>
+</ul>
+<p><strong>我的推测（作者判断，可能错，需后续验证）：</strong></p>
+<ul>
+<li>Anthropic IPO 若按 2 万亿美元级估值落地且上市后稳定，将成为 AI 资产估值的公开锚，并打开 OpenAI 等跟随上市的空间；反之若破发，一级市场「极小团队百亿估值」形态（Instinct）将首先承压。</li>
+<li>「收入暴增 + 同期裁员」的组合（Oracle、Uber）暗示 AI 基建与平台公司的组织规模可能已在顶部，2027 年科技业总就业或首次出现结构性下降。</li>
+<li>利率维持高位背景下，Q4 大型并购大概率继续缩量；科技巨头的并购预算将更多转向股票支付。</li>
+</ul>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><strong>通讯社&#x2F;主流媒体</strong>：reuters.com、bloomberg.com、wsj.com、nytimes.com、cnbc.com、thestreet.com、marketwatch.com、finance.yahoo.com、techcrunch.com、fastcompany.com、prnewswire.com、businesswire.com</li>
+<li><strong>公司官方</strong>：investors.micron.com、oracle.com、investor.accenture.com、investors.jabil.com、ir.amd.com、blogs.microsoft.com、apple.com、investors.mongodb.com、justice.gov、postgresql.org、snowflake.com、worldlabs.ai</li>
+<li><strong>中文媒体</strong>：stcn.com（证券时报）、xinhuanet.com（新华网）、eastmoney.com（东方财富）、finance.sina.com.cn（新浪财经）、news.cctv.com（央视网）、news.pedaily.cn（投资界）、21jingji.com（21 财经）</li>
+<li><strong>其他</strong>：news.crunchbase.com、securityweek.com、calcalistech.com、salesforceben.com、cxtoday.com、informationweek.com、publicknowledge.org、marketbeat.com、investing.com、electronicsweekly.com、siliconangle.com</li>
+</ul>
+<p><strong>主要数据冲突与待证实项</strong>：① Cyera 新一轮金额：约 4 亿美元（Crunchbase&#x2F;Calcalist）vs 6 亿美元 G 轮（聚合站），待证实；② Oracle 云部门裁员 8% 仅见单一来源；③ Oura、SB Energy 推迟 IPO 各为单一媒体报道；④ 美光官方页 403 未能直接抓取，依赖多家媒体对官方新闻稿的一致转述（核心数字已经 CNBC&#x2F;TechPowerUp 独立复核）；⑤ Salesforce 收购 Listen Labs 的确切官宣日期未能精确到日；⑥ Google EU DMA 合规事项以路透为唯一可引用来源。</p>
+<h2 id="本系列其他篇目"><a href="#本系列其他篇目" class="headerlink" title="本系列其他篇目"></a>本系列其他篇目</h2><ul>
+<li><a href="/2026/10/02/2026-10-02-ai-weekly/">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</a></li>
+<li><a href="/2026/10/02/2026-10-02-semiconductors-weekly/">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</a></li>
+<li><a href="/2026/10/02/2026-10-02-consumer-electronics-weekly/">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</a></li>
+<li><a href="/2026/10/02/2026-10-02-frontier-weekly/">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/">https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/news/">news</a><a class="post-meta__tags" href="/tags/industry/">industry</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/industry-weekly/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img class="cover" src="/images/posts/semiconductors-weekly/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</div></div><div class="info-2"><div class="info-item-1">美光 FQ4 营收 542 亿美元同比 +379%，Q4 存储合约价预计再涨 15-20%；Vera Rubin 开始交付，2nm 产能上修，出口管制转向个案审查。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img class="cover" src="/images/posts/consumer-electronics-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</div></div><div class="info-2"><div class="info-item-1">苹果折叠屏 iPhone Duo 15,999 元起，Mate 90 与小米 18 撞期，Meta 三线齐发，内存涨价开始传导到整机价格。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img class="cover" src="/images/posts/ai-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</div></div><div class="info-2"><div class="info-item-1">OpenAI 搁置 GPT-6.1 Astra、Google 受限发布 Gemini 4、FTC 启动行业级调查：一周内 AI 安全从叙事变成监管动作。附 20 条事件与趋势判断。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img class="cover" src="/images/posts/semiconductors-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</div></div><div class="info-2"><div class="info-item-1">美光 FQ4 营收 542 亿美元同比 +379%，Q4 存储合约价预计再涨 15-20%；Vera Rubin 开始交付，2nm 产能上修，出口管制转向个案审查。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"><img class="cover" src="/images/posts/frontier-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</div></div><div class="info-2"><div class="info-item-1">星舰第 14 次试飞首次入轨但提前终止；CFS 签史上最大超导带材订单、中国 BEST 进入总装；量子竞赛聚焦纠错工程化；基因编辑临床喜忧并行。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E6%9C%9F%E8%A6%81%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">本期要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9F%E8%A7%88%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">速览表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">详细内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%BE%8E%E5%85%89%E5%8F%91%E5%B8%83%E5%88%9B%E7%BA%AA%E5%BD%95-FY2026-Q4-%E5%8F%8A%E5%85%A8%E5%B9%B4%E8%B4%A2%E6%8A%A5"><span class="toc-number">3.1.</span> <span class="toc-text">1. 美光发布创纪录 FY2026 Q4 及全年财报</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-AMD-%E5%AE%A3%E5%B8%83%E4%BB%A5%E7%BA%A6-82-%E4%BA%BF%E7%BE%8E%E5%85%83%E5%85%A8%E8%82%A1%E7%A5%A8%E6%94%B6%E8%B4%AD-World-Labs"><span class="toc-number">3.2.</span> <span class="toc-text">2. AMD 宣布以约 82 亿美元全股票收购 World Labs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Anthropic-%E4%B8%8A%E5%B8%82%E8%BF%9B%E7%A8%8B%E5%90%AF%E5%8A%A8%EF%BC%9A%E6%8B%9B%E8%82%A1%E4%B9%A6%E6%9B%9D%E5%85%89%EF%BC%8CIPO-%E4%BC%B0%E5%80%BC%E5%8F%AF%E8%83%BD%E8%B6%85-2-%E4%B8%87%E4%BA%BF%E7%BE%8E%E5%85%83"><span class="toc-number">3.3.</span> <span class="toc-text">3. Anthropic 上市进程启动：招股书曝光，IPO 估值可能超 2 万亿美元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Google-%E5%B9%BF%E5%91%8A%E6%8A%80%E6%9C%AF%E5%8F%8D%E5%9E%84%E6%96%AD%E6%A1%88%E8%A1%A5%E6%95%91%E8%A3%81%E5%86%B3"><span class="toc-number">3.4.</span> <span class="toc-text">4. Google 广告技术反垄断案补救裁决</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Accenture-FY2026-Q4-%E8%B6%85%E9%A2%84%E6%9C%9F"><span class="toc-number">3.5.</span> <span class="toc-text">5. Accenture FY2026 Q4 超预期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Oracle-Q1-FY27-%E4%BA%91%E4%B8%9A%E5%8A%A1%E7%88%86%E5%8F%91%EF%BC%9AIaaS-%E7%BF%BB%E5%80%8D%E3%80%81RPO-%E5%86%B2%E4%B8%8A-6-640-%E4%BA%BF%E7%BE%8E%E5%85%83"><span class="toc-number">3.6.</span> <span class="toc-text">6. Oracle Q1 FY27 云业务爆发：IaaS 翻倍、RPO 冲上 6,640 亿美元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-Uber-%E8%A3%81%E5%91%98-10-%EF%BC%9B2026-%E5%B9%B4%E7%A7%91%E6%8A%80%E4%B8%9A%E8%A3%81%E5%91%98%E6%80%BB%E9%87%8F%E5%90%8C%E6%AF%94%E5%A2%9E-54"><span class="toc-number">3.7.</span> <span class="toc-text">7. Uber 裁员 10%；2026 年科技业裁员总量同比增 54%</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-MongoDB-CEO-%E7%AA%81%E7%84%B6%E8%BE%9E%E8%81%8C%E8%BD%AC%E6%8A%95-Meta"><span class="toc-number">3.8.</span> <span class="toc-text">8. MongoDB CEO 突然辞职转投 Meta</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-AI-%E4%BB%A3%E7%90%86%E5%88%9D%E5%88%9B-Instinct-%E8%9E%8D%E8%B5%84-10-%E4%BA%BF%E7%BE%8E%E5%85%83%EF%BC%8C%E4%B8%80%E4%B8%AA%E6%9C%88%E4%BC%B0%E5%80%BC%E7%BF%BB%E5%9B%9B%E5%80%8D"><span class="toc-number">3.9.</span> <span class="toc-text">9. AI 代理初创 Instinct 融资 10 亿美元，一个月估值翻四倍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-Jabil-FY2026-%E6%94%B6%E5%AE%98%E8%B6%85%E9%A2%84%E6%9C%9F%EF%BC%8CFY2027-%E6%8C%87%E5%BC%95%E8%90%A5%E6%94%B6%E5%A2%9E-24"><span class="toc-number">3.10.</span> <span class="toc-text">10. Jabil FY2026 收官超预期，FY2027 指引营收增 24%</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E8%9E%8D%E8%B5%84%E6%BD%AE%EF%BC%9AIsland-4-%E4%BA%BF%E7%BE%8E%E5%85%83-F-%E8%BD%AE%E3%80%81Armadin-2-555-%E4%BA%BF%E7%BE%8E%E5%85%83"><span class="toc-number">3.11.</span> <span class="toc-text">11. 网络安全融资潮：Island 4 亿美元 F 轮、Armadin 2.555 亿美元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%BE%AE%E8%BD%AF%E6%94%B6%E8%B4%AD%E6%95%B0%E6%8D%AE%E5%B7%A5%E7%A8%8B%E5%88%9D%E5%88%9B-Osmos"><span class="toc-number">3.12.</span> <span class="toc-text">12. 微软收购数据工程初创 Osmos</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-Salesforce-%E7%AD%BE%E7%BA%A6%E6%94%B6%E8%B4%AD-AI-%E5%AE%A2%E6%88%B7%E7%A0%94%E7%A9%B6%E5%B9%B3%E5%8F%B0-Listen-Labs"><span class="toc-number">3.13.</span> <span class="toc-text">13. Salesforce 签约收购 AI 客户研究平台 Listen Labs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E6%B8%AF%E8%82%A1%E4%B8%89%E5%AD%A3%E5%BA%A6-IPO-%E6%94%B6%E5%AE%98%EF%BC%9A%E5%89%8D%E4%B8%89%E5%AD%A3%E5%BA%A6%E5%8B%9F%E8%B5%84%E8%B6%85-3-800-%E4%BA%BF%E6%B8%AF%E5%85%83"><span class="toc-number">3.14.</span> <span class="toc-text">14. 港股三季度 IPO 收官：前三季度募资超 3,800 亿港元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-%E5%85%A8%E7%90%83-Q3-%E5%B9%B6%E8%B4%AD%E9%99%8D%E6%B8%A9%EF%BC%9A%E5%8D%95%E5%AD%A3-9-930-%E4%BA%BF%E7%BE%8E%E5%85%83%E7%8E%AF%E6%AF%94%E9%99%8D-41"><span class="toc-number">3.15.</span> <span class="toc-text">15. 全球 Q3 并购降温：单季 9,930 亿美元环比降 41%</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-IPO-%E5%B8%82%E5%9C%BA%E5%88%86%E5%8C%96%EF%BC%9AOura-%E6%8E%A8%E8%BF%9F%E4%B8%8A%E5%B8%82%EF%BC%8CSB-Energy-%E6%90%81%E7%BD%AE-50-%E4%BA%BF%E7%BE%8E%E5%85%83-IPO"><span class="toc-number">3.16.</span> <span class="toc-text">16. IPO 市场分化：Oura 推迟上市，SB Energy 搁置 50 亿美元 IPO</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-%E8%8A%AF%E9%A9%B0%E7%A7%91%E6%8A%80%E5%AE%8C%E6%88%90-C-%E3%80%81C-%E8%BD%AE%EF%BC%8CC-%E8%BD%AE%E7%B3%BB%E5%88%97%E5%90%88%E8%AE%A1%E7%BA%A6-10-%E4%BA%BF%E5%85%83%E4%BA%BA%E6%B0%91%E5%B8%81"><span class="toc-number">3.17.</span> <span class="toc-text">17. 芯驰科技完成 C+、C++ 轮，C 轮系列合计约 10 亿元人民币</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-%E5%BC%80%E6%BA%90%E9%87%8C%E7%A8%8B%E7%A2%91%EF%BC%9AOracle-%E5%8F%91%E5%B8%83-Java-27%EF%BC%9BPostgreSQL-19-%E5%9B%9E%E9%80%80-6-%E9%A1%B9%E7%89%B9%E6%80%A7%E3%80%81GA-%E5%BB%B6%E6%9C%9F"><span class="toc-number">3.18.</span> <span class="toc-text">18. 开源里程碑：Oracle 发布 Java 27；PostgreSQL 19 回退 6 项特性、GA 延期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19-Google-%E5%9C%A8%E6%AC%A7%E7%9B%9F-DMA-%E9%A1%B9%E4%B8%8B%E8%BF%9B%E5%85%A5%E5%90%88%E8%A7%84%E5%85%B3%E9%94%AE%E6%9C%9F"><span class="toc-number">3.19.</span> <span class="toc-text">19. Google 在欧盟 DMA 项下进入合规关键期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#20-%E4%B8%AD%E5%9B%BD%E5%8F%8D%E5%9E%84%E6%96%AD%E7%9B%91%E7%AE%A1%EF%BC%9A%E5%A2%83%E5%A4%96%E5%8F%8D%E5%9E%84%E6%96%AD%E5%90%88%E8%A7%84%E6%8C%87%E5%BC%95%E5%BE%81%E6%B1%82%E6%84%8F%E8%A7%81"><span class="toc-number">3.20.</span> <span class="toc-text">20. 中国反垄断监管：境外反垄断合规指引征求意见</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%8B%E5%8A%BF%E8%A7%82%E5%AF%9F"><span class="toc-number">4.</span> <span class="toc-text">趋势观察</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">参考来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97%E5%85%B6%E4%BB%96%E7%AF%87%E7%9B%AE"><span class="toc-number">6.</span> <span class="toc-text">本系列其他篇目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img src="/images/posts/ai-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img src="/images/posts/consumer-electronics-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"><img src="/images/posts/frontier-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img src="/images/posts/semiconductors-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"><img src="/images/posts/industry-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

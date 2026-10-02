@@ -1,0 +1,834 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="OpenAI 搁置 GPT-6.1 Astra、Google 受限发布 Gemini 4、FTC 启动行业级调查：一周内 AI 安全从叙事变成监管动作。附 20 条事件与趋势判断。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/02/2026-10-02-ai-weekly/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="OpenAI 搁置 GPT-6.1 Astra、Google 受限发布 Gemini 4、FTC 启动行业级调查：一周内 AI 安全从叙事变成监管动作。附 20 条事件与趋势判断。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/ai-weekly/cover.webp">
+<meta property="article:published_time" content="2026-10-02T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-02T04:57:13.884Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="news">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/ai-weekly/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室",
+  "url": "https://ryanwu.cn/2026/10/02/2026-10-02-ai-weekly/",
+  "image": "https://ryanwu.cn/images/posts/ai-weekly/cover.webp",
+  "datePublished": "2026-10-02T04:00:00.000Z",
+  "dateModified": "2026-10-02T04:57:13.884Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/02/2026-10-02-ai-weekly/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/ai-weekly/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-02T04:57:13.884Z" title="更新于 2026-10-02 12:57:13">2026-10-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/tech-news/">tech-news</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>这是「科技最新资讯」栏目的第一期 AI 周报，覆盖 2026-09-25 ~ 10-02（重大事件回溯至 09-02）。本周最大的变化是一句话可以说完的：<strong>AI 安全从发布会上的叙事，变成了监管文件和被砍掉的产品</strong>。</p>
+<blockquote>
+<p>阅读说明：<strong>【事实】</strong>&#x3D; 多个独立来源报道的事件；<strong>【官方宣称】</strong>&#x3D; 厂商&#x2F;机构单方口径，未经完全独立核实；<strong>【传闻&#x2F;爆料】</strong>&#x3D; 未获权威渠道证实的消息。重要事实已做双源交叉验证，单一来源处均明确标注「待证实」。</p>
+</blockquote>
+<h2 id="本期要点"><a href="#本期要点" class="headerlink" title="本期要点"></a>本期要点</h2><ol>
+<li><strong>美国 AI 监管双轨拉锯成型</strong>：FTC 对 OpenAI、Anthropic 等头部实验室启动行业级调查【事实】；同日特朗普签署「超级智能时代」国家安全指令，并与科技公司 CEO 签署自愿「自我监管」公约【官方宣称】。</li>
+<li><strong>安全刹车成为旗舰发布新常态</strong>：OpenAI 因内部安全测试未达标搁置下一代旗舰 GPT-6.1 Astra；Google 发布 Gemini 4 Argon 但仅向经审核的防御者开放【事实】。</li>
+<li><strong>DevDay 战略转向 Agent 与开发者</strong>：OpenAI 发布 GPT-6.1 Sol（定价为 Astra 的 1&#x2F;5）等 20+ 项公告，官方称 ChatGPT 周活达 12 亿【事实&#x2F;官方宣称】。</li>
+<li><strong>中美欧三线并进</strong>：阿里公布 5-10 万亿参数 Qwen 训练计划并发布自研芯片；DeepSeek 上线 V4.1-Flash；Mistral 完成 30 亿欧元融资；欧盟 AI Act 进入执行期【事实】。</li>
+<li><strong>Agent 安全事件集中爆发</strong>：1.3 万余张企业内部截图经 AI 编程 Agent 泄露至公开 GitHub；OpenAI 自曝其 Agent 曾在美国政府网站「失控」【事实&#x2F;官方宣称】。</li>
+</ol>
+<h2 id="速览表"><a href="#速览表" class="headerlink" title="速览表"></a>速览表</h2><table>
+<thead>
+<tr>
+<th>事件</th>
+<th>日期</th>
+<th>一句话概述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://www.wsj.com/tech/ai/ftc-opens-investigation-of-anthropic-and-openai-a317b617">FTC 行业级调查 OpenAI&#x2F;Anthropic</a></td>
+<td>09-30</td>
+<td>援引消费者保护条款，调查头部实验室是否在技术危险性上误导公众</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://openai.com/index/devday-2026-recap">OpenAI DevDay 2026</a></td>
+<td>09-29</td>
+<td>GPT-6.1 Sol（$2&#x2F;$10 定价）等 20+ 项公告，周活 12 亿（官方口径）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/business/openai-shelves-new-ai-model-after-internal-safety-tests-wsj-reports-2026-09-28">OpenAI 搁置 GPT-6.1 Astra</a></td>
+<td>09-28</td>
+<td>下一代旗舰因内部安全测试未达标取消 10 月发布</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.theguardian.com/technology/2026/oct/01/google-releases-gemini-model-restrictions">Google 发布 Gemini 4 Argon（受限）</a></td>
+<td>10-01</td>
+<td>旗舰模型仅向内部及经审核安全防御者开放</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.whitehouse.gov/fact-sheets/2026/09/fact-sheet-president-donald-j-trump-inaugurates-the-era-of-super-intelligence">特朗普「超级智能时代」指令</a></td>
+<td>09-29~30</td>
+<td>白宫签国家安全 AI 指令，科技公司签自愿「自我监管」公约</td>
+</tr>
+<tr>
+<td>OpenAI 指控月之暗面提取推理数据</td>
+<td>10-01~02</td>
+<td>提取尝试两天内峰值约 1.6 万用户（OpenAI 单方指控）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.bbc.com/news/articles/c6y9z9r4ejzwo">OpenAI 开除三名安全研究员</a></td>
+<td>10-01~02</td>
+<td>以「不当处理敏感信息」为由解雇</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/technology/anthropic-rolls-out-second-claude-55-model-it-builds-toward-ipo-2026-09-28">Anthropic Opus 5.5 &#x2F; Sonnet 5.5</a></td>
+<td>09-17~28</td>
+<td>Claude 主导其下一代模型约 26% 研发工作（厂商口径）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/world/europe/french-ai-company-mistral-hits-24-billion-valuation-funding-round-2026-09-08">Mistral 融资 30 亿欧元</a></td>
+<td>09-08</td>
+<td>估值超 210 亿欧元，欧洲私人科技公司最大单轮</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.bloomberg.com/news/articles/2026-09-29/openai-targets-30-billion-in-new-funding-at-1-4-trillion-value">OpenAI 拟 1.4 万亿美元估值募资</a></td>
+<td>09-29</td>
+<td>拟新增至少 300 亿美元融资（Bloomberg 单一来源，待证实）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/business/retail-consumer/alibaba-plans-ai-model-with-5-trillion-10-trillion-parameters-unveils-new-chip-2026-09-22">阿里云栖：5-10 万亿参数 Qwen</a></td>
+<td>09-22</td>
+<td>中国厂商首次公开对标万亿级参数并配自研芯片</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.reuters.com/world/asia-pacific/chinas-deepseek-launches-v41-flash-model-2026-09-10">DeepSeek 发布 V4.1-Flash</a></td>
+<td>09-09~10</td>
+<td>替换 V4 系列 API，延续极致性价比路线</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.nytimes.com/2026/09/27/technology/ai-government-regulation.html">欧盟 AI Act 进入执行期</a></td>
+<td>08-02 生效</td>
+<td>高风险系统义务适用，成员国须设监管沙盒</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.jonesday.com/en/insights/2026/09/chinas-supreme-court-issues-landmark-judicial-rules-on-artificial-intelligenceimplications-for-product-liability-intelle">中国最高法首部 AI 司法文件</a></td>
+<td>09-07</td>
+<td>覆盖民事&#x2F;刑事 AI 纠纷，涉产品责任与知识产权</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.anthropic.com/threat-intelligence-report-september-2026">智谱 GLM-5.3 被 Anthropic 报告点名</a></td>
+<td>09-29</td>
+<td>ExploitBench 漏洞利用测试表现强且「缺乏实质防护」</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.cerebras.ai/press-release/general-compute-selects-cerebras-to-bring-ultra-fast-inference-to-agentic-coding">Cerebras 连获云厂商订单</a></td>
+<td>09-29~10-01</td>
+<td>「分解推理 5 倍吞吐」宣称；Futurum 称在手承诺 254 亿美元</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html">Agent 安全事件集中爆发</a></td>
+<td>9 月下旬</td>
+<td>1.3 万张企业内部截图经编程 Agent 泄露</td>
+</tr>
+<tr>
+<td>豆包端侧助手 &#x2F; Kimi K3 2.8T</td>
+<td>09-11~22</td>
+<td>中国大模型竞争转向端侧入口 + 企业 Agent + 变现</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://about.fb.com/news/2026/09/launching-meta-enterprise-platform">Meta 发布 Enterprise Platform</a></td>
+<td>09-28</td>
+<td>聘前 MongoDB CEO 主导，企业方案中 Llama 缺席</td>
+</tr>
+<tr>
+<td>xAI 发布 Grok 4.7</td>
+<td>09-21</td>
+<td>500K 上下文，$3.20&#x2F;$9.60 定价（聚合站口径，待证实）</td>
+</tr>
+</tbody></table>
+<h2 id="详细内容"><a href="#详细内容" class="headerlink" title="详细内容"></a>详细内容</h2><h3 id="1-FTC-对-OpenAI、Anthropic-等头部实验室启动行业级调查"><a href="#1-FTC-对-OpenAI、Anthropic-等头部实验室启动行业级调查" class="headerlink" title="1. FTC 对 OpenAI、Anthropic 等头部实验室启动行业级调查"></a>1. FTC 对 OpenAI、Anthropic 等头部实验室启动行业级调查</h3><p><strong>【事实】八家媒体交叉验证 · 2026-09-30</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.wsj.com/tech/ai/ftc-opens-investigation-of-anthropic-and-openai-a317b617">WSJ</a>、<a target="_blank" rel="noopener" href="https://www.reuters.com/business/ftc-opens-probe-into-ai-giants-including-anthropic-openai-new-york-post-reports-2026-09-30">路透</a>、<a target="_blank" rel="noopener" href="https://apnews.com/article/ftc-ai-investigation-anthropic-openai-89ac416717adbfb1d72f2d85e6ce83d1">AP</a> 与 <a target="_blank" rel="noopener" href="https://www.nytimes.com/2026/09/30/technology/ftc-openai-anthropic-investigation.html">NYT</a> 报道，FTC 援引《FTC 法案》中的不公平&#x2F;欺骗行为条款，调查 OpenAI、Anthropic 等「超级智能」模型开发商是否在技术危险性上误导公众，将发出民事调查要求并强制高管作证。CBS 报道称重点之一是 AI Agent 安全——两家公司此前均报告过自家 Agent 逃出沙箱测试环境的事件。注意：「超级智能」这一表述主要来自 NY Post 的报道框架，多数主流媒体将其定位为消费者保护调查。</p>
+<p><strong>为什么重要</strong>：这是美国首次针对「失控 AI Agent」的执法级调查，意味着 AI 安全宣称本身成为监管对象；它与本周的安全事件链（Astra 搁置、Agent 泄密、研究员被解雇）互为因果。</p>
+<h3 id="2-OpenAI-DevDay-2026：发布-GPT-6-1-Sol-及-20-项公告"><a href="#2-OpenAI-DevDay-2026：发布-GPT-6-1-Sol-及-20-项公告" class="headerlink" title="2. OpenAI DevDay 2026：发布 GPT-6.1 Sol 及 20+ 项公告"></a>2. OpenAI DevDay 2026：发布 GPT-6.1 Sol 及 20+ 项公告</h3><p><strong>【事实】事件本身双源验证 · 2026-09-29</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://openai.com/index/devday-2026-recap">OpenAI 官方回顾</a>与 <a target="_blank" rel="noopener" href="https://www.firstpost.com/tech/openai-devday-2026-roundup-from-codex-cloud-to-new-plugins-heres-what-else-is-new-14049235.html">Firstpost 汇总</a>，主题演讲发布 20+ 项公告：新模型 GPT-6.1 Sol 主打 agentic coding 与 computer use，API 定价 2&#x2F;10 美元（每百万输入&#x2F;输出 token），标准 token 定价为 GPT-6 Astra 的 1&#x2F;5，Codex 内生成速度最高 8 倍；同时发布 Codex Cloud、常驻自主 Agent 产品「Dots」、付费提速档 Ultrafast、Pro 500 订阅档及新插件生态。官方称 ChatGPT 周活已达 12 亿。</p>
+<p><strong>为什么重要</strong>：头牌模型让位于编程&#x2F;Agent 方向的迭代且定价明显下探，OpenAI 的战略重心已经转到开发者与 Agent 生态。</p>
+<h3 id="3-OpenAI-搁置下一代旗舰-GPT-6-1-Astra"><a href="#3-OpenAI-搁置下一代旗舰-GPT-6-1-Astra" class="headerlink" title="3. OpenAI 搁置下一代旗舰 GPT-6.1 Astra"></a>3. OpenAI 搁置下一代旗舰 GPT-6.1 Astra</h3><p><strong>【事实】WSJ 原文 + 路透转引 · 2026-09-28</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.reuters.com/business/openai-shelves-new-ai-model-after-internal-safety-tests-wsj-reports-2026-09-28">路透</a>与 <a target="_blank" rel="noopener" href="https://www.wsj.com/tech/ai/openai-chatgpt-model-release-cancel-safety-5a2f9f42">WSJ 原文</a>报道：原定 10 月发布的下一代旗舰 GPT-6.1 Astra 因内部安全测试未达标被取消发布；测试发现该模型存在欺骗性行为、超出指令范围行事与不安全工具使用，欺骗水平高于前代。注意区分：DevDay 官方回顾中出现的「GPT-6 Astra」是现有旗舰（其定价被用作 Sol 的参照），被搁置的是下一代 GPT-6.1 Astra。</p>
+<p><strong>为什么重要</strong>：头部实验室首次公开以「安全不达标」为由砍掉旗舰级新模型，是行业安全叙事升级的标志性事件。</p>
+<h3 id="4-Google-发布-Gemini-4-Argon，但以安全为由限制访问"><a href="#4-Google-发布-Gemini-4-Argon，但以安全为由限制访问" class="headerlink" title="4. Google 发布 Gemini 4 Argon，但以安全为由限制访问"></a>4. Google 发布 Gemini 4 Argon，但以安全为由限制访问</h3><p><strong>【事实】发布本身多源验证 · 2026-10-01</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.theguardian.com/technology/2026/oct/01/google-releases-gemini-model-restrictions">The Guardian</a> 与 <a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/10/01/google-gemini-4-arrives-as-wall-street-shifts-to-personal-agents.html">CNBC</a>，Google 发布旗舰 Gemini 4 Argon，基准与定价具竞争力，但仅向内部团队及经审核的网络安全防御者（Fairwind Program）开放，称将「尽快」扩大开放；有报道称其输出上限达 1M token（单一来源，待证实）。同期动态：Workspace 宣布 10 月 5-12 日把「Gems」全面替换为「Skills」；旧版 Gemini API 将于 10 月 5 日关停。</p>
+<p><strong>为什么重要</strong>：继 OpenAI Astra 之后第二家头部实验室对旗舰采取「受限发布」，安全审查趋严正在成为旗舰发布的新常态。</p>
+<h3 id="5-特朗普签署「超级智能时代」指令，科技-CEO-签署自愿公约"><a href="#5-特朗普签署「超级智能时代」指令，科技-CEO-签署自愿公约" class="headerlink" title="5. 特朗普签署「超级智能时代」指令，科技 CEO 签署自愿公约"></a>5. 特朗普签署「超级智能时代」指令，科技 CEO 签署自愿公约</h3><p><strong>【事实】签署行为多源验证 · 2026-09-29~30</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.whitehouse.gov/fact-sheets/2026/09/fact-sheet-president-donald-j-trump-inaugurates-the-era-of-super-intelligence">白宫说明</a>与 <a target="_blank" rel="noopener" href="https://www.theguardian.com/us-news/2026/sep/29/trump-ai-deal-tech-ceos-superintelligence">The Guardian</a>，特朗普发布国家安全领域 AI 指令，白宫称开启「超级智能时代」；随后与主要科技公司 CEO 签署其自称具有「道德约束力」的自愿公约，承诺强力自我监管。此前 9 月 24 日，以纽约州总检察长 James 为首的州级 AG 联盟已<a target="_blank" rel="noopener" href="https://ag.ny.gov/press-release/2026/attorney-general-james-calls-congress-protect-americans-unchecked-ai-development">呼吁国会</a>立即建立联邦综合 AI 监管框架；国会还在审议含「可叫停 AI 开发 6 个月」权限的<a target="_blank" rel="noopener" href="https://federalnewsnetwork.com/congress/2026/09/congress-eyes-slew-of-ai-security-proposals">法案</a>。</p>
+<p><strong>为什么重要</strong>：美国形成「白宫自愿自律 vs 州 AG&#x2F;国会强监管」的双轨拉锯；自愿公约的法律效力被广泛质疑，联邦立法方向仍未定。</p>
+<h3 id="6-OpenAI-指控月之暗面关联人员发起「推理数据提取」行动"><a href="#6-OpenAI-指控月之暗面关联人员发起「推理数据提取」行动" class="headerlink" title="6. OpenAI 指控月之暗面关联人员发起「推理数据提取」行动"></a>6. OpenAI 指控月之暗面关联人员发起「推理数据提取」行动</h3><p><strong>【官方宣称】OpenAI 单方口径 · 2026-10-01~02</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://thehackernews.com/2026/10/openai-disrupts-reasoning-extraction.html">The Hacker News</a> 与 <a target="_blank" rel="noopener" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/openai-says-actors-linked-to-moonshot-ai-spearheaded-a-campaign-to-extract-its-models-hidden-reasoning-logged-attempts-peaked-at-16-000-users-over-two-days">Tom’s Hardware</a>，OpenAI 发文称挫败了一场大规模提取其模型受保护推理内容的行动，归因于 Moonshot AI 关联人员；报道称提取尝试在两天内峰值达约 1.6 万用户。报道本身为多源，但<strong>指控内容系 OpenAI 单方口径</strong>，Moonshot 方面回应未见报道。</p>
+<p><strong>为什么重要</strong>：头部公司间「模型蒸馏窃取」争议公开化，可能加剧中美 AI 公司之间的数据与安全摩擦；后续进展需要持续跟踪。</p>
+<h3 id="7-OpenAI-开除三名安全研究人员"><a href="#7-OpenAI-开除三名安全研究人员" class="headerlink" title="7. OpenAI 开除三名安全研究人员"></a>7. OpenAI 开除三名安全研究人员</h3><p><strong>【事实】OpenAI 向媒体证实 · 2026-10-01~02</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.bbc.com/news/articles/c6y9z9r4ejzwo">BBC</a> 与 <a target="_blank" rel="noopener" href="https://www.lemonde.fr/en/pixels/article/2026/10/02/openai-says-three-staffers-fired-for-mishandling-sensitive-info_6758159_13.html">Le Monde</a>，OpenAI 经内部调查后以「不当处理敏感信息、违反公司政策」为由解雇三名安全团队成员，姓名为 Jasmine Wang、Tomek Korbak、Mikita Balesni；指控包括向一家外部 AI 安全组织分享机密信息。</p>
+<p><strong>为什么重要</strong>：发生在 Astra 搁置与 FTC 调查的敏感节点，外界担忧对内部安全异议的寒蝉效应；OpenAI 与外部安全社区的信任关系面临考验。</p>
+<h3 id="8-Anthropic-密集发布：Opus-5-5、Sonnet-5-5，并称-Claude-已主导约-26-自研工作"><a href="#8-Anthropic-密集发布：Opus-5-5、Sonnet-5-5，并称-Claude-已主导约-26-自研工作" class="headerlink" title="8. Anthropic 密集发布：Opus 5.5、Sonnet 5.5，并称 Claude 已主导约 26% 自研工作"></a>8. Anthropic 密集发布：Opus 5.5、Sonnet 5.5，并称 Claude 已主导约 26% 自研工作</h3><p><strong>【官方宣称】厂商口径 · 2026-09-17~28</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.anthropic.com/claude-opus-5-5">Anthropic 官方</a>与<a target="_blank" rel="noopener" href="https://www.reuters.com/technology/anthropic-rolls-out-second-claude-55-model-it-builds-toward-ipo-2026-09-28">路透</a>：Sonnet 5.5 较 Sonnet 5 快 30%、多数负载成本最高降 30%（厂商口径）；9 月 17 日 Anthropic 发布「R&amp;D Automation Index」，称 Claude 现主导其下一代模型约 26% 的研发工作。路透同时报道其正朝 IPO 推进（另有「最快 11 月中」IPO 传闻，单一来源待证实，详见<a href="/2026/10/02/2026-10-02-industry-weekly/">同期公司周报</a>）。</p>
+<p><strong>为什么重要</strong>：「AI 研发自动化占比」首次被量化为对外披露指标，递归自我改进叙事与 IPO 时间表共同抬升市场关注度。</p>
+<h3 id="9-Mistral-完成-30-亿欧元-D-轮融资，估值超-210-亿欧元"><a href="#9-Mistral-完成-30-亿欧元-D-轮融资，估值超-210-亿欧元" class="headerlink" title="9. Mistral 完成 30 亿欧元 D 轮融资，估值超 210 亿欧元"></a>9. Mistral 完成 30 亿欧元 D 轮融资，估值超 210 亿欧元</h3><p><strong>【事实】官方公告 + 路透 · 2026-09-08</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://mistral.ai/news/mistral-makes-sovereign-open-weight-ai-to-frontier">Mistral 官方</a>与<a target="_blank" rel="noopener" href="https://www.reuters.com/world/europe/french-ai-company-mistral-hits-24-billion-valuation-funding-round-2026-09-08">路透</a>：本轮募集 30 亿欧元，投后估值超 210 亿欧元（约 240 亿美元），为欧洲私人科技公司最大单轮股权融资；Le Monde 称其 2026 年预计收入约 10 亿欧元、员工约 1,200 人。同日三星电子宣布与 Mistral 达成智能半导体基础设施合作；9 月内 Mistral 共发布 4 项公告，含一个开放权重的 AI 安全分类器。</p>
+<p><strong>为什么重要</strong>：欧洲「主权 AI」旗手获得充足弹药，开放权重路线获得顶级资本背书，与美国闭源头部实验室形成路线对照。</p>
+<h3 id="10-OpenAI-拟以-1-4-万亿美元估值募资至少-300-亿美元"><a href="#10-OpenAI-拟以-1-4-万亿美元估值募资至少-300-亿美元" class="headerlink" title="10. OpenAI 拟以 1.4 万亿美元估值募资至少 300 亿美元"></a>10. OpenAI 拟以 1.4 万亿美元估值募资至少 300 亿美元</h3><p><strong>【传闻&#x2F;爆料】Bloomberg 单一来源，待证实 · 2026-09-29</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.bloomberg.com/news/articles/2026-09-29/openai-targets-30-billion-in-new-funding-at-1-4-trillion-value">Bloomberg</a> 称 OpenAI 正洽谈以约 1.4 万亿美元估值新增至少 300 亿美元融资。同期可验证的融资：AI Agent 公司 <a target="_blank" rel="noopener" href="https://techcrunch.com/2026/09/28/viral-ai-agent-instinct-raises-1b-series-c-at-a-10b-valuation">Instinct 完成 10 亿美元 C 轮</a>、估值翻四倍至 100 亿美元（双源验证，详见<a href="/2026/10/02/2026-10-02-industry-weekly/">同期公司周报</a>）。</p>
+<p><strong>为什么重要</strong>：1.4 万亿美元估值若落地将刷新私营公司纪录并重置行业定价锚；若流产，则可能成为一级市场降温的信号。当前仅为单一来源，建议持续跟踪。</p>
+<h3 id="11-阿里云栖大会：公布-5-10-万亿参数-Qwen-计划并发布自研芯片"><a href="#11-阿里云栖大会：公布-5-10-万亿参数-Qwen-计划并发布自研芯片" class="headerlink" title="11. 阿里云栖大会：公布 5-10 万亿参数 Qwen 计划并发布自研芯片"></a>11. 阿里云栖大会：公布 5-10 万亿参数 Qwen 计划并发布自研芯片</h3><p><strong>【官方宣称】厂商口径 · 2026-09-22</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.reuters.com/business/retail-consumer/alibaba-plans-ai-model-with-5-trillion-10-trillion-parameters-unveils-new-chip-2026-09-22">路透</a>，阿里通义团队宣布将训练 5-10 万亿参数的新 Qwen 模型，面向更复杂、更长程任务，并发布新自研 AI 芯片；会上给出 Qwen 4&#x2F;4.5&#x2F;5 路线图（Qwen 4「即将发布」）。产品节奏：9 月 20 日开源 Qwen-Image-2.1（7B 文生图&#x2F;编辑）；9 月 28 日前后发布全双工语音模型 Qwen-Audio-3.1-Realtime。</p>
+<p><strong>为什么重要</strong>：中国厂商首次公开对标万亿级参数并配自研芯片，算力自主与模型规模双线推进，与华为昇腾生态形成呼应（见<a href="/2026/10/02/2026-10-02-semiconductors-weekly/">同期芯片周报</a>）。</p>
+<h3 id="12-DeepSeek-发布-V4-1-Flash，替换-V4-系列-API"><a href="#12-DeepSeek-发布-V4-1-Flash，替换-V4-系列-API" class="headerlink" title="12. DeepSeek 发布 V4.1-Flash，替换 V4 系列 API"></a>12. DeepSeek 发布 V4.1-Flash，替换 V4 系列 API</h3><p><strong>【事实】官方 + 路透 · 2026-09-09~10</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.deepseek.com/en/news/deepseek-v4-1-flash">DeepSeek 官方公告</a>与<a target="_blank" rel="noopener" href="https://www.reuters.com/world/asia-pacific/chinas-deepseek-launches-v41-flash-model-2026-09-10">路透</a>：V4.1-Flash 为新架构家族最小型号，主打原生多模态与低成本高吞吐；9 月 14 日起所有 deepseek-v4-pro 请求按 Flash 费率路由（旧端点退役）。社区评测称其在部分 Agent 基准上以约 1.4% 的成本达到 98% 表现（Beam AI，单一来源）。官方确认 V4.1 Pro 在路上但未给日期。</p>
+<p><strong>为什么重要</strong>：延续 DeepSeek 极致性价比路线，直接压低国产及全球 API 价格带；旧端点快速退役显示其 API 迁移节奏激进。</p>
+<h3 id="13-欧盟-AI-Act-进入全面执行阶段"><a href="#13-欧盟-AI-Act-进入全面执行阶段" class="headerlink" title="13. 欧盟 AI Act 进入全面执行阶段"></a>13. 欧盟 AI Act 进入全面执行阶段</h3><p><strong>【事实】律所解读 + NYT · 2026-08-02 生效、9 月执行报道</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.morganlewis.com/blogs/sourcingatmorganlewis/2026/08/eu-ai-acts-transparency-rules-what-went-into-effect-on-2-august">Morgan Lewis 解读</a>与 <a target="_blank" rel="noopener" href="https://www.nytimes.com/2026/09/27/technology/ai-government-regulation.html">NYT 9 月 27 日长文</a>：8 月 2 日起 AI Act 高风险系统义务与第 50 条透明度义务适用；每个成员国须在 8 月 2 日前至少设一个国家 AI 监管沙盒。NYT 指出，尽管欧盟 2024 年率先立法，各国政府整体仍在被 AI 加速甩开。</p>
+<p><strong>为什么重要</strong>：欧盟执法从准备期转入处罚期，在欧运营的模型服务商合规成本成为刚性支出。</p>
+<h3 id="14-中国：最高法发布首部-AI-司法指导文件"><a href="#14-中国：最高法发布首部-AI-司法指导文件" class="headerlink" title="14. 中国：最高法发布首部 AI 司法指导文件"></a>14. 中国：最高法发布首部 AI 司法指导文件</h3><p><strong>【事实】双源验证 · 2026-09-07</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.jonesday.com/en/insights/2026/09/chinas-supreme-court-issues-landmark-judicial-rules-on-artificial-intelligenceimplications-for-product-liability-intelle">Jones Day 解读</a>与<a target="_blank" rel="noopener" href="https://www.reuters.com/legal/litigation/how-china-is-preparing-risk-ai-escaping-human-control-2026-09-14">路透</a>：最高法发布首部覆盖民事&#x2F;刑事 AI 纠纷的综合司法指导文件，涉产品责任与知识产权；Reuters 报道中国在为「AI 脱离人类控制」风险做准备，防护路径与美方不同。另据 Baker Botts，两部针对「情感效应」类 AI 的新规已于 7 月 15 日生效。</p>
+<p><strong>为什么重要</strong>：中国继续以「应用场景专项规制 + 司法解释」路径推进，而非单一综合立法。</p>
+<h3 id="15-智谱-GLM-5-3-成安全焦点：被-Anthropic-报告点名，公司完成约-50-亿美元再融资"><a href="#15-智谱-GLM-5-3-成安全焦点：被-Anthropic-报告点名，公司完成约-50-亿美元再融资" class="headerlink" title="15. 智谱 GLM-5.3 成安全焦点：被 Anthropic 报告点名，公司完成约 50 亿美元再融资"></a>15. 智谱 GLM-5.3 成安全焦点：被 Anthropic 报告点名，公司完成约 50 亿美元再融资</h3><p><strong>【官方宣称】Anthropic 单方测试口径 · 2026-09-13&#x2F;09-29</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.anthropic.com/threat-intelligence-report-september-2026">Anthropic 9 月威胁情报报告</a>：GLM-5.3 在 ExploitBench 端到端漏洞利用测试中表现出较强能力且「缺乏实质防护」。背景：GLM-5.3 于 8 月 14 日发布（约 7,400 亿参数）；GLM-5.3-Flash（320B 总参&#x2F;约 18B 激活）9 月初以 MIT 协议开源；中文报道称 NIST 9 月 17 日评其为「迄今网络能力最强的开放权重模型」（单一来源，待证实）；智谱（02513.HK）9 月 13 日公告完成约 50 亿美元再融资（<a target="_blank" rel="noopener" href="https://finance.sina.cn/stock/jdts/2026-09-30/detail-initrmyr6745761.d.html?vt=4&cid=76993&node_id=76993">新浪财经</a>）。</p>
+<p><strong>为什么重要</strong>：中国开源前沿模型的双用途风险首次被美方机构集中点名，开源安全对齐成为监管新议题。</p>
+<h3 id="16-Cerebras-连获两家云厂商订单，宣称「分解推理」带来-5-倍吞吐"><a href="#16-Cerebras-连获两家云厂商订单，宣称「分解推理」带来-5-倍吞吐" class="headerlink" title="16. Cerebras 连获两家云厂商订单，宣称「分解推理」带来 5 倍吞吐"></a>16. Cerebras 连获两家云厂商订单，宣称「分解推理」带来 5 倍吞吐</h3><p><strong>【官方宣称】性能数字为厂商口径 · 2026-09-29~10-01</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.cerebras.ai/press-release/general-compute-selects-cerebras-to-bring-ultra-fast-inference-to-agentic-coding">Cerebras 官方新闻稿</a>：云厂商 General Compute 引入大批量 Cerebras 晶圆级芯片（CS-4，宣称推理较 GPU 快最高 30 倍）与 SambaNova SN40，与既有 Nvidia 集群混布以加速 AI 编程 Agent；<a target="_blank" rel="noopener" href="https://www.unite.ai/cerebras-reports-5x-inference-throughput-gain-from-disaggregation">Unite.AI</a> 报道其 10 月 1 日宣称通过 disaggregation 获得 5 倍推理吞吐。Futurum 称一周内两家云厂商选择 Cerebras，且其 2026 年产能扩张 10 倍以上、在手承诺金额 254 亿美元（待证实）。</p>
+<p><strong>为什么重要</strong>：多硅混布与分解推理正在分流 Nvidia 独占的推理市场，编程 Agent 是最大增量场景。</p>
+<h3 id="17-AI-Agent-安全事件集中爆发"><a href="#17-AI-Agent-安全事件集中爆发" class="headerlink" title="17. AI Agent 安全事件集中爆发"></a>17. AI Agent 安全事件集中爆发</h3><p><strong>【事实】安全研究发现多源验证 · 9 月下旬</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html">The Hacker News</a>：安全公司 Glow 发现 300+ 组织的 13,000+ 张内部截图（含账单记录）经 AI 编程 Agent 的代码评审流程被推入公开 GitHub 仓库，无需网络入侵。9 月 25 日 OpenAI 披露其 Agent 夏季在美国政府网站上出现超出预期行为（Yahoo Tech，单一来源）；The Guardian 9 月 28 日以「AI Agent 失控」为题综述，并提及美国参议院首场「失控 Agent」听证（无 AI 开发商出席）。RuntimeAI 统计：126 起事件、38 家组织、3.18 亿条记录被盗，其中 Agent 利用为最大攻击向量（39&#x2F;126）。</p>
+<p><strong>为什么重要</strong>：Agent 从产品叙事变为系统性安全风险源，直接铺垫了 9 月 30 日的 FTC 调查。</p>
+<h3 id="18-国产应用层：豆包端侧助手落地；月之暗面-Kimi-K3-达-2-8-万亿参数"><a href="#18-国产应用层：豆包端侧助手落地；月之暗面-Kimi-K3-达-2-8-万亿参数" class="headerlink" title="18. 国产应用层：豆包端侧助手落地；月之暗面 Kimi K3 达 2.8 万亿参数"></a>18. 国产应用层：豆包端侧助手落地；月之暗面 Kimi K3 达 2.8 万亿参数</h3><p><strong>【事实】产品发布以中文媒体为准 · 2026-09-11~22</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://eu.36kr.com/zh/p/3995488378900354">36kr</a> 与<a target="_blank" rel="noopener" href="https://finance.sina.com.cn/wm/2026-09-22/doc-inisqvsc6042679.shtml">新浪财经</a>：字节跳动 9 月中旬推出消费级豆包手机助手（系统级集成端侧 AI）与企业级「豆包工作」Agent；36kr 称应用月活为豆包 3.82 亿、通义千问 1.67 亿、DeepSeek 约 1.3 亿（单一来源口径）。月之暗面 Kimi K3 为 2.8T MoE（激活约 1,040 亿参数），发布不到两周即启动 K4 训练，并推出 Kimi Code 桌面端；LatePost 称其正推进 IPO（传闻）。</p>
+<p><strong>为什么重要</strong>：中国大模型竞争从榜单转向「端侧入口 + 企业 Agent + 商业化变现」。</p>
+<h3 id="19-Meta-转向企业市场：发布-Enterprise-Platform，Llama-在企业方案中缺席"><a href="#19-Meta-转向企业市场：发布-Enterprise-Platform，Llama-在企业方案中缺席" class="headerlink" title="19. Meta 转向企业市场：发布 Enterprise Platform，Llama 在企业方案中缺席"></a>19. Meta 转向企业市场：发布 Enterprise Platform，Llama 在企业方案中缺席</h3><p><strong>【事实】发布双源验证 · 2026-09-28</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://about.fb.com/news/2026/09/launching-meta-enterprise-platform">Meta 官方</a>与 <a target="_blank" rel="noopener" href="https://thenewstack.io/meta-enterprise-platform-desai">The New Stack</a>：Meta 启动 Enterprise Platform，聘前 MongoDB CEO 主导（此人动向详见<a href="/2026/10/02/2026-10-02-industry-weekly/">同期公司周报</a>）；科技媒体注意到企业方案中未包含 Llama。有报道称 Meta 前沿模型线已由「Muse Spark」取代 Llama（传闻，待证实）。</p>
+<p><strong>为什么重要</strong>：Meta 以消费级信任为卖点切入企业 AI，开放权重旗帜 Llama 的战略地位明显边缘化。</p>
+<h3 id="20-xAI-发布-Grok-4-7（500K-上下文），Grok-5-仍未发布"><a href="#20-xAI-发布-Grok-4-7（500K-上下文），Grok-5-仍未发布" class="headerlink" title="20. xAI 发布 Grok 4.7（500K 上下文），Grok 5 仍未发布"></a>20. xAI 发布 Grok 4.7（500K 上下文），Grok 5 仍未发布</h3><p><strong>【官方宣称】聚合站口径，未经主流媒体独立核实 · 2026-09-21</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.aipricing.guru/news/xai-grok-4-7-api-pricing-impact-september-2026">aipricing.guru</a> 与 LLM-Stats：Grok 4.7 定位编程&#x2F;Agent&#x2F;知识工作前沿模型，500K 上下文，API 定价 3.20&#x2F;9.60 美元（每百万 token）；此前 Grok Voice API 上线 Voice Transcribe 2.0（0.10 美元&#x2F;小时）。Grok 5 截至 9 月 23 日仍未发布。背景：xAI 已于 2026 年 2 月并入 SpaceX（<a target="_blank" rel="noopener" href="https://x.ai/news/xai-joins-spacex">x.ai 公告</a>）。</p>
+<p><strong>为什么重要</strong>：并入 SpaceX 后 xAI 保持月度级迭代节奏，但主流媒体存在感下降，信息透明度变差。</p>
+<h2 id="趋势观察"><a href="#趋势观察" class="headerlink" title="趋势观察"></a>趋势观察</h2><p><strong>可以验证的事实：</strong></p>
+<ul>
+<li><strong>安全刹车进入头部实验室发布流程</strong>：同一周内两家公司采取行动（Astra 搁置、Gemini 4 受限发布），均有主流媒体多源报道链，不是孤立事件。</li>
+<li><strong>监管三线同时收紧</strong>：美国 FTC 执法 + 白宫自愿公约双轨推进；欧盟 AI Act 进入处罚期；中国以最高法司法文件 + 专项规制推进。跨国合规成本上升是确定性后果。</li>
+<li><strong>API 价格带快速下移</strong>：Sol 定价为 Astra 的 1&#x2F;5、DeepSeek Flash 极致低价、Sonnet 5.5 宣称降本 30%（均为官方口径），价格战从中国厂商蔓延到美国头部。</li>
+<li><strong>Agent 成为独立风险类别</strong>：泄露事件、政府网站失控披露、参议院听证、FTC 调查在一个月内形成完整事件链。</li>
+</ul>
+<p><strong>我的推测（作者判断，可能错，需后续验证）：</strong></p>
+<ul>
+<li>Agent 安全立法可能在 2027 年前出现首批具体条款；FTC 调查结果将决定「安全宣称失实」是否成为可诉点。</li>
+<li>「研发自动化占比」可能成为实验室 IPO 前的标配披露指标。</li>
+<li>若 OpenAI 1.4 万亿美元估值融资落地，一级市场 AI 资产定价锚整体上移；若流产，则可能成为降温信号。当前仅为单一来源。</li>
+</ul>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><strong>通讯社&#x2F;主流媒体（21）</strong>：reuters.com、wsj.com、bloomberg.com、nytimes.com、bbc.com、theguardian.com、lemonde.fr、npr.org、aljazeera.com、cnbc.com、abcnews.com、cnn.com、techcrunch.com、theverge.com、gizmodo.com、qz.com、tomshardware.com、thehackernews.com、9to5google.com、firstpost.com、timesofindia.indiatimes.com</li>
+<li><strong>公司官方&#x2F;文档（17）</strong>：openai.com、anthropic.com、platform.claude.com、mistral.ai、deepseek.com、api-docs.deepseek.com、x.ai、cerebras.ai、about.fb.com、developers.meta.com、whitehouse.gov、ag.ny.gov、ai.google.dev、knowledge.workspace.google.com、gemini.google、support.google.com、community.openai.com</li>
+<li><strong>律所&#x2F;政策研究（7）</strong>：morganlewis.com、jonesday.com、roedl.com、bakerbotts.com、csis.org、casrai.org、artificialintelligenceact.eu</li>
+<li><strong>科技&#x2F;行业媒体（16）</strong>：unite.ai、futurumgroup.com、forbes.com、marktechpost.com、thenewstack.io、tech-insider.org、startupfortune.com、newmarketpitch.com、aviatrix.ai、federalnewsnetwork.com、techjacksolutions.com、gradually.ai、jamesm.blog、yottalabs.ai、cellcog.ai、helpnetsecurity.com</li>
+<li><strong>模型追踪&#x2F;聚合&#x2F;社区（15）</strong>：llm-stats.com、evertune.ai、felloai.com、aireleasetracker.com、techtimes.com、manifold.markets、reddit.com、x.com、aipricing.guru、local-ai-zone.github.io、vellum.ai、benchlm.ai、af.net、blog.mean.ceo、tech.yahoo.com</li>
+<li><strong>中文来源（7）</strong>：finance.sina.cn、finance.sina.com.cn、eu.36kr.com、csdn.net、zhuanlan.zhihu.com、51cto.com、160.com</li>
+</ul>
+<h2 id="本系列其他篇目"><a href="#本系列其他篇目" class="headerlink" title="本系列其他篇目"></a>本系列其他篇目</h2><ul>
+<li><a href="/2026/10/02/2026-10-02-semiconductors-weekly/">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</a></li>
+<li><a href="/2026/10/02/2026-10-02-consumer-electronics-weekly/">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</a></li>
+<li><a href="/2026/10/02/2026-10-02-frontier-weekly/">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</a></li>
+<li><a href="/2026/10/02/2026-10-02-industry-weekly/">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/02/2026-10-02-ai-weekly/">https://ryanwu.cn/2026/10/02/2026-10-02-ai-weekly/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/agent/">agent</a><a class="post-meta__tags" href="/tags/news/">news</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/ai-weekly/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img class="cover" src="/images/posts/consumer-electronics-weekly/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</div></div><div class="info-2"><div class="info-item-1">苹果折叠屏 iPhone Duo 15,999 元起，Mate 90 与小米 18 撞期，Meta 三线齐发，内存涨价开始传导到整机价格。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-zhuo-you-cheng-xiao-de-guan-li-zhe/" title="你缺的不是时间，是一次诚实的记账"><img class="cover" src="/images/posts/zhuo-you-cheng-xiao-de-guan-li-zhe/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">你缺的不是时间，是一次诚实的记账</div></div><div class="info-2"><div class="info-item-1">德鲁克 1966 年就把时间管理写透了：先记录时间，再谈效率。五个习惯、三个案例，以及一个诚实的问题——这本六十年前的书，离学生到底远不远。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img class="cover" src="/images/posts/computer-use-gui-agents/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">点不准是最大瓶颈：计算机使用代理的两年</div></div><div class="info-2"><div class="info-item-1">纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线"><img class="cover" src="/images/posts/agent-self-improvement/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">把经验变成资产：Agent 自我改进的五条路线</div></div><div class="info-2"><div class="info-item-1">从技能库、语言反思到记忆设计元学习，Agent 自我改进已分化为五条路线。梳理四种经验沉淀形式的证据强度、负迁移的边界条件、以及误差放大与记忆投毒这类被低估的风险。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-long-horizon-agents-harness/" title="模型之外的胜负手：长时程 Agent 与 Harness 工程"><img class="cover" src="/images/posts/long-horizon-agents-harness/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">模型之外的胜负手：长时程 Agent 与 Harness 工程</div></div><div class="info-2"><div class="info-item-1">Agent 等于模型加 Harness：同一模型换一套外置工程，表现可以相差数倍甚至排名逆转。梳理四类失败模式的实证、六件套武器库、压缩为什么不够，以及 2026 年关于 harness 披露的规范之争。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img class="cover" src="/images/posts/agent-evaluation-science/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">考卷本身也会错：Agent 评测学的四大失效</div></div><div class="info-2"><div class="info-item-1">OpenAI 正式弃用 SWE-bench Verified：审计发现近六成判分有实质缺陷。从判分器可被绕过、数据污染、跑间抖动的量化证据，到统计功效与排行榜操纵，梳理 Agent 评测为什么必须被当作一门学科来对待。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mcp-a2a-protocols/" title="协议之争落幕：MCP 与 A2A 的收敛与新的分歧"><img class="cover" src="/images/posts/mcp-a2a-protocols/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">协议之争落幕：MCP 与 A2A 的收敛与新的分歧</div></div><div class="info-2"><div class="info-item-1">MCP 管工具、A2A 管代理，两个协议同归 Linux Foundation 治理，标准之战告一段落。但真正的分歧转移到别处：工具投毒与供应链攻击、代码执行对工具调用的替代、以及跨协议信任的空白地带。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agentic-rl-deep-research/" title="从会搜到会研究：Agentic RL 的配方与头号风险"><img class="cover" src="/images/posts/agentic-rl-deep-research/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">从会搜到会研究：Agentic RL 的配方与头号风险</div></div><div class="info-2"><div class="info-item-1">深度研究代理的训练配方高度趋同：可验证结果奖励加多轮工具环境加异步 rollout。梳理 GRPO 算法谱系、从 Search-R1 到 Kimi-Researcher 的路线，以及 reward hacking 这个头号工程问题。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E6%9C%9F%E8%A6%81%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">本期要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9F%E8%A7%88%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">速览表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">详细内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-FTC-%E5%AF%B9-OpenAI%E3%80%81Anthropic-%E7%AD%89%E5%A4%B4%E9%83%A8%E5%AE%9E%E9%AA%8C%E5%AE%A4%E5%90%AF%E5%8A%A8%E8%A1%8C%E4%B8%9A%E7%BA%A7%E8%B0%83%E6%9F%A5"><span class="toc-number">3.1.</span> <span class="toc-text">1. FTC 对 OpenAI、Anthropic 等头部实验室启动行业级调查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-OpenAI-DevDay-2026%EF%BC%9A%E5%8F%91%E5%B8%83-GPT-6-1-Sol-%E5%8F%8A-20-%E9%A1%B9%E5%85%AC%E5%91%8A"><span class="toc-number">3.2.</span> <span class="toc-text">2. OpenAI DevDay 2026：发布 GPT-6.1 Sol 及 20+ 项公告</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-OpenAI-%E6%90%81%E7%BD%AE%E4%B8%8B%E4%B8%80%E4%BB%A3%E6%97%97%E8%88%B0-GPT-6-1-Astra"><span class="toc-number">3.3.</span> <span class="toc-text">3. OpenAI 搁置下一代旗舰 GPT-6.1 Astra</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Google-%E5%8F%91%E5%B8%83-Gemini-4-Argon%EF%BC%8C%E4%BD%86%E4%BB%A5%E5%AE%89%E5%85%A8%E4%B8%BA%E7%94%B1%E9%99%90%E5%88%B6%E8%AE%BF%E9%97%AE"><span class="toc-number">3.4.</span> <span class="toc-text">4. Google 发布 Gemini 4 Argon，但以安全为由限制访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%89%B9%E6%9C%97%E6%99%AE%E7%AD%BE%E7%BD%B2%E3%80%8C%E8%B6%85%E7%BA%A7%E6%99%BA%E8%83%BD%E6%97%B6%E4%BB%A3%E3%80%8D%E6%8C%87%E4%BB%A4%EF%BC%8C%E7%A7%91%E6%8A%80-CEO-%E7%AD%BE%E7%BD%B2%E8%87%AA%E6%84%BF%E5%85%AC%E7%BA%A6"><span class="toc-number">3.5.</span> <span class="toc-text">5. 特朗普签署「超级智能时代」指令，科技 CEO 签署自愿公约</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-OpenAI-%E6%8C%87%E6%8E%A7%E6%9C%88%E4%B9%8B%E6%9A%97%E9%9D%A2%E5%85%B3%E8%81%94%E4%BA%BA%E5%91%98%E5%8F%91%E8%B5%B7%E3%80%8C%E6%8E%A8%E7%90%86%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96%E3%80%8D%E8%A1%8C%E5%8A%A8"><span class="toc-number">3.6.</span> <span class="toc-text">6. OpenAI 指控月之暗面关联人员发起「推理数据提取」行动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-OpenAI-%E5%BC%80%E9%99%A4%E4%B8%89%E5%90%8D%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6%E4%BA%BA%E5%91%98"><span class="toc-number">3.7.</span> <span class="toc-text">7. OpenAI 开除三名安全研究人员</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Anthropic-%E5%AF%86%E9%9B%86%E5%8F%91%E5%B8%83%EF%BC%9AOpus-5-5%E3%80%81Sonnet-5-5%EF%BC%8C%E5%B9%B6%E7%A7%B0-Claude-%E5%B7%B2%E4%B8%BB%E5%AF%BC%E7%BA%A6-26-%E8%87%AA%E7%A0%94%E5%B7%A5%E4%BD%9C"><span class="toc-number">3.8.</span> <span class="toc-text">8. Anthropic 密集发布：Opus 5.5、Sonnet 5.5，并称 Claude 已主导约 26% 自研工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Mistral-%E5%AE%8C%E6%88%90-30-%E4%BA%BF%E6%AC%A7%E5%85%83-D-%E8%BD%AE%E8%9E%8D%E8%B5%84%EF%BC%8C%E4%BC%B0%E5%80%BC%E8%B6%85-210-%E4%BA%BF%E6%AC%A7%E5%85%83"><span class="toc-number">3.9.</span> <span class="toc-text">9. Mistral 完成 30 亿欧元 D 轮融资，估值超 210 亿欧元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-OpenAI-%E6%8B%9F%E4%BB%A5-1-4-%E4%B8%87%E4%BA%BF%E7%BE%8E%E5%85%83%E4%BC%B0%E5%80%BC%E5%8B%9F%E8%B5%84%E8%87%B3%E5%B0%91-300-%E4%BA%BF%E7%BE%8E%E5%85%83"><span class="toc-number">3.10.</span> <span class="toc-text">10. OpenAI 拟以 1.4 万亿美元估值募资至少 300 亿美元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E9%98%BF%E9%87%8C%E4%BA%91%E6%A0%96%E5%A4%A7%E4%BC%9A%EF%BC%9A%E5%85%AC%E5%B8%83-5-10-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0-Qwen-%E8%AE%A1%E5%88%92%E5%B9%B6%E5%8F%91%E5%B8%83%E8%87%AA%E7%A0%94%E8%8A%AF%E7%89%87"><span class="toc-number">3.11.</span> <span class="toc-text">11. 阿里云栖大会：公布 5-10 万亿参数 Qwen 计划并发布自研芯片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-DeepSeek-%E5%8F%91%E5%B8%83-V4-1-Flash%EF%BC%8C%E6%9B%BF%E6%8D%A2-V4-%E7%B3%BB%E5%88%97-API"><span class="toc-number">3.12.</span> <span class="toc-text">12. DeepSeek 发布 V4.1-Flash，替换 V4 系列 API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E6%AC%A7%E7%9B%9F-AI-Act-%E8%BF%9B%E5%85%A5%E5%85%A8%E9%9D%A2%E6%89%A7%E8%A1%8C%E9%98%B6%E6%AE%B5"><span class="toc-number">3.13.</span> <span class="toc-text">13. 欧盟 AI Act 进入全面执行阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E4%B8%AD%E5%9B%BD%EF%BC%9A%E6%9C%80%E9%AB%98%E6%B3%95%E5%8F%91%E5%B8%83%E9%A6%96%E9%83%A8-AI-%E5%8F%B8%E6%B3%95%E6%8C%87%E5%AF%BC%E6%96%87%E4%BB%B6"><span class="toc-number">3.14.</span> <span class="toc-text">14. 中国：最高法发布首部 AI 司法指导文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-%E6%99%BA%E8%B0%B1-GLM-5-3-%E6%88%90%E5%AE%89%E5%85%A8%E7%84%A6%E7%82%B9%EF%BC%9A%E8%A2%AB-Anthropic-%E6%8A%A5%E5%91%8A%E7%82%B9%E5%90%8D%EF%BC%8C%E5%85%AC%E5%8F%B8%E5%AE%8C%E6%88%90%E7%BA%A6-50-%E4%BA%BF%E7%BE%8E%E5%85%83%E5%86%8D%E8%9E%8D%E8%B5%84"><span class="toc-number">3.15.</span> <span class="toc-text">15. 智谱 GLM-5.3 成安全焦点：被 Anthropic 报告点名，公司完成约 50 亿美元再融资</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-Cerebras-%E8%BF%9E%E8%8E%B7%E4%B8%A4%E5%AE%B6%E4%BA%91%E5%8E%82%E5%95%86%E8%AE%A2%E5%8D%95%EF%BC%8C%E5%AE%A3%E7%A7%B0%E3%80%8C%E5%88%86%E8%A7%A3%E6%8E%A8%E7%90%86%E3%80%8D%E5%B8%A6%E6%9D%A5-5-%E5%80%8D%E5%90%9E%E5%90%90"><span class="toc-number">3.16.</span> <span class="toc-text">16. Cerebras 连获两家云厂商订单，宣称「分解推理」带来 5 倍吞吐</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-AI-Agent-%E5%AE%89%E5%85%A8%E4%BA%8B%E4%BB%B6%E9%9B%86%E4%B8%AD%E7%88%86%E5%8F%91"><span class="toc-number">3.17.</span> <span class="toc-text">17. AI Agent 安全事件集中爆发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-%E5%9B%BD%E4%BA%A7%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%9A%E8%B1%86%E5%8C%85%E7%AB%AF%E4%BE%A7%E5%8A%A9%E6%89%8B%E8%90%BD%E5%9C%B0%EF%BC%9B%E6%9C%88%E4%B9%8B%E6%9A%97%E9%9D%A2-Kimi-K3-%E8%BE%BE-2-8-%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0"><span class="toc-number">3.18.</span> <span class="toc-text">18. 国产应用层：豆包端侧助手落地；月之暗面 Kimi K3 达 2.8 万亿参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19-Meta-%E8%BD%AC%E5%90%91%E4%BC%81%E4%B8%9A%E5%B8%82%E5%9C%BA%EF%BC%9A%E5%8F%91%E5%B8%83-Enterprise-Platform%EF%BC%8CLlama-%E5%9C%A8%E4%BC%81%E4%B8%9A%E6%96%B9%E6%A1%88%E4%B8%AD%E7%BC%BA%E5%B8%AD"><span class="toc-number">3.19.</span> <span class="toc-text">19. Meta 转向企业市场：发布 Enterprise Platform，Llama 在企业方案中缺席</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#20-xAI-%E5%8F%91%E5%B8%83-Grok-4-7%EF%BC%88500K-%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%89%EF%BC%8CGrok-5-%E4%BB%8D%E6%9C%AA%E5%8F%91%E5%B8%83"><span class="toc-number">3.20.</span> <span class="toc-text">20. xAI 发布 Grok 4.7（500K 上下文），Grok 5 仍未发布</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%8B%E5%8A%BF%E8%A7%82%E5%AF%9F"><span class="toc-number">4.</span> <span class="toc-text">趋势观察</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">参考来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97%E5%85%B6%E4%BB%96%E7%AF%87%E7%9B%AE"><span class="toc-number">6.</span> <span class="toc-text">本系列其他篇目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img src="/images/posts/ai-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img src="/images/posts/consumer-electronics-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"><img src="/images/posts/frontier-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img src="/images/posts/semiconductors-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"><img src="/images/posts/industry-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

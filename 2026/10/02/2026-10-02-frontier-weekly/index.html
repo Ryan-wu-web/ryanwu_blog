@@ -1,0 +1,815 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="星舰第 14 次试飞首次入轨但提前终止；CFS 签史上最大超导带材订单、中国 BEST 进入总装；量子竞赛聚焦纠错工程化；基因编辑临床喜忧并行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="星舰第 14 次试飞首次入轨但提前终止；CFS 签史上最大超导带材订单、中国 BEST 进入总装；量子竞赛聚焦纠错工程化；基因编辑临床喜忧并行。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/frontier-weekly/cover.webp">
+<meta property="article:published_time" content="2026-10-02T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-02T04:57:13.884Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="news">
+<meta property="article:tag" content="quantum">
+<meta property="article:tag" content="space">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/frontier-weekly/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段",
+  "url": "https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/",
+  "image": "https://ryanwu.cn/images/posts/frontier-weekly/cover.webp",
+  "datePublished": "2026-10-02T04:00:00.000Z",
+  "dateModified": "2026-10-02T04:57:13.884Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/frontier-weekly/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-02T04:57:13.884Z" title="更新于 2026-10-02 12:57:13">2026-10-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/tech-news/">tech-news</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>这是「科技最新资讯」栏目的前沿科技周报，覆盖 2026-09-25 ~ 10-02（重大事件回溯至 09-02），涉及航天、聚变、量子计算与基因技术。本周最有画面感的两条线：<strong>星舰第一次进入地球轨道，然后提前解体</strong>；<strong>聚变商业化的主战场从造装置转向锁供应链</strong>。</p>
+<blockquote>
+<p>阅读说明：<strong>【事实】</strong>&#x3D; 多个独立来源报道；<strong>【官方宣称】</strong>&#x3D; 机构&#x2F;公司单方口径；<strong>【传闻&#x2F;爆料】</strong>&#x3D; 未获权威渠道证实的消息。<br>甄别说明：中文网络 9 月下旬流传的「九章 4 分钟完成高斯玻色取样、超算需 26 亿年」经核查为 2020 年「九章一号」旧数据被重新传播；「九章四号」实为 2026 年 5 月发布，均不在本窗口内，未收录。</p>
+</blockquote>
+<h2 id="本期要点"><a href="#本期要点" class="headerlink" title="本期要点"></a>本期要点</h2><ol>
+<li><strong>星舰第 14 次试飞首次进入地球轨道</strong>（9&#x2F;28）：部署 26 颗 Starlink V3 卫星，但上行级 1 台发动机失效致任务提前终止、溅落解体——Artemis 登月时间表蒙上阴影【事实】。</li>
+<li><strong>聚变商业化进入锁供应链阶段</strong>：CFS 向日本 Fujikura 采购超 1 万公里高温超导带材（史上最大单笔订单，9&#x2F;30）；中国 BEST 装置进入总装攻坚（9&#x2F;27）【事实&#x2F;官方宣称】。</li>
+<li><strong>量子计算竞赛聚焦纠错工程化</strong>：IBM 发布 Nighthawk r2（120 比特）并计划五年投入超 100 亿美元；IonQ 宣布业界首个端到端实时量子纠错解码器（9&#x2F;22）【官方宣称】。</li>
+<li><strong>基因编辑临床双面信号</strong>：克利夫兰诊所报告单次 CRISPR 治疗使 LDL 胆固醇减半并维持一年（9 月底）；Nature 同期揭露中国基因治疗试验中两名儿童死亡（9&#x2F;8）【事实&#x2F;官方宣称】。</li>
+<li><strong>航天高频运营常态化</strong>：SpaceX 10 月 1 日单日三连发并执行 Crew-13 载人任务；中国神舟二十三号在轨超 4 个月，朱雀二号改一箭十星完成千帆星座组网发射【事实】。</li>
+</ol>
+<h2 id="速览表"><a href="#速览表" class="headerlink" title="速览表"></a>速览表</h2><table>
+<thead>
+<tr>
+<th>事件</th>
+<th>日期</th>
+<th>一句话概述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://www.spacex.com/launches/starship-flight-14">星舰 Flight 14 首次入轨</a></td>
+<td>09-28</td>
+<td>首次进入地球轨道并部署 26 颗 V3 卫星，任务提前终止</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://cfs.energy/news-and-media/commonwealth-fusion-systems-places-largest-single-">CFS 签史上最大 HTS 带材订单</a></td>
+<td>09-30</td>
+<td>超 1 万公里高温超导带材，用于首座并网 ARC 电站</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.ionq.com/news/ionq-demonstrates-industrys-first-end-to-end-real-time-quantum-error-decoder">IonQ 实时量子纠错解码器</a></td>
+<td>09-22</td>
+<td>业界首个端到端实时 QEC 解码（CPU 实现）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.ibm.com/quantum/blog/nighthawk-r2">IBM Nighthawk r2 + 100 亿美元投入</a></td>
+<td>8 底-9 月</td>
+<td>120 比特处理器，目标 2026 年底可验证量子优势</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.nature.com/articles/d41586-026-02497-2">Nature：中国基因治疗两名儿童死亡</a></td>
+<td>09-08</td>
+<td>死亡从未被公开披露，论文已启动调查</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.sciencedaily.com/releases/2026/09/260925005434.htm">单次 CRISPR 使 LDL 减半维持一年</a></td>
+<td>约 09-25</td>
+<td>克利夫兰诊所首个人体试验结果</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://finance.sina.com.cn/roll/2026-10-02/doc-initvazm5856506.shtml">中国 BEST 装置总装攻坚</a></td>
+<td>09-27</td>
+<td>8 件 TF 线圈盒交付，2027 年底建成目标</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.nasa.gov/blogs/spacestation/2026/10/01/liftoff-nasas-spacex-crew-13-begins-journey-to-international-space-station">Crew-13 载人发射</a></td>
+<td>10-01</td>
+<td>四名航天员来自三个国家，前往国际空间站</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.spacex.com/launches/nrol97">SpaceX 单日三连发</a></td>
+<td>10-01</td>
+<td>13 小时内 3 次发射，含猎鹰重型 NROL-97</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://rocketlabcorp.com/updates/rocket-lab-secures-largest-ever-electron-commercial-deal-20-launch-contract-for-synspective">Rocket Lab 20 发大单</a></td>
+<td>约 09-30</td>
+<td>Electron 史上最大商业发射合同（日本 Synspective）</td>
+</tr>
+<tr>
+<td>朱雀二号改一箭十星</td>
+<td>09-15</td>
+<td>首次执行规模化星座组网发射（千帆星座）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.iter.org/node/20687/fusion-gathering-momentum">ITER 总装实质性进展</a></td>
+<td>09-09&#x2F;14</td>
+<td>第六个真空室扇段模块已安装，首等离子体 2033-34</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.nature.com/articles/d41586-026-02964-w">Nature：超越 CRISPR 的新一代编辑器</a></td>
+<td>09-28</td>
+<td>或可实现整段基因替换</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://dealroom.co/news/154191-stanfords-virtual-biotech-turns-37-000-ai-agents-into-a-drug-discovery-f">斯坦福 3.7 万 AI 智能体药物发现工厂</a></td>
+<td>09-19</td>
+<td>虚拟生物科技自主运行高通量管线</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.sciencedaily.com/releases/2026/09/260924020408.htm">CRISPR 精准攻击血癌</a></td>
+<td>约 09-24&#x2F;25</td>
+<td>临床前研究：不伤及健康细胞</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.sciencedaily.com/releases/2026/09/260925005423.htm">Artemis II 乘组转荣誉状态</a></td>
+<td>09-25&#x2F;26</td>
+<td>星舰故障引发 Artemis III&#x2F;IV 时间表担忧</td>
+</tr>
+<tr>
+<td>中国量子「整机+云+出口」</td>
+<td>09-26~30</td>
+<td>超导整机出口海外、之江量子云平台发布（单源）</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://www.stdaily.com/web/gdxw/2026-09/27/content_588806.html">神舟二十三号在轨超 4 个月</a></td>
+<td>09-27</td>
+<td>完成载荷进出舱等多项任务</td>
+</tr>
+</tbody></table>
+<h2 id="详细内容"><a href="#详细内容" class="headerlink" title="详细内容"></a>详细内容</h2><h3 id="1-星舰第-14-次试飞：历史上首次进入地球轨道，但任务提前终止"><a href="#1-星舰第-14-次试飞：历史上首次进入地球轨道，但任务提前终止" class="headerlink" title="1. 星舰第 14 次试飞：历史上首次进入地球轨道，但任务提前终止"></a>1. 星舰第 14 次试飞：历史上首次进入地球轨道，但任务提前终止</h3><p><strong>【事实】多源验证 · 2026-09-28</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.spacex.com/launches/starship-flight-14">SpaceX 官方任务页</a>、<a target="_blank" rel="noopener" href="https://www.livescience.com/space/space-exploration/spacexs-starship-reaches-orbit-for-the-first-time-then-returns-early-and-blows-up-in-a-fiery-explosion">Live Science</a> 与<a target="_blank" rel="noopener" href="https://www.reuters.com/business/media-telecom/spacexs-starship-launches-14th-flight-first-headed-orbit-2026-09-28">路透</a>：星舰完成第 14 次试飞并首次进入轨道（远地点约 275 公里），此前 13 次均为亚轨道飞行；上行级 6 台猛禽发动机中 1 台在级间分离后失效。飞船部署 26 颗 Starlink V3 卫星（星舰首次成功部署实用载荷），原计划约 10 小时的任务提前结束，入轨约 3 小时 8 分钟后在太平洋溅落并按预定方式爆炸解体。</p>
+<p><strong>为什么重要</strong>：星舰进入「入轨 + 载荷部署」阶段，但发动机异常给 NASA 依赖星舰执行 Artemis III&#x2F;IV 登月（2027&#x2F;2028）的时间表蒙上阴影。</p>
+<h3 id="2-CFS-与富士电机系签下史上最大单笔高温超导带材订单"><a href="#2-CFS-与富士电机系签下史上最大单笔高温超导带材订单" class="headerlink" title="2. CFS 与富士电机系签下史上最大单笔高温超导带材订单"></a>2. CFS 与富士电机系签下史上最大单笔高温超导带材订单</h3><p><strong>【事实】官方新闻稿实抓 + 道琼斯 · 2026-09-30</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://cfs.energy/news-and-media/commonwealth-fusion-systems-places-largest-single-">CFS 官方新闻稿</a>与 <a target="_blank" rel="noopener" href="https://www.morningstar.com/news/dow-jones/2026093045/commonwealth-fusion-systems-moves-to-secure-supply-chain-for-commercial-fusion-plant">Morningstar&#x2F;道琼斯</a>：CFS 向日本 Fujikura 采购超 10,000 公里高温超导带材，为迄今全球最大单笔 HTS 带材订单；带材用于 ARC 商业聚变电站磁体，首站为弗吉尼亚州的 Fall Line Fusion Power Station。注意：CFS 称将在 SPARC 实现 Q&gt;1 净能量增益后才启动 ARC 执行——即 SPARC 尚未达成 Q&gt;1。</p>
+<p><strong>为什么重要</strong>：聚变商业化从「造装置」进入「锁供应链」阶段，HTS 带材是强场托卡马克路线的核心瓶颈资源。</p>
+<h3 id="3-IonQ-宣布业界首个端到端实时量子纠错解码器"><a href="#3-IonQ-宣布业界首个端到端实时量子纠错解码器" class="headerlink" title="3. IonQ 宣布业界首个端到端实时量子纠错解码器"></a>3. IonQ 宣布业界首个端到端实时量子纠错解码器</h3><p><strong>【官方宣称】技术细节未经独立学术复现 · 2026-09-22</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.ionq.com/news/ionq-demonstrates-industrys-first-end-to-end-real-time-quantum-error-decoder">IonQ 官方新闻稿</a>：IonQ 称在 CPU 上实现行业首个端到端实时量子纠错（QEC）解码，消除容错量子计算的主要瓶颈之一；消息公布次日股价上涨约 4.4%。公司同期将 2026 全年营收指引上调至 4.50-4.60 亿美元；此前还发布用约 2 万量子比特、26 天内破解 256 位椭圆曲线加密的完整编译蓝图。</p>
+<p><strong>为什么重要</strong>：2026 年 IBM&#x2F;微软&#x2F;谷歌&#x2F;IonQ 的密集 QEC 发布，标志竞争焦点从「比特数」转向「纠错工程化」。</p>
+<h3 id="4-IBM-发布-Nighthawk-r2-量子处理器并加码投入"><a href="#4-IBM-发布-Nighthawk-r2-量子处理器并加码投入" class="headerlink" title="4. IBM 发布 Nighthawk r2 量子处理器并加码投入"></a>4. IBM 发布 Nighthawk r2 量子处理器并加码投入</h3><p><strong>【官方宣称】 · 约 2026-08 底至 9 月</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.ibm.com/quantum/blog/nighthawk-r2">IBM Quantum 博客</a>与 <a target="_blank" rel="noopener" href="https://www.wsj.com/tech/ibm-getting-ready-to-scale-quantum-computing-b2418cd5">WSJ</a>：Nighthawk r2 拥有 120 个可编程量子比特、218 个耦合器，目标 2026 年运行 7,500 门电路；IBM 计划未来五年投入超 100 亿美元发展量子（WSJ 报道其正筹建获美国政府支持的量子芯片工厂），路线图锚定 2026 年底「可验证量子优势」、2029 年容错量子计算 Starling。</p>
+<p><strong>为什么重要</strong>：IBM 以自建芯片产能 + 100 亿美元投入对冲纯量子公司，把「2026 底量子优势」变成年内必须兑现的公开承诺。</p>
+<h3 id="5-Nature-报道：两名儿童在中国基因治疗试验中死亡"><a href="#5-Nature-报道：两名儿童在中国基因治疗试验中死亡" class="headerlink" title="5. Nature 报道：两名儿童在中国基因治疗试验中死亡"></a>5. Nature 报道：两名儿童在中国基因治疗试验中死亡</h3><p><strong>【事实】Nature + Science 调查 · 2026-09-08</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.nature.com/articles/d41586-026-02497-2">Nature</a>：两名儿童在中国接受基因治疗&#x2F;基因编辑治疗后死亡；Science 7 月调查披露一名 6 岁女孩 2025 年在上海某医院接受全球首例该类基因编辑治疗后 7 天死亡，且死亡从未被公开披露，Nature 与相关机构已对核心论文启动调查。Nature 同期另发一稿聚焦中国「快速通道」临床试验在事件后的新监管政策。</p>
+<p><strong>为什么重要</strong>：为全球基因编辑治疗临床转化敲响监管警钟，直接影响国际社会对中国基因治疗临床研究的信任与审评标准。</p>
+<h3 id="6-单次-CRISPR-治疗使-LDL-胆固醇减半并维持一整年"><a href="#6-单次-CRISPR-治疗使-LDL-胆固醇减半并维持一整年" class="headerlink" title="6. 单次 CRISPR 治疗使 LDL 胆固醇减半并维持一整年"></a>6. 单次 CRISPR 治疗使 LDL 胆固醇减半并维持一整年</h3><p><strong>【官方宣称】临床研究方发布 · 2026-09-25 前后</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.sciencedaily.com/releases/2026/09/260925005434.htm">ScienceDaily</a>：克利夫兰诊所团队报告单剂 CRISPR 治疗使 LDL 胆固醇降低约一半并持续整整一年；同期 <a target="_blank" rel="noopener" href="https://medicalxpress.com/news/2026-09-crispr-gene-therapy-safely-lowers.html">Medical Xpress</a> 报道另一项首个人体试验显示 CRISPR 疗法可安全、持续地同时降低胆固醇与甘油三酯。</p>
+<p><strong>为什么重要</strong>：若后续大样本验证成立，心血管疾病预防可能从「每日服药」转向「一次给药长期生效」。</p>
+<h3 id="7-中国-BEST（紧凑型聚变能实验装置）进入总装攻坚"><a href="#7-中国-BEST（紧凑型聚变能实验装置）进入总装攻坚" class="headerlink" title="7. 中国 BEST（紧凑型聚变能实验装置）进入总装攻坚"></a>7. 中国 BEST（紧凑型聚变能实验装置）进入总装攻坚</h3><p><strong>【官方宣称】单一来源为主 · 2026-09-27</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://finance.sina.com.cn/roll/2026-10-02/doc-initvazm5856506.shtml">新浪财经汇总</a>：9 月 27 日，BEST 的 8 件 TF（环向场）线圈盒在国机重装德阳基地全部完工交付发运；国庆前 BEST 项目园区正式交付启用。按规划 BEST 2027 年底建成，2030 年演示聚变发电：第一阶段实现聚变功率 20-40MW、Q&gt;1，第二阶段 100-200MW、Q&gt;5。</p>
+<p><strong>为什么重要</strong>：中国聚变工程化制造能力集中兑现，BEST 与 CFS SPARC 形成中美在燃烧等离子体演示上的并行竞赛。</p>
+<h3 id="8-NASA-SpaceX-Crew-13-载人任务发射"><a href="#8-NASA-SpaceX-Crew-13-载人任务发射" class="headerlink" title="8. NASA&#x2F;SpaceX Crew-13 载人任务发射"></a>8. NASA&#x2F;SpaceX Crew-13 载人任务发射</h3><p><strong>【事实】NASA + 路透 · 2026-10-01</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.nasa.gov/blogs/spacestation/2026/10/01/liftoff-nasas-spacex-crew-13-begins-journey-to-international-space-station">NASA 官方博客</a>与<a target="_blank" rel="noopener" href="https://www.reuters.com/business/media-telecom/spacex-launches-13th-long-duration-astronaut-crew-international-space-station-2026-10-01">路透</a>：SpaceX 第 13 次长期载人轮换任务升空，乘组 4 人来自三个国家（NASA 两人、加拿大航天局一人、俄罗斯航天员一人），乘龙飞船前往国际空间站。</p>
+<p><strong>为什么重要</strong>：国际空间站常规轮换持续，多国载人航天同期在轨运行。</p>
+<h3 id="9-SpaceX-单日「三连发」：13-小时内-3-次发射"><a href="#9-SpaceX-单日「三连发」：13-小时内-3-次发射" class="headerlink" title="9. SpaceX 单日「三连发」：13 小时内 3 次发射"></a>9. SpaceX 单日「三连发」：13 小时内 3 次发射</h3><p><strong>【事实】 · 2026-10-01</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.spacex.com/launches/nrol97">SpaceX NROL-97 任务页</a>与 <a target="_blank" rel="noopener" href="https://www.orlandosentinel.com/2026/09/25/spacex-falcon-heavy-aims-to-launch-same-day-as-crew-13-next-week-on-space-coast">Orlando Sentinel</a>：SpaceX 计划在 13 小时内完成 3 次发射：Crew-13 载人（已确认成功）、范登堡西海岸猎鹰 9、猎鹰重型 NROL-97（美国国家侦察局机密任务）。9 月其还完成 USSF-385、USSF-259 等军事发射。</p>
+<p><strong>为什么重要</strong>：体现 SpaceX 复用机队的高节奏发射能力，军事载荷发射常态化。</p>
+<h3 id="10-Rocket-Lab-签下-Electron-史上最大商业发射合同"><a href="#10-Rocket-Lab-签下-Electron-史上最大商业发射合同" class="headerlink" title="10. Rocket Lab 签下 Electron 史上最大商业发射合同"></a>10. Rocket Lab 签下 Electron 史上最大商业发射合同</h3><p><strong>【官方宣称】公司公告 · 约 2026-09-30</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://rocketlabcorp.com/updates/rocket-lab-secures-largest-ever-electron-commercial-deal-20-launch-contract-for-synspective">Rocket Lab 官方公告</a>：与日本 SAR 卫星公司 Synspective 签署多年期 20 次发射协议，为其迄今单笔最大的 Electron 商业发射合同。</p>
+<p><strong>为什么重要</strong>：小型运载火箭商业模式从单次采购转向批量框架协议，星座组网需求成为小火箭市场主要驱动。</p>
+<h3 id="11-朱雀二号改一箭十星：首次执行规模化星座组网发射"><a href="#11-朱雀二号改一箭十星：首次执行规模化星座组网发射" class="headerlink" title="11. 朱雀二号改一箭十星：首次执行规模化星座组网发射"></a>11. 朱雀二号改一箭十星：首次执行规模化星座组网发射</h3><p><strong>【官方宣称】 · 2026-09-15</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://wallstreetcn.com/articles/3781790">华尔街见闻</a>（引述国家航天局发布）：朱雀二号改进型遥七火箭将千帆星座极轨 19 组共 10 颗卫星送入预定轨道，系朱雀二号系列首次执行规模化星座组网任务。同期（9 月 1 日）星河动力「智神星一号」遥一首飞成功（LEO 运力 5-7 吨、设计重复使用不少于 25 次）。</p>
+<p><strong>为什么重要</strong>：中国商业发射与千帆星座组网节奏绑定，可复用中型火箭进入密集首飞&#x2F;验证期。</p>
+<h3 id="12-ITER-总装取得「实质性进展」"><a href="#12-ITER-总装取得「实质性进展」" class="headerlink" title="12. ITER 总装取得「实质性进展」"></a>12. ITER 总装取得「实质性进展」</h3><p><strong>【官方宣称】ITER 官方博客 · 2026-09-09&#x2F;14</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.iter.org/node/20687/fusion-gathering-momentum">ITER 官方</a>：今夏多个总装与安装工作流取得 substantial progress（含托卡马克坑内第六个真空室扇段模块安装）；9 月 14 日开幕的第 70 届国际原子能机构大会约 3,000 人现场参会，聚变议题权重明显上升。首等离子体目标仍为 2033-2034 年。</p>
+<p><strong>为什么重要</strong>：国际大科学装置节奏仍偏慢，与私营聚变公司的快速迭代形成对照。</p>
+<h3 id="13-Nature-综述：超越-CRISPR-的新一代基因组编辑器"><a href="#13-Nature-综述：超越-CRISPR-的新一代基因组编辑器" class="headerlink" title="13. Nature 综述：超越 CRISPR 的新一代基因组编辑器"></a>13. Nature 综述：超越 CRISPR 的新一代基因组编辑器</h3><p><strong>【事实】专家综述 · 2026-09-28</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.nature.com/articles/d41586-026-02964-w">Nature</a>：综述系统介绍最新一代基因组编辑技术（大型片段编辑器&#x2F;位点特异性整合工具等），称其可能让研究者替换整段基因组序列，突破点突变与小片段编辑的规模限制。</p>
+<p><strong>为什么重要</strong>：基因编辑从「敲除&#x2F;纠正」走向「整基因写入」，对单基因大片段突变疾病与合成生物学均是平台级变化。</p>
+<h3 id="14-斯坦福用-3-7-万个-AI-智能体组建药物发现工厂"><a href="#14-斯坦福用-3-7-万个-AI-智能体组建药物发现工厂" class="headerlink" title="14. 斯坦福用 3.7 万个 AI 智能体组建药物发现工厂"></a>14. 斯坦福用 3.7 万个 AI 智能体组建药物发现工厂</h3><p><strong>【事实】项目启动有公开披露（单一来源报道） · 2026-09-19</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://dealroom.co/news/154191-stanfords-virtual-biotech-turns-37-000-ai-agents-into-a-drug-discovery-f">Dealroom</a>：斯坦福项目将 37,000 个 AI 智能体组织成自主运行的高通量「虚拟生物科技」药物发现管线；另据 <a target="_blank" rel="noopener" href="https://www.statnews.com/2026/09/03/biotech-news-seattle-scientists-launch-95-million-ai-biology-effort">STAT News</a>，西雅图科学家团队启动 9,500 万美元的 AI 生物学研究计划。</p>
+<p><strong>为什么重要</strong>：AI 制药进入「智能体集群自动化设计-实验闭环」阶段，湿实验环节的自动化程度成为新竞争点。</p>
+<h3 id="15-CRISPR-有望精准攻击血癌而不伤及健康细胞"><a href="#15-CRISPR-有望精准攻击血癌而不伤及健康细胞" class="headerlink" title="15. CRISPR 有望精准攻击血癌而不伤及健康细胞"></a>15. CRISPR 有望精准攻击血癌而不伤及健康细胞</h3><p><strong>【事实】临床前研究（单一来源转引） · 约 2026-09-24&#x2F;25</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.sciencedaily.com/releases/2026/09/260924020408.htm">ScienceDaily</a>：新研究显示 CRISPR 可用于帮助医生在不破坏健康细胞的前提下攻击血癌，提高治疗选择性。</p>
+<p><strong>为什么重要</strong>：为降低 CAR-T&#x2F;基因编辑血液疗法毒性提供新思路，属早期研究，距临床尚远。</p>
+<h3 id="16-Artemis-II-乘组转入荣誉状态；星舰故障引发时间表担忧"><a href="#16-Artemis-II-乘组转入荣誉状态；星舰故障引发时间表担忧" class="headerlink" title="16. Artemis II 乘组转入荣誉状态；星舰故障引发时间表担忧"></a>16. Artemis II 乘组转入荣誉状态；星舰故障引发时间表担忧</h3><p><strong>【事实】 · 09-25&#x2F;26</strong></p>
+<p>据 <a target="_blank" rel="noopener" href="https://www.sciencedaily.com/releases/2026/09/260925005423.htm">ScienceDaily</a> 与 <a target="_blank" rel="noopener" href="https://gizmodo.com/starship-has-finally-gone-orbital-now-comes-the-hard-part-2000818803">Gizmodo</a>：曾执行载人绕月飞行的 Artemis II 指令长 Reid Wiseman 与飞行员 Victor Glover 转入 NASA 荣誉状态。同期因星舰第 14 飞上行级发动机失效，路透等多家媒体指出这可能影响 NASA 在 2027-2028 年执行 Artemis III&#x2F;IV 登月的目标。</p>
+<p><strong>为什么重要</strong>：Artemis 后续任务能否按期推进，越来越取决于星舰月球着陆器版的成熟速度。</p>
+<h3 id="17-中国量子计算一周内多项进展：整机出口、量子云平台发布"><a href="#17-中国量子计算一周内多项进展：整机出口、量子云平台发布" class="headerlink" title="17. 中国量子计算一周内多项进展：整机出口、量子云平台发布"></a>17. 中国量子计算一周内多项进展：整机出口、量子云平台发布</h3><p><strong>【官方宣称】单一来源，未获英文独立源交叉验证 · 2026-09-26~30</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.secrss.com/articles/94238">信通院报告转载</a>：9 月 28 日国产超导量子计算整机启运海外，被称国产超导量子装备出口突破；9 月 26 日「之江·瀚」跨硬件通用量子计算云平台在数贸会发布；9 月 29 日杭州原子矩阵展示全栈式大规模中性原子量子计算整机。</p>
+<p><strong>为什么重要</strong>：中国量子产业从样机转向「整机 + 云 + 出口」商业动作，与 IBM&#x2F;IonQ 的容错路线形成不同节奏。</p>
+<h3 id="18-神舟二十三号乘组在轨超-4-个月"><a href="#18-神舟二十三号乘组在轨超-4-个月" class="headerlink" title="18. 神舟二十三号乘组在轨超 4 个月"></a>18. 神舟二十三号乘组在轨超 4 个月</h3><p><strong>【事实】双源验证 · 2026-09-27</strong></p>
+<p>据<a target="_blank" rel="noopener" href="https://www.stdaily.com/web/gdxw/2026-09/27/content_588806.html">科技日报</a>与<a target="_blank" rel="noopener" href="https://www.wenweipo.com/a/202609/27/AP6ab87ff5e4b01d54a284f30c.html">香港文汇报</a>：神舟二十三号乘组（含香港首位航天员黎家盈）在轨满 4 个多月，9 月下旬完成载荷进出舱、再生生保系统组件更换等任务。另据中国载人航天工程网，嫦娥七号因不满足发射条件无法在 2026 年预定窗口实施（8 月披露，属窗口外背景）。</p>
+<p><strong>为什么重要</strong>：中国空间站进入常态化运营与科研高产期；嫦娥七号推迟是中国深空探测年度计划的显著变化。</p>
+<h2 id="趋势观察"><a href="#趋势观察" class="headerlink" title="趋势观察"></a>趋势观察</h2><p><strong>可以验证的事实：</strong></p>
+<ul>
+<li><strong>星舰进入「入轨 + 载荷」阶段</strong>：首次入轨并部署实用载荷，但发动机异常与提前终止同样是有据可查的事实；Artemis 时间表承压的判断来自路透等多方报道。</li>
+<li><strong>聚变从科学演示转向供应链竞争</strong>：CFS 万公里级 HTS 订单与中国 BEST 批量制造是两条路线各自可验证的工程节点；SPARC 尚未实现 Q&gt;1（CFS 官方口径）。</li>
+<li><strong>量子竞争焦点转向纠错工程</strong>：IBM（Nighthawk r2 + 100 亿美元）、IonQ（实时 QEC 解码）在一个月内密集发布，均锚定容错路线图（官方口径）。</li>
+<li><strong>基因编辑临床喜忧并行</strong>：降胆固醇一年期结果与中国儿童死亡事件同期曝光，监管与披露问题被摆上台面。</li>
+</ul>
+<p><strong>我的推测（作者判断，可能错，需后续验证）：</strong></p>
+<ul>
+<li>星舰若在接下来 2-3 次试飞中复现入轨稳定性，NASA 可能被迫在 Artemis III&#x2F;IV 上给出「星舰或替代方案」的备选表态；HLS 登月版首飞时间表是 2027 年最大航天变量。</li>
+<li>HTS 带材可能成为聚变产业的「HBM 时刻」——CFS 万公里订单或引发带材产能军备竞赛，供应商扩产公告值得跟踪。</li>
+<li>中美量子路线分化加深：美国聚焦容错工程化，中国聚焦「整机 + 云 + 出口」商业化，两者可能在标准与出口管制层面相遇。</li>
+</ul>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><strong>官方&#x2F;机构</strong>：spacex.com、cfs.energy、iter.org、ionq.com、ibm.com、nasa.gov、cmse.gov.cn、rocketlabcorp.com</li>
+<li><strong>学术&#x2F;科学出版</strong>：nature.com、sciencedaily.com、medicalxpress.com、crisprmedicinenews.com、energy.mit.edu、secrss.com</li>
+<li><strong>通讯社&#x2F;主流媒体</strong>：reuters.com、wsj.com、morningstar.com、orlandosentinel.com、space.com、livescience.com、gizmodo.com、statnews.com、techcrunch.com、sciencealert.com、news.cn（新华网）、stdaily.com（科技日报）、wenweipo.com（文汇报）、wallstreetcn.com（华尔街见闻）、finance.sina.com.cn（新浪财经）、thequantuminsider.com、dealroom.co</li>
+</ul>
+<h2 id="本系列其他篇目"><a href="#本系列其他篇目" class="headerlink" title="本系列其他篇目"></a>本系列其他篇目</h2><ul>
+<li><a href="/2026/10/02/2026-10-02-ai-weekly/">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</a></li>
+<li><a href="/2026/10/02/2026-10-02-semiconductors-weekly/">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</a></li>
+<li><a href="/2026/10/02/2026-10-02-consumer-electronics-weekly/">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</a></li>
+<li><a href="/2026/10/02/2026-10-02-industry-weekly/">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/">https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/news/">news</a><a class="post-meta__tags" href="/tags/space/">space</a><a class="post-meta__tags" href="/tags/quantum/">quantum</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/frontier-weekly/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img class="cover" src="/images/posts/semiconductors-weekly/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</div></div><div class="info-2"><div class="info-item-1">美光 FQ4 营收 542 亿美元同比 +379%，Q4 存储合约价预计再涨 15-20%；Vera Rubin 开始交付，2nm 产能上修，出口管制转向个案审查。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img class="cover" src="/images/posts/consumer-electronics-weekly/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</div></div><div class="info-2"><div class="info-item-1">苹果折叠屏 iPhone Duo 15,999 元起，Mate 90 与小米 18 撞期，Meta 三线齐发，内存涨价开始传导到整机价格。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"><img class="cover" src="/images/posts/industry-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</div></div><div class="info-2"><div class="info-item-1">AMD 收购李飞飞 World Labs、Anthropic 招股书曝光估值或超 2 万亿美元；美光、Oracle、埃森哲财报全线超预期，AI 景气沿产业链兑现。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img class="cover" src="/images/posts/consumer-electronics-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</div></div><div class="info-2"><div class="info-item-1">苹果折叠屏 iPhone Duo 15,999 元起，Mate 90 与小米 18 撞期，Meta 三线齐发，内存涨价开始传导到整机价格。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img class="cover" src="/images/posts/ai-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</div></div><div class="info-2"><div class="info-item-1">OpenAI 搁置 GPT-6.1 Astra、Google 受限发布 Gemini 4、FTC 启动行业级调查：一周内 AI 安全从叙事变成监管动作。附 20 条事件与趋势判断。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img class="cover" src="/images/posts/semiconductors-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</div></div><div class="info-2"><div class="info-item-1">美光 FQ4 营收 542 亿美元同比 +379%，Q4 存储合约价预计再涨 15-20%；Vera Rubin 开始交付，2nm 产能上修，出口管制转向个案审查。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">67</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">123</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E6%9C%9F%E8%A6%81%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">本期要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9F%E8%A7%88%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">速览表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9"><span class="toc-number">3.</span> <span class="toc-text">详细内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%98%9F%E8%88%B0%E7%AC%AC-14-%E6%AC%A1%E8%AF%95%E9%A3%9E%EF%BC%9A%E5%8E%86%E5%8F%B2%E4%B8%8A%E9%A6%96%E6%AC%A1%E8%BF%9B%E5%85%A5%E5%9C%B0%E7%90%83%E8%BD%A8%E9%81%93%EF%BC%8C%E4%BD%86%E4%BB%BB%E5%8A%A1%E6%8F%90%E5%89%8D%E7%BB%88%E6%AD%A2"><span class="toc-number">3.1.</span> <span class="toc-text">1. 星舰第 14 次试飞：历史上首次进入地球轨道，但任务提前终止</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-CFS-%E4%B8%8E%E5%AF%8C%E5%A3%AB%E7%94%B5%E6%9C%BA%E7%B3%BB%E7%AD%BE%E4%B8%8B%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%A4%A7%E5%8D%95%E7%AC%94%E9%AB%98%E6%B8%A9%E8%B6%85%E5%AF%BC%E5%B8%A6%E6%9D%90%E8%AE%A2%E5%8D%95"><span class="toc-number">3.2.</span> <span class="toc-text">2. CFS 与富士电机系签下史上最大单笔高温超导带材订单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-IonQ-%E5%AE%A3%E5%B8%83%E4%B8%9A%E7%95%8C%E9%A6%96%E4%B8%AA%E7%AB%AF%E5%88%B0%E7%AB%AF%E5%AE%9E%E6%97%B6%E9%87%8F%E5%AD%90%E7%BA%A0%E9%94%99%E8%A7%A3%E7%A0%81%E5%99%A8"><span class="toc-number">3.3.</span> <span class="toc-text">3. IonQ 宣布业界首个端到端实时量子纠错解码器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-IBM-%E5%8F%91%E5%B8%83-Nighthawk-r2-%E9%87%8F%E5%AD%90%E5%A4%84%E7%90%86%E5%99%A8%E5%B9%B6%E5%8A%A0%E7%A0%81%E6%8A%95%E5%85%A5"><span class="toc-number">3.4.</span> <span class="toc-text">4. IBM 发布 Nighthawk r2 量子处理器并加码投入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Nature-%E6%8A%A5%E9%81%93%EF%BC%9A%E4%B8%A4%E5%90%8D%E5%84%BF%E7%AB%A5%E5%9C%A8%E4%B8%AD%E5%9B%BD%E5%9F%BA%E5%9B%A0%E6%B2%BB%E7%96%97%E8%AF%95%E9%AA%8C%E4%B8%AD%E6%AD%BB%E4%BA%A1"><span class="toc-number">3.5.</span> <span class="toc-text">5. Nature 报道：两名儿童在中国基因治疗试验中死亡</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%8D%95%E6%AC%A1-CRISPR-%E6%B2%BB%E7%96%97%E4%BD%BF-LDL-%E8%83%86%E5%9B%BA%E9%86%87%E5%87%8F%E5%8D%8A%E5%B9%B6%E7%BB%B4%E6%8C%81%E4%B8%80%E6%95%B4%E5%B9%B4"><span class="toc-number">3.6.</span> <span class="toc-text">6. 单次 CRISPR 治疗使 LDL 胆固醇减半并维持一整年</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E4%B8%AD%E5%9B%BD-BEST%EF%BC%88%E7%B4%A7%E5%87%91%E5%9E%8B%E8%81%9A%E5%8F%98%E8%83%BD%E5%AE%9E%E9%AA%8C%E8%A3%85%E7%BD%AE%EF%BC%89%E8%BF%9B%E5%85%A5%E6%80%BB%E8%A3%85%E6%94%BB%E5%9D%9A"><span class="toc-number">3.7.</span> <span class="toc-text">7. 中国 BEST（紧凑型聚变能实验装置）进入总装攻坚</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-NASA-SpaceX-Crew-13-%E8%BD%BD%E4%BA%BA%E4%BB%BB%E5%8A%A1%E5%8F%91%E5%B0%84"><span class="toc-number">3.8.</span> <span class="toc-text">8. NASA&#x2F;SpaceX Crew-13 载人任务发射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-SpaceX-%E5%8D%95%E6%97%A5%E3%80%8C%E4%B8%89%E8%BF%9E%E5%8F%91%E3%80%8D%EF%BC%9A13-%E5%B0%8F%E6%97%B6%E5%86%85-3-%E6%AC%A1%E5%8F%91%E5%B0%84"><span class="toc-number">3.9.</span> <span class="toc-text">9. SpaceX 单日「三连发」：13 小时内 3 次发射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-Rocket-Lab-%E7%AD%BE%E4%B8%8B-Electron-%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%A4%A7%E5%95%86%E4%B8%9A%E5%8F%91%E5%B0%84%E5%90%88%E5%90%8C"><span class="toc-number">3.10.</span> <span class="toc-text">10. Rocket Lab 签下 Electron 史上最大商业发射合同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%9C%B1%E9%9B%80%E4%BA%8C%E5%8F%B7%E6%94%B9%E4%B8%80%E7%AE%AD%E5%8D%81%E6%98%9F%EF%BC%9A%E9%A6%96%E6%AC%A1%E6%89%A7%E8%A1%8C%E8%A7%84%E6%A8%A1%E5%8C%96%E6%98%9F%E5%BA%A7%E7%BB%84%E7%BD%91%E5%8F%91%E5%B0%84"><span class="toc-number">3.11.</span> <span class="toc-text">11. 朱雀二号改一箭十星：首次执行规模化星座组网发射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-ITER-%E6%80%BB%E8%A3%85%E5%8F%96%E5%BE%97%E3%80%8C%E5%AE%9E%E8%B4%A8%E6%80%A7%E8%BF%9B%E5%B1%95%E3%80%8D"><span class="toc-number">3.12.</span> <span class="toc-text">12. ITER 总装取得「实质性进展」</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-Nature-%E7%BB%BC%E8%BF%B0%EF%BC%9A%E8%B6%85%E8%B6%8A-CRISPR-%E7%9A%84%E6%96%B0%E4%B8%80%E4%BB%A3%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-number">3.13.</span> <span class="toc-text">13. Nature 综述：超越 CRISPR 的新一代基因组编辑器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-%E6%96%AF%E5%9D%A6%E7%A6%8F%E7%94%A8-3-7-%E4%B8%87%E4%B8%AA-AI-%E6%99%BA%E8%83%BD%E4%BD%93%E7%BB%84%E5%BB%BA%E8%8D%AF%E7%89%A9%E5%8F%91%E7%8E%B0%E5%B7%A5%E5%8E%82"><span class="toc-number">3.14.</span> <span class="toc-text">14. 斯坦福用 3.7 万个 AI 智能体组建药物发现工厂</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-CRISPR-%E6%9C%89%E6%9C%9B%E7%B2%BE%E5%87%86%E6%94%BB%E5%87%BB%E8%A1%80%E7%99%8C%E8%80%8C%E4%B8%8D%E4%BC%A4%E5%8F%8A%E5%81%A5%E5%BA%B7%E7%BB%86%E8%83%9E"><span class="toc-number">3.15.</span> <span class="toc-text">15. CRISPR 有望精准攻击血癌而不伤及健康细胞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-Artemis-II-%E4%B9%98%E7%BB%84%E8%BD%AC%E5%85%A5%E8%8D%A3%E8%AA%89%E7%8A%B6%E6%80%81%EF%BC%9B%E6%98%9F%E8%88%B0%E6%95%85%E9%9A%9C%E5%BC%95%E5%8F%91%E6%97%B6%E9%97%B4%E8%A1%A8%E6%8B%85%E5%BF%A7"><span class="toc-number">3.16.</span> <span class="toc-text">16. Artemis II 乘组转入荣誉状态；星舰故障引发时间表担忧</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-%E4%B8%AD%E5%9B%BD%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97%E4%B8%80%E5%91%A8%E5%86%85%E5%A4%9A%E9%A1%B9%E8%BF%9B%E5%B1%95%EF%BC%9A%E6%95%B4%E6%9C%BA%E5%87%BA%E5%8F%A3%E3%80%81%E9%87%8F%E5%AD%90%E4%BA%91%E5%B9%B3%E5%8F%B0%E5%8F%91%E5%B8%83"><span class="toc-number">3.17.</span> <span class="toc-text">17. 中国量子计算一周内多项进展：整机出口、量子云平台发布</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-%E7%A5%9E%E8%88%9F%E4%BA%8C%E5%8D%81%E4%B8%89%E5%8F%B7%E4%B9%98%E7%BB%84%E5%9C%A8%E8%BD%A8%E8%B6%85-4-%E4%B8%AA%E6%9C%88"><span class="toc-number">3.18.</span> <span class="toc-text">18. 神舟二十三号乘组在轨超 4 个月</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B6%8B%E5%8A%BF%E8%A7%82%E5%AF%9F"><span class="toc-number">4.</span> <span class="toc-text">趋势观察</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">5.</span> <span class="toc-text">参考来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97%E5%85%B6%E4%BB%96%E7%AF%87%E7%9B%AE"><span class="toc-number">6.</span> <span class="toc-text">本系列其他篇目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img src="/images/posts/ai-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"><img src="/images/posts/consumer-electronics-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-consumer-electronics-weekly/" title="消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季">消费电子周报：折叠屏 iPhone 发布，9 月成史上最密集旗舰季</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"><img src="/images/posts/frontier-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-frontier-weekly/" title="前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段">前沿科技周报：星舰首次入轨后解体，聚变进入锁供应链阶段</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img src="/images/posts/semiconductors-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"><img src="/images/posts/industry-weekly/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/02/2026-10-02-industry-weekly/" title="公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO">公司周报：AMD 82 亿美元收购 World Labs，Anthropic 启动 IPO</a><time datetime="2026-10-02T04:00:00.000Z" title="发表于 2026-10-02 12:00:00">2026-10-02</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
