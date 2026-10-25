@@ -1118,6 +1118,8 @@ CDN:
     # node-snackbar 在 npmmirror 返回 403，单独走 fastly 镜像
     snackbar: https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js
     snackbar_css: https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css
+    # 不蒜子服务器慢（约 2.5s），换成本地桩：页面 load 后空闲时再拉真实脚本
+    busuanzi: /js/busuanzi-lazy.js
     # abcjs_basic_js:
     # activate_power_mode:
     # algolia_js:
