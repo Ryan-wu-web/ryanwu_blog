@@ -29,42 +29,6 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-qiuzhao-2027-review/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-quantum-magic-state-2026/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-robotaxi-race-2026/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-starship-mars-window-2026/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ryanwu.cn/2026/10/25/2026-10-25-tesla-spacex-merger/</loc>
     
     <lastmod>2026-10-25</lastmod>
@@ -101,34 +65,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-drug-discovery-2026/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-regulation-october-2026/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-security-black-october/</loc>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-china-open-source-models-2026/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -147,15 +84,6 @@
   
   <url>
     <loc>https://ryanwu.cn/2026/10/25/2026-10-25-computer-use-agents/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-china-open-source-models-2026/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -209,7 +137,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-zhuo-you-cheng-xiao-de-guan-li-zhe/</loc>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-qiuzhao-2027-review/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -218,7 +146,25 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/02/2026-10-02-consumer-electronics-weekly/</loc>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-quantum-magic-state-2026/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-robotaxi-race-2026/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-starship-mars-window-2026/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -236,16 +182,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/</loc>
+    <loc>https://ryanwu.cn/2026/10/02/2026-10-02-consumer-electronics-weekly/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -263,6 +200,15 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/2026/10/02/2026-10-02-frontier-weekly/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/2026/10/25/2026-10-25-agentscope-and-gastown-review/</loc>
     
     <lastmod>2026-10-25</lastmod>
@@ -272,7 +218,43 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fu-ba-ba-qiong-ba-ba/</loc>
+    <loc>https://ryanwu.cn/2026/10/02/2026-10-02-industry-weekly/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-regulation-october-2026/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-security-black-october/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/25/2026-10-25-ai-drug-discovery-2026/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -335,15 +317,6 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-zhang-kong-xi-guan/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ryanwu.cn/2026/10/01/2026-10-01-wo-de-er-ben-xue-sheng/</loc>
     
     <lastmod>2026-10-25</lastmod>
@@ -353,7 +326,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/</loc>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-zhuo-you-cheng-xiao-de-guan-li-zhe/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -362,16 +335,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-feng-tang-cheng-shi-xin-fa/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/</loc>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-zhang-kong-xi-guan/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -398,7 +362,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-exercise/</loc>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-feng-tang-cheng-shi-xin-fa/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -407,7 +371,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fitness-stick-to-it/</loc>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fitness-fat-loss-exercise/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -425,6 +389,24 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fitness-stick-to-it/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fu-ba-ba-qiong-ba-ba/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/2026/10/01/2026-10-01-fitness-training-guide/</loc>
     
     <lastmod>2026-10-25</lastmod>
@@ -434,25 +416,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-multi-agent-orchestration/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-mcp-a2a-protocols/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-sim2real-real-world-evaluation/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -470,7 +434,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-navigation-foundation-models/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-sim2real-real-world-evaluation/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -497,15 +461,6 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-world-models-three-domains/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://ryanwu.cn/2026/09/30/2026-09-30-vln-long-horizon/</loc>
     
     <lastmod>2026-10-25</lastmod>
@@ -515,7 +470,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-world-models-three-domains/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -524,7 +479,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-computer-use-gui-agents/</loc>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-agent-security-prompt-injection/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -533,25 +488,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-driving-world-models/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-humanoid-whole-body-control/</loc>
+    <loc>https://ryanwu.cn/2026/10/01/2026-10-01-ai-algorithm-discovery/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -569,7 +506,25 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-humanoid-whole-body-control/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-e2e-driving-evaluation/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-driving-world-models/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -596,7 +551,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -605,7 +560,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-multi-agent-orchestration/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -614,16 +569,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/22/2026-09-22-embodied-inference-infra/</loc>
-    
-    <lastmod>2026-10-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/2026/09/23/2026-09-23-mechanical-defect-image-editing/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-mcp-a2a-protocols/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -633,6 +579,15 @@
   
   <url>
     <loc>https://ryanwu.cn/2026/09/22/2026-09-22-vla-architecture-2026/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/23/2026-09-23-mechanical-defect-image-editing/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -677,6 +632,15 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/2026/09/30/2026-09-30-agent-memory-systems/</loc>
     
     <lastmod>2026-10-25</lastmod>
@@ -686,7 +650,25 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-agent-self-improvement/</loc>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-agentic-rl-deep-research/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/30/2026-09-30-computer-use-gui-agents/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -704,7 +686,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/</loc>
+    <loc>https://ryanwu.cn/2026/09/21/2026-09-21-robot-slam-localization-navigation/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -713,7 +695,25 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/2026/09/16/2026-09-16-tesla-vs-china-autonomous-driving/</loc>
+    <loc>https://ryanwu.cn/2026/09/22/2026-09-22-direct-decision-lineage/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/22/2026-09-22-embodied-inference-infra/</loc>
+    
+    <lastmod>2026-10-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/2026/09/21/2026-09-21-jev-pian-yi-he-kuai-shi-zhen-de/</loc>
     
     <lastmod>2026-10-25</lastmod>
     
@@ -1013,28 +1013,35 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/tags/autonomous-driving/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/tesla/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/lidar/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/computer-vision/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/tags/journal/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/llm/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/jev/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/model-evaluation/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1069,35 +1076,14 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/tags/llm/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/tags/vla/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/autonomous-driving/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/tesla/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/lidar/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/computer-vision/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1167,6 +1153,20 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/tags/jev/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/model-evaluation/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/tags/world-model/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1174,7 +1174,21 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/tags/self-improvement/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/tags/memory/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/skill/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1202,20 +1216,6 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/self-improvement/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/skill/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ryanwu.cn/tags/computer-use/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1231,41 +1231,6 @@
   
   <url>
     <loc>https://ryanwu.cn/tags/grounding/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/simulation/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/end-to-end/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/humanoid/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/wbc/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/locomotion/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1293,7 +1258,35 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/reasoning/</loc>
+    <loc>https://ryanwu.cn/tags/humanoid/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/wbc/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/locomotion/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/end-to-end/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/simulation/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1342,6 +1335,13 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/tags/reasoning/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/tags/multi-agent/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1377,7 +1377,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/sim2real/</loc>
+    <loc>https://ryanwu.cn/tags/foundation-model/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1398,7 +1398,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/foundation-model/</loc>
+    <loc>https://ryanwu.cn/tags/sim2real/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1440,13 +1440,6 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/video-generation/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ryanwu.cn/tags/vln/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1461,28 +1454,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/evolutionary-search/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/algorithm-discovery/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/reading/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/management/</loc>
+    <loc>https://ryanwu.cn/tags/video-generation/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1497,6 +1469,20 @@
   
   <url>
     <loc>https://ryanwu.cn/tags/prompt-injection/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/evolutionary-search/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/algorithm-discovery/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1518,6 +1504,20 @@
   
   <url>
     <loc>https://ryanwu.cn/tags/nutrition/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/reading/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/management/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1615,6 +1615,13 @@
   </url>
   
   <url>
+    <loc>https://ryanwu.cn/tags/semiconductor/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://ryanwu.cn/tags/space/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -1629,28 +1636,14 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/tags/industry/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/semiconductor/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://ryanwu.cn/tags/biotech/</loc>
-    <lastmod>2026-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://ryanwu.cn/tags/open-source/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/industry/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1665,6 +1658,13 @@
   
   <url>
     <loc>https://ryanwu.cn/tags/energy/</loc>
+    <lastmod>2026-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://ryanwu.cn/tags/biotech/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1736,7 +1736,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/categories/tech/llm/</loc>
+    <loc>https://ryanwu.cn/categories/tech/autonomous-driving/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1750,7 +1750,7 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/categories/tech/autonomous-driving/</loc>
+    <loc>https://ryanwu.cn/categories/tech/llm/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1785,14 +1785,14 @@
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/categories/life/reading/</loc>
+    <loc>https://ryanwu.cn/categories/life/fitness/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://ryanwu.cn/categories/life/fitness/</loc>
+    <loc>https://ryanwu.cn/categories/life/reading/</loc>
     <lastmod>2026-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
