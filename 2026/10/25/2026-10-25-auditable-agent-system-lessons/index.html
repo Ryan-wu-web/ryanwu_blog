@@ -1,0 +1,662 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="状态机与防重发、记忆发布门禁、三凭据身份分离、用实测数字否决自己、评测先于扩量——把一段从零搭建模型网关与记忆系统的实习经验，压缩成可复用的工程笔记。内部细节已脱敏。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/25/2026-10-25-auditable-agent-system-lessons/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="状态机与防重发、记忆发布门禁、三凭据身份分离、用实测数字否决自己、评测先于扩量——把一段从零搭建模型网关与记忆系统的实习经验，压缩成可复用的工程笔记。内部细节已脱敏。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/auditable-agent-system-lessons/cover.webp">
+<meta property="article:published_time" content="2026-10-25T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-25T06:29:43.736Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="agent">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="engineering">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/auditable-agent-system-lessons/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘",
+  "url": "https://ryanwu.cn/2026/10/25/2026-10-25-auditable-agent-system-lessons/",
+  "image": "https://ryanwu.cn/images/posts/auditable-agent-system-lessons/cover.webp",
+  "datePublished": "2026-10-25T04:00:00.000Z",
+  "dateModified": "2026-10-25T06:29:43.736Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/25/2026-10-25-auditable-agent-system-lessons/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">84</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">129</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/auditable-agent-system-lessons/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-25T06:29:43.736Z" title="更新于 2026-10-25 14:29:43">2026-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/dev-notes/">dev-notes</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>实习里我做过一件贯穿始终的事：从零搭一条「模型网关 + 个人长期记忆 + 团队记忆」的部门级 AI 协作链路（<a href="/about/">about 页</a>里写过的那套）。最近把整个过程从头到尾复盘了一遍，最大的感受是：<strong>Agent 系统的难点不在「能演示」，在「敢签字」</strong>——敢让它跑在生产里、出了事能定位、错了能回滚。这篇把可复用的工程结论整理出来，内部细节已全部脱敏，只留方法论。</p>
+<h2 id="第一课：可靠性语义先于价值语义"><a href="#第一课：可靠性语义先于价值语义" class="headerlink" title="第一课：可靠性语义先于价值语义"></a>第一课：可靠性语义先于价值语义</h2><p>系统最早的版本连「这次请求到底成没成功」都说不清。后来花力气最多的不是智能，是把状态机做实：</p>
+<ul>
+<li><strong>每个任务一条明确的状态机</strong>：受理 → 生成 → 提取 → 发布&#x2F;无记忆，每个终态都有名字；</li>
+<li><strong>UNKNOWN ≠ FAILED</strong>：流式响应中断、用量无法核实时记为 UNKNOWN，绝不假装成成功，也绝不静默重试——重试由 once 语义 + 台账防重发控制，同一请求不会被重复扣费、重复写入；</li>
+<li><strong>预算熔断</strong>：额度、Token 上限、STOP 阈值三层，超限即停而不是「先跑完再说」。</li>
+</ul>
+<p>事后看这套东西的价值：<strong>它回答的是企业内网环境最稀缺的问题——「这笔钱扣没扣、这条记忆写没写、写进去的是什么」</strong>。McKinsey 2026 年的调查里 88% 的组织在用 AI、79% 在用 agent，但单职能规模化部署的不超过 10%——卡住的大多不是演示，是这种可信语义。</p>
+<h2 id="第二课：记忆不是存进去就行，发布要有门禁"><a href="#第二课：记忆不是存进去就行，发布要有门禁" class="headerlink" title="第二课：记忆不是存进去就行，发布要有门禁"></a>第二课：记忆不是存进去就行，发布要有门禁</h2><p>记忆系统的核心设计只有一句话：<strong>任何内容不经发布门禁不算「已保存」</strong>。</p>
+<p>原始对话先落 L0（原始层），由独立的提取模型结构化成 L1（可发布层），状态机走 PUBLISHED 门禁后才对召回和页面可见；UNKNOWN&#x2F;FAILED&#x2F;提取中的一律不展示为「已保存」。这个姿态不是洁癖——2026 年关于记忆投毒的研究已经很具体：四条写入通道、九种攻击模式（<a target="_blank" rel="noopener" href="https://arxiv.org/html/2606.04329v1">arXiv:2606.04329</a>），注入成功率可超过 95%（<a target="_blank" rel="noopener" href="https://arxiv.org/html/2601.05504v2">arXiv:2601.05504</a>）；Unit 42 也演示过通过间接注入污染长期记忆建立持久行为（<a target="_blank" rel="noopener" href="https://unit42.paloaltonetworks.com/indirect-prompt-injection-poisons-ai-longterm-memory">Unit 42</a>）。一次错误写入被永久召回放大，就是记忆系统的死亡方式。</p>
+<p>一个具体的工程决策：提取模型从大模型换成轻量快模型，单次提取从 15–60 秒降到约 2.3 秒、成本省约 20–30%——<strong>提取链路值得独立选型</strong>，它和主对话的成本曲线、延迟要求完全不同。</p>
+<h2 id="第三课：凭据分离与身份委托"><a href="#第三课：凭据分离与身份委托" class="headerlink" title="第三课：凭据分离与身份委托"></a>第三课：凭据分离与身份委托</h2><p>系统里三种凭据严格分离：网关计费 Key、调用方 Key、用户身份 Key，各管各的。多人共享记忆时用「身份映射 + 委托签名 + 纪元撤销」：委托可撤销、旧会话在权限变更后立即失效。</p>
+<p>后来看到微软把 agent 定义为一等身份类型的 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/entra/agent-id/what-are-agent-identities">Entra Agent ID</a>（带 sponsor&#x2F;owner&#x2F;访问策略），我意识到当时手工搭的那套身份映射，方向和行业是同构的——<strong>agent 需要可担责的身份主体，这件事正在变成企业 IAM 的标配</strong>，而绝大多数团队还没有动手的实践经验。</p>
+<h2 id="第四课：用实测数字否决自己"><a href="#第四课：用实测数字否决自己" class="headerlink" title="第四课：用实测数字否决自己"></a>第四课：用实测数字否决自己</h2><p>整个项目里我认为最有工程价值的决定，是一次自我否决：当时有一份很漂亮的平台化扩张计划（多 Agent 分工、知识库、高可用），可行性审查用两个实测数字把它否了——<strong>提取输出 296&#x2F;304 超过 256 的输出合同上限</strong>、部分任务终态为 UNKNOWN——于是目标降级为「把单链路做成可重复、可观测、可回滚的闭环」，原则是「单链路门禁未通过前不引入多 Agent」。</p>
+<p>这比任何愿景文档都值钱。Gartner 预测 40%+ 的 agentic 项目会在 2027 年底前取消，归因正是成本不清、价值不明、风控不足（<a target="_blank" rel="noopener" href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027">Gartner</a>）；MIT 那份「95% 试点无财务回报」的报告结论相同。<strong>死法清单是共通的：范围过大、评测缺失、权限失控、记忆污染、成本失控、无人维护。</strong></p>
+<h2 id="第五课：我们做得最差的一块是评测"><a href="#第五课：我们做得最差的一块是评测" class="headerlink" title="第五课：我们做得最差的一块是评测"></a>第五课：我们做得最差的一块是评测</h2><p>诚实地说：这套系统「不重复扣费、不误写记忆」做得很扎实，但「记忆到底让回答变好了没有」一直停留在零指标——检索是词法加时间兜底，没有召回命中率，没有引用准确率。这不是我们独有的坑：2026 年九大厂商的产品矩阵里，<strong>评测与可观测是唯一没有任何独立产品的空白层</strong>（<a target="_blank" rel="noopener" href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey State of AI</a> 里「EBIT 可归因于 AI 的比例一年持平」是同一件事的宏观投影）。</p>
+<p>所以我的结论是：<strong>评测会从可选项变成上线门禁</strong>。三个最小指标就够起步：召回命中率（人工抽检「召回的内容确实相关」）、引用准确率（回答与来源一致）、任务一次通过率。没有这三个数字，扩量就是在放大一个无法证明价值的东西。</p>
+<h2 id="一张自检清单"><a href="#一张自检清单" class="headerlink" title="一张自检清单"></a>一张自检清单</h2><p>复盘最后我给自己留了几个领先指标，任何做 Agent 系统的团队可以直接拿去用：</p>
+<ul>
+<li>UNKNOWN 请求占比 &lt; 1%（升高 &#x3D; 账务与记忆开始不可信，先于事故）；</li>
+<li>回滚耗时 &lt; 30 分钟（变长 &#x3D; 发布纪律在松懈）；</li>
+<li>人工验收等待 &lt; 5 天（拖长 &#x3D; 瓶颈已从代码转移到「他人时间」）；</li>
+<li>记忆周活跃人数（连续一季走低 &#x3D; 平台正在退化成演示）；</li>
+<li>影子 AI 使用率不降 &#x3D; 自建平台的体验输给了私人工具，先修体验再谈治理。</li>
+</ul>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>协议层在快速标准化（<a target="_blank" rel="noopener" href="https://blog.modelcontextprotocol.io/posts/2026-07-28">MCP</a> 已是无状态的 web 规模设计），治理面在被商品化（<a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2026/05/01/microsoft-agent-365-now-generally-available-expands-capabilities-and-integrations">Agent 365</a> 按席位卖控制面）——这些都不值得自研。值得自研的是两块没人替你做的：<strong>私有数据的记忆层，和「什么算干好了」的评测层</strong>。</p>
+<p>到 2028 年，企业要招的大概不是「会用 agent 的人」，而是<strong>敢把 agent 放进生产并签字的人</strong>。这篇笔记是我朝那个方向攒的第一块砖。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><strong>协议与身份</strong>：<a target="_blank" rel="noopener" href="https://blog.modelcontextprotocol.io/posts/2026-07-28">MCP 2026-07 无状态规范</a>、<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/entra/agent-id/what-are-agent-identities">Entra Agent ID 文档</a>、<a target="_blank" rel="noopener" href="https://github.blog/news-insights/company-news/welcome-home-agents">GitHub Agent HQ</a></li>
+<li><strong>治理与效果</strong>：<a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/security/blog/2026/05/01/microsoft-agent-365-now-generally-available-expands-capabilities-and-integrations">Microsoft Agent 365 GA</a>、<a target="_blank" rel="noopener" href="https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai">McKinsey State of AI 2026</a>、<a target="_blank" rel="noopener" href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027">Gartner：40% agentic 项目将被取消</a>、<a target="_blank" rel="noopener" href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks">METR：长任务时间地平线</a></li>
+<li><strong>记忆安全</strong>：<a target="_blank" rel="noopener" href="https://arxiv.org/html/2606.04329v1">arXiv:2606.04329（记忆投毒四通道九模式）</a>、<a target="_blank" rel="noopener" href="https://arxiv.org/html/2601.05504v2">arXiv:2601.05504（注入成功率）</a>、<a target="_blank" rel="noopener" href="https://unit42.paloaltonetworks.com/indirect-prompt-injection-poisons-ai-longterm-memory">Unit 42：长期记忆投毒</a></li>
+</ul>
+<blockquote>
+<p>说明：本文为个人实习复盘的方法论部分，单位、部署环境、同事信息、内部文档与合规细节均已剔除；文中系统架构描述与<a href="/about/">关于我</a>页面的公开介绍一致。相关外部趋势的更多报道见<a href="/2026/10/25/2026-10-25-computer-use-agents/">AI 智能体操作电脑</a>与<a href="/2026/10/25/2026-10-25-ai-security-black-october/">AI 安全「黑色十月」</a>。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/25/2026-10-25-auditable-agent-system-lessons/">https://ryanwu.cn/2026/10/25/2026-10-25-auditable-agent-system-lessons/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/agent/">agent</a><a class="post-meta__tags" href="/tags/engineering/">engineering</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/auditable-agent-system-lessons/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/25/2026-10-25-china-open-source-models-2026/" title="中国开源模型生态：四大家族贴近前沿，采用度是两个世界"><img class="cover" src="/images/posts/china-open-source-models-2026/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">中国开源模型生态：四大家族贴近前沿，采用度是两个世界</div></div><div class="info-2"><div class="info-item-1">BI 口径中美差距 10 月缩至约 3%；OpenRouter 上中国家族合计约 44%，但美国大企业生产环境仅约 1%。成本三层逻辑、华为共生与管制悖论。</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-ai-regulation-october-2026/" title="全球 AI 监管 10 月动态：行政令快跑、立法慢走"><img class="cover" src="/images/posts/ai-regulation-october-2026/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">全球 AI 监管 10 月动态：行政令快跑、立法慢走</div></div><div class="info-2"><div class="info-item-1">Anthropic 私推安全法案被曝、白宫「超级智能」术语行政令、52% 选民要求暂停先行立法：联邦先占之争、州法第二波与欧盟减速换挡的全景。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/30/2026-09-30-long-horizon-agents-harness/" title="模型之外的胜负手：长时程 Agent 与 Harness 工程"><img class="cover" src="/images/posts/long-horizon-agents-harness/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">模型之外的胜负手：长时程 Agent 与 Harness 工程</div></div><div class="info-2"><div class="info-item-1">Agent 等于模型加 Harness：同一模型换一套外置工程，表现可以相差数倍甚至排名逆转。梳理四类失败模式的实证、六件套武器库、压缩为什么不够，以及 2026 年关于 harness 披露的规范之争。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-computer-use-gui-agents/" title="点不准是最大瓶颈：计算机使用代理的两年"><img class="cover" src="/images/posts/computer-use-gui-agents/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">点不准是最大瓶颈：计算机使用代理的两年</div></div><div class="info-2"><div class="info-item-1">纯视觉加坐标操作已成为 GUI 代理主流范式，两年内基准成绩从 12% 涨到超过人类基线。但失败分析显示 75% 以上含点击不准，长任务的性能衰减近四倍——梳理这条曲线的来路、代价与仍未解决的问题。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-self-improvement/" title="把经验变成资产：Agent 自我改进的五条路线"><img class="cover" src="/images/posts/agent-self-improvement/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">把经验变成资产：Agent 自我改进的五条路线</div></div><div class="info-2"><div class="info-item-1">从技能库、语言反思到记忆设计元学习，Agent 自我改进已分化为五条路线。梳理四种经验沉淀形式的证据强度、负迁移的边界条件、以及误差放大与记忆投毒这类被低估的风险。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img class="cover" src="/images/posts/ai-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</div></div><div class="info-2"><div class="info-item-1">OpenAI 搁置 GPT-6.1 Astra、Google 受限发布 Gemini 4、FTC 启动行业级调查：一周内 AI 安全从叙事变成监管动作。附 20 条事件与趋势判断。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-agent-evaluation-science/" title="考卷本身也会错：Agent 评测学的四大失效"><img class="cover" src="/images/posts/agent-evaluation-science/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">考卷本身也会错：Agent 评测学的四大失效</div></div><div class="info-2"><div class="info-item-1">OpenAI 正式弃用 SWE-bench Verified：审计发现近六成判分有实质缺陷。从判分器可被绕过、数据污染、跑间抖动的量化证据，到统计功效与排行榜操纵，梳理 Agent 评测为什么必须被当作一门学科来对待。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mcp-a2a-protocols/" title="协议之争落幕：MCP 与 A2A 的收敛与新的分歧"><img class="cover" src="/images/posts/mcp-a2a-protocols/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">协议之争落幕：MCP 与 A2A 的收敛与新的分歧</div></div><div class="info-2"><div class="info-item-1">MCP 管工具、A2A 管代理，两个协议同归 Linux Foundation 治理，标准之战告一段落。但真正的分歧转移到别处：工具投毒与供应链攻击、代码执行对工具调用的替代、以及跨协议信任的空白地带。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">84</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">129</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E8%AF%BE%EF%BC%9A%E5%8F%AF%E9%9D%A0%E6%80%A7%E8%AF%AD%E4%B9%89%E5%85%88%E4%BA%8E%E4%BB%B7%E5%80%BC%E8%AF%AD%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">第一课：可靠性语义先于价值语义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E8%AF%BE%EF%BC%9A%E8%AE%B0%E5%BF%86%E4%B8%8D%E6%98%AF%E5%AD%98%E8%BF%9B%E5%8E%BB%E5%B0%B1%E8%A1%8C%EF%BC%8C%E5%8F%91%E5%B8%83%E8%A6%81%E6%9C%89%E9%97%A8%E7%A6%81"><span class="toc-number">2.</span> <span class="toc-text">第二课：记忆不是存进去就行，发布要有门禁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E8%AF%BE%EF%BC%9A%E5%87%AD%E6%8D%AE%E5%88%86%E7%A6%BB%E4%B8%8E%E8%BA%AB%E4%BB%BD%E5%A7%94%E6%89%98"><span class="toc-number">3.</span> <span class="toc-text">第三课：凭据分离与身份委托</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E8%AF%BE%EF%BC%9A%E7%94%A8%E5%AE%9E%E6%B5%8B%E6%95%B0%E5%AD%97%E5%90%A6%E5%86%B3%E8%87%AA%E5%B7%B1"><span class="toc-number">4.</span> <span class="toc-text">第四课：用实测数字否决自己</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E8%AF%BE%EF%BC%9A%E6%88%91%E4%BB%AC%E5%81%9A%E5%BE%97%E6%9C%80%E5%B7%AE%E7%9A%84%E4%B8%80%E5%9D%97%E6%98%AF%E8%AF%84%E6%B5%8B"><span class="toc-number">5.</span> <span class="toc-text">第五课：我们做得最差的一块是评测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%BC%A0%E8%87%AA%E6%A3%80%E6%B8%85%E5%8D%95"><span class="toc-number">6.</span> <span class="toc-text">一张自检清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">7.</span> <span class="toc-text">写在最后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">8.</span> <span class="toc-text">参考来源</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"><img src="/images/posts/ai-infrastructure-energy/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-regulation-october-2026/" title="全球 AI 监管 10 月动态：行政令快跑、立法慢走"><img src="/images/posts/ai-regulation-october-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="全球 AI 监管 10 月动态：行政令快跑、立法慢走"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-regulation-october-2026/" title="全球 AI 监管 10 月动态：行政令快跑、立法慢走">全球 AI 监管 10 月动态：行政令快跑、立法慢走</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-auditable-agent-system-lessons/" title="把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘"><img src="/images/posts/auditable-agent-system-lessons/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-auditable-agent-system-lessons/" title="把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘">把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-china-open-source-models-2026/" title="中国开源模型生态：四大家族贴近前沿，采用度是两个世界"><img src="/images/posts/china-open-source-models-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="中国开源模型生态：四大家族贴近前沿，采用度是两个世界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-china-open-source-models-2026/" title="中国开源模型生态：四大家族贴近前沿，采用度是两个世界">中国开源模型生态：四大家族贴近前沿，采用度是两个世界</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-computer-use-agents/" title="AI 智能体操作电脑：能力、代价与安全边界"><img src="/images/posts/computer-use-agents/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 智能体操作电脑：能力、代价与安全边界"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-computer-use-agents/" title="AI 智能体操作电脑：能力、代价与安全边界">AI 智能体操作电脑：能力、代价与安全边界</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
