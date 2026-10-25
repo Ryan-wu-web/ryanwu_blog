@@ -1,0 +1,715 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="四大云厂商 2025-2026 资本开支合计约 1.13-1.17 万亿美元；核电长协锁的是存量，真正的边际供给是燃气与储能；并网排队 2,060 GW、PJM 容量价两年涨约 10 倍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="四大云厂商 2025-2026 资本开支合计约 1.13-1.17 万亿美元；核电长协锁的是存量，真正的边际供给是燃气与储能；并网排队 2,060 GW、PJM 容量价两年涨约 10 倍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/ai-infrastructure-energy/cover.webp">
+<meta property="article:published_time" content="2026-10-25T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-25T05:36:11.003Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="energy">
+<meta property="article:tag" content="infrastructure">
+<meta property="article:tag" content="news">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/ai-infrastructure-energy/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex",
+  "url": "https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/",
+  "image": "https://ryanwu.cn/images/posts/ai-infrastructure-energy/cover.webp",
+  "datePublished": "2026-10-25T04:00:00.000Z",
+  "dateModified": "2026-10-25T05:36:11.003Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">77</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">127</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/ai-infrastructure-energy/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-25T05:36:11.003Z" title="更新于 2026-10-25 13:36:11">2026-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/tech-news/">tech-news</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>「万亿」在 2026 年从预测变成了财报数字：四大云厂商 2025 年实际资本开支约 4,110 亿美元，2026 年官方指引合计约 7,200–7,600 亿美元——<strong>两年合计约 1.13–1.17 万亿美元</strong>。而供给侧的真相与新闻标题相反：声势最大的核电长协锁定的是存量，真正的边际供给是燃气与储能，两者都撞上并网排队。这篇把「钱、电、政治」三条线各自核清。</p>
+<blockquote>
+<p>口径说明：capex 为各公司全部资本开支（AI 是主要但非唯一去向）；2025 年为财报实数、2026 年为指引；媒体估计与待核项单独标注。</p>
+</blockquote>
+<h2 id="钱：四大厂两年-1-1-万亿，中国以-1-6-的钱追-88-的增速"><a href="#钱：四大厂两年-1-1-万亿，中国以-1-6-的钱追-88-的增速" class="headerlink" title="钱：四大厂两年 1.1 万亿，中国以 1&#x2F;6 的钱追 88% 的增速"></a>钱：四大厂两年 1.1 万亿，中国以 1&#x2F;6 的钱追 88% 的增速</h2><table>
+<thead>
+<tr>
+<th>公司</th>
+<th>2025 实际</th>
+<th>2026 指引</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>亚马逊</td>
+<td>~1,318 亿美元</td>
+<td>≤2,000 亿（官方），机构估 2,000–2,200 亿</td>
+</tr>
+<tr>
+<td>微软</td>
+<td>~1,180 亿（日历年换算）</td>
+<td>~1,900 亿（媒体换算）</td>
+</tr>
+<tr>
+<td>Alphabet</td>
+<td>~914 亿</td>
+<td>1,750–1,850 亿（官方）</td>
+</tr>
+<tr>
+<td>Meta</td>
+<td>~697 亿</td>
+<td>1,250–1,450 亿</td>
+</tr>
+</tbody></table>
+<p>「2026 年全球数据中心支出超 1 万亿美元」出自 Dell’Oro（2026 年 6 月上调，其 2025 年 2 月版原预测 2029 年才破万亿）——注意与 IDC 的口径区分（IDC 的 1 万亿指 2029 年 AI 支出）。</p>
+<p><strong>谷歌云「96 万颗 GPU」核实</strong>：NVIDIA 与 Google Cloud 官方博客确认的是<strong>多站点集群规划上限 96 万颗</strong> Rubin GPU（单站点上限 8 万颗）——规划上限，非已部署量。</p>
+<p><strong>中国侧</strong>：阿里、腾讯、字节、三大运营商 2025 年合计约 6,000–6,500 亿元，2026 年约 9,000 亿元以上——约为美国四大厂的 1&#x2F;5–1&#x2F;6；但 IDC&#x2F;浪潮预计 2026 年中国智算规模 2,576.5 EFLOPS、<strong>同比 +87.9%</strong>，且华为昇腾已拿下中国 AI 芯片 28% 份额（IDC，2026-10）。</p>
+<h2 id="电：签了的合同-vs-2030-年能亮起来的灯"><a href="#电：签了的合同-vs-2030-年能亮起来的灯" class="headerlink" title="电：签了的合同 vs 2030 年能亮起来的灯"></a>电：签了的合同 vs 2030 年能亮起来的灯</h2><h3 id="核电长协：锁存量，不是新增"><a href="#核电长协：锁存量，不是新增" class="headerlink" title="核电长协：锁存量，不是新增"></a>核电长协：锁存量，不是新增</h3><p>滚动 12 个月六笔核电大单加总约 8.4 GW（扩展到 18–24 个月窗口约 10 GW——「超 10 GW」是更宽松口径）。微软-Constellation（三里岛重启 835 MW）、Meta-Vistra（&gt;2,600 MW）、亚马逊-Talen（1,920 MW）等签约项目中，<strong>物理新增仅 2–3 GW，其余为存量转购</strong>。SMR（小型堆）2030 年前实际并网不足 1 GW——Bulletin of the Atomic Scientists 的判断：多数 SMR 宣传实为 PR，交付普遍滑至 2030 年代，与 2026–2028 的需求拥堵期错配。</p>
+<h3 id="真正的边际供给：燃气与储能"><a href="#真正的边际供给：燃气与储能" class="headerlink" title="真正的边际供给：燃气与储能"></a>真正的边际供给：燃气与储能</h3><p>GE Vernova 燃机积压 + 槽位预留达 <strong>116 GW</strong>（交付排至 2028&#x2F;2029，CEO 预计年底槽位售罄至 2030）；Siemens Energy 积压近 70 GW、Mitsubishi Power 35 GW——「三大主机厂 2028&#x2F;2029 年前售罄」成立。典型配套：Meta 路易斯安那 Hyperion 园区（Entergy 三座 CCGT 约 2.26 GW + 再加 7 台燃气机组）。储能方面 IEA 估计 2030 年需 20–25 GW 电池配套数据中心——但两者都撞上同一个墙：<strong>并网排队</strong>。</p>
+<h3 id="电网：2-060-GW-排队，容量价两年-10-倍"><a href="#电网：2-060-GW-排队，容量价两年-10-倍" class="headerlink" title="电网：2,060 GW 排队，容量价两年 10 倍"></a>电网：2,060 GW 排队，容量价两年 10 倍</h3><p>LBNL《Queued Up 2026》：全美活跃并网排队 2,060 GW（约 8,200 个项目）；建成项目从申请到商运中位时长超 5 年；2000–2020 年提出申请的容量中仅 13% 最终建成——排队数字对真实供给严重高估。价格信号更直接：PJM 容量拍卖从 2025&#x2F;26 年度的 $28.92&#x2F;MW-day 涨到 2027&#x2F;28 年度的约 $330（触及上限），<strong>两年约 10 倍</strong>；PJM 独立监测机构测算数据中心负荷已给其他用户增加约 231 亿美元成本。</p>
+<p><strong>核心判断：供给侧弹性在 2029–2032 年（燃气新机组批量投运、首批 SMR、新输电投产），与算力需求曲线存在约 3 年错位——是「算力等电」，不是「电等算力」。</strong></p>
+<h2 id="政治：52-要暂停，但-32-怕输给中国"><a href="#政治：52-要暂停，但-32-怕输给中国" class="headerlink" title="政治：52% 要暂停，但 32% 怕输给中国"></a>政治：52% 要暂停，但 32% 怕输给中国</h2><p>CNBC 10 月 24 日全国民调：<strong>52% 注册选民支持暂停先进 AI 开发直到国会通过监管，63% 反对在家附近建数据中心</strong>。2025 年弗吉尼亚州长选举（数据税、电价成为两党共同议题）是模板；孟菲斯 xAI 暂停令表决（18 个月暂停被市议会 6:6 否决）、佐治亚县级暂停令扩散显示地方阻力显性化。联邦的 EO 14318 能加速联邦许可，却无法取消地方分区否决权——<strong>「联邦快、地方慢」是净效果</strong>。</p>
+<h2 id="Vera-Rubin：平台兑现与产能天花板"><a href="#Vera-Rubin：平台兑现与产能天花板" class="headerlink" title="Vera Rubin：平台兑现与产能天花板"></a>Vera Rubin：平台兑现与产能天花板</h2><p>Rubin GPU（约 3,360 亿晶体管、288GB HBM4）机柜 2026 下半年起出货，OpenAI-NVIDIA 10 GW 合作首个 1 GW 于 2026 下半年部署（<a href="/2026/10/02/2026-10-02-semiconductors-weekly/">芯片周报此前报道过交付落地</a>）。但 TrendForce 因 HBM&#x2F;CoWoS 供给约束已把 Rubin 占 2026 年 Nvidia 高端出货比例从 29% 下调至约 22%；NVL144 机柜良率年初 45–52%、目标 6 月约 70%。按 Wolfe 口径 2026 年全球 Rubin 机柜约 2 万台——「96 万颗」级别的多站点集群是平台叙事，实际节奏取决于 CoWoS&#x2F;HBM4 与电力到位。</p>
+<h2 id="中美模式分岔"><a href="#中美模式分岔" class="headerlink" title="中美模式分岔"></a>中美模式分岔</h2><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>美国</th>
+<th>中国</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>决策机制</td>
+<td>资本市场驱动；并网排队 + 地方否决权</td>
+<td>国家规划（东数西算）；运营商&#x2F;国企执行</td>
+</tr>
+<tr>
+<td>电源结构</td>
+<td>燃气为主增量 + 核电长协锁存量</td>
+<td>西部风光 + 特高压西电东送</td>
+</tr>
+<tr>
+<td>电价</td>
+<td>PJM 容量价两年 10 倍、231 亿美元转嫁争议</td>
+<td>电力总体充裕，数据中心占总用电约 2–3%</td>
+</tr>
+<tr>
+<td>芯片</td>
+<td>Nvidia 垂直整合</td>
+<td>华为 28% 份额；CloudMatrix 384 算力约 NVL72 的 1.7 倍、功耗约 4 倍</td>
+</tr>
+</tbody></table>
+<p><strong>制度含义</strong>：美国的瓶颈不在钱而在「许可-电网-政治」三重约束；中国的瓶颈在芯片与能效，不在土地、电网或选民。若出口管制持续，中美<strong>每瓦算力</strong>的差距将比总量差距更持久。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><strong>资本开支</strong>：<a target="_blank" rel="noopener" href="https://www.statista.com/chart/35046/capital-expenditure-of-meta-alphabet-amazon-and-microsoft/">Statista：Big Tech capex</a>、<a target="_blank" rel="noopener" href="https://www.bloomberg.com/news/articles/2026-02-06/how-much-is-big-tech-spending-on-ai-computing-a-staggering-650-billion-in-2026">Bloomberg：2026 约 6,500 亿</a>、<a target="_blank" rel="noopener" href="https://www.delloro.com/news/ai-infrastructure-buildouts-and-memory-cost-inflation-drove-data-center-capex-higher-in-1q-2026">Dell’Oro 万亿预测</a>、<a target="_blank" rel="noopener" href="https://blogs.nvidia.com/blog/google-cloud-vera-rubin-infrastructure">NVIDIA×Google Cloud：Vera Rubin</a></li>
+<li><strong>能源</strong>：<a target="_blank" rel="noopener" href="https://www.iea.org/reports/energy-and-ai">IEA：Energy and AI</a>、<a target="_blank" rel="noopener" href="https://eta-publications.lbl.gov/">LBNL：数据中心能耗报告</a>、<a target="_blank" rel="noopener" href="https://thebulletin.org/">Bulletin of the Atomic Scientists：SMR 现实核查</a>、<a target="_blank" rel="noopener" href="https://www.carbonbrief.org/explainer-how-china-is-managing-the-rising-energy-demand-from-data-centres">Carbon Brief：中国数据中心能耗</a></li>
+<li><strong>电网与政治</strong>：<a target="_blank" rel="noopener" href="https://emp.lbl.gov/queues">LBNL：Queued Up 2026</a>、<a target="_blank" rel="noopener" href="https://ieefa.org/resources/projected-data-center-growth-spurs-pjm-capacity-prices-factor-10">IEEFA：PJM 容量价 10 倍</a>、<a target="_blank" rel="noopener" href="https://www.monitoringanalytics.com/reports/Reports/2026/IMM_Analysis_of_the_20272028_RPM_Base_Residual_Auction_Part_A_20260105.pdf">PJM 监测报告</a>、<a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/10/24/trump-ai-data-centers-voter-backlash-midterms.html">CNBC 民调</a>、<a target="_blank" rel="noopener" href="https://www.whitehouse.gov/presidential-actions/2025/07/accelerating-federal-permitting-of-data-center-infrastructure">白宫 EO 14318</a></li>
+<li><strong>中国对比</strong>：<a target="_blank" rel="noopener" href="https://www.reuters.com/business/retail-consumer/nvidias-china-ai-chip-share-falls-huawei-closes-gap-report-finds-2026-10-13">Reuters&#x2F;IDC：华为 28% 份额</a>、<a target="_blank" rel="noopener" href="https://newsletter.semianalysis.com/p/huawei-ai-cloudmatrix-384-chinas-answer-to-nvidia-gb200-nvl72">SemiAnalysis：CloudMatrix 384</a>、<a target="_blank" rel="noopener" href="https://www.trendforce.com/presscenter/news/20260408-13003.html">TrendForce：Rubin 占比下调</a></li>
+</ul>
+<blockquote>
+<p>说明：微软 PPA「160 亿美元」、EPRI 2026 版「9–17%」区间、Dell’Oro 2030 年 3 万亿预测、字节跳动全部数字均为媒体估计或转引，未获一手核实；Meta&#x2F;Alphabet&#x2F;微软&#x2F;亚马逊 9 月季度财报在截稿时尚未全部发布，指引可能再上调。</p>
+</blockquote>
+<h2 id="本系列其他篇目"><a href="#本系列其他篇目" class="headerlink" title="本系列其他篇目"></a>本系列其他篇目</h2><ul>
+<li><a href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/">人形机器人量产竞赛：中国出货占 95%</a></li>
+<li><a href="/2026/10/25/2026-10-25-computer-use-agents/">AI 智能体操作电脑：能力、代价与安全边界</a></li>
+<li><a href="/2026/10/25/2026-10-25-frontier-model-race-october/">前沿模型 10 月战报</a></li>
+<li><a href="/2026/10/25/2026-10-25-tesla-spacex-merger/">特斯拉与 SpaceX 拟合并</a></li>
+<li>相关阅读：<a href="/2026/10/02/2026-10-02-semiconductors-weekly/">芯片周报（Vera Rubin 开始交付）</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/">https://ryanwu.cn/2026/10/25/2026-10-25-ai-infrastructure-energy/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/news/">news</a><a class="post-meta__tags" href="/tags/infrastructure/">infrastructure</a><a class="post-meta__tags" href="/tags/energy/">energy</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/ai-infrastructure-energy/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/25/2026-10-25-fall-hardware-cycle-2026/" title="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘"><img class="cover" src="/images/posts/fall-hardware-cycle-2026/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘</div></div><div class="info-2"><div class="info-item-1">iPhone Duo 首销远超供给、三星 AI 眼镜定档 11 月、Meta 三档价位、苹果 2027 路线图：入口之争的真实规模与三个先行指标。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img class="cover" src="/images/posts/semiconductors-weekly/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</div></div><div class="info-2"><div class="info-item-1">美光 FQ4 营收 542 亿美元同比 +379%，Q4 存储合约价预计再涨 15-20%；Vera Rubin 开始交付，2nm 产能上修，出口管制转向个案审查。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/25/2026-10-25-frontier-model-race-october/" title="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT"><img class="cover" src="/images/posts/frontier-model-race-october/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT</div></div><div class="info-2"><div class="info-item-1">AA 智能指数 Claude Opus 5.5 居首、LMArena 文本榜 Gemini 4 Argon 领跑、GPT-6 向 12 亿周活用户推送：三强胶着、分工清晰，开源落后闭源约 4 个月。</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"><img class="cover" src="/images/posts/ai-drug-discovery-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">AI 制药进入确证期：第一个 AI 全流程药物已到 III 期</div></div><div class="info-2"><div class="info-item-1">rentosertib 启动 III 期、75+ AI 分子进临床、I 期成功率 80-90% 但 II 期仅与行业持平；长寿科学一个季度融资 37 亿美元——证据与泡沫的分界线。</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-openai-offline-training/" title="OpenAI 为什么把前沿训练搬进「离线世界」"><img class="cover" src="/images/posts/openai-offline-training/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">OpenAI 为什么把前沿训练搬进「离线世界」</div></div><div class="info-2"><div class="info-item-1">10 月 9 日是 Anthropic、10 月 21 日才是 OpenAI——两份声明常被混为一谈。断网政策管什么不管什么、离线世界是什么、对开放网络意味着什么。</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-starship-mars-window-2026/" title="星舰错过 2026 火星窗口：卡在哪里，下一班是 2028"><img class="cover" src="/images/posts/starship-mars-window-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">星舰错过 2026 火星窗口：卡在哪里，下一班是 2028</div></div><div class="info-2"><div class="info-item-1">2026 地火窗口已实质出局：在轨加注未演示是硬前置，官方口径货运不早于 2028。平台进展与任务缺口的一份冷静盘点。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-ai-weekly/" title="AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室"><img class="cover" src="/images/posts/ai-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">AI 周报：两大旗舰被安全刹车，FTC 调查头部实验室</div></div><div class="info-2"><div class="info-item-1">OpenAI 搁置 GPT-6.1 Astra、Google 受限发布 Gemini 4、FTC 启动行业级调查：一周内 AI 安全从叙事变成监管动作。附 20 条事件与趋势判断。</div></div></div></a><a class="pagination-related" href="/2026/10/02/2026-10-02-semiconductors-weekly/" title="芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段"><img class="cover" src="/images/posts/semiconductors-weekly/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-02</div><div class="info-item-2">芯片周报：美光营收同比涨 379%，存储超级周期进入极端阶段</div></div><div class="info-2"><div class="info-item-1">美光 FQ4 营收 542 亿美元同比 +379%，Q4 存储合约价预计再涨 15-20%；Vera Rubin 开始交付，2nm 产能上修，出口管制转向个案审查。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">77</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">127</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%92%B1%EF%BC%9A%E5%9B%9B%E5%A4%A7%E5%8E%82%E4%B8%A4%E5%B9%B4-1-1-%E4%B8%87%E4%BA%BF%EF%BC%8C%E4%B8%AD%E5%9B%BD%E4%BB%A5-1-6-%E7%9A%84%E9%92%B1%E8%BF%BD-88-%E7%9A%84%E5%A2%9E%E9%80%9F"><span class="toc-number">1.</span> <span class="toc-text">钱：四大厂两年 1.1 万亿，中国以 1&#x2F;6 的钱追 88% 的增速</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%EF%BC%9A%E7%AD%BE%E4%BA%86%E7%9A%84%E5%90%88%E5%90%8C-vs-2030-%E5%B9%B4%E8%83%BD%E4%BA%AE%E8%B5%B7%E6%9D%A5%E7%9A%84%E7%81%AF"><span class="toc-number">2.</span> <span class="toc-text">电：签了的合同 vs 2030 年能亮起来的灯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E7%94%B5%E9%95%BF%E5%8D%8F%EF%BC%9A%E9%94%81%E5%AD%98%E9%87%8F%EF%BC%8C%E4%B8%8D%E6%98%AF%E6%96%B0%E5%A2%9E"><span class="toc-number">2.1.</span> <span class="toc-text">核电长协：锁存量，不是新增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9C%9F%E6%AD%A3%E7%9A%84%E8%BE%B9%E9%99%85%E4%BE%9B%E7%BB%99%EF%BC%9A%E7%87%83%E6%B0%94%E4%B8%8E%E5%82%A8%E8%83%BD"><span class="toc-number">2.2.</span> <span class="toc-text">真正的边际供给：燃气与储能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E7%BD%91%EF%BC%9A2-060-GW-%E6%8E%92%E9%98%9F%EF%BC%8C%E5%AE%B9%E9%87%8F%E4%BB%B7%E4%B8%A4%E5%B9%B4-10-%E5%80%8D"><span class="toc-number">2.3.</span> <span class="toc-text">电网：2,060 GW 排队，容量价两年 10 倍</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%94%BF%E6%B2%BB%EF%BC%9A52-%E8%A6%81%E6%9A%82%E5%81%9C%EF%BC%8C%E4%BD%86-32-%E6%80%95%E8%BE%93%E7%BB%99%E4%B8%AD%E5%9B%BD"><span class="toc-number">3.</span> <span class="toc-text">政治：52% 要暂停，但 32% 怕输给中国</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vera-Rubin%EF%BC%9A%E5%B9%B3%E5%8F%B0%E5%85%91%E7%8E%B0%E4%B8%8E%E4%BA%A7%E8%83%BD%E5%A4%A9%E8%8A%B1%E6%9D%BF"><span class="toc-number">4.</span> <span class="toc-text">Vera Rubin：平台兑现与产能天花板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E7%BE%8E%E6%A8%A1%E5%BC%8F%E5%88%86%E5%B2%94"><span class="toc-number">5.</span> <span class="toc-text">中美模式分岔</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">6.</span> <span class="toc-text">参考来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97%E5%85%B6%E4%BB%96%E7%AF%87%E7%9B%AE"><span class="toc-number">7.</span> <span class="toc-text">本系列其他篇目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"><img src="/images/posts/ai-infrastructure-energy/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-fall-hardware-cycle-2026/" title="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘"><img src="/images/posts/fall-hardware-cycle-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-fall-hardware-cycle-2026/" title="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘">折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"><img src="/images/posts/ai-drug-discovery-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期">AI 制药进入确证期：第一个 AI 全流程药物已到 III 期</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/" title="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线"><img src="/images/posts/humanoid-robot-mass-production/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/" title="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线">人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-frontier-model-race-october/" title="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT"><img src="/images/posts/frontier-model-race-october/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-frontier-model-race-october/" title="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT">前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>

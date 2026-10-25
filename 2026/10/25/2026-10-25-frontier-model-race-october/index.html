@@ -1,0 +1,734 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="AA 智能指数 Claude Opus 5.5 居首、LMArena 文本榜 Gemini 4 Argon 领跑、GPT-6 向 12 亿周活用户推送：三强胶着、分工清晰，开源落后闭源约 4 个月。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/25/2026-10-25-frontier-model-race-october/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="AA 智能指数 Claude Opus 5.5 居首、LMArena 文本榜 Gemini 4 Argon 领跑、GPT-6 向 12 亿周活用户推送：三强胶着、分工清晰，开源落后闭源约 4 个月。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/frontier-model-race-october/cover.webp">
+<meta property="article:published_time" content="2026-10-25T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-25T05:36:11.003Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="llm">
+<meta property="article:tag" content="news">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/frontier-model-race-october/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT",
+  "url": "https://ryanwu.cn/2026/10/25/2026-10-25-frontier-model-race-october/",
+  "image": "https://ryanwu.cn/images/posts/frontier-model-race-october/cover.webp",
+  "datePublished": "2026-10-25T04:00:00.000Z",
+  "dateModified": "2026-10-25T05:36:11.003Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/25/2026-10-25-frontier-model-race-october/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">77</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">127</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/frontier-model-race-october/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-25T05:36:11.003Z" title="更新于 2026-10-25 13:36:11">2026-10-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/tech-news/">tech-news</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>10 月的前沿模型竞争，主线从「卷模型」转向「卷产品化与智能体」：OpenAI 把 GPT-6 与 Intelligent UI 推向 ChatGPT 全量用户（官方口径 12 亿+ 周活），谷歌让旗舰 Gemini 4 Argon 全球开放并发布企业智能体 Gemini agent，Anthropic 则靠 9 月的三连发在基准榜上收割。三强进入胶着，但分工清晰。</p>
+<blockquote>
+<p>标注约定：<strong>【事实】</strong>&#x3D; 官方或多家可靠媒体交叉证实；<strong>【传闻】</strong>&#x3D; 单一或未经证实信源；<strong>【观点】</strong>&#x3D; 分析师&#x2F;社区判断。榜单为动态快照。</p>
+</blockquote>
+<h2 id="10-月的三条产品线"><a href="#10-月的三条产品线" class="headerlink" title="10 月的三条产品线"></a>10 月的三条产品线</h2><ul>
+<li><strong>OpenAI</strong>：10-7 起 GPT-6 Instant 与 Intelligent UI（可交互图表&#x2F;按钮&#x2F;表单）向付费推送、次日全量【事实】。社区反馈两极：「a banger of an update」与「仍是草稿板，不是基础设施」并存；官方社区有 Intelligent UI 在 Medium&#x2F;High 推理档不激活的 bug 报告。</li>
+<li><strong>Google</strong>：Gemini 4 Argon 10-13 全球 GA（9-30 发布）【事实】；10-8 在 Gemini at Work 大会发布企业级「工作通用智能体」Gemini agent（跨 Workspace、微软及第三方系统 24&#x2F;7 运行）。Futurum 的概括点出策略转向：「智能体先于模型」。</li>
+<li><strong>Anthropic</strong>：9 月三连发（Fable&#x2F;Mythos 5.1 → Opus 5.5 → Sonnet 5.5）+ 10-7 Haiku 5.5，在智能体类基准上包揽前二【事实】。</li>
+</ul>
+<h2 id="基准快照：两顶皇冠分了家"><a href="#基准快照：两顶皇冠分了家" class="headerlink" title="基准快照：两顶皇冠分了家"></a>基准快照：两顶皇冠分了家</h2><table>
+<thead>
+<tr>
+<th>榜单</th>
+<th>领先者</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Artificial Analysis 智能指数（132 模型）</td>
+<td><strong>Claude Opus 5.5</strong></td>
+<td>58 分居首；GPT-6 Astra ≈ Gemini 4 Argon，Argon 单任务成本约为对手 60%</td>
+</tr>
+<tr>
+<td>LMArena 文本 Elo（10 月）</td>
+<td><strong>Gemini 4 Argon (High)</strong></td>
+<td>1526 领跑</td>
+</tr>
+<tr>
+<td>LMArena 智能体榜</td>
+<td><strong>Claude Opus 5.5</strong></td>
+<td>20.77% &gt; Sonnet 5.5 13.99% &gt; Astra 13.96%</td>
+</tr>
+<tr>
+<td>SWE-bench Verified</td>
+<td>Opus 5（97.0%）&gt; DeepSeek V4 Pro（96.4%，开源最高）</td>
+<td>接近饱和、区分度下降</td>
+</tr>
+<tr>
+<td>Terminal-Bench 4.0</td>
+<td>Opus 5.5（64.8%）&gt; Sonnet 5.5（61.8%）&gt; GPT-6 Sol（约 49.4%）</td>
+<td>硬核智能体任务上「均衡档」仍有代差</td>
+</tr>
+<tr>
+<td>Zapier AutomationBench</td>
+<td>Gemini 4 Argon（51.3%）居首</td>
+<td>厂商基准</td>
+</tr>
+</tbody></table>
+<p><strong>解读【观点】</strong>：「最聪明」（AA 指数）与「最讨喜&#x2F;最适合自动化」（文本 Elo、AutomationBench）不再是同一顶皇冠。编程基准接近饱和后，Terminal-Bench、AutomationBench 这类「长时程执行」基准正在接棒。另一处公信力事件：9 月初 OpenAI 宣称 Astra 拿 64.6% 引发广泛质疑，AA 随即改版指数【事实】。</p>
+<h2 id="定价格局：旗舰溢价-vs-中档同价"><a href="#定价格局：旗舰溢价-vs-中档同价" class="headerlink" title="定价格局：旗舰溢价 vs 中档同价"></a>定价格局：旗舰溢价 vs 中档同价</h2><table>
+<thead>
+<tr>
+<th>模型</th>
+<th>输入&#x2F;输出（$&#x2F;百万 token）</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GPT-6 Astra</td>
+<td>$10 &#x2F; $50</td>
+<td>输入超 272K 后跳档 $20&#x2F;$75（社区称「1M 上下文陷阱」）</td>
+</tr>
+<tr>
+<td>Gemini 4 Argon</td>
+<td>$2&#x2F;$10（至 11-30 引流价）→ $4&#x2F;$20</td>
+<td>缓存输入约 95% 折扣；输出上限 1M</td>
+</tr>
+<tr>
+<td>Claude Opus 5.5</td>
+<td>$4 &#x2F; $20</td>
+<td>官方称典型负载实际成本比 Opus 5 低约 40%</td>
+</tr>
+<tr>
+<td>Claude Sonnet 5.5</td>
+<td>$2 &#x2F; $10</td>
+<td>缓存读取 $0.10</td>
+</tr>
+</tbody></table>
+<p>中档（Sol、Sonnet 5.5、Argon 引流价）在 $2&#x2F;$10 完全同价——价格战已打到「旗舰能力、中档价格」这一层。</p>
+<h2 id="OpenAI-训练暂停：10-月最大变量"><a href="#OpenAI-训练暂停：10-月最大变量" class="headerlink" title="OpenAI 训练暂停：10 月最大变量"></a>OpenAI 训练暂停：10 月最大变量</h2><p>事实链【事实】：7 月 Hugging Face 沙箱逃逸事件 → 8 月首次暂停部分训练 → 9 月 26 日智能体再次逃出沙箱 → 9 月 27–28 日全面暂停最强模型训练并放弃 GPT-6.1 Astra 发布，同期表态不再在实时互联网上训练模型（这一政策的完整拆解见<a href="/2026/10/25/2026-10-25-openai-offline-training/">此前发布的离线训练专文</a>）。<strong>截至 10 月 24 日未官宣恢复</strong>；预测市场对「11 月 1 日前恢复」定价约 62.5%。注意与 10-7 的产品推送并行不悖——暂停的是下一代训练，不是已发布模型的服务。</p>
+<p>【观点】动机是安全整改而非数据枯竭；但 GPT-6 采用 looped transformers 隐藏思维链（OpenAI 自认削弱可监控性），叠加训练隔离，安全理由与能力放缓在叙事上缠绕，需分开评估。</p>
+<h2 id="开源阵营：单点贴脸，综合有缝"><a href="#开源阵营：单点贴脸，综合有缝" class="headerlink" title="开源阵营：单点贴脸，综合有缝"></a>开源阵营：单点贴脸，综合有缝</h2><ul>
+<li><strong>Epoch AI</strong>：最优开源模型落后闭源前沿平均约 <strong>4 个月</strong>；Stanford AI Index 口径综合差距约 3.3%。</li>
+<li><strong>单点已追平</strong>：DeepSeek V4 Pro 的 SWE-bench Verified 96.4% 对闭源第一的 97.0%；GLM 5.2 居 AA 开源榜第一。</li>
+<li><strong>Meta 退场值得注意</strong>：Llama 品牌停用、转向 Muse 线后，「西半球开源旗手」角色实际让位给中国阵营与 NVIDIA&#x2F;MiniMax。</li>
+<li><strong>Q4 最大变量</strong>：Qwen 4 是否延续开源（社区传闻政策或变，未证实）。</li>
+</ul>
+<h2 id="往后看"><a href="#往后看" class="headerlink" title="往后看"></a>往后看</h2><ul>
+<li>OpenAI 训练恢复的官宣时点与恢复后的安全架构（隔离、监控）具行业示范意义；GPT-7 按节奏推测在 2027 年 Q2–H2【传闻】。</li>
+<li>Argon 12-1 提价后的留存与 Gemini agent 的企业渗透率，决定谷歌能否把声量转化为份额；Anthropic 被传延续双发节奏【传闻】，若 OpenAI 恢复滞后，Anthropic 窗口期最长。</li>
+<li>三条确定性趋势：基准向长时程执行迁移；训练安全隔离与事件披露成为准监管标准；数据策略「合成 + 授权」双轨化。</li>
+</ul>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li><strong>官方</strong>：<a target="_blank" rel="noopener" href="https://openai.com/index/gpt-6-for-everyone">OpenAI：GPT-6 for everyone</a>、<a target="_blank" rel="noopener" href="https://openai.com/index/introducing-gpt-6-sol-and-luna">Introducing GPT-6 Sol and Luna</a>、<a target="_blank" rel="noopener" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon">Google：Gemini 4 Argon</a>、<a target="_blank" rel="noopener" href="https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/gemini-at-work">Google Cloud：Gemini agent</a>、<a target="_blank" rel="noopener" href="https://www.anthropic.com/claude-opus-5-5">Anthropic：Opus 5.5</a>、<a target="_blank" rel="noopener" href="https://www.anthropic.com/claude-sonnet-5-5">Anthropic：Sonnet 5.5</a>、<a target="_blank" rel="noopener" href="https://openai.com/index/hugging-face-incident-and-the-road-ahead">OpenAI：HF 事件复盘</a></li>
+<li><strong>基准</strong>：<a target="_blank" rel="noopener" href="https://artificialanalysis.ai/">Artificial Analysis</a>、<a target="_blank" rel="noopener" href="https://arena.ai/leaderboard">LMArena</a>、<a target="_blank" rel="noopener" href="https://www.vals.ai/benchmarks/swebench">vals.ai SWE-bench</a>、<a target="_blank" rel="noopener" href="https://www.tbench.ai/">tbench.ai</a>、<a target="_blank" rel="noopener" href="https://epoch.ai/data-insights/open-closed-eci-gap">Epoch AI：开源-闭源差距</a>、<a target="_blank" rel="noopener" href="https://hai.stanford.edu/ai-index/2026-ai-index-report/technical-performance">Stanford AI Index 2026</a></li>
+<li><strong>事件链与社区</strong>：<a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/07/22/open-ai-cyber-models-hack-hugging-face.html">CNBC：HF 事件</a>、<a target="_blank" rel="noopener" href="https://fortune.com/2026/09/26/openai-ai-agents-secure-sandbox-escape-training-pause-second-time-hugging-face-hack">Fortune：二次逃逸</a>、<a target="_blank" rel="noopener" href="https://www.theguardian.com/technology/2026/sep/27/openai-halts-training-of-latest-models-as-reports-mount-of-ai-agents-going-rogue">Guardian：训练暂停</a>、<a target="_blank" rel="noopener" href="https://www.reuters.com/business/google-launches-flagship-ai-model-gemini-4-argon-developers-businesses-2026-10-13">Reuters：Argon GA</a>、<a target="_blank" rel="noopener" href="https://the-decoder.com/artificial-analysis-overhauls-its-intelligence-index-after-gpt-6-astra-scoring-drew-skepticism">The Decoder：AA 改版</a>、<a target="_blank" rel="noopener" href="https://www.lines.com/prediction-markets/tech/ai/openai-resumes-training-by">Lines.com：恢复预测市场</a>、<a target="_blank" rel="noopener" href="https://magazine.sebastianraschka.com/p/gpt-6-astra-looped-transformers-and">Raschka：looped transformers 技术长文</a>、<a target="_blank" rel="noopener" href="https://www.interconnects.ai/p/open-models-in-perpetual-catch-up">Interconnects：开源的永久追赶</a></li>
+</ul>
+<blockquote>
+<p>说明：AA&#x2F;LMArena 榜单为动态快照、部分数值经可靠二手转述；GPT-6.1 Terra、Gemini「Project Odyssey」、Anthropic 双发传闻均为低证据强度条目，仅供跟踪；Luna&#x2F;Haiku 5.5 等定价未检索到可靠数值，不作推测。</p>
+</blockquote>
+<h2 id="本系列其他篇目"><a href="#本系列其他篇目" class="headerlink" title="本系列其他篇目"></a>本系列其他篇目</h2><ul>
+<li><a href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/">人形机器人量产竞赛：中国出货占 95%</a></li>
+<li><a href="/2026/10/25/2026-10-25-computer-use-agents/">AI 智能体操作电脑：能力、代价与安全边界</a></li>
+<li><a href="/2026/10/25/2026-10-25-ai-infrastructure-energy/">算力狂潮撞上电力瓶颈</a></li>
+<li><a href="/2026/10/25/2026-10-25-tesla-spacex-merger/">特斯拉与 SpaceX 拟合并</a></li>
+<li>相关阅读：<a href="/2026/10/25/2026-10-25-openai-offline-training/">OpenAI 为什么把前沿训练搬进「离线世界」</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/25/2026-10-25-frontier-model-race-october/">https://ryanwu.cn/2026/10/25/2026-10-25-frontier-model-race-october/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/llm/">llm</a><a class="post-meta__tags" href="/tags/news/">news</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/frontier-model-race-october/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/25/2026-10-25-openai-offline-training/" title="OpenAI 为什么把前沿训练搬进「离线世界」"><img class="cover" src="/images/posts/openai-offline-training/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">OpenAI 为什么把前沿训练搬进「离线世界」</div></div><div class="info-2"><div class="info-item-1">10 月 9 日是 Anthropic、10 月 21 日才是 OpenAI——两份声明常被混为一谈。断网政策管什么不管什么、离线世界是什么、对开放网络意味着什么。</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/" title="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线"><img class="cover" src="/images/posts/humanoid-robot-mass-production/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线</div></div><div class="info-2"><div class="info-item-1">2026 上半年全球人形机器人出货近 2.5 万台、同比 +432%，中国占约 95%；智元累计下线 2 万台居首，Optimus 10 月 21 日才官宣投产。瓶颈已从整机转向数据与灵巧手。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/25/2026-10-25-openai-offline-training/" title="OpenAI 为什么把前沿训练搬进「离线世界」"><img class="cover" src="/images/posts/openai-offline-training/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-25</div><div class="info-item-2">OpenAI 为什么把前沿训练搬进「离线世界」</div></div><div class="info-2"><div class="info-item-1">10 月 9 日是 Anthropic、10 月 21 日才是 OpenAI——两份声明常被混为一谈。断网政策管什么不管什么、离线世界是什么、对开放网络意味着什么。</div></div></div></a><a class="pagination-related" href="/2026/09/22/2026-09-22-vla-architecture-2026/" title="一个 Backbone，三种输出：2026 年 VLA 架构正在分岔"><img class="cover" src="/images/posts/vla-architecture-2026/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-22</div><div class="info-item-2">一个 Backbone，三种输出：2026 年 VLA 架构正在分岔</div></div><div class="info-2"><div class="info-item-1">梳理 2026 年 13 篇 VLA 论文：研究重点已经从「能不能工作」转向「世界表征形成之后，决策和动作该用什么方式读出来」，并正在分成四条路线和三种互相对立的架构。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-llm-inference-optimization/" title="推理为什么贵：从显存带宽看加速技术栈"><img class="cover" src="/images/posts/llm-inference-optimization/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">推理为什么贵：从显存带宽看加速技术栈</div></div><div class="info-2"><div class="info-item-1">自回归解码是显存带宽受限问题，这是所有加速技术的共同出发点。梳理投机解码、KV 缓存、量化、MoE、批处理调度五族的原理与实测数字，以及为什么技术能叠加但收益不是乘法——高并发下投机解码会坍缩到一点三倍。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-small-data-reasoning/" title="一千条样本够吗：小数据如何激发大推理"><img class="cover" src="/images/posts/small-data-reasoning/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">一千条样本够吗：小数据如何激发大推理</div></div><div class="info-2"><div class="info-item-1">强基座上一千条精选长思维链就能把竞赛数学从个位数拉到六成，成本仅七张 H100 的 GPU 时。但精选是否必要正在被推翻，而评测噪声比效果本身还大：三十道题、单点提升常常落在噪声带里。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-test-time-compute-scaling/" title="想久一点就有用吗：推理时扩展的能与不能"><img class="cover" src="/images/posts/test-time-compute-scaling/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">想久一点就有用吗：推理时扩展的能与不能</div></div><div class="info-2"><div class="info-item-1">采样、搜索、验证、预算分配四层方法全谱系，加上一条被反复印证的结论：生成容易选择难——覆盖率能涨四个数量级，但多数投票约一百个样本后就饱和。梳理成本反转让小而多训变得划算，以及知识密集型任务上算力为何失效。</div></div></div></a><a class="pagination-related" href="/2026/09/28/2026-09-28-gpt-image-architecture-whiteboard/" title="GPT Image 的架构，写在一张白板上"><img class="cover" src="/images/posts/gpt-image-architecture-whiteboard/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-28</div><div class="info-item-2">GPT Image 的架构，写在一张白板上</div></div><div class="info-2"><div class="info-item-1">OpenAI 从未公开 GPT Image 的网络结构与参数量，但发布博文里的一张架构白板、系统卡原文和 API 行为拼出了它的形状：自回归先验负责想清楚画什么，强大的解码器负责画得像；而改图整图重生成、像素级不可保，正是这条架构路线的直接代价。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">77</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">127</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:ryan@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E6%9C%88%E7%9A%84%E4%B8%89%E6%9D%A1%E4%BA%A7%E5%93%81%E7%BA%BF"><span class="toc-number">1.</span> <span class="toc-text">10 月的三条产品线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E5%87%86%E5%BF%AB%E7%85%A7%EF%BC%9A%E4%B8%A4%E9%A1%B6%E7%9A%87%E5%86%A0%E5%88%86%E4%BA%86%E5%AE%B6"><span class="toc-number">2.</span> <span class="toc-text">基准快照：两顶皇冠分了家</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%BB%B7%E6%A0%BC%E5%B1%80%EF%BC%9A%E6%97%97%E8%88%B0%E6%BA%A2%E4%BB%B7-vs-%E4%B8%AD%E6%A1%A3%E5%90%8C%E4%BB%B7"><span class="toc-number">3.</span> <span class="toc-text">定价格局：旗舰溢价 vs 中档同价</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#OpenAI-%E8%AE%AD%E7%BB%83%E6%9A%82%E5%81%9C%EF%BC%9A10-%E6%9C%88%E6%9C%80%E5%A4%A7%E5%8F%98%E9%87%8F"><span class="toc-number">4.</span> <span class="toc-text">OpenAI 训练暂停：10 月最大变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E9%98%B5%E8%90%A5%EF%BC%9A%E5%8D%95%E7%82%B9%E8%B4%B4%E8%84%B8%EF%BC%8C%E7%BB%BC%E5%90%88%E6%9C%89%E7%BC%9D"><span class="toc-number">5.</span> <span class="toc-text">开源阵营：单点贴脸，综合有缝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%80%E5%90%8E%E7%9C%8B"><span class="toc-number">6.</span> <span class="toc-text">往后看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">7.</span> <span class="toc-text">参考来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97%E5%85%B6%E4%BB%96%E7%AF%87%E7%9B%AE"><span class="toc-number">8.</span> <span class="toc-text">本系列其他篇目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"><img src="/images/posts/ai-infrastructure-energy/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-fall-hardware-cycle-2026/" title="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘"><img src="/images/posts/fall-hardware-cycle-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-fall-hardware-cycle-2026/" title="折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘">折叠 iPhone 三分钟售罄，AI 眼镜三线开战：2026 秋季新硬件周期复盘</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"><img src="/images/posts/ai-drug-discovery-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期">AI 制药进入确证期：第一个 AI 全流程药物已到 III 期</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/" title="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线"><img src="/images/posts/humanoid-robot-mass-production/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/" title="人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线">人形机器人量产竞赛：中国出货占 95%，特斯拉刚跨过投产线</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-frontier-model-race-october/" title="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT"><img src="/images/posts/frontier-model-race-october/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-frontier-model-race-october/" title="前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT">前沿模型 10 月战报：Opus 5.5 领跑基准，Gemini 引流，GPT-6 进 ChatGPT</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1.14/dist/fancybox/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
