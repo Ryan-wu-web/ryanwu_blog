@@ -1105,16 +1105,19 @@ CDN:
   # Note: Dev version can only use 'local' for internal scripts
   # Note: When setting third-party scripts to 'local', you need to install hexo-butterfly-extjs
   internal_provider: local
-  third_party_provider: jsdelivr
+  third_party_provider: custom
 
   # Add version number to url, true or false
   version: true
 
   # Custom format
   # For example: https://cdn.staticfile.org/${cdnjs_name}/${version}/${min_cdnjs_file}
-  custom_format:
+  custom_format: https://registry.npmmirror.com/${name}/${version}/files/${file}
 
   option:
+    # node-snackbar 在 npmmirror 返回 403，单独走 fastly 镜像
+    snackbar: https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js
+    snackbar_css: https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css
     # abcjs_basic_js:
     # activate_power_mode:
     # algolia_js:
