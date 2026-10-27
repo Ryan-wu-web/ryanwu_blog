@@ -5,6 +5,7 @@
 - 构建检查：`npm run prepublish:check`（内容检查 + clean + generate，不写 Git）
 - 本地预览：`npm run server -- --ip 127.0.0.1 --port 4000 --static`（直接服务 `public/`，改动后需重新 build）
 - 发布：`python tools/publish.py`（main 分支上检查、构建、提交并推送；推送 main 触发 GitHub Actions 部署）
+- 生成封面：`python tools/gen_cover.py --slug <slug> --series <栏目> --title1 "..." --title2 "..." --source burst --query "..."`（内置行位/宽度/卡片自检，不过即不落盘）
 - 新增文章封面后：`python tools/gen_cover_thumbs.py`（生成 `cover-800.webp` 供列表页使用）
 
 ## 本仓库的坑
