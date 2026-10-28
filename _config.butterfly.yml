@@ -1120,6 +1120,8 @@ CDN:
     snackbar_css: https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css
     # 不蒜子服务器慢（约 2.5s），换成本地桩：页面 load 后空闲时再拉真实脚本
     busuanzi: /js/busuanzi-lazy.js
+    # MathJax 的相对字体扩展路径不兼容 npmmirror 的 files/ URL，使用 npm CDN。
+    mathjax: https://fastly.jsdelivr.net/npm/mathjax@4.1.3/tex-mml-chtml.js
     # abcjs_basic_js:
     # activate_power_mode:
     # algolia_js:
