@@ -91,22 +91,22 @@ $$z=a+jb=|z|e^{j\theta},\qquad A\cos(\omega t+\phi)\leftrightarrow A\angle\phi,\
 
 ### 单位长度参数 R'L'G'C'
 
-$R'$（Ω/m）导体损耗、$L'$（H/m）磁场储能、$G'$（S/m）介质漏电、$C'$（F/m）电场储能；理想导体 → $R'=0$，理想介质 → $G'=0$（两个独立条件）。**算完必查一致性**：均匀介质 TEM 线满足 $L'C'=\mu\epsilon$、$G'/C'=\sigma/\epsilon$。
+$R^\prime$（Ω/m）导体损耗、$L^\prime$（H/m）磁场储能、$G^\prime$（S/m）介质漏电、$C^\prime$（F/m）电场储能；理想导体 → $R^\prime=0$，理想介质 → $G^\prime=0$（两个独立条件）。**算完必查一致性**：均匀介质 TEM 线满足 $L^\primeC^\prime=\mu\epsilon$、$G^\prime/C^\prime=\sigma/\epsilon$。
 
 课件原题（参数题模板）：
 
 | 题 | 结构 | 答案 |
 |---|---|---|
-| 2-1 | 双导线空气线（理想导体），半径 1 mm，中心距 2 cm | $R'=0$，$L'\approx1.20\ \mu$H/m，$G'=0$，$C'\approx9.29$ pF/m |
-| 2-2 | 铜同轴空气线，1 MHz，内外导体直径 0.6/1.2 cm | $R'\approx2.07\times10^{-2}\ \Omega$/m，$L'\approx0.139\ \mu$H/m，$G'=0$，$C'\approx80.3$ pF/m |
+| 2-1 | 双导线空气线（理想导体），半径 1 mm，中心距 2 cm | $R^\prime=0$，$L^\prime\approx1.20\ \mu$H/m，$G^\prime=0$，$C^\prime\approx9.29$ pF/m |
+| 2-2 | 铜同轴空气线，1 MHz，内外导体直径 0.6/1.2 cm | $R^\prime\approx2.07\times10^{-2}\ \Omega$/m，$L^\prime\approx0.139\ \mu$H/m，$G^\prime=0$，$C^\prime\approx80.3$ pF/m |
 
 > ⚠️ 动笔第一步先分清**半径还是直径**：双导线题给半径 1 mm、直径是 2 mm，$D/d=10$（不是 20）；同轴题给直径先除以 2。
 
 ### 电报方程与传播参数
 
-$$\gamma=\sqrt{(R'+j\omega L')(G'+j\omega C')}=\alpha+j\beta,\qquad Z_0=\sqrt{\frac{R'+j\omega L'}{G'+j\omega C'}}$$
+$$\gamma=\sqrt{(R^\prime+j\omega L^\prime)(G^\prime+j\omega C^\prime)}=\alpha+j\beta,\qquad Z_0=\sqrt{\frac{R^\prime+j\omega L^\prime}{G^\prime+j\omega C^\prime}}$$
 
-无耗线（$R'=G'=0$）退化出全套常用结论：$\beta=\omega\sqrt{L'C'}$，$Z_0=\sqrt{L'/C'}$，$u_p=1/\sqrt{L'C'}=c/\sqrt{\epsilon_r}$。注意 $Z_0$ 是**单个行波**的电压电流比，不等于任意点的总电压/总电流；反向电流波带负号：$I_0^-=-V_0^-/Z_0$。
+无耗线（$R^\prime=G^\prime=0$）退化出全套常用结论：$\beta=\omega\sqrt{L^\primeC^\prime}$，$Z_0=\sqrt{L^\prime/C^\prime}$，$u_p=1/\sqrt{L^\primeC^\prime}=c/\sqrt{\epsilon_r}$。注意 $Z_0$ 是**单个行波**的电压电流比，不等于任意点的总电压/总电流；反向电流波带负号：$I_0^-=-V_0^-/Z_0$。
 
 ### 反射、驻波与 VSWR
 
@@ -161,7 +161,7 @@ $$V_1^+=\frac{Z_0 V_g}{R_g+Z_0},\qquad \Gamma_L=\frac{R_L-Z_0}{R_L+Z_0},\qquad \
 5. **tan 的分支与角度制**：$\beta l$ 用 rad；反求线长解不唯一，取最小非负解。
 6. **两套坐标别混用**：稳态部分负载在 $z=0$、朝源距离记 $d$；暂态部分源在 $z=0$、负载在 $z=l$。
 7. **三个阻抗分清**：$\eta=\sqrt{\mu/\epsilon}$ 是介质场阻抗；$Z_0$ 是特性阻抗；$Z(d)$ 是该点总电压/总电流。
-8. **撇号是「每米」**：$L'$ 是单位长度电感，不是导数。
+8. **撇号是「每米」**：$L^\prime$ 是单位长度电感，不是导数。
 
 ## Smith Chart：会画图，大题稳拿
 
@@ -214,7 +214,7 @@ $Z_L=10+j5\ \Omega$ 匹配到 $Z_S=50\ \Omega$，$f=50$ MHz，要求网络兼作
 - 不看公式表写出 $Z_{\mathrm{in}}$ 一般式、短/开路线输入阻抗、λ/4 与 λ/2 结论；
 - 给 $z_L$ 和 $d/\lambda$：圆图完成「标点 → 等 S 圆 → 顺时针 → 读数乘 $Z_0$」全套；
 - 复现 L 网络例题（127.32 pF + 79.58 nH）并回代验证；
-- R'L'G'C' 参数题分清半径直径，算完用 $L'C'=\mu\epsilon$ 自查；
+- R'L'G'C' 参数题分清半径直径，算完用 $L^\primeC^\prime=\mu\epsilon$ 自查；
 - 行波表达式读全参数 + 相量法 R-C 电路一条龙。
 
 ### 三天复习路线
