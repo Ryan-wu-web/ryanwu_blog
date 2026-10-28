@@ -1,0 +1,683 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>两百年十次泡沫，同一个剧本：《泡沫逃生》读完了 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="从铁路到互联网，技术从来不缺信徒，缺的是泡沫破灭后依然活着的商业模式。五阶段周期、六条泡沫条件与十条永恒教训——一个技术人视角的读后总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="两百年十次泡沫，同一个剧本：《泡沫逃生》读完了">
+<meta property="og:url" content="https://ryanwu.cn/2026/10/25/2026-10-25-bubble-escape-book-notes/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="从铁路到互联网，技术从来不缺信徒，缺的是泡沫破灭后依然活着的商业模式。五阶段周期、六条泡沫条件与十条永恒教训——一个技术人视角的读后总结。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/bubble-escape-book-notes/cover.webp">
+<meta property="article:published_time" content="2026-10-25T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-28T00:53:26.927Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="investing">
+<meta property="article:tag" content="reading">
+<meta property="article:tag" content="tech-history">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/bubble-escape-book-notes/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "两百年十次泡沫，同一个剧本：《泡沫逃生》读完了",
+  "url": "https://ryanwu.cn/2026/10/25/2026-10-25-bubble-escape-book-notes/",
+  "image": "https://ryanwu.cn/images/posts/bubble-escape-book-notes/cover.webp",
+  "datePublished": "2026-10-25T04:00:00.000Z",
+  "dateModified": "2026-10-28T00:53:26.927Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/10/25/2026-10-25-bubble-escape-book-notes/index.html"><link rel="preconnect" href="https://registry.npmmirror.com"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://registry.npmmirror.com/@fortawesome/fontawesome-free/7.3.1/files/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://registry.npmmirror.com/@fancyapps/ui/6.1.14/files/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://registry.npmmirror.com/@egjs/infinitegrid/4.13.0/files/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '两百年十次泡沫，同一个剧本：《泡沫逃生》读完了',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Ryan's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">86</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">132</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/bubble-escape-book-notes/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">两百年十次泡沫，同一个剧本：《泡沫逃生》读完了</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">两百年十次泡沫，同一个剧本：《泡沫逃生》读完了</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-28T00:53:26.927Z" title="更新于 2026-10-28 08:53:26">2026-10-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/life/">life</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/life/reading/">reading</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;本文上次更新于&quot;,&quot;messageNext&quot;:&quot;天前，内容可能已过时，请注意甄别。&quot;,&quot;postUpdate&quot;:&quot;2026-10-28 08:53:26&quot;}" hidden></div><p>花了不少个晚上读完了阿拉斯戴尔·奈恩的《泡沫逃生：技术进步与科技投资简史》（原书第 2 版，机械工业出版社，全书 512 页）。作者曾任邓普顿新兴市场团队全球股票研究负责人，1999 年互联网泡沫巅峰期萌生写作念头，用第一版记录了互联网泡沫的完整过程。</p>
+<p>一句话概括这本书：<strong>技术从来不缺信徒，缺的是泡沫破灭后依然活着的商业模式</strong>。作者用两百年、十次技术浪潮反复验证同一个结论——「确定赢家难且有风险，确定输家容易得多」。技术改变了世界，但投资技术的人大多没赚到钱。</p>
+<h2 id="十次浪潮，一个剧本"><a href="#十次浪潮，一个剧本" class="headerlink" title="十次浪潮，一个剧本"></a>十次浪潮，一个剧本</h2><p>铁路、电报电话、电灯、石油、汽车、无线电、计算机、PC、互联网——每一次都走同一条路：新技术被嘲笑 → 被验证 → 资本疯狂涌入 → 估值脱离现实 → 泡沫破裂 → 大浪淘沙 → 幸存者带着沉淀的基础设施走向垄断 → 监管登场。</p>
+<p>几个让我盯着看很久的样本：</p>
+<p><strong>英国铁路（1840s）</strong>：3.7 亿英镑（约合今天 3000 亿美元）涌入 600 家新公司；发行时只缴 5% 现金，形同 20 倍杠杆的期权；「铁路之王」哈德森 ROA 只有 5% 却宣称支付 10%+ 的股息——用资本金付息。结局：技术大获成功，投资者损失惨重，铁路股此后 50 年绝对与相对收益皆负。</p>
+<p><strong>电报与电话</strong>：西联 1878 年坐拥 80% 市场份额、35–40% 营业利润率，总裁拒绝以 10 万美元买下贝尔的电话专利：「这家公司制作的电动玩具有什么用？」三年后西联退出电话业——那本是他们只需 10 万美元就能到手的业务。教科书级的「在位者错失替代技术」。</p>
+<p><strong>无线电</strong>：RCA 是 1920 年代的「科技股之王」，股价从 100 涨到 1100 以上再跌回 100 以下。1929 年前的判断是「难以置信的销售增长显然不可持续，市场饱和后唯一的结局就是以同样的速度大幅下降」。</p>
+<p><strong>互联网</strong>：纳斯达克互联网股 PE 超 200 倍；美国在线以股票收购时代华纳——「一个没有盈利的公司以蛇吞象的方式收购了一个赚钱的企业」，商誉减值 990 亿，2015 年被威瑞森以 44 亿美元买走，较巅峰缩水 98%。</p>
+<h2 id="六条泡沫条件（作者清单）"><a href="#六条泡沫条件（作者清单）" class="headerlink" title="六条泡沫条件（作者清单）"></a>六条泡沫条件（作者清单）</h2><p>作者把两百年历史压缩成六条充要条件，我对照了 2000 年互联网和当下，几乎逐条可勾选：</p>
+<ol>
+<li>出现潜在变革性的新技术，夸大其词的主张也能找到「有说服力的理由」；</li>
+<li>货币和信贷环境宽松；</li>
+<li>投资者与消费者普遍乐观；</li>
+<li>新出版物大量出现、大张旗鼓造势（专业报刊数量与股价同步见顶：1846 年的铁路刊物、2000 年的 dot-com 杂志）；</li>
+<li>大量新公司成立以满足投资需求；</li>
+<li><strong>放弃正常估值标准</strong>——「估值基准逐渐从盈利能力上移至收入，然后从收入上移至网站点击量等概念」。</li>
+</ol>
+<p>外加一个信号：这一时期往往会被冠上一个激发想象力的名字——「漂亮 50」、TMT、FAANG。<strong>这类专用名词的出现，往往说明情绪已取代基本面成为估值的决定性要素。</strong></p>
+<h2 id="五阶段周期，危机点永远在现金曲线上"><a href="#五阶段周期，危机点永远在现金曲线上" class="headerlink" title="五阶段周期，危机点永远在现金曲线上"></a>五阶段周期，危机点永远在现金曲线上</h2><p>作者的理论模型（图 11-1）把每次浪潮拆成五段：流动性 → 可行性 → 原型 → 生存能力 → 发展。每两个阶段之间有一个融资节点，<strong>节点就是危机点</strong>——「公司未能在此刻筹集到必要的资金，就意味着它们将退出市场」。</p>
+<p>书里死在这条曲线上的名字一长串：巴贝奇死于政府失去耐心；NESCO 死于 1907 年金融危机扼杀了收购；UNIVAC 的开发者四处碰壁，公司被不到 50 万美元买走。而「亚马逊和谷歌这两家最成功的企业之所以能顺利渡过这个时期，绝非巧合」——它们在泡沫破裂前攒足了资产负债表。</p>
+<p>技术领先解决不了现金曲线的问题。<strong>「从客户取得收入的时点先于向供应商付款的时点，且固定成本已趋于稳定」——满足这两条的公司，才配得上长期主义。</strong></p>
+<h2 id="十条永恒教训（第十一章清单，忠实整理）"><a href="#十条永恒教训（第十一章清单，忠实整理）" class="headerlink" title="十条永恒教训（第十一章清单，忠实整理）"></a>十条永恒教训（第十一章清单，忠实整理）</h2><ol>
+<li>很多新技术的重大突破最初都遭遇嘲讽——火车比马车快两倍是「荒诞预言」，电话是「电动玩具」，电视发明人被报社编辑下令「干掉楼下那个疯子」。</li>
+<li>发明者未必能预见最终用途，更未必是受益者——马可尼至死没看到广播才是真正的金矿。</li>
+<li>新技术与过度宣传相伴相随，永远提防「这次会有所不同」——邓普顿称之为投资中最危险的一句话。</li>
+<li><strong>成功的技术未必带来成功的企业</strong>——赢家是「能清楚辨识行业未来发展趋势的企业」，不是拥有最优技术的参与者。</li>
+<li>内部人士往往是最大受益者；投资者放弃理性估值时，市场必然被操纵。</li>
+<li>造就泡沫的不只有新技术——宽松货币、前期繁荣、媒体煽风、普遍乐观，缺一不可。</li>
+<li>垄断是长期维持新技术盈利能力的唯一可靠方法：专利、成本曲线、网络效应、标准、垂直整合。</li>
+<li>新技术永远处于「资本饥渴—过剩—再饥渴」的循环，<strong>投资新技术的最差时机是需求最旺盛的时候</strong>。</li>
+<li>投资早期科技公司是「失败者的游戏」——经济衰退是功能强大的过滤器。</li>
+<li><strong>输家往往比赢家容易识别</strong>：运河永远达不到铁路的吞吐速度，电报永远做不到语音传输——避开输家，就足以为组合带来超额回报。</li>
+</ol>
+<h2 id="技术人的六点感悟（我的引申）"><a href="#技术人的六点感悟（我的引申）" class="headerlink" title="技术人的六点感悟（我的引申）"></a>技术人的六点感悟（我的引申）</h2><p><strong>一、替代的分母是在位者的既得利益</strong>。全书最震撼的重复桥段是在位者的系统性傲慢：西联拒绝贝尔；AT&amp;T 称广播「无聊至极，充其量是一种爱好」；施乐 PARC 发明了 GUI 和鼠标，「但 PARC 的研究没有体现在施乐的产品上，而是体现在苹果和微软的产品上」。评估新架构时先问：它让谁的既得利益受损？受损者的反击方式和时间表，往往比新技术本身更能决定格局。</p>
+<p><strong>二、专利有时限，垄断才是复利</strong>。贝尔专利 17 年到期后立刻冒出 1700 余家电话公司；VisiCalc 因「软件不能申请专利」被复制。可持续的超额利润来自专利之外的第二、三道壁垒：网络效应、垂直整合、标准控制、成本曲线、转换成本。做架构决策时，这些非技术护城河应当与技术选型放在同一张纸上权衡。</p>
+<p><strong>三、泡沫是基础设施的孵化器</strong>。这是全书最反直觉的论点：2000 年前后铺设的光纤远超需求，电信股跌了 82%，但正是这些过剩产能让后来的互联网普及几乎零边际成本。<strong>泡沫烧掉的是估值，烧不掉的是光缆、基站、数据中心和被训练出来的工程师队伍</strong>。评估技术投资潮时，把「资本浪费」与「基础设施沉淀」分开记账。</p>
+<p><strong>四、系统级创新胜过单点发明</strong>。爱迪生的产品不是灯泡，是「发电—配电—计量—照明」的整条系统；IBM 卖的是硬件+软件+服务+培训；谷歌卖的是搜索+自助投放+数据反馈的闭环。但作者的提醒同样锋利：系统级创新需要的资本太多，「只有更激动人心的宣传才可能解决资金问题」——宣传与诚信之间的张力贯穿技术史，市场最终会惩罚长期撒谎者。</p>
+<p><strong>五、商业模式的发明常常比产品更稀缺</strong>。同一批技术，不同商业模式，结局天差地别：马可尼从卖设备转向「租赁+封闭网络」才赚到钱；广播靠广告活下来；谷歌把「搜索结果与广告竞价冲突」转化为「按相关性排序+按点击付费」。工程师的自我修养清单里该加上商业模式设计这一项：<strong>你的技术以什么单位收费？谁替最终用户付钱？这两个问题的答案，比架构图更能决定公司命运。</strong></p>
+<p><strong>六、技术路线之争由非技术变量决定</strong>。1900 年美国汽车产量蒸汽占 40%、电动占 38%、汽油仅 22%——内燃机赢在能量密度与油田；AC&#x2F;DC 之争赢在变压器与远距离输电的经济学。评估技术路线时，把基础设施配套、供应链成熟度、互补品价格当作一阶变量。作者 2017 年就预判电池进步会让电动车重回 20 世纪初的份额（约 30%）并超越它——如今正在应验。</p>
+<h2 id="一点私人感受"><a href="#一点私人感受" class="headerlink" title="一点私人感受"></a>一点私人感受</h2><p>作为一个正在做 AI 视觉算法的学生，读这本书最大的冲击是<strong>把我日常工作放进了两百年尺度的历史</strong>。书里第五章那句「行业对最大增长动力的认知滞后了近十年」——1911 年标准石油的年报还在大谈机车燃料，对汽油驱动的未来只字未提——放到今天任何一家公司的年报上都毫不违和。</p>
+<p>作者的五阶段模型对我这种还没入场职场的人还有一个私人用法：<strong>评估雇主时，把「公司所处技术周期的阶段」和「是否拥有进入壁垒」作为权重最高的两个变量</strong>。加入马可尼英国公司的人和加入 RCA 的人，起点只差一个选择。</p>
+<p>最后摘一句卷首语：伽利略说「在科学问题上，一千个人的权威也无法抵御一个人卑微的推理」。这本书两百年十次浪潮之后留下的操作准则朴素得近乎无趣——用现金流判断公司、用进入壁垒判断持续性、用周期位置判断时机、把精力花在避开输家上。技术会被验证，资本会被惩罚，而历史不会重复，只会押韵。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><ul>
+<li>本书：《泡沫逃生：技术进步与科技投资简史（原书第 2 版）》，[美] 阿拉斯戴尔·奈恩著，机械工业出版社 2023 年 10 月版，ISBN 978-7-111-73287-7；英文原名 <em>Engines That Move Markets: Technology Investing from Railroads to the Internet and Beyond</em></li>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/36586572/">豆瓣《泡沫逃生》条目</a></li>
+<li>作者 Alasdair Nairn 背景说明见原书前言（邓普顿新兴市场团队全球股票研究负责人）</li>
+<li>「AI 浪潮对照」部分为笔者引申，原书成稿于 2017 年前后，未涉及大模型话题</li>
+<li>引语均为原书简短摘录，页码以中文版书页为准；金额「约合今天 X」为原书按通胀调整的换算</li>
+</ul>
+<blockquote>
+<p>说明：本文为读书笔记，「我的感悟」与「AI 浪潮对照」属于个人引申，不代表原书观点；书中历史数据以原书为准，未逐条独立核验。</p>
+</blockquote>
+<h2 id="本系列其他篇目"><a href="#本系列其他篇目" class="headerlink" title="本系列其他篇目"></a>本系列其他篇目</h2><ul>
+<li><a href="/2026/09/19/2026-09-19-sheng-huo-ben-jiu-mei-you-da-an/">两百年十次泡沫之外的生活随记：生活本就没有答案</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/10/25/2026-10-25-bubble-escape-book-notes/">https://ryanwu.cn/2026/10/25/2026-10-25-bubble-escape-book-notes/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/reading/">reading</a><a class="post-meta__tags" href="/tags/investing/">investing</a><a class="post-meta__tags" href="/tags/tech-history/">tech-history</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/bubble-escape-book-notes/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://registry.npmmirror.com/butterfly-extsrc/1.1.6/files/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://registry.npmmirror.com/butterfly-extsrc/1.1.6/files/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/25/2026-10-25-china-open-source-models-2026/" title="中国开源模型生态：四大家族贴近前沿，采用度是两个世界"><img class="cover" src="/images/posts/china-open-source-models-2026/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy'><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">中国开源模型生态：四大家族贴近前沿，采用度是两个世界</div></div><div class="info-2"><div class="info-item-1">BI 口径中美差距 10 月缩至约 3%；OpenRouter 上中国家族合计约 44%，但美国大企业生产环境仅约 1%。成本三层逻辑、华为共生与管制悖论。</div></div></div></a><a class="pagination-related" href="/2026/10/25/2026-10-25-auditable-agent-system-lessons/" title="把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘"><img class="cover" src="/images/posts/auditable-agent-system-lessons/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">把 Agent 系统从「能演示」做到「敢签字」：一套 AI 协作链路的工程复盘</div></div><div class="info-2"><div class="info-item-1">状态机与防重发、记忆发布门禁、三凭据身份分离、用实测数字否决自己、评测先于扩量——把一段从零搭建模型网关与记忆系统的实习经验，压缩成可复用的工程笔记。内部细节已脱敏。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/01/2026-10-01-feng-tang-cheng-shi-xin-fa/" title="不着急，不害怕，不要脸——读一本教人“成事”的争议之书"><img class="cover" src="/images/posts/feng-tang-cheng-shi-xin-fa/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">不着急，不害怕，不要脸——读一本教人“成事”的争议之书</div></div><div class="info-2"><div class="info-item-1">《冯唐成事心法》豆瓣 7.3 分，夸和骂都很认真。我整理了书里现在就能用的三招——100 个关键词、九字真言、真猛人，也说了我对“鸡汤”争议的判断。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-zhuo-you-cheng-xiao-de-guan-li-zhe/" title="你缺的不是时间，是一次诚实的记账"><img class="cover" src="/images/posts/zhuo-you-cheng-xiao-de-guan-li-zhe/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">你缺的不是时间，是一次诚实的记账</div></div><div class="info-2"><div class="info-item-1">德鲁克 1966 年就把时间管理写透了：先记录时间，再谈效率。五个习惯、三个案例，以及一个诚实的问题——这本六十年前的书，离学生到底远不远。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-jin-bang-ti-ming-zhi-hou/" title="大学这座迷宫，有人是带着地图入场的"><img class="cover" src="/images/posts/jin-bang-ti-ming-zhi-hou/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">大学这座迷宫，有人是带着地图入场的</div></div><div class="info-2"><div class="info-item-1">同样考进顶尖大学，四年后为什么差距那么大？郑雅君在《金榜题名之后》里访谈了 62 名毕业生，给出的答案是“地图”——有人带着地图入场，有人从未见过迷宫的全貌。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-zhang-kong-xi-guan/" title="Flag 总倒，先别怪自己"><img class="cover" src="/images/posts/zhang-kong-xi-guan/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">Flag 总倒，先别怪自己</div></div><div class="info-2"><div class="info-item-1">为什么 flag 总倒？《掌控习惯》给的答案不是意志力，而是环境设计：四定律、身份认同、复利曲线的平段，以及“糟糕的坚持好过放弃”这句话为什么有用。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-wo-de-er-ben-xue-sheng/" title="大多数人读的那种大学，有人认真写了下来"><img class="cover" src="/images/posts/wo-de-er-ben-xue-sheng/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">大多数人读的那种大学，有人认真写了下来</div></div><div class="info-2"><div class="info-item-1">黄灯跟踪一个二本班级八年：52 人、毕业时无人考研、八年后散落珠三角。关于学历的“初始定价单”、普通家庭的风险计算，以及“被看见”本身的价值。</div></div></div></a><a class="pagination-related" href="/2026/06/05/my-first-life-post/" title="开始记录生活"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-05</div><div class="info-item-2">开始记录生活</div></div><div class="info-2"><div class="info-item-1">今天开始在这个博客记录生活！ 为什么记录生活？生活不只是代码和算法，还有：  🏃 运动健身 ✈️ 旅行探索 📷 摄影记录 📚 阅读思考  希望这里能成为我回忆的宝库。 </div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">86</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">132</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3047967569@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #a8835b;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E6%AC%A1%E6%B5%AA%E6%BD%AE%EF%BC%8C%E4%B8%80%E4%B8%AA%E5%89%A7%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">十次浪潮，一个剧本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E6%9D%A1%E6%B3%A1%E6%B2%AB%E6%9D%A1%E4%BB%B6%EF%BC%88%E4%BD%9C%E8%80%85%E6%B8%85%E5%8D%95%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">六条泡沫条件（作者清单）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E9%98%B6%E6%AE%B5%E5%91%A8%E6%9C%9F%EF%BC%8C%E5%8D%B1%E6%9C%BA%E7%82%B9%E6%B0%B8%E8%BF%9C%E5%9C%A8%E7%8E%B0%E9%87%91%E6%9B%B2%E7%BA%BF%E4%B8%8A"><span class="toc-number">3.</span> <span class="toc-text">五阶段周期，危机点永远在现金曲线上</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E6%9D%A1%E6%B0%B8%E6%81%92%E6%95%99%E8%AE%AD%EF%BC%88%E7%AC%AC%E5%8D%81%E4%B8%80%E7%AB%A0%E6%B8%85%E5%8D%95%EF%BC%8C%E5%BF%A0%E5%AE%9E%E6%95%B4%E7%90%86%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">十条永恒教训（第十一章清单，忠实整理）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%80%E6%9C%AF%E4%BA%BA%E7%9A%84%E5%85%AD%E7%82%B9%E6%84%9F%E6%82%9F%EF%BC%88%E6%88%91%E7%9A%84%E5%BC%95%E7%94%B3%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">技术人的六点感悟（我的引申）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%82%B9%E7%A7%81%E4%BA%BA%E6%84%9F%E5%8F%97"><span class="toc-number">6.</span> <span class="toc-text">一点私人感受</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">7.</span> <span class="toc-text">参考来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E7%B3%BB%E5%88%97%E5%85%B6%E4%BB%96%E7%AF%87%E7%9B%AE"><span class="toc-number">8.</span> <span class="toc-text">本系列其他篇目</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-agentscope-and-gastown-review/" title="两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery"><img src="/images/posts/agentscope-and-gastown-review/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-agentscope-and-gastown-review/" title="两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery">两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"><img src="/images/posts/ai-drug-discovery-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期">AI 制药进入确证期：第一个 AI 全流程药物已到 III 期</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-regulation-october-2026/" title="全球 AI 监管 10 月动态：行政令快跑、立法慢走"><img src="/images/posts/ai-regulation-october-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="全球 AI 监管 10 月动态：行政令快跑、立法慢走"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-regulation-october-2026/" title="全球 AI 监管 10 月动态：行政令快跑、立法慢走">全球 AI 监管 10 月动态：行政令快跑、立法慢走</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"><img src="/images/posts/ai-infrastructure-energy/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-security-black-october/" title="AI 安全「黑色十月」：PHP2Shell 与深伪浪潮"><img src="/images/posts/ai-security-black-october/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 安全「黑色十月」：PHP2Shell 与深伪浪潮"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-security-black-october/" title="AI 安全「黑色十月」：PHP2Shell 与深伪浪潮">AI 安全「黑色十月」：PHP2Shell 与深伪浪潮</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://registry.npmmirror.com/@fancyapps/ui/6.1.14/files/dist/fancybox/fancybox.umd.js"></script><script src="https://registry.npmmirror.com/instant.page/5.2.0/files/instantpage.js" type="module"></script><script src="https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://registry.npmmirror.com/mermaid/11.16.0/files/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://registry.npmmirror.com/twikoo/1.7.15/files/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="/js/busuanzi-lazy.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
