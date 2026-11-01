@@ -27,6 +27,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -76,9 +77,10 @@ VIGNETTE_STRENGTH = 0.10
 WEBP_QUALITY = 90
 CARD_SIZE = (364, 235)
 
-FONT_CN = r"C:\Windows\Fonts\msyhbd.ttc"
-FONT_EN = r"C:\Windows\Fonts\bahnschrift.ttf"
-FONT_MONO = r"C:\Windows\Fonts\consola.ttf"
+# 字体路径可用环境变量覆盖（Linux 容器挂载 Windows 字体时使用），默认保持 Windows 路径
+FONT_CN = os.environ.get("N8N_FONT_CN", r"C:\Windows\Fonts\msyhbd.ttc")
+FONT_EN = os.environ.get("N8N_FONT_EN", r"C:\Windows\Fonts\bahnschrift.ttf")
+FONT_MONO = os.environ.get("N8N_FONT_MONO", r"C:\Windows\Fonts\consola.ttf")
 
 # 眉标按栏目区分（不含年份，年份取自 --date）
 SERIES_EYEBROW = {
