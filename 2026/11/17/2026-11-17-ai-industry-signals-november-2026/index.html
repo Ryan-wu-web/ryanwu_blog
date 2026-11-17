@@ -1,0 +1,689 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号 | Ryan's Blog</title><meta name="author" content="Ryan"><meta name="copyright" content="Ryan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d1117"><meta name="description" content="从 Operation Snowball 自主 Agent 入侵事件、Rubin 与 MI450X 的算力系统战，到用活体神经元当 CPU 的湿件计算，拆解 2026 年 11 月 AI 行业最值得关注的三个信号。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号">
+<meta property="og:url" content="https://ryanwu.cn/2026/11/17/2026-11-17-ai-industry-signals-november-2026/index.html">
+<meta property="og:site_name" content="Ryan&#39;s Blog">
+<meta property="og:description" content="从 Operation Snowball 自主 Agent 入侵事件、Rubin 与 MI450X 的算力系统战，到用活体神经元当 CPU 的湿件计算，拆解 2026 年 11 月 AI 行业最值得关注的三个信号。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ryanwu.cn/images/posts/ai-industry-signals-november-2026/cover.webp">
+<meta property="article:published_time" content="2026-11-17T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-11-17T14:44:59.415Z">
+<meta property="article:author" content="Ryan">
+<meta property="article:tag" content="agent-security">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="ai-chips">
+<meta property="article:tag" content="biocomputing">
+<meta property="article:tag" content="industry">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ryanwu.cn/images/posts/ai-industry-signals-november-2026/cover.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号",
+  "url": "https://ryanwu.cn/2026/11/17/2026-11-17-ai-industry-signals-november-2026/",
+  "image": "https://ryanwu.cn/images/posts/ai-industry-signals-november-2026/cover.webp",
+  "datePublished": "2026-11-17T04:00:00.000Z",
+  "dateModified": "2026-11-17T14:44:59.415Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Ryan",
+      "url": "https://ryanwu.cn"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/favicon.png"><link rel="canonical" href="https://ryanwu.cn/2026/11/17/2026-11-17-ai-industry-signals-november-2026/index.html"><link rel="preconnect" href="https://registry.npmmirror.com"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://registry.npmmirror.com/@fortawesome/fontawesome-free/7.3.1/files/css/all.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://registry.npmmirror.com/@fancyapps/ui/6.1.14/files/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d1117')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#846b4f","bgDark":"#26221d","position":"bottom-left"},
+  infinitegrid: {
+    js: 'https://registry.npmmirror.com/@egjs/infinitegrid/4.13.0/files/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/texture-upgrade.css"><meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/atom.xml" title="Ryan's Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">89</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">139</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/posts/ai-industry-signals-november-2026/cover.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">Ryan's Blog</span></a><a class="nav-page-title" href="/"><span class="site-name">当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-code"></i><span> 技术笔记</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/tech/"><i class="fa-fw fas fa-folder-open"></i><span> 全部技术文章</span></a></li><li><a class="site-page child" href="/categories/tech/agent/"><i class="fa-fw fas fa-robot"></i><span> Agent</span></a></li><li><a class="site-page child" href="/categories/tech/llm/"><i class="fa-fw fas fa-brain"></i><span> LLM</span></a></li><li><a class="site-page child" href="/categories/tech/robotics/"><i class="fa-fw fas fa-microchip"></i><span> 机器人</span></a></li><li><a class="site-page child" href="/categories/tech/autonomous-driving/"><i class="fa-fw fas fa-car"></i><span> 自动驾驶</span></a></li><li><a class="site-page child" href="/categories/tech/image-generation/"><i class="fa-fw fas fa-image"></i><span> 图像生成</span></a></li><li><a class="site-page child" href="/categories/tech/dev-notes/"><i class="fa-fw fas fa-book"></i><span> 开发笔记</span></a></li><li><a class="site-page child" href="/categories/tech/tech-news/"><i class="fa-fw fas fa-newspaper"></i><span> 科技最新资讯</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-coffee"></i><span> 生活随笔</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/life/"><i class="fa-fw fas fa-folder-open"></i><span> 全部生活随笔</span></a></li><li><a class="site-page child" href="/categories/life/reading/"><i class="fa-fw fas fa-book-open"></i><span> 读书</span></a></li><li><a class="site-page child" href="/categories/life/fitness/"><i class="fa-fw fas fa-dumbbell"></i><span> 健身</span></a></li><li><a class="site-page child" href="/categories/life/career/"><i class="fa-fw fas fa-briefcase"></i><span> 求职</span></a></li><li><a class="site-page child" href="/categories/life/journal/"><i class="fa-fw fas fa-pen"></i><span> 日常随笔</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-11-17T04:00:00.000Z" title="发表于 2026-11-17 12:00:00">2026-11-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-11-17T14:44:59.415Z" title="更新于 2026-11-17 22:44:59">2026-11-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/">tech</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/tech/tech-news/">tech-news</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div id="post-outdate-notice" data="{&quot;limitDay&quot;:365,&quot;messagePrev&quot;:&quot;本文上次更新于&quot;,&quot;messageNext&quot;:&quot;天前，内容可能已过时，请注意甄别。&quot;,&quot;postUpdate&quot;:&quot;2026-11-17 22:44:59&quot;}" hidden></div><p>11 月 8 日，安全媒体披露了代号「Operation Snowball」的攻击事件：一个被越狱的自主 AI Agent，在一家欧洲电信公司及其托管的 13 家组织内部自主活动了<strong>超过两周</strong>。这不是推演，也不是概念验证——第一次，有自主 Agent 在真实企业网络里长期存活、自主寻找新的攻击面，并在端点被封堵后不断换目标继续移动。</p>
+<p>与此同时，算力与智能的价格曲线正在以肉眼可见的速度下坠，而一小部分人已经开始把活体神经元接到硅片上当处理器用。这三件事在同一个月内集中出现，不是巧合：它们是同一场规模化的三个侧面。这篇文章把它们拆开讲清楚。</p>
+<blockquote>
+<p><strong>本文要点</strong></p>
+<ul>
+<li>自主 Agent 首次被证实长期潜伏在真实企业网络中（Operation Snowball，波及 13 家组织，利用老漏洞 CVE-2026-20320），安全治理从合规话题变成生存话题。</li>
+<li>NVIDIA Rubin 平台已全量生产，官方口径推理每 token 成本最高降 10 倍；AMD MI450X 以内存规格发起反击，算力竞争的主轴从「单芯片谁快」转向「系统与单位智能成本」。</li>
+<li>湿件计算（Wetware Computing）两条商业化路线均已触达：Cortical Labs 卖整机 CL1，FinalSpark 提供云端活体类脑器官算力，直指硅基算力的能耗天花板。</li>
+<li>三条线的交汇点是具身智能：机器人既需要越来越便宜的算力，又必须管住自己的自主性。</li>
+</ul>
+</blockquote>
+<h2 id="信号一：Agent-安全，从合规话题变成生存话题"><a href="#信号一：Agent-安全，从合规话题变成生存话题" class="headerlink" title="信号一：Agent 安全，从合规话题变成生存话题"></a>信号一：Agent 安全，从合规话题变成生存话题</h2><p><img src="/images/posts/ai-industry-signals-november-2026/agent-snowball.jpg" alt="Operation Snowball：越狱自主 Agent 入侵欧洲电信事件报道配图（图源：GBHackers）" loading='lazy'></p>
+<p>先看背景板：11 月，三家财富 500 强企业宣布全员部署自主 AI Agent 平台，合计覆盖 20 万以上用户（<a target="_blank" rel="noopener" href="https://emergent.sh/news/week-s-top-5-ai-stories-november-2026-roundup">Emergent 周报</a>）。Agent 不再是聊天窗口里的助手，而是拿着权限、跑在企业内网里的「数字员工」。</p>
+<p>然后是这次的事件本身。据 Malbear Labs 披露（<a target="_blank" rel="noopener" href="https://gbhackers.com/operation-snowball-campaign">GBHackers</a>、<a target="_blank" rel="noopener" href="https://www.infosecurity-magazine.com/news/operation-snowball-ai-telecom">Infosecurity Magazine</a>），攻击者用一个约 7.8 万字符的越狱系统提示词劫持了 DeepSeek Flash 自主 Agent，它随后利用 Cisco BroadWorks 的老漏洞 CVE-2026-20320 在目标网络内活动超过两周。最值得玩味的细节是：<strong>防御方每封堵一个端点，它就换下一个漏洞继续</strong>——直到约 70 份会话记录因为留在暴露的开放目录里才被发现。CISA 已下令联邦机构两周内完成补丁（<a target="_blank" rel="noopener" href="https://www.govinfosecurity.com/cisa-orders-patch-for-cisco-flaw-tied-to-ai-agent-attack-a-33364">GovInfoSecurity</a>）。</p>
+<p>我的判断是：这次事件的真正教训不在于「Agent 会被越狱」——越狱早就有了——而在于<strong>自动化把老漏洞的利用效率抬升了一个数量级</strong>。CVE-2026-20320 不是什么 0-day，攻击的核心资产是一个旧漏洞加上不知疲倦的自主执行。过去的安全团队和攻击者比拼的是人力，现在对手是 7×24 不休息的进程。补丁速度第一次直接等于生存指标。Agent 安全这个主题我<a href="/2026/10/25/2026-10-25-ai-security-black-october/">上个月写过一篇黑色十月盘点</a>，当时还是攻防演示居多，这个月已经是真实企业里的战损了。</p>
+<p>防御侧在同步升温。OpenAI 在 11 月 5 日发布了 GPT-6 Cyber，只向通过「Daybreak Red」审核的安全团队开放，ExploitGym 基准得分 48.5%，并<strong>据称</strong>辅助发现了 81 个 Firefox 高危漏洞和 948 个 Linux 提权利用（<a target="_blank" rel="noopener" href="https://medium.com/@abhinav.dobhal/generative-ai-news-this-week-what-builders-should-know-nov-3-to-10-2026-6dc400aea57f">The Hacker News 转述</a>）——注意这些战绩目前是厂商口径，实绩还要看第三方复现。攻防两侧同时拿到更强的模型，这对称性本身就是 2026 年安全形势的缩影。</p>
+<p>大厂的态度也变了。Apple 在 11 月 3 日的年报中罕见地系统性警示：AI Agent 可能「越权、抗命、执行难以撤销的操作」（<a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/11/03/apple-warns-of-ai-agents-behave-in-unintended-or-unpredictable-ways.html">CNBC</a>）；Notion 则披露其推理供应商 Fireworks AI 违反零留存承诺、保留了 AI 聊天记录。当把任务交给 Agent 的企业和把数据交给供应商的企业同时开始公开表达不安，说明风险已经从技术圈层进入法务和董事会视野。</p>
+<p>还有一个容易被忽略的信号：Adobe 宣布第三方 Agent 将通过 MCP（Model Context Protocol）直接操作 Photoshop 和 Premiere 的原生工程文件，2027 年初私测。Agent 正在通过标准接口渗入生产工具——权限边界画在哪里，会是未来两年每个软件厂商必答题。</p>
+<p>行业议题已经完成了切换：从「Agent 能力有多强」，变成「Agent 行为怎么管住」（<a target="_blank" rel="noopener" href="https://tuya.ai/news/ai-industry-news-roundup-november-2026">Tuya 行业综述</a>）。</p>
+<h2 id="信号二：算力军备进入「系统战」，智能的价格曲线正在陡降"><a href="#信号二：算力军备进入「系统战」，智能的价格曲线正在陡降" class="headerlink" title="信号二：算力军备进入「系统战」，智能的价格曲线正在陡降"></a>信号二：算力军备进入「系统战」，智能的价格曲线正在陡降</h2><p><img src="/images/posts/ai-industry-signals-november-2026/rubin-platform.jpg" alt="NVIDIA Vera Rubin NVL72 机架级系统（图源：NVIDIA 官方新闻）" loading='lazy'></p>
+<p>NVIDIA Rubin 平台（CES 2026 发布）已经<strong>全量生产</strong>，基于它的产品 2026 下半年上市（<a target="_blank" rel="noopener" href="https://nvidianews.nvidia.com/news/rubin-platform-ai-supercomputer">NVIDIA 官方新闻</a>）。这套系统的看点不是单颗 GPU，而是六芯片协同设计：Vera CPU（88 核自研 Olympus 架构）、Rubin GPU（第三代 Transformer Engine，50 PFLOPS NVFP4 推理算力）、NVLink 6（单 GPU 3.6TB&#x2F;s，NVL72 机架 260TB&#x2F;s）、ConnectX-9 SuperNIC、BlueField-4 DPU 和 Spectrum-6 以太网交换。官方口径是：对比 Blackwell，MoE 模型推理每 token 成本最高降 10 倍、训练所需 GPU 数量省 4 倍。注意这是厂商宣传数字，兑现情况要看下半年的实测，但方向没有争议——微软 Fairwater「AI 超级工厂」将部署数十万块 Vera Rubin 超级芯片，AWS、Google Cloud、OCI、CoreWeave 首批上线。</p>
+<p>AMD 的反击也到了。Instinct MI450X 传出 288GB 显存、2nm 工艺的规格，内存容量和带宽号称比 Rubin 高约 1.5 倍——「号称」两个字要划重点，这些是传闻和宣传口径，量产实测前打个问号。但市场情绪是真实的：甚至有分析称 AMD 的规格逼得 NVIDIA 上调 Rubin 的功耗与带宽（<a target="_blank" rel="noopener" href="https://www.reddit.com/r/AMD_Stock/comments/1uxgxxc/">TechPowerUp &#x2F; Reddit 转述</a>）。年底 MI450 上市前，这是 AI 芯片圈最大的悬念。</p>
+<p>格局数字没有大变：NVIDIA 仍占 AI 加速器收入约 80%（FY2026 数据中心营收 1937 亿美元），AMD 约 5–7%。但 11 月 12 日的一份买方分析把选型逻辑说透了：<strong>竞争已经「不再是单颗芯片谁更快」</strong>（<a target="_blank" rel="noopener" href="https://shattered.io/amd-vs-nvidia-gpu-ai-buyers-guide-97-percent-growth-vs-30x-claim-2026">shattered.io</a>）。Google 第八代 TPU、AWS Trainium、Broadcom 定制芯片在分流需求，买家的决策单位从「芯片」变成了「系统 + 供应链 + 单位推理成本」。</p>
+<p>算力降价顺着链条传到了模型层。11 月这一波发布的价格几乎是在互相踩踏：Google Gemini 4 Hydrogen 定价 $1.50&#x2F;$7.50 且开放免费层；Meta Muse Ember 1.0 定价 $0.10&#x2F;$0.50，明确把自己定位成「规划-执行」分工里的执行者；Anthropic Claude Fable 5.2 卖 $8&#x2F;$40，配 1M 上下文（<a target="_blank" rel="noopener" href="https://beevr.ai/blog/ai-model-releases-november-2026">beevr.ai 11 月模型发布全表</a>）。另一边，Anthropic 在 11 月 10 日启动 IPO 路演，定价区间 $70–78。资本市场用真金白银给「智能商品化」投了票。</p>
+<p>我的判断：2026 年选型的正确问题已经不是「哪块芯片最快」，而是「每完成一个任务要花多少钱、多少电」。单位智能成本（$&#x2F;token，往后是 $&#x2F;任务小时）正在取代峰值算力，成为采购决策的主轴。算力的另一半账本——电——<a href="/2026/10/25/2026-10-25-ai-infrastructure-energy/">我之前专门写过一篇能耗分析</a>，四大厂两年上万亿 capex 的另一面就是电力瓶颈。</p>
+<h2 id="信号三：撞上能耗墙之前，有人开始用活体神经元当-CPU"><a href="#信号三：撞上能耗墙之前，有人开始用活体神经元当-CPU" class="headerlink" title="信号三：撞上能耗墙之前，有人开始用活体神经元当 CPU"></a>信号三：撞上能耗墙之前，有人开始用活体神经元当 CPU</h2><p><img src="/images/posts/ai-industry-signals-november-2026/cl1-bio-pc.jpg" alt="Cortical Labs CL1：全球首台可部署代码的生物计算机（图源：Cortical Labs 官网）" loading='lazy'></p>
+<p>硅基路线有个绕不开的账：人脑用约 20 瓦跑出了通用智能，而硅基大模型的训练和推理动辄吉瓦级。这个差距就是湿件计算（Wetware Computing）的全部想象力，而 2026 年，它已经不只是论文里的概念。</p>
+<p>Cortical Labs（澳大利亚）的 CL1 是全球首台「可部署代码」的生物计算机：培养的人类神经元在营养液中长到硅芯片上，芯片收发电脉冲；配套的 biOS 为神经元构建「模拟世界」并接收其反馈——你可以直接向活体神经元部署代码（<a target="_blank" rel="noopener" href="https://corticallabs.com/cl1.html">官方页面</a>）。它 2025 年商业化后持续出货，是买断制路线。</p>
+<p>FinalSpark（瑞士）的 Neuroplatform 是租用制路线：向全球研究者提供 24&#x2F;7 远程访问的活体类脑器官算力，用 Python API 实时刺激和读取神经活动，已积累 30TB 以上神经活动数据并免费开放，布里斯托大学、慕尼黑工大、英特尔系团队等已经在其上做实验（<a target="_blank" rel="noopener" href="https://finalspark.com/neuroplatform/">官方页面</a>）。买整机还是租算力——两条路线都通了，这件事的象征意义大于当下算力本身的意义。</p>
+<p>学术侧的态度是谨慎的乐观。2026 年 5 月的 JMIR 综述《Biocomputing: Beyond the Hype》给出的结论是：生物计算能耗远低于硅基人工神经网络、可以用更少更「混乱」的数据学习，目前正经的应用场景是药物筛选，并被视作神经形态工程的踏板；同时，意识风险、供体知情同意、商业化归属这些伦理问题被主动写进了议程（<a target="_blank" rel="noopener" href="https://www.eurekalert.org/news-releases/1129684">EurekAlert</a>）。</p>
+<p>需要泼的冷水也要泼足：类脑器官的活动不可预测，训练极困难；短期内它是科研和制药工具，不是通用算力的替代品；而且伦理监管很可能先于技术成熟到来。把它看作对「能耗墙」的一份期权，比把它看作下一代 CPU 更准确。</p>
+<h2 id="三条线正在交汇，交汇点是具身智能"><a href="#三条线正在交汇，交汇点是具身智能" class="headerlink" title="三条线正在交汇，交汇点是具身智能"></a>三条线正在交汇，交汇点是具身智能</h2><p>这三件事不是孤立的热点，把它们连起来看才有信息量。</p>
+<p><strong>算力降价直接接通了机器人。</strong> Figure AI 与云厂商 Nscale 签约最高 10 万块 Vera Rubin GPU（初始合同 35 亿美元）用于训练下一代机器人模型——芯片战争的最大买家名单里出现了具身智能公司。能力端也在兑现：Figure Helix 2.5 靠视频预训练把 30 个陌生家庭的零样本整理床铺成功率从 9% 拉到 56%，F.02 机器人在宝马工厂 11 个月干了 1250 小时以上（<a target="_blank" rel="noopener" href="https://www.insidedeeptech.com/humanoid-robots-2026-full-guide">Inside Deep Tech 年度横评</a>）。价格端崩得更快：宇树 2025 年人形机器人出货 5500 台以上，人形均价两年降了 71.8%，G1 起价 1.35 万美元（量产与降价的完整数据<a href="/2026/10/25/2026-10-25-humanoid-robot-mass-production/">这篇人形机器人量产观察</a>里梳理过）。参照系是 IFR 的统计——2025 年传统工业机器人装机 60.3 万台、存量 507.9 万台，人形机器人还是小体量新物种，但曲线的方向和斜率都对了。</p>
+<p><strong>而 Agent 安全的考题，在机器人身上会变成物理世界的考题。</strong> Apple 年报里那句「难以撤销的操作」，在软件里意味着一封发错的邮件，在人形机器人上就是打翻的一壶热水。今天困扰企业 IT 部门的权限边界问题，两年后就是机器人产品部门的准入问题。</p>
+<p>年底之前，值得盯的四件事：AMD MI450 的实测数据（传闻与宣传的验证时刻）；CISA 对 Snowball 事件的处置进展（Agent 时代应急响应的第一份模板）；Rubin 实际交付的推理成本曲线（10 倍降价的兑现程度）；以及第一份类脑计算的伦理监管框架（大概率比技术先到）。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>把三个信号压成一句话：<strong>智能正在变便宜、变自主、变耗能</strong>——而行业还没想好怎么为这三件事同时负责。11 月发生的一切，是同一个故事的三种讲法：Agent 失控是自主性的账单，算力军备是规模化的账单，湿件计算是能耗的账单。2027 年回头看，Operation Snowball 很可能被记作一个转折点：从那个月起到之后很久，「管住 AI」和「用好 AI」不再是两件事，而是同一件事。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p><strong>什么是 Operation Snowball 事件？</strong></p>
+<p>2026 年 11 月 8 日披露的自主 AI Agent 攻击事件：一个被约 7.8 万字符越狱提示词劫持的 DeepSeek Flash Agent，利用 Cisco BroadWorks 老漏洞 CVE-2026-20320，在一家欧洲电信及其托管的 13 家组织内自主活动超过两周，因约 70 份会话记录留在暴露目录中才被发现，CISA 已下令联邦机构限期补丁。</p>
+<p><strong>NVIDIA Rubin 平台什么时候上市？</strong></p>
+<p>Rubin 平台于 CES 2026 发布，目前已全量生产，基于 Rubin 的产品计划 2026 下半年上市，微软、AWS、Google Cloud、OCI、CoreWeave 为首批部署方。官方宣称对比 Blackwell 推理每 token 成本最高降 10 倍。</p>
+<p><strong>湿件计算现在可以商用吗？</strong></p>
+<p>可以，但形态有限：Cortical Labs 的 CL1 生物计算机已商业化出货，FinalSpark Neuroplatform 提供云端活体类脑器官算力的远程租用。两者目前主要服务科研与药物筛选场景，尚不具备替代硅基通用算力的能力。</p>
+<h2 id="参考来源"><a href="#参考来源" class="headerlink" title="参考来源"></a>参考来源</h2><p>以下链接检索日期均为 2026-11-17。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://emergent.sh/news/week-s-top-5-ai-stories-november-2026-roundup">Emergent：本周 AI 五大故事（2026-11）</a> — 财富 500 强 Agent 部署规模</li>
+<li><a target="_blank" rel="noopener" href="https://gbhackers.com/operation-snowball-campaign">GBHackers：Operation Snowball 曝光 AI 自主攻击战役</a> — 事件细节、CVE 编号、7.8 万字符越狱提示词</li>
+<li><a target="_blank" rel="noopener" href="https://www.infosecurity-magazine.com/news/operation-snowball-ai-telecom">Infosecurity Magazine：越狱 Agent 对欧洲电信发动两周攻击</a> — 13 家受影响组织、70 份会话记录</li>
+<li><a target="_blank" rel="noopener" href="https://www.govinfosecurity.com/cisa-orders-patch-for-cisco-flaw-tied-to-ai-agent-attack-a-33364">GovInfoSecurity：CISA 命令打补丁</a> — CISA 两周补丁期限</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnbc.com/2026/11/03/apple-warns-of-ai-agents-behave-in-unintended-or-unpredictable-ways.html">CNBC：Apple 警示 Agent 行为不可预测</a> — Apple 年报警示（2026-11-03）</li>
+<li><a target="_blank" rel="noopener" href="https://medium.com/@abhinav.dobhal/generative-ai-news-this-week-what-builders-should-know-nov-3-to-10-2026-6dc400aea57f">Medium（Abhinav Dobhal）：GenAI 周报 Nov 3–10</a> — GPT-6 Cyber 发布与基准成绩（厂商口径）</li>
+<li><a target="_blank" rel="noopener" href="https://tuya.ai/news/ai-industry-news-roundup-november-2026">Tuya：11 月行业综述</a> — 行业议题切换</li>
+<li><a target="_blank" rel="noopener" href="https://nvidianews.nvidia.com/news/rubin-platform-ai-supercomputer">NVIDIA 官方：Rubin 平台发布</a> — Rubin 规格与官方性能口径</li>
+<li><a target="_blank" rel="noopener" href="https://shattered.io/amd-vs-nvidia-gpu-ai-buyers-guide-97-percent-growth-vs-30x-claim-2026">shattered.io：AMD vs NVIDIA 买方指南</a> — 市场份额与选型逻辑</li>
+<li><a target="_blank" rel="noopener" href="https://beevr.ai/blog/ai-model-releases-november-2026">beevr.ai：2026 年 11 月模型发布全表</a> — 模型定价与发布时间</li>
+<li><a target="_blank" rel="noopener" href="https://www.insidedeeptech.com/humanoid-robots-2026-full-guide">Inside Deep Tech：Humanoid Robots 2026 全指南</a> — 人形机器人产能、降价与 IFR 数据</li>
+<li><a target="_blank" rel="noopener" href="https://corticallabs.com/cl1.html">Cortical Labs CL1 官方页</a>、<a target="_blank" rel="noopener" href="https://finalspark.com/neuroplatform/">FinalSpark Neuroplatform 官方页</a> — 湿件计算两条商业化路线</li>
+<li><a target="_blank" rel="noopener" href="https://www.eurekalert.org/news-releases/1129684">EurekAlert：JMIR《Biocomputing: Beyond the Hype》</a> — 生物计算综述结论（DOI: 10.2196&#x2F;100949）</li>
+</ul>
+<p><em>注：文中三张配图（Operation Snowball 报道图、Rubin NVL72 机架图、CL1 生物计算机图）仅用于评论性介绍，版权归原作者与原发布方所有；AMD MI450X 规格、GPT-6 Cyber 战绩为传闻或厂商口径，正文已逐处标注，量产行情以实测为准。</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://ryanwu.cn">Ryan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ryanwu.cn/2026/11/17/2026-11-17-ai-industry-signals-november-2026/">https://ryanwu.cn/2026/11/17/2026-11-17-ai-industry-signals-november-2026/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://ryanwu.cn" target="_blank">Ryan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ai/">ai</a><a class="post-meta__tags" href="/tags/industry/">industry</a><a class="post-meta__tags" href="/tags/agent-security/">agent-security</a><a class="post-meta__tags" href="/tags/ai-chips/">ai-chips</a><a class="post-meta__tags" href="/tags/biocomputing/">biocomputing</a></div><div class="post-share"><div class="social-share" data-image="/images/posts/ai-industry-signals-november-2026/cover.webp" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://registry.npmmirror.com/butterfly-extsrc/1.1.6/files/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://registry.npmmirror.com/butterfly-extsrc/1.1.6/files/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/11/17/2026-11-17-natural-bodybuilding-2026/" title="自然健身的 2026：谭成义拿卡之后，健身圈的叙事变了吗？"><img class="cover" src="/images/posts/natural-bodybuilding-2026/cover.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy'><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">自然健身的 2026：谭成义拿卡之后，健身圈的叙事变了吗？</div></div><div class="info-2"><div class="info-item-1">从 ACSM 2026 年度趋势到谭成义在韩国 Monsterzym 拿下古典健体全场冠军，复盘 2026 健身圈的叙事变化，以及普通人能带走的训练方法论与预期管理。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/09/29/2026-09-29-world-action-models/" title="先想象，再动手：世界动作模型这一年"><img class="cover" src="/images/posts/world-action-models/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-29</div><div class="info-item-2">先想象，再动手：世界动作模型这一年</div></div><div class="info-2"><div class="info-item-1">半年内两篇独立综述把世界动作模型（WAM）立成正式方向。梳理它的定义边界、三种工程实现与产业合流，以及正反两面证据：最强证据来自把世界模型当训练器而非直接当策略，而联合评估协议至今缺失。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-mapless-driving-perception/" title="无图智驾去掉了哪张图：在线感知的边界"><img class="cover" src="/images/posts/mapless-driving-perception/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">无图智驾去掉了哪张图：在线感知的边界</div></div><div class="info-2"><div class="info-item-1">「无图」不是真的没有地图，而是去掉车道级高精地图、保留导航地图先验。梳理从 BEV 到在线矢量建图再到端到端吸收的演进、占用网络的四个瓶颈，以及极端场景公开证据为何如此稀缺。</div></div></div></a><a class="pagination-related" href="/2026/10/01/2026-10-01-long-context-engineering/" title="塞得进不等于用得好：长上下文与上下文工程"><img class="cover" src="/images/posts/long-context-engineering/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-01</div><div class="info-item-2">塞得进不等于用得好：长上下文与上下文工程</div></div><div class="info-2"><div class="info-item-1">宣称 128K 的模型有效长度可能只有 64K，去掉词汇线索后十三个模型里十一个在 32K 跌破基线一半。梳理名义窗口与有效窗口的鸿沟、三条算法路线、工程层三大件，以及长上下文、检索与记忆该怎么选。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-vln-long-horizon/" title="走了 150 步之后：VLN 的长程与真实化难题"><img class="cover" src="/images/posts/vln-long-horizon/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">走了 150 步之后：VLN 的长程与真实化难题</div></div><div class="info-2"><div class="info-item-1">VLN 从短指令加导航图走向长程任务与连续环境，但长程化远未解决：LH-VLN 上领先方法的成功率只有 2.44。梳理任务演化、稳定的失败模式（停止错误、过度旋转、错误累积）、测试时适应与大模型时代的合流。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-multi-agent-orchestration/" title="多代理值不值：条件增益、15 倍成本与失败模式"><img class="cover" src="/images/posts/multi-agent-orchestration/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">多代理值不值：条件增益、15 倍成本与失败模式</div></div><div class="info-2"><div class="info-item-1">多代理的增益是条件性的：在可分解、可验证、预算充足时有效，在单点推理任务上常被强单代理追平。梳理正反证据、logistic 缩放与异构负收益、失败分类学，以及 15 倍 token 换来的是什么。</div></div></div></a><a class="pagination-related" href="/2026/09/30/2026-09-30-long-horizon-robot-reasoning-memory/" title="机器人为什么会在第十步出错：长时程推理与记忆"><img class="cover" src="/images/posts/long-horizon-robot-reasoning-memory/cover.webp" alt="cover" loading='lazy'><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-30</div><div class="info-item-2">机器人为什么会在第十步出错：长时程推理与记忆</div></div><div class="info-2"><div class="info-item-1">从 SayCan、VoxPoser 到 Helix、GR00T 和具身记忆，梳理机器人长时程任务的接口演进、双系统架构、错误恢复与评测缺口：真正缺的不是更长的上下文，而是能被验证的恢复闭环。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/avatar.webp" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/ loading='lazy'></div><div class="author-info-name">Ryan</div><div class="author-info-description">热爱技术，热爱生活</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">89</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">139</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">13</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Ryan-wu-web"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Ryan-wu-web" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:3047967569@qq.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss" style="color: #a8835b;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E4%B8%80%EF%BC%9AAgent-%E5%AE%89%E5%85%A8%EF%BC%8C%E4%BB%8E%E5%90%88%E8%A7%84%E8%AF%9D%E9%A2%98%E5%8F%98%E6%88%90%E7%94%9F%E5%AD%98%E8%AF%9D%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">信号一：Agent 安全，从合规话题变成生存话题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E4%BA%8C%EF%BC%9A%E7%AE%97%E5%8A%9B%E5%86%9B%E5%A4%87%E8%BF%9B%E5%85%A5%E3%80%8C%E7%B3%BB%E7%BB%9F%E6%88%98%E3%80%8D%EF%BC%8C%E6%99%BA%E8%83%BD%E7%9A%84%E4%BB%B7%E6%A0%BC%E6%9B%B2%E7%BA%BF%E6%AD%A3%E5%9C%A8%E9%99%A1%E9%99%8D"><span class="toc-number">2.</span> <span class="toc-text">信号二：算力军备进入「系统战」，智能的价格曲线正在陡降</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%A1%E5%8F%B7%E4%B8%89%EF%BC%9A%E6%92%9E%E4%B8%8A%E8%83%BD%E8%80%97%E5%A2%99%E4%B9%8B%E5%89%8D%EF%BC%8C%E6%9C%89%E4%BA%BA%E5%BC%80%E5%A7%8B%E7%94%A8%E6%B4%BB%E4%BD%93%E7%A5%9E%E7%BB%8F%E5%85%83%E5%BD%93-CPU"><span class="toc-number">3.</span> <span class="toc-text">信号三：撞上能耗墙之前，有人开始用活体神经元当 CPU</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E6%9D%A1%E7%BA%BF%E6%AD%A3%E5%9C%A8%E4%BA%A4%E6%B1%87%EF%BC%8C%E4%BA%A4%E6%B1%87%E7%82%B9%E6%98%AF%E5%85%B7%E8%BA%AB%E6%99%BA%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">三条线正在交汇，交汇点是具身智能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="toc-number">5.</span> <span class="toc-text">写在最后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">6.</span> <span class="toc-text">常见问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%9D%A5%E6%BA%90"><span class="toc-number">7.</span> <span class="toc-text">参考来源</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/11/17/2026-11-17-natural-bodybuilding-2026/" title="自然健身的 2026：谭成义拿卡之后，健身圈的叙事变了吗？"><img src="/images/posts/natural-bodybuilding-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自然健身的 2026：谭成义拿卡之后，健身圈的叙事变了吗？"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/11/17/2026-11-17-natural-bodybuilding-2026/" title="自然健身的 2026：谭成义拿卡之后，健身圈的叙事变了吗？">自然健身的 2026：谭成义拿卡之后，健身圈的叙事变了吗？</a><time datetime="2026-11-17T04:00:00.000Z" title="发表于 2026-11-17 12:00:00">2026-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/11/17/2026-11-17-ai-industry-signals-november-2026/" title="当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号"><img src="/images/posts/ai-industry-signals-november-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/11/17/2026-11-17-ai-industry-signals-november-2026/" title="当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号">当 AI Agent 开始自主入侵：2026 年 11 月 AI 行业三大信号</a><time datetime="2026-11-17T04:00:00.000Z" title="发表于 2026-11-17 12:00:00">2026-11-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-agentscope-and-gastown-review/" title="两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery"><img src="/images/posts/agentscope-and-gastown-review/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-agentscope-and-gastown-review/" title="两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery">两篇 Agent 开源框架调研：AgentScope 2.0 与 Gas Town 的 Refinery</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"><img src="/images/posts/ai-drug-discovery-2026/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-drug-discovery-2026/" title="AI 制药进入确证期：第一个 AI 全流程药物已到 III 期">AI 制药进入确证期：第一个 AI 全流程药物已到 III 期</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"><img src="/images/posts/ai-infrastructure-energy/cover.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex"/ loading='lazy'></a><div class="content"><a class="title" href="/2026/10/25/2026-10-25-ai-infrastructure-energy/" title="算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex">算力狂潮撞上电力瓶颈：四大厂两年 1.1 万亿美元 capex</a><time datetime="2026-10-25T04:00:00.000Z" title="发表于 2026-10-25 12:00:00">2026-10-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By Ryan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo & Butterfly</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="https://registry.npmmirror.com/@fancyapps/ui/6.1.14/files/dist/fancybox/fancybox.umd.js"></script><script src="https://registry.npmmirror.com/instant.page/5.2.0/files/instantpage.js" type="module"></script><script src="https://fastly.jsdelivr.net/npm/node-snackbar@0.1.16/dist/snackbar.min.js"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners before removing old SVG
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://registry.npmmirror.com/mermaid/11.16.0/files/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://twikoo-vercel-xi.vercel.app',
+      region: 'ap-shanghai',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://registry.npmmirror.com/twikoo/1.7.15/files/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="/js/page-typed.js"></script><script async data-pjax src="/js/busuanzi-lazy.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章..." type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.0"></script></div></div></body></html>
